@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ComponentsInitParameters struct {
@@ -19,8 +18,8 @@ type ComponentsInitParameters struct {
 
 type ComponentsObservation struct {
 
-	// (String)
-	// Type of the component
+	// (String) Component name.
+	// Component name.
 	Component *string `json:"component,omitempty" tf:"component,omitempty"`
 
 	// (String) Hostname or IP address of the server where to migrate data from.
@@ -29,13 +28,13 @@ type ComponentsObservation struct {
 
 	// (Number) Port number of the server where to migrate data from.
 	// Port number of the component
-	Port *int64 `json:"port,omitempty" tf:"port,omitempty"`
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
-	// (String)
+	// (String) Component network route type
 	// Component network route type
 	Route *string `json:"route,omitempty" tf:"route,omitempty"`
 
-	// (String)
+	// (String) Usage of the component
 	// Usage of the component
 	Usage *string `json:"usage,omitempty" tf:"usage,omitempty"`
 }
@@ -47,10 +46,10 @@ type ManagedDatabaseMysqlInitParameters struct {
 
 	// (Number) Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
 	// Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
-	AdditionalDiskSpaceGib *int64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
+	AdditionalDiskSpaceGib *float64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
 
-	// value pairs to classify the managed database.
-	// User defined key-value pairs to classify the managed database.
+	// value pairs to classify the database.
+	// User defined key-value pairs to classify the database.
 	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
@@ -66,12 +65,11 @@ type ManagedDatabaseMysqlInitParameters struct {
 	// Name of the service. The name is used as a prefix for the logical hostname. Must be unique within an account
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (Block Set, Max: 8) Private networks attached to the managed database (see below for nested schema)
+	// (Block Set) Private networks attached to the managed database (see below for nested schema)
 	// Private networks attached to the managed database
 	Network []NetworkInitParameters `json:"network,omitempty" tf:"network,omitempty"`
 
-	// (List of Object) Information about nodes providing the managed service (see below for nested schema)
-	// Information about nodes providing the managed service
+	// (Attributes List) Information about nodes providing the managed service (see below for nested schema)
 	NodeStates []NodeStatesInitParameters `json:"nodeStates,omitempty" tf:"node_states,omitempty"`
 
 	// (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans mysql.
@@ -82,16 +80,16 @@ type ManagedDatabaseMysqlInitParameters struct {
 	// The administrative power state of the service
 	Powered *bool `json:"powered,omitempty" tf:"powered,omitempty"`
 
-	// (Block List, Max: 1) Database Engine properties for MySQL (see below for nested schema)
-	// Database Engine properties for MySQL
+	// (Block List) Database engine properties. (see below for nested schema)
+	// Database engine properties.
 	Properties []PropertiesInitParameters `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (Boolean) If set to true, prevents the managed service from being powered off, or deleted.
 	// If set to true, prevents the managed service from being powered off, or deleted.
 	TerminationProtection *bool `json:"terminationProtection,omitempty" tf:"termination_protection,omitempty"`
 
-	// (String) Title of a managed database instance
-	// Title of a managed database instance
+	// (String) Title of the managed database instance
+	// Title of the managed database instance
 	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 
 	// fra1. You can list available zones with upctl zone list.
@@ -103,17 +101,16 @@ type ManagedDatabaseMysqlObservation struct {
 
 	// (Number) Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
 	// Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
-	AdditionalDiskSpaceGib *int64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
+	AdditionalDiskSpaceGib *float64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
 
-	// (List of Object) Service component information (see below for nested schema)
-	// Service component information
+	// (Attributes List) Service component information (see below for nested schema)
 	Components []ComponentsObservation `json:"components,omitempty" tf:"components,omitempty"`
 
-	// (String) The ID of this resource.
+	// (String) UUID of the database.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// value pairs to classify the managed database.
-	// User defined key-value pairs to classify the managed database.
+	// value pairs to classify the database.
+	// User defined key-value pairs to classify the database.
 	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
@@ -129,12 +126,11 @@ type ManagedDatabaseMysqlObservation struct {
 	// Name of the service. The name is used as a prefix for the logical hostname. Must be unique within an account
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (Block Set, Max: 8) Private networks attached to the managed database (see below for nested schema)
+	// (Block Set) Private networks attached to the managed database (see below for nested schema)
 	// Private networks attached to the managed database
 	Network []NetworkObservation `json:"network,omitempty" tf:"network,omitempty"`
 
-	// (List of Object) Information about nodes providing the managed service (see below for nested schema)
-	// Information about nodes providing the managed service
+	// (Attributes List) Information about nodes providing the managed service (see below for nested schema)
 	NodeStates []NodeStatesObservation `json:"nodeStates,omitempty" tf:"node_states,omitempty"`
 
 	// (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans mysql.
@@ -149,8 +145,8 @@ type ManagedDatabaseMysqlObservation struct {
 	// Primary database name
 	PrimaryDatabase *string `json:"primaryDatabase,omitempty" tf:"primary_database,omitempty"`
 
-	// (Block List, Max: 1) Database Engine properties for MySQL (see below for nested schema)
-	// Database Engine properties for MySQL
+	// (Block List) Database engine properties. (see below for nested schema)
+	// Database engine properties.
 	Properties []PropertiesObservation `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (String) Hostname to the service instance
@@ -165,20 +161,20 @@ type ManagedDatabaseMysqlObservation struct {
 	// Primary username to the service instance
 	ServiceUsername *string `json:"serviceUsername,omitempty" tf:"service_username,omitempty"`
 
-	// (String) State of the service
-	// State of the service
+	// (String) The current state of the service
+	// The current state of the service
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 
 	// (Boolean) If set to true, prevents the managed service from being powered off, or deleted.
 	// If set to true, prevents the managed service from being powered off, or deleted.
 	TerminationProtection *bool `json:"terminationProtection,omitempty" tf:"termination_protection,omitempty"`
 
-	// (String) Title of a managed database instance
-	// Title of a managed database instance
+	// (String) Title of the managed database instance
+	// Title of the managed database instance
 	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 
-	// (String) Type of the service
-	// Type of the service
+	// (String) Type of the managed database instance
+	// Type of the managed database instance
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// fra1. You can list available zones with upctl zone list.
@@ -191,10 +187,10 @@ type ManagedDatabaseMysqlParameters struct {
 	// (Number) Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
 	// Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
 	// +kubebuilder:validation:Optional
-	AdditionalDiskSpaceGib *int64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
+	AdditionalDiskSpaceGib *float64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
 
-	// value pairs to classify the managed database.
-	// User defined key-value pairs to classify the managed database.
+	// value pairs to classify the database.
+	// User defined key-value pairs to classify the database.
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
@@ -212,30 +208,29 @@ type ManagedDatabaseMysqlParameters struct {
 	// (String) Name of the service. The name is used as a prefix for the logical hostname. Must be unique within an account
 	// Name of the service. The name is used as a prefix for the logical hostname. Must be unique within an account
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name" tf:"name,omitempty"`
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (Block Set, Max: 8) Private networks attached to the managed database (see below for nested schema)
+	// (Block Set) Private networks attached to the managed database (see below for nested schema)
 	// Private networks attached to the managed database
 	// +kubebuilder:validation:Optional
 	Network []NetworkParameters `json:"network,omitempty" tf:"network,omitempty"`
 
-	// (List of Object) Information about nodes providing the managed service (see below for nested schema)
-	// Information about nodes providing the managed service
+	// (Attributes List) Information about nodes providing the managed service (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	NodeStates []NodeStatesParameters `json:"nodeStates,omitempty" tf:"node_states,omitempty"`
 
 	// (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans mysql.
 	// Service plan to use. This determines how much resources the instance will have. You can list available plans with `upctl database plans mysql`.
 	// +kubebuilder:validation:Optional
-	Plan *string `json:"plan" tf:"plan,omitempty"`
+	Plan *string `json:"plan,omitempty" tf:"plan,omitempty"`
 
 	// (Boolean) The administrative power state of the service
 	// The administrative power state of the service
 	// +kubebuilder:validation:Optional
 	Powered *bool `json:"powered,omitempty" tf:"powered,omitempty"`
 
-	// (Block List, Max: 1) Database Engine properties for MySQL (see below for nested schema)
-	// Database Engine properties for MySQL
+	// (Block List) Database engine properties. (see below for nested schema)
+	// Database engine properties.
 	// +kubebuilder:validation:Optional
 	Properties []PropertiesParameters `json:"properties,omitempty" tf:"properties,omitempty"`
 
@@ -244,15 +239,15 @@ type ManagedDatabaseMysqlParameters struct {
 	// +kubebuilder:validation:Optional
 	TerminationProtection *bool `json:"terminationProtection,omitempty" tf:"termination_protection,omitempty"`
 
-	// (String) Title of a managed database instance
-	// Title of a managed database instance
+	// (String) Title of the managed database instance
+	// Title of the managed database instance
 	// +kubebuilder:validation:Optional
-	Title *string `json:"title" tf:"title,omitempty"`
+	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 
 	// fra1. You can list available zones with upctl zone list.
 	// Zone where the instance resides, e.g. `de-fra1`. You can list available zones with `upctl zone list`.
 	// +kubebuilder:validation:Optional
-	Zone *string `json:"zone" tf:"zone,omitempty"`
+	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
 }
 
 type MigrationInitParameters struct {
@@ -260,6 +255,10 @@ type MigrationInitParameters struct {
 	// (String) Database name for bootstrapping the initial connection.
 	// Database name for bootstrapping the initial connection.
 	Dbname *string `json:"dbname,omitempty" tf:"dbname,omitempty"`
+
+	// (String) MySQL migration dump tool. Experimental! Tool to use for database dump and restore during migration. Default: mysqldump.
+	// MySQL migration dump tool. Experimental! Tool to use for database dump and restore during migration. Default: mysqldump.
+	DumpTool *string `json:"dumpTool,omitempty" tf:"dump_tool,omitempty"`
 
 	// (String) Hostname or IP address of the server where to migrate data from.
 	// Hostname or IP address of the server where to migrate data from.
@@ -279,11 +278,15 @@ type MigrationInitParameters struct {
 
 	// (String, Sensitive) Password for authentication with the server where to migrate data from.
 	// Password for authentication with the server where to migrate data from.
-	PasswordSecretRef *v1.LocalSecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+	PasswordSecretRef *v2.LocalSecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// (Number) Port number of the server where to migrate data from.
 	// Port number of the server where to migrate data from.
-	Port *int64 `json:"port,omitempty" tf:"port,omitempty"`
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+
+	// restore part and start replication.
+	// Skip dump-restore part and start replication.
+	ReestablishReplication *bool `json:"reestablishReplication,omitempty" tf:"reestablish_replication,omitempty"`
 
 	// (Boolean) The server where to migrate data from is secured with SSL.
 	// The server where to migrate data from is secured with SSL.
@@ -299,6 +302,10 @@ type MigrationObservation struct {
 	// (String) Database name for bootstrapping the initial connection.
 	// Database name for bootstrapping the initial connection.
 	Dbname *string `json:"dbname,omitempty" tf:"dbname,omitempty"`
+
+	// (String) MySQL migration dump tool. Experimental! Tool to use for database dump and restore during migration. Default: mysqldump.
+	// MySQL migration dump tool. Experimental! Tool to use for database dump and restore during migration. Default: mysqldump.
+	DumpTool *string `json:"dumpTool,omitempty" tf:"dump_tool,omitempty"`
 
 	// (String) Hostname or IP address of the server where to migrate data from.
 	// Hostname or IP address of the server where to migrate data from.
@@ -318,7 +325,11 @@ type MigrationObservation struct {
 
 	// (Number) Port number of the server where to migrate data from.
 	// Port number of the server where to migrate data from.
-	Port *int64 `json:"port,omitempty" tf:"port,omitempty"`
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+
+	// restore part and start replication.
+	// Skip dump-restore part and start replication.
+	ReestablishReplication *bool `json:"reestablishReplication,omitempty" tf:"reestablish_replication,omitempty"`
 
 	// (Boolean) The server where to migrate data from is secured with SSL.
 	// The server where to migrate data from is secured with SSL.
@@ -336,6 +347,11 @@ type MigrationParameters struct {
 	// +kubebuilder:validation:Optional
 	Dbname *string `json:"dbname,omitempty" tf:"dbname,omitempty"`
 
+	// (String) MySQL migration dump tool. Experimental! Tool to use for database dump and restore during migration. Default: mysqldump.
+	// MySQL migration dump tool. Experimental! Tool to use for database dump and restore during migration. Default: mysqldump.
+	// +kubebuilder:validation:Optional
+	DumpTool *string `json:"dumpTool,omitempty" tf:"dump_tool,omitempty"`
+
 	// (String) Hostname or IP address of the server where to migrate data from.
 	// Hostname or IP address of the server where to migrate data from.
 	// +kubebuilder:validation:Optional
@@ -359,12 +375,17 @@ type MigrationParameters struct {
 	// (String, Sensitive) Password for authentication with the server where to migrate data from.
 	// Password for authentication with the server where to migrate data from.
 	// +kubebuilder:validation:Optional
-	PasswordSecretRef *v1.LocalSecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+	PasswordSecretRef *v2.LocalSecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// (Number) Port number of the server where to migrate data from.
 	// Port number of the server where to migrate data from.
 	// +kubebuilder:validation:Optional
-	Port *int64 `json:"port,omitempty" tf:"port,omitempty"`
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+
+	// restore part and start replication.
+	// Skip dump-restore part and start replication.
+	// +kubebuilder:validation:Optional
+	ReestablishReplication *bool `json:"reestablishReplication,omitempty" tf:"reestablish_replication,omitempty"`
 
 	// (Boolean) The server where to migrate data from is secured with SSL.
 	// The server where to migrate data from is secured with SSL.
@@ -422,7 +443,7 @@ type NetworkInitParameters struct {
 	// The name of the network. Must be unique within the service.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (String) Type of the service
+	// (String) Type of the managed database instance
 	// The type of the network. Must be private.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
@@ -433,11 +454,11 @@ type NetworkInitParameters struct {
 
 	// Reference to a Network in network to populate uuid.
 	// +kubebuilder:validation:Optional
-	UUIDRef *v1.NamespacedReference `json:"uuidRef,omitempty" tf:"-"`
+	UUIDRef *v2.NamespacedReference `json:"uuidRef,omitempty" tf:"-"`
 
 	// Selector for a Network in network to populate uuid.
 	// +kubebuilder:validation:Optional
-	UUIDSelector *v1.NamespacedSelector `json:"uuidSelector,omitempty" tf:"-"`
+	UUIDSelector *v2.NamespacedSelector `json:"uuidSelector,omitempty" tf:"-"`
 }
 
 type NetworkObservation struct {
@@ -450,7 +471,7 @@ type NetworkObservation struct {
 	// The name of the network. Must be unique within the service.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (String) Type of the service
+	// (String) Type of the managed database instance
 	// The type of the network. Must be private.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
@@ -471,7 +492,7 @@ type NetworkParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
-	// (String) Type of the service
+	// (String) Type of the managed database instance
 	// The type of the network. Must be private.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
@@ -480,22 +501,18 @@ type NetworkParameters struct {
 	// Private network UUID. Must reside in the same zone as the database.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/network/v1alpha1.Network
 	// +kubebuilder:validation:Optional
-	UUID *string `json:"uuid" tf:"uuid,omitempty"`
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 
 	// Reference to a Network in network to populate uuid.
 	// +kubebuilder:validation:Optional
-	UUIDRef *v1.NamespacedReference `json:"uuidRef,omitempty" tf:"-"`
+	UUIDRef *v2.NamespacedReference `json:"uuidRef,omitempty" tf:"-"`
 
 	// Selector for a Network in network to populate uuid.
 	// +kubebuilder:validation:Optional
-	UUIDSelector *v1.NamespacedSelector `json:"uuidSelector,omitempty" tf:"-"`
+	UUIDSelector *v2.NamespacedSelector `json:"uuidSelector,omitempty" tf:"-"`
 }
 
 type NodeStatesInitParameters struct {
-
-	// (String)
-	// Role of the node
-	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 }
 
 type NodeStatesObservation struct {
@@ -504,32 +521,31 @@ type NodeStatesObservation struct {
 	// Name plus a node iteration
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (String)
+	// (String) Role of the node
 	// Role of the node
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
-	// (String) State of the service
-	// State of the node
+	// (String) The current state of the service
+	// Current state of the node
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 }
 
 type NodeStatesParameters struct {
-
-	// (String)
-	// Role of the node
-	// +kubebuilder:validation:Optional
-	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 }
 
 type PropertiesInitParameters struct {
 
 	// (String, Sensitive) Custom password for admin user. Defaults to random string. This must be set only when a new service is being created.
 	// Custom password for admin user. Defaults to random string. This must be set only when a new service is being created.
-	AdminPasswordSecretRef *v1.LocalSecretKeySelector `json:"adminPasswordSecretRef,omitempty" tf:"-"`
+	AdminPasswordSecretRef *v2.LocalSecretKeySelector `json:"adminPasswordSecretRef,omitempty" tf:"-"`
 
 	// (String) Custom username for admin user. This must be set only when a new service is being created.
 	// Custom username for admin user. This must be set only when a new service is being created.
 	AdminUsername *string `json:"adminUsername,omitempty" tf:"admin_username,omitempty"`
+
+	// (Boolean) When enabled, the server automatically grants the EXECUTE and ALTER ROUTINE privileges to the creator of a stored routine and drops them when the routine is dropped.
+	// When enabled, the server automatically grants the EXECUTE and ALTER ROUTINE privileges to the creator of a stored routine and drops them when the routine is dropped.
+	AutomaticSpPrivileges *bool `json:"automaticSpPrivileges,omitempty" tf:"automatic_sp_privileges,omitempty"`
 
 	// (Boolean) Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
 	// Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
@@ -537,27 +553,39 @@ type PropertiesInitParameters struct {
 
 	// (Number) The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
-	BackupHour *int64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
+	BackupHour *float64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
 
 	// (Number) The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
-	BackupMinute *int64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
+	BackupMinute *float64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
 
-	// (Number) The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector.
-	// The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector.
-	BinlogRetentionPeriod *int64 `json:"binlogRetentionPeriod,omitempty" tf:"binlog_retention_period,omitempty"`
+	// traffic window rather than dropping it drastically in one step.
+	// The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector. Warning: reducing this value can make a large batch of binary logs eligible for purge at once. Depending on the volume, this can sometimes stall the MySQL commit path and block writes until the purge completes. To stay on the safe side, prefer lowering the value gradually in small decrements during a low-traffic window rather than dropping it drastically in one step.
+	BinlogRetentionPeriod *float64 `json:"binlogRetentionPeriod,omitempty" tf:"binlog_retention_period,omitempty"`
 
 	// (Number) The number of seconds that the mysqld server waits for a connect packet before responding with Bad handshake.
 	// The number of seconds that the mysqld server waits for a connect packet before responding with Bad handshake.
-	ConnectTimeout *int64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
+	ConnectTimeout *float64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
 
 	// 12:00 to +12:00), a time zone name, or 'SYSTEM' to use the MySQL server default.
 	// Default server time zone as an offset from UTC (from -12:00 to +12:00), a time zone name, or 'SYSTEM' to use the MySQL server default.
 	DefaultTimeZone *string `json:"defaultTimeZone,omitempty" tf:"default_time_zone,omitempty"`
 
+	// (Number) Number of digits by which to increase the scale of the result of division operations performed with the / operator. Default is 4.
+	// Number of digits by which to increase the scale of the result of division operations performed with the / operator. Default is 4.
+	DivPrecisionIncrement *float64 `json:"divPrecisionIncrement,omitempty" tf:"div_precision_increment,omitempty"`
+
+	// (Boolean) Whether optimizer JSON output such as EXPLAIN FORMAT=JSON adds end markers that repeat a structure's key near its closing bracket, making large JSON structures easier to read.
+	// Whether optimizer JSON output such as EXPLAIN FORMAT=JSON adds end markers that repeat a structure's key near its closing bracket, making large JSON structures easier to read.
+	EndMarkersInJSON *bool `json:"endMarkersInJson,omitempty" tf:"end_markers_in_json,omitempty"`
+
+	// (Number) The number of equality ranges in a query at or above which the optimizer switches from index dives to index statistics when estimating the number of qualifying rows. 0 means always use index dives. Default is 200.
+	// The number of equality ranges in a query at or above which the optimizer switches from index dives to index statistics when estimating the number of qualifying rows. 0 means always use index dives. Default is 200.
+	EqRangeIndexDiveLimit *float64 `json:"eqRangeIndexDiveLimit,omitempty" tf:"eq_range_index_dive_limit,omitempty"`
+
 	// (Number) The maximum permitted result length in bytes for the GROUP_CONCAT() function.
 	// The maximum permitted result length in bytes for the GROUP_CONCAT() function.
-	GroupConcatMaxLen *int64 `json:"groupConcatMaxLen,omitempty" tf:"group_concat_max_len,omitempty"`
+	GroupConcatMaxLen *float64 `json:"groupConcatMaxLen,omitempty" tf:"group_concat_max_len,omitempty"`
 
 	// (List of String) IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
 	// IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
@@ -565,35 +593,71 @@ type PropertiesInitParameters struct {
 
 	// (Number) The time, in seconds, before cached statistics expire.
 	// The time, in seconds, before cached statistics expire.
-	InformationSchemaStatsExpiry *int64 `json:"informationSchemaStatsExpiry,omitempty" tf:"information_schema_stats_expiry,omitempty"`
+	InformationSchemaStatsExpiry *float64 `json:"informationSchemaStatsExpiry,omitempty" tf:"information_schema_stats_expiry,omitempty"`
+
+	// dependent: it speeds up lookups for some workloads but its internal latch can become a contention point under high concurrency, in which case disabling it can improve throughput.
+	// Whether InnoDB adaptive hash indexing is enabled. The optimal setting is workload-dependent: it speeds up lookups for some workloads but its internal latch can become a contention point under high concurrency, in which case disabling it can improve throughput.
+	InnodbAdaptiveHashIndex *bool `json:"innodbAdaptiveHashIndex,omitempty" tf:"innodb_adaptive_hash_index,omitempty"`
 
 	// (Number) Maximum size for the InnoDB change buffer, as a percentage of the total size of the buffer pool. Default is 25.
 	// Maximum size for the InnoDB change buffer, as a percentage of the total size of the buffer pool. Default is 25.
-	InnodbChangeBufferMaxSize *int64 `json:"innodbChangeBufferMaxSize,omitempty" tf:"innodb_change_buffer_max_size,omitempty"`
+	InnodbChangeBufferMaxSize *float64 `json:"innodbChangeBufferMaxSize,omitempty" tf:"innodb_change_buffer_max_size,omitempty"`
 
 	// dirty pages in the same extent are not flushed, 1 - flush contiguous dirty pages in the same extent, 2 - flush dirty pages in the same extent.
 	// Specifies whether flushing a page from the InnoDB buffer pool also flushes other dirty pages in the same extent (default is 1): 0 - dirty pages in the same extent are not flushed, 1 - flush contiguous dirty pages in the same extent, 2 - flush dirty pages in the same extent.
-	InnodbFlushNeighbors *int64 `json:"innodbFlushNeighbors,omitempty" tf:"innodb_flush_neighbors,omitempty"`
+	InnodbFlushNeighbors *float64 `json:"innodbFlushNeighbors,omitempty" tf:"innodb_flush_neighbors,omitempty"`
+
+	// (Boolean) Whether stopword processing is applied when creating or rebuilding an InnoDB FULLTEXT index. Enabled by default.
+	// Whether stopword processing is applied when creating or rebuilding an InnoDB FULLTEXT index. Enabled by default.
+	InnodbFtEnableStopword *bool `json:"innodbFtEnableStopword,omitempty" tf:"innodb_ft_enable_stopword,omitempty"`
+
+	// (Number) Maximum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
+	// Maximum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
+	InnodbFtMaxTokenSize *float64 `json:"innodbFtMaxTokenSize,omitempty" tf:"innodb_ft_max_token_size,omitempty"`
 
 	// (Number) Minimum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
 	// Minimum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
-	InnodbFtMinTokenSize *int64 `json:"innodbFtMinTokenSize,omitempty" tf:"innodb_ft_min_token_size,omitempty"`
+	InnodbFtMinTokenSize *float64 `json:"innodbFtMinTokenSize,omitempty" tf:"innodb_ft_min_token_size,omitempty"`
+
+	// (Number) Number of words processed during each OPTIMIZE TABLE operation on an InnoDB FULLTEXT index. Default is 2000.
+	// Number of words processed during each OPTIMIZE TABLE operation on an InnoDB FULLTEXT index. Default is 2000.
+	InnodbFtNumWordOptimize *float64 `json:"innodbFtNumWordOptimize,omitempty" tf:"innodb_ft_num_word_optimize,omitempty"`
+
+	// (Number) Maximum memory in bytes used per query for the InnoDB FULLTEXT search query result cache. Aiven sizes this automatically based on the service plan's memory; setting a value overrides the calculated default.
+	// Maximum memory in bytes used per query for the InnoDB FULLTEXT search query result cache. Aiven sizes this automatically based on the service plan's memory; setting a value overrides the calculated default.
+	InnodbFtResultCacheLimit *float64 `json:"innodbFtResultCacheLimit,omitempty" tf:"innodb_ft_result_cache_limit,omitempty"`
 
 	// (String) This option is used to specify your own InnoDB FULLTEXT index stopword list for all InnoDB tables.
 	// This option is used to specify your own InnoDB FULLTEXT index stopword list for all InnoDB tables.
 	InnodbFtServerStopwordTable *string `json:"innodbFtServerStopwordTable,omitempty" tf:"innodb_ft_server_stopword_table,omitempty"`
 
+	// (String) This option is used to specify your own InnoDB FULLTEXT index stopword list for specific InnoDB tables.
+	// This option is used to specify your own InnoDB FULLTEXT index stopword list for specific InnoDB tables.
+	InnodbFtUserStopwordTable *string `json:"innodbFtUserStopwordTable,omitempty" tf:"innodb_ft_user_stopword_table,omitempty"`
+
+	// (Number) The number of I/O operations per second (IOPS) available to InnoDB background tasks, such as flushing pages from the buffer pool and merging data from the change buffer. Set this to a value appropriate for the underlying storage; it must not exceed innodb_io_capacity_max.
+	// The number of I/O operations per second (IOPS) available to InnoDB background tasks, such as flushing pages from the buffer pool and merging data from the change buffer. Set this to a value appropriate for the underlying storage; it must not exceed innodb_io_capacity_max.
+	InnodbIoCapacity *float64 `json:"innodbIoCapacity,omitempty" tf:"innodb_io_capacity,omitempty"`
+
+	// (Number) The maximum number of I/O operations per second (IOPS) that InnoDB background tasks may perform when flushing falls behind. Defaults to twice innodb_io_capacity (minimum 2000). This must be greater than or equal to innodb_io_capacity.
+	// The maximum number of I/O operations per second (IOPS) that InnoDB background tasks may perform when flushing falls behind. Defaults to twice innodb_io_capacity (minimum 2000). This must be greater than or equal to innodb_io_capacity.
+	InnodbIoCapacityMax *float64 `json:"innodbIoCapacityMax,omitempty" tf:"innodb_io_capacity_max,omitempty"`
+
 	// (Number) The length of time in seconds an InnoDB transaction waits for a row lock before giving up. Default is 120.
 	// The length of time in seconds an InnoDB transaction waits for a row lock before giving up. Default is 120.
-	InnodbLockWaitTimeout *int64 `json:"innodbLockWaitTimeout,omitempty" tf:"innodb_lock_wait_timeout,omitempty"`
+	InnodbLockWaitTimeout *float64 `json:"innodbLockWaitTimeout,omitempty" tf:"innodb_lock_wait_timeout,omitempty"`
 
 	// (Number) The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
 	// The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
-	InnodbLogBufferSize *int64 `json:"innodbLogBufferSize,omitempty" tf:"innodb_log_buffer_size,omitempty"`
+	InnodbLogBufferSize *float64 `json:"innodbLogBufferSize,omitempty" tf:"innodb_log_buffer_size,omitempty"`
 
 	// (Number) The upper limit in bytes on the size of the temporary log files used during online DDL operations for InnoDB tables.
 	// The upper limit in bytes on the size of the temporary log files used during online DDL operations for InnoDB tables.
-	InnodbOnlineAlterLogMaxSize *int64 `json:"innodbOnlineAlterLogMaxSize,omitempty" tf:"innodb_online_alter_log_max_size,omitempty"`
+	InnodbOnlineAlterLogMaxSize *float64 `json:"innodbOnlineAlterLogMaxSize,omitempty" tf:"innodb_online_alter_log_max_size,omitempty"`
+
+	// (Boolean) When enabled, OPTIMIZE TABLE on InnoDB tables only updates the FULLTEXT index instead of rebuilding the table. Intended to be enabled temporarily during FULLTEXT index maintenance and disabled afterwards; while enabled, OPTIMIZE TABLE does not reclaim table space.
+	// When enabled, OPTIMIZE TABLE on InnoDB tables only updates the FULLTEXT index instead of rebuilding the table. Intended to be enabled temporarily during FULLTEXT index maintenance and disabled afterwards; while enabled, OPTIMIZE TABLE does not reclaim table space.
+	InnodbOptimizeFulltextOnly *bool `json:"innodbOptimizeFulltextOnly,omitempty" tf:"innodb_optimize_fulltext_only,omitempty"`
 
 	// (Boolean) When enabled, information about all deadlocks in InnoDB user transactions is recorded in the error log. Disabled by default.
 	// When enabled, information about all deadlocks in InnoDB user transactions is recorded in the error log. Disabled by default.
@@ -601,7 +665,7 @@ type PropertiesInitParameters struct {
 
 	// (Number) The number of I/O threads for read operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
 	// The number of I/O threads for read operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
-	InnodbReadIoThreads *int64 `json:"innodbReadIoThreads,omitempty" tf:"innodb_read_io_threads,omitempty"`
+	InnodbReadIoThreads *float64 `json:"innodbReadIoThreads,omitempty" tf:"innodb_read_io_threads,omitempty"`
 
 	// (Boolean) When enabled a transaction timeout causes InnoDB to abort and roll back the entire transaction. Changing this parameter will lead to a restart of the MySQL service.
 	// When enabled a transaction timeout causes InnoDB to abort and roll back the entire transaction. Changing this parameter will lead to a restart of the MySQL service.
@@ -609,15 +673,15 @@ type PropertiesInitParameters struct {
 
 	// no limit).
 	// Defines the maximum number of threads permitted inside of InnoDB. Default is 0 (infinite concurrency - no limit).
-	InnodbThreadConcurrency *int64 `json:"innodbThreadConcurrency,omitempty" tf:"innodb_thread_concurrency,omitempty"`
+	InnodbThreadConcurrency *float64 `json:"innodbThreadConcurrency,omitempty" tf:"innodb_thread_concurrency,omitempty"`
 
 	// (Number) The number of I/O threads for write operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
 	// The number of I/O threads for write operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
-	InnodbWriteIoThreads *int64 `json:"innodbWriteIoThreads,omitempty" tf:"innodb_write_io_threads,omitempty"`
+	InnodbWriteIoThreads *float64 `json:"innodbWriteIoThreads,omitempty" tf:"innodb_write_io_threads,omitempty"`
 
 	// (Number) The number of seconds the server waits for activity on an interactive connection before closing it.
 	// The number of seconds the server waits for activity on an interactive connection before closing it.
-	InteractiveTimeout *int64 `json:"interactiveTimeout,omitempty" tf:"interactive_timeout,omitempty"`
+	InteractiveTimeout *float64 `json:"interactiveTimeout,omitempty" tf:"interactive_timeout,omitempty"`
 
 	// memory internal temporary tables.
 	// The storage engine for in-memory internal temporary tables.
@@ -631,37 +695,81 @@ type PropertiesInitParameters struct {
 	// The slow_query_logs work as SQL statements that take more than long_query_time seconds to execute.
 	LongQueryTime *float64 `json:"longQueryTime,omitempty" tf:"long_query_time,omitempty"`
 
+	// sensitive (default), 1 = names stored lowercase, comparisons are case-insensitive. This option can only be set when creating the service and cannot be changed later. See https://dev.mysql.com/doc/refman/8.0/en/identifier-case-sensitivity.html for details.
+	// Sets how table and database names are stored and compared. 0 = case-sensitive (default), 1 = names stored lowercase, comparisons are case-insensitive. This option can only be set when creating the service and cannot be changed later. See https://dev.mysql.com/doc/refman/8.0/en/identifier-case-sensitivity.html for details.
+	LowerCaseTableNames *float64 `json:"lowerCaseTableNames,omitempty" tf:"lower_case_table_names,omitempty"`
+
 	// (Number) Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
 	// Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
-	MaxAllowedPacket *int64 `json:"maxAllowedPacket,omitempty" tf:"max_allowed_packet,omitempty"`
+	MaxAllowedPacket *float64 `json:"maxAllowedPacket,omitempty" tf:"max_allowed_packet,omitempty"`
+
+	// (Number) The maximum permitted number of simultaneous client connections. Lower this to reserve memory for other work. The value cannot exceed the limit provided by your service plan. Upgrading the plan does not raise a value you have set explicitly, so increase it yourself after an upgrade.
+	// The maximum permitted number of simultaneous client connections. Lower this to reserve memory for other work. The value cannot exceed the limit provided by your service plan. Upgrading the plan does not raise a value you have set explicitly, so increase it yourself after an upgrade.
+	MaxConnections *float64 `json:"maxConnections,omitempty" tf:"max_connections,omitempty"`
+
+	// only top-level SELECT statements. 0 (the default) means no timeout.
+	// Execution timeout in milliseconds for read-only top-level SELECT statements. 0 (the default) means no timeout.
+	MaxExecutionTime *float64 `json:"maxExecutionTime,omitempty" tf:"max_execution_time,omitempty"`
 
 	// memory tables. Also set tmp_table_size. Default is 16777216 (16M).
 	// Limits the size of internal in-memory tables. Also set tmp_table_size. Default is 16777216 (16M).
-	MaxHeapTableSize *int64 `json:"maxHeapTableSize,omitempty" tf:"max_heap_table_size,omitempty"`
+	MaxHeapTableSize *float64 `json:"maxHeapTableSize,omitempty" tf:"max_heap_table_size,omitempty"`
 
-	// (Block List, Max: 1) Migrate data from existing server. (see below for nested schema)
+	// (Number) Limit on the assumed maximum number of index seeks when looking up rows based on a key. Lowering this value causes the optimizer to prefer index lookups over table scans.
+	// Limit on the assumed maximum number of index seeks when looking up rows based on a key. Lowering this value causes the optimizer to prefer index lookups over table scans.
+	MaxSeeksForKey *float64 `json:"maxSeeksForKey,omitempty" tf:"max_seeks_for_key,omitempty"`
+
+	// account limit. Any other value must be at least 10 below max_connections, so that monitoring and your own admin sessions can still connect when an application saturates its own limit. Aiven's replication and management connections are unaffected however low you set this.
+	// The maximum number of simultaneous connections permitted to any single user account. 0, the default, means no per-account limit. Any other value must be at least 10 below max_connections, so that monitoring and your own admin sessions can still connect when an application saturates its own limit. Aiven's replication and management connections are unaffected however low you set this.
+	MaxUserConnections *float64 `json:"maxUserConnections,omitempty" tf:"max_user_connections,omitempty"`
+
+	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
 	Migration []MigrationInitParameters `json:"migration,omitempty" tf:"migration,omitempty"`
 
-	// (Block List, Max: 1) MySQL incremental backup configuration. (see below for nested schema)
+	// (Block List) MySQL incremental backup configuration. (see below for nested schema)
 	// MySQL incremental backup configuration.
 	MySQLIncrementalBackup []MySQLIncrementalBackupInitParameters `json:"mysqlIncrementalBackup,omitempty" tf:"mysql_incremental_backup,omitempty"`
 
 	// (Number) Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
 	// Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
-	NetBufferLength *int64 `json:"netBufferLength,omitempty" tf:"net_buffer_length,omitempty"`
+	NetBufferLength *float64 `json:"netBufferLength,omitempty" tf:"net_buffer_length,omitempty"`
 
 	// (Number) The number of seconds to wait for more data from a connection before aborting the read.
 	// The number of seconds to wait for more data from a connection before aborting the read.
-	NetReadTimeout *int64 `json:"netReadTimeout,omitempty" tf:"net_read_timeout,omitempty"`
+	NetReadTimeout *float64 `json:"netReadTimeout,omitempty" tf:"net_read_timeout,omitempty"`
 
 	// (Number) The number of seconds to wait for a block to be written to a connection before aborting the write.
 	// The number of seconds to wait for a block to be written to a connection before aborting the write.
-	NetWriteTimeout *int64 `json:"netWriteTimeout,omitempty" tf:"net_write_timeout,omitempty"`
+	NetWriteTimeout *float64 `json:"netWriteTimeout,omitempty" tf:"net_write_timeout,omitempty"`
+
+	// promising partial plans from the optimizer search space. 0 disables heuristics (exhaustive search); 1 prunes plans based on the number of rows retrieved.
+	// Controls the heuristics applied during query optimization to prune less-promising partial plans from the optimizer search space. 0 disables heuristics (exhaustive search); 1 prunes plans based on the number of rows retrieved.
+	OptimizerPruneLevel *float64 `json:"optimizerPruneLevel,omitempty" tf:"optimizer_prune_level,omitempty"`
+
+	// (Number) Maximum depth of search performed by the query optimizer when choosing a join order. Larger values produce better plans for joins over many tables but take longer to compile; 0 lets the optimizer choose the depth automatically.
+	// Maximum depth of search performed by the query optimizer when choosing a join order. Larger values produce better plans for joins over many tables but take longer to compile; 0 lets the optimizer choose the depth automatically.
+	OptimizerSearchDepth *float64 `json:"optimizerSearchDepth,omitempty" tf:"optimizer_search_depth,omitempty"`
+
+	// separated list of optimizer flag assignments in the form flag=on|off|default, or the single value 'default' to reset all flags. Flags not listed keep their current values. Controls query optimizer behaviors such as index merge, hash join and semijoin strategies.
+	// Comma-separated list of optimizer flag assignments in the form flag=on|off|default, or the single value 'default' to reset all flags. Flags not listed keep their current values. Controls query optimizer behaviors such as index merge, hash join and semijoin strategies.
+	OptimizerSwitch *string `json:"optimizerSwitch,omitempty" tf:"optimizer_switch,omitempty"`
+
+	// (Number) The number of rows per thread in the events_statements_history table. Changing this parameter will lead to a restart of the MySQL service.
+	// The number of rows per thread in the events_statements_history table. Changing this parameter will lead to a restart of the MySQL service.
+	PerformanceSchemaEventsStatementsHistorySize *float64 `json:"performanceSchemaEventsStatementsHistorySize,omitempty" tf:"performance_schema_events_statements_history_size,omitempty"`
 
 	// (Boolean) Public Access. Allow access to the service from the public Internet.
 	// Public Access. Allow access to the service from the public Internet.
 	PublicAccess *bool `json:"publicAccess,omitempty" tf:"public_access,omitempty"`
+
+	// (Boolean) Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	// Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	PublicAccessPrometheus *bool `json:"publicAccessPrometheus,omitempty" tf:"public_access_prometheus,omitempty"`
+
+	// log budget; ensure the service disk is sized accordingly. The setting applies only on the node replicating from the external source; standby nodes always use the Aiven-managed default (the smaller of 5 GiB and 30% of the service disk), which is also used when this option is left unset. Changing this parameter will lead to a restart of the MySQL service.
+	// The maximum amount of space in bytes to use for all relay logs while replicating from an external migration source. When the limit is reached, the replication I/O thread stops fetching relay log events until the SQL thread has caught up. Raise this to give a large migration a bigger relay-log budget; ensure the service disk is sized accordingly. The setting applies only on the node replicating from the external source; standby nodes always use the Aiven-managed default (the smaller of 5 GiB and 30% of the service disk), which is also used when this option is left unset. Changing this parameter will lead to a restart of the MySQL service.
+	RelayLogSpaceLimit *float64 `json:"relayLogSpaceLimit,omitempty" tf:"relay_log_space_limit,omitempty"`
 
 	// (String) Global SQL mode. Set to empty to use MySQL server defaults. When creating a new service and not setting this field Aiven default SQL mode (strict, SQL standard compliant) will be assigned.
 	// Global SQL mode. Set to empty to use MySQL server defaults. When creating a new service and not setting this field Aiven default SQL mode (strict, SQL standard compliant) will be assigned.
@@ -681,11 +789,11 @@ type PropertiesInitParameters struct {
 
 	// (Number) Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
 	// Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
-	SortBufferSize *int64 `json:"sortBufferSize,omitempty" tf:"sort_buffer_size,omitempty"`
+	SortBufferSize *float64 `json:"sortBufferSize,omitempty" tf:"sort_buffer_size,omitempty"`
 
 	// memory tables. Also set max_heap_table_size. Default is 16777216 (16M).
 	// Limits the size of internal in-memory tables. Also set max_heap_table_size. Default is 16777216 (16M).
-	TmpTableSize *int64 `json:"tmpTableSize,omitempty" tf:"tmp_table_size,omitempty"`
+	TmpTableSize *float64 `json:"tmpTableSize,omitempty" tf:"tmp_table_size,omitempty"`
 
 	// (String) MySQL major version.
 	// MySQL major version.
@@ -693,7 +801,11 @@ type PropertiesInitParameters struct {
 
 	// (Number) The number of seconds the server waits for activity on a noninteractive connection before closing it.
 	// The number of seconds the server waits for activity on a noninteractive connection before closing it.
-	WaitTimeout *int64 `json:"waitTimeout,omitempty" tf:"wait_timeout,omitempty"`
+	WaitTimeout *float64 `json:"waitTimeout,omitempty" tf:"wait_timeout,omitempty"`
+
+	// (Boolean) Whether window functions are computed to high precision. Disabling this trades exactness for speed in window function evaluation.
+	// Whether window functions are computed to high precision. Disabling this trades exactness for speed in window function evaluation.
+	WindowingUseHighPrecision *bool `json:"windowingUseHighPrecision,omitempty" tf:"windowing_use_high_precision,omitempty"`
 }
 
 type PropertiesObservation struct {
@@ -702,33 +814,49 @@ type PropertiesObservation struct {
 	// Custom username for admin user. This must be set only when a new service is being created.
 	AdminUsername *string `json:"adminUsername,omitempty" tf:"admin_username,omitempty"`
 
+	// (Boolean) When enabled, the server automatically grants the EXECUTE and ALTER ROUTINE privileges to the creator of a stored routine and drops them when the routine is dropped.
+	// When enabled, the server automatically grants the EXECUTE and ALTER ROUTINE privileges to the creator of a stored routine and drops them when the routine is dropped.
+	AutomaticSpPrivileges *bool `json:"automaticSpPrivileges,omitempty" tf:"automatic_sp_privileges,omitempty"`
+
 	// (Boolean) Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
 	// Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
 	AutomaticUtilityNetworkIPFilter *bool `json:"automaticUtilityNetworkIpFilter,omitempty" tf:"automatic_utility_network_ip_filter,omitempty"`
 
 	// (Number) The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
-	BackupHour *int64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
+	BackupHour *float64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
 
 	// (Number) The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
-	BackupMinute *int64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
+	BackupMinute *float64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
 
-	// (Number) The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector.
-	// The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector.
-	BinlogRetentionPeriod *int64 `json:"binlogRetentionPeriod,omitempty" tf:"binlog_retention_period,omitempty"`
+	// traffic window rather than dropping it drastically in one step.
+	// The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector. Warning: reducing this value can make a large batch of binary logs eligible for purge at once. Depending on the volume, this can sometimes stall the MySQL commit path and block writes until the purge completes. To stay on the safe side, prefer lowering the value gradually in small decrements during a low-traffic window rather than dropping it drastically in one step.
+	BinlogRetentionPeriod *float64 `json:"binlogRetentionPeriod,omitempty" tf:"binlog_retention_period,omitempty"`
 
 	// (Number) The number of seconds that the mysqld server waits for a connect packet before responding with Bad handshake.
 	// The number of seconds that the mysqld server waits for a connect packet before responding with Bad handshake.
-	ConnectTimeout *int64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
+	ConnectTimeout *float64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
 
 	// 12:00 to +12:00), a time zone name, or 'SYSTEM' to use the MySQL server default.
 	// Default server time zone as an offset from UTC (from -12:00 to +12:00), a time zone name, or 'SYSTEM' to use the MySQL server default.
 	DefaultTimeZone *string `json:"defaultTimeZone,omitempty" tf:"default_time_zone,omitempty"`
 
+	// (Number) Number of digits by which to increase the scale of the result of division operations performed with the / operator. Default is 4.
+	// Number of digits by which to increase the scale of the result of division operations performed with the / operator. Default is 4.
+	DivPrecisionIncrement *float64 `json:"divPrecisionIncrement,omitempty" tf:"div_precision_increment,omitempty"`
+
+	// (Boolean) Whether optimizer JSON output such as EXPLAIN FORMAT=JSON adds end markers that repeat a structure's key near its closing bracket, making large JSON structures easier to read.
+	// Whether optimizer JSON output such as EXPLAIN FORMAT=JSON adds end markers that repeat a structure's key near its closing bracket, making large JSON structures easier to read.
+	EndMarkersInJSON *bool `json:"endMarkersInJson,omitempty" tf:"end_markers_in_json,omitempty"`
+
+	// (Number) The number of equality ranges in a query at or above which the optimizer switches from index dives to index statistics when estimating the number of qualifying rows. 0 means always use index dives. Default is 200.
+	// The number of equality ranges in a query at or above which the optimizer switches from index dives to index statistics when estimating the number of qualifying rows. 0 means always use index dives. Default is 200.
+	EqRangeIndexDiveLimit *float64 `json:"eqRangeIndexDiveLimit,omitempty" tf:"eq_range_index_dive_limit,omitempty"`
+
 	// (Number) The maximum permitted result length in bytes for the GROUP_CONCAT() function.
 	// The maximum permitted result length in bytes for the GROUP_CONCAT() function.
-	GroupConcatMaxLen *int64 `json:"groupConcatMaxLen,omitempty" tf:"group_concat_max_len,omitempty"`
+	GroupConcatMaxLen *float64 `json:"groupConcatMaxLen,omitempty" tf:"group_concat_max_len,omitempty"`
 
 	// (List of String) IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
 	// IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
@@ -736,35 +864,71 @@ type PropertiesObservation struct {
 
 	// (Number) The time, in seconds, before cached statistics expire.
 	// The time, in seconds, before cached statistics expire.
-	InformationSchemaStatsExpiry *int64 `json:"informationSchemaStatsExpiry,omitempty" tf:"information_schema_stats_expiry,omitempty"`
+	InformationSchemaStatsExpiry *float64 `json:"informationSchemaStatsExpiry,omitempty" tf:"information_schema_stats_expiry,omitempty"`
+
+	// dependent: it speeds up lookups for some workloads but its internal latch can become a contention point under high concurrency, in which case disabling it can improve throughput.
+	// Whether InnoDB adaptive hash indexing is enabled. The optimal setting is workload-dependent: it speeds up lookups for some workloads but its internal latch can become a contention point under high concurrency, in which case disabling it can improve throughput.
+	InnodbAdaptiveHashIndex *bool `json:"innodbAdaptiveHashIndex,omitempty" tf:"innodb_adaptive_hash_index,omitempty"`
 
 	// (Number) Maximum size for the InnoDB change buffer, as a percentage of the total size of the buffer pool. Default is 25.
 	// Maximum size for the InnoDB change buffer, as a percentage of the total size of the buffer pool. Default is 25.
-	InnodbChangeBufferMaxSize *int64 `json:"innodbChangeBufferMaxSize,omitempty" tf:"innodb_change_buffer_max_size,omitempty"`
+	InnodbChangeBufferMaxSize *float64 `json:"innodbChangeBufferMaxSize,omitempty" tf:"innodb_change_buffer_max_size,omitempty"`
 
 	// dirty pages in the same extent are not flushed, 1 - flush contiguous dirty pages in the same extent, 2 - flush dirty pages in the same extent.
 	// Specifies whether flushing a page from the InnoDB buffer pool also flushes other dirty pages in the same extent (default is 1): 0 - dirty pages in the same extent are not flushed, 1 - flush contiguous dirty pages in the same extent, 2 - flush dirty pages in the same extent.
-	InnodbFlushNeighbors *int64 `json:"innodbFlushNeighbors,omitempty" tf:"innodb_flush_neighbors,omitempty"`
+	InnodbFlushNeighbors *float64 `json:"innodbFlushNeighbors,omitempty" tf:"innodb_flush_neighbors,omitempty"`
+
+	// (Boolean) Whether stopword processing is applied when creating or rebuilding an InnoDB FULLTEXT index. Enabled by default.
+	// Whether stopword processing is applied when creating or rebuilding an InnoDB FULLTEXT index. Enabled by default.
+	InnodbFtEnableStopword *bool `json:"innodbFtEnableStopword,omitempty" tf:"innodb_ft_enable_stopword,omitempty"`
+
+	// (Number) Maximum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
+	// Maximum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
+	InnodbFtMaxTokenSize *float64 `json:"innodbFtMaxTokenSize,omitempty" tf:"innodb_ft_max_token_size,omitempty"`
 
 	// (Number) Minimum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
 	// Minimum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
-	InnodbFtMinTokenSize *int64 `json:"innodbFtMinTokenSize,omitempty" tf:"innodb_ft_min_token_size,omitempty"`
+	InnodbFtMinTokenSize *float64 `json:"innodbFtMinTokenSize,omitempty" tf:"innodb_ft_min_token_size,omitempty"`
+
+	// (Number) Number of words processed during each OPTIMIZE TABLE operation on an InnoDB FULLTEXT index. Default is 2000.
+	// Number of words processed during each OPTIMIZE TABLE operation on an InnoDB FULLTEXT index. Default is 2000.
+	InnodbFtNumWordOptimize *float64 `json:"innodbFtNumWordOptimize,omitempty" tf:"innodb_ft_num_word_optimize,omitempty"`
+
+	// (Number) Maximum memory in bytes used per query for the InnoDB FULLTEXT search query result cache. Aiven sizes this automatically based on the service plan's memory; setting a value overrides the calculated default.
+	// Maximum memory in bytes used per query for the InnoDB FULLTEXT search query result cache. Aiven sizes this automatically based on the service plan's memory; setting a value overrides the calculated default.
+	InnodbFtResultCacheLimit *float64 `json:"innodbFtResultCacheLimit,omitempty" tf:"innodb_ft_result_cache_limit,omitempty"`
 
 	// (String) This option is used to specify your own InnoDB FULLTEXT index stopword list for all InnoDB tables.
 	// This option is used to specify your own InnoDB FULLTEXT index stopword list for all InnoDB tables.
 	InnodbFtServerStopwordTable *string `json:"innodbFtServerStopwordTable,omitempty" tf:"innodb_ft_server_stopword_table,omitempty"`
 
+	// (String) This option is used to specify your own InnoDB FULLTEXT index stopword list for specific InnoDB tables.
+	// This option is used to specify your own InnoDB FULLTEXT index stopword list for specific InnoDB tables.
+	InnodbFtUserStopwordTable *string `json:"innodbFtUserStopwordTable,omitempty" tf:"innodb_ft_user_stopword_table,omitempty"`
+
+	// (Number) The number of I/O operations per second (IOPS) available to InnoDB background tasks, such as flushing pages from the buffer pool and merging data from the change buffer. Set this to a value appropriate for the underlying storage; it must not exceed innodb_io_capacity_max.
+	// The number of I/O operations per second (IOPS) available to InnoDB background tasks, such as flushing pages from the buffer pool and merging data from the change buffer. Set this to a value appropriate for the underlying storage; it must not exceed innodb_io_capacity_max.
+	InnodbIoCapacity *float64 `json:"innodbIoCapacity,omitempty" tf:"innodb_io_capacity,omitempty"`
+
+	// (Number) The maximum number of I/O operations per second (IOPS) that InnoDB background tasks may perform when flushing falls behind. Defaults to twice innodb_io_capacity (minimum 2000). This must be greater than or equal to innodb_io_capacity.
+	// The maximum number of I/O operations per second (IOPS) that InnoDB background tasks may perform when flushing falls behind. Defaults to twice innodb_io_capacity (minimum 2000). This must be greater than or equal to innodb_io_capacity.
+	InnodbIoCapacityMax *float64 `json:"innodbIoCapacityMax,omitempty" tf:"innodb_io_capacity_max,omitempty"`
+
 	// (Number) The length of time in seconds an InnoDB transaction waits for a row lock before giving up. Default is 120.
 	// The length of time in seconds an InnoDB transaction waits for a row lock before giving up. Default is 120.
-	InnodbLockWaitTimeout *int64 `json:"innodbLockWaitTimeout,omitempty" tf:"innodb_lock_wait_timeout,omitempty"`
+	InnodbLockWaitTimeout *float64 `json:"innodbLockWaitTimeout,omitempty" tf:"innodb_lock_wait_timeout,omitempty"`
 
 	// (Number) The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
 	// The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
-	InnodbLogBufferSize *int64 `json:"innodbLogBufferSize,omitempty" tf:"innodb_log_buffer_size,omitempty"`
+	InnodbLogBufferSize *float64 `json:"innodbLogBufferSize,omitempty" tf:"innodb_log_buffer_size,omitempty"`
 
 	// (Number) The upper limit in bytes on the size of the temporary log files used during online DDL operations for InnoDB tables.
 	// The upper limit in bytes on the size of the temporary log files used during online DDL operations for InnoDB tables.
-	InnodbOnlineAlterLogMaxSize *int64 `json:"innodbOnlineAlterLogMaxSize,omitempty" tf:"innodb_online_alter_log_max_size,omitempty"`
+	InnodbOnlineAlterLogMaxSize *float64 `json:"innodbOnlineAlterLogMaxSize,omitempty" tf:"innodb_online_alter_log_max_size,omitempty"`
+
+	// (Boolean) When enabled, OPTIMIZE TABLE on InnoDB tables only updates the FULLTEXT index instead of rebuilding the table. Intended to be enabled temporarily during FULLTEXT index maintenance and disabled afterwards; while enabled, OPTIMIZE TABLE does not reclaim table space.
+	// When enabled, OPTIMIZE TABLE on InnoDB tables only updates the FULLTEXT index instead of rebuilding the table. Intended to be enabled temporarily during FULLTEXT index maintenance and disabled afterwards; while enabled, OPTIMIZE TABLE does not reclaim table space.
+	InnodbOptimizeFulltextOnly *bool `json:"innodbOptimizeFulltextOnly,omitempty" tf:"innodb_optimize_fulltext_only,omitempty"`
 
 	// (Boolean) When enabled, information about all deadlocks in InnoDB user transactions is recorded in the error log. Disabled by default.
 	// When enabled, information about all deadlocks in InnoDB user transactions is recorded in the error log. Disabled by default.
@@ -772,7 +936,7 @@ type PropertiesObservation struct {
 
 	// (Number) The number of I/O threads for read operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
 	// The number of I/O threads for read operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
-	InnodbReadIoThreads *int64 `json:"innodbReadIoThreads,omitempty" tf:"innodb_read_io_threads,omitempty"`
+	InnodbReadIoThreads *float64 `json:"innodbReadIoThreads,omitempty" tf:"innodb_read_io_threads,omitempty"`
 
 	// (Boolean) When enabled a transaction timeout causes InnoDB to abort and roll back the entire transaction. Changing this parameter will lead to a restart of the MySQL service.
 	// When enabled a transaction timeout causes InnoDB to abort and roll back the entire transaction. Changing this parameter will lead to a restart of the MySQL service.
@@ -780,15 +944,15 @@ type PropertiesObservation struct {
 
 	// no limit).
 	// Defines the maximum number of threads permitted inside of InnoDB. Default is 0 (infinite concurrency - no limit).
-	InnodbThreadConcurrency *int64 `json:"innodbThreadConcurrency,omitempty" tf:"innodb_thread_concurrency,omitempty"`
+	InnodbThreadConcurrency *float64 `json:"innodbThreadConcurrency,omitempty" tf:"innodb_thread_concurrency,omitempty"`
 
 	// (Number) The number of I/O threads for write operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
 	// The number of I/O threads for write operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
-	InnodbWriteIoThreads *int64 `json:"innodbWriteIoThreads,omitempty" tf:"innodb_write_io_threads,omitempty"`
+	InnodbWriteIoThreads *float64 `json:"innodbWriteIoThreads,omitempty" tf:"innodb_write_io_threads,omitempty"`
 
 	// (Number) The number of seconds the server waits for activity on an interactive connection before closing it.
 	// The number of seconds the server waits for activity on an interactive connection before closing it.
-	InteractiveTimeout *int64 `json:"interactiveTimeout,omitempty" tf:"interactive_timeout,omitempty"`
+	InteractiveTimeout *float64 `json:"interactiveTimeout,omitempty" tf:"interactive_timeout,omitempty"`
 
 	// memory internal temporary tables.
 	// The storage engine for in-memory internal temporary tables.
@@ -802,37 +966,81 @@ type PropertiesObservation struct {
 	// The slow_query_logs work as SQL statements that take more than long_query_time seconds to execute.
 	LongQueryTime *float64 `json:"longQueryTime,omitempty" tf:"long_query_time,omitempty"`
 
+	// sensitive (default), 1 = names stored lowercase, comparisons are case-insensitive. This option can only be set when creating the service and cannot be changed later. See https://dev.mysql.com/doc/refman/8.0/en/identifier-case-sensitivity.html for details.
+	// Sets how table and database names are stored and compared. 0 = case-sensitive (default), 1 = names stored lowercase, comparisons are case-insensitive. This option can only be set when creating the service and cannot be changed later. See https://dev.mysql.com/doc/refman/8.0/en/identifier-case-sensitivity.html for details.
+	LowerCaseTableNames *float64 `json:"lowerCaseTableNames,omitempty" tf:"lower_case_table_names,omitempty"`
+
 	// (Number) Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
 	// Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
-	MaxAllowedPacket *int64 `json:"maxAllowedPacket,omitempty" tf:"max_allowed_packet,omitempty"`
+	MaxAllowedPacket *float64 `json:"maxAllowedPacket,omitempty" tf:"max_allowed_packet,omitempty"`
+
+	// (Number) The maximum permitted number of simultaneous client connections. Lower this to reserve memory for other work. The value cannot exceed the limit provided by your service plan. Upgrading the plan does not raise a value you have set explicitly, so increase it yourself after an upgrade.
+	// The maximum permitted number of simultaneous client connections. Lower this to reserve memory for other work. The value cannot exceed the limit provided by your service plan. Upgrading the plan does not raise a value you have set explicitly, so increase it yourself after an upgrade.
+	MaxConnections *float64 `json:"maxConnections,omitempty" tf:"max_connections,omitempty"`
+
+	// only top-level SELECT statements. 0 (the default) means no timeout.
+	// Execution timeout in milliseconds for read-only top-level SELECT statements. 0 (the default) means no timeout.
+	MaxExecutionTime *float64 `json:"maxExecutionTime,omitempty" tf:"max_execution_time,omitempty"`
 
 	// memory tables. Also set tmp_table_size. Default is 16777216 (16M).
 	// Limits the size of internal in-memory tables. Also set tmp_table_size. Default is 16777216 (16M).
-	MaxHeapTableSize *int64 `json:"maxHeapTableSize,omitempty" tf:"max_heap_table_size,omitempty"`
+	MaxHeapTableSize *float64 `json:"maxHeapTableSize,omitempty" tf:"max_heap_table_size,omitempty"`
 
-	// (Block List, Max: 1) Migrate data from existing server. (see below for nested schema)
+	// (Number) Limit on the assumed maximum number of index seeks when looking up rows based on a key. Lowering this value causes the optimizer to prefer index lookups over table scans.
+	// Limit on the assumed maximum number of index seeks when looking up rows based on a key. Lowering this value causes the optimizer to prefer index lookups over table scans.
+	MaxSeeksForKey *float64 `json:"maxSeeksForKey,omitempty" tf:"max_seeks_for_key,omitempty"`
+
+	// account limit. Any other value must be at least 10 below max_connections, so that monitoring and your own admin sessions can still connect when an application saturates its own limit. Aiven's replication and management connections are unaffected however low you set this.
+	// The maximum number of simultaneous connections permitted to any single user account. 0, the default, means no per-account limit. Any other value must be at least 10 below max_connections, so that monitoring and your own admin sessions can still connect when an application saturates its own limit. Aiven's replication and management connections are unaffected however low you set this.
+	MaxUserConnections *float64 `json:"maxUserConnections,omitempty" tf:"max_user_connections,omitempty"`
+
+	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
 	Migration []MigrationObservation `json:"migration,omitempty" tf:"migration,omitempty"`
 
-	// (Block List, Max: 1) MySQL incremental backup configuration. (see below for nested schema)
+	// (Block List) MySQL incremental backup configuration. (see below for nested schema)
 	// MySQL incremental backup configuration.
 	MySQLIncrementalBackup []MySQLIncrementalBackupObservation `json:"mysqlIncrementalBackup,omitempty" tf:"mysql_incremental_backup,omitempty"`
 
 	// (Number) Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
 	// Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
-	NetBufferLength *int64 `json:"netBufferLength,omitempty" tf:"net_buffer_length,omitempty"`
+	NetBufferLength *float64 `json:"netBufferLength,omitempty" tf:"net_buffer_length,omitempty"`
 
 	// (Number) The number of seconds to wait for more data from a connection before aborting the read.
 	// The number of seconds to wait for more data from a connection before aborting the read.
-	NetReadTimeout *int64 `json:"netReadTimeout,omitempty" tf:"net_read_timeout,omitempty"`
+	NetReadTimeout *float64 `json:"netReadTimeout,omitempty" tf:"net_read_timeout,omitempty"`
 
 	// (Number) The number of seconds to wait for a block to be written to a connection before aborting the write.
 	// The number of seconds to wait for a block to be written to a connection before aborting the write.
-	NetWriteTimeout *int64 `json:"netWriteTimeout,omitempty" tf:"net_write_timeout,omitempty"`
+	NetWriteTimeout *float64 `json:"netWriteTimeout,omitempty" tf:"net_write_timeout,omitempty"`
+
+	// promising partial plans from the optimizer search space. 0 disables heuristics (exhaustive search); 1 prunes plans based on the number of rows retrieved.
+	// Controls the heuristics applied during query optimization to prune less-promising partial plans from the optimizer search space. 0 disables heuristics (exhaustive search); 1 prunes plans based on the number of rows retrieved.
+	OptimizerPruneLevel *float64 `json:"optimizerPruneLevel,omitempty" tf:"optimizer_prune_level,omitempty"`
+
+	// (Number) Maximum depth of search performed by the query optimizer when choosing a join order. Larger values produce better plans for joins over many tables but take longer to compile; 0 lets the optimizer choose the depth automatically.
+	// Maximum depth of search performed by the query optimizer when choosing a join order. Larger values produce better plans for joins over many tables but take longer to compile; 0 lets the optimizer choose the depth automatically.
+	OptimizerSearchDepth *float64 `json:"optimizerSearchDepth,omitempty" tf:"optimizer_search_depth,omitempty"`
+
+	// separated list of optimizer flag assignments in the form flag=on|off|default, or the single value 'default' to reset all flags. Flags not listed keep their current values. Controls query optimizer behaviors such as index merge, hash join and semijoin strategies.
+	// Comma-separated list of optimizer flag assignments in the form flag=on|off|default, or the single value 'default' to reset all flags. Flags not listed keep their current values. Controls query optimizer behaviors such as index merge, hash join and semijoin strategies.
+	OptimizerSwitch *string `json:"optimizerSwitch,omitempty" tf:"optimizer_switch,omitempty"`
+
+	// (Number) The number of rows per thread in the events_statements_history table. Changing this parameter will lead to a restart of the MySQL service.
+	// The number of rows per thread in the events_statements_history table. Changing this parameter will lead to a restart of the MySQL service.
+	PerformanceSchemaEventsStatementsHistorySize *float64 `json:"performanceSchemaEventsStatementsHistorySize,omitempty" tf:"performance_schema_events_statements_history_size,omitempty"`
 
 	// (Boolean) Public Access. Allow access to the service from the public Internet.
 	// Public Access. Allow access to the service from the public Internet.
 	PublicAccess *bool `json:"publicAccess,omitempty" tf:"public_access,omitempty"`
+
+	// (Boolean) Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	// Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	PublicAccessPrometheus *bool `json:"publicAccessPrometheus,omitempty" tf:"public_access_prometheus,omitempty"`
+
+	// log budget; ensure the service disk is sized accordingly. The setting applies only on the node replicating from the external source; standby nodes always use the Aiven-managed default (the smaller of 5 GiB and 30% of the service disk), which is also used when this option is left unset. Changing this parameter will lead to a restart of the MySQL service.
+	// The maximum amount of space in bytes to use for all relay logs while replicating from an external migration source. When the limit is reached, the replication I/O thread stops fetching relay log events until the SQL thread has caught up. Raise this to give a large migration a bigger relay-log budget; ensure the service disk is sized accordingly. The setting applies only on the node replicating from the external source; standby nodes always use the Aiven-managed default (the smaller of 5 GiB and 30% of the service disk), which is also used when this option is left unset. Changing this parameter will lead to a restart of the MySQL service.
+	RelayLogSpaceLimit *float64 `json:"relayLogSpaceLimit,omitempty" tf:"relay_log_space_limit,omitempty"`
 
 	// (String) Global SQL mode. Set to empty to use MySQL server defaults. When creating a new service and not setting this field Aiven default SQL mode (strict, SQL standard compliant) will be assigned.
 	// Global SQL mode. Set to empty to use MySQL server defaults. When creating a new service and not setting this field Aiven default SQL mode (strict, SQL standard compliant) will be assigned.
@@ -852,11 +1060,11 @@ type PropertiesObservation struct {
 
 	// (Number) Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
 	// Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
-	SortBufferSize *int64 `json:"sortBufferSize,omitempty" tf:"sort_buffer_size,omitempty"`
+	SortBufferSize *float64 `json:"sortBufferSize,omitempty" tf:"sort_buffer_size,omitempty"`
 
 	// memory tables. Also set max_heap_table_size. Default is 16777216 (16M).
 	// Limits the size of internal in-memory tables. Also set max_heap_table_size. Default is 16777216 (16M).
-	TmpTableSize *int64 `json:"tmpTableSize,omitempty" tf:"tmp_table_size,omitempty"`
+	TmpTableSize *float64 `json:"tmpTableSize,omitempty" tf:"tmp_table_size,omitempty"`
 
 	// (String) MySQL major version.
 	// MySQL major version.
@@ -864,7 +1072,11 @@ type PropertiesObservation struct {
 
 	// (Number) The number of seconds the server waits for activity on a noninteractive connection before closing it.
 	// The number of seconds the server waits for activity on a noninteractive connection before closing it.
-	WaitTimeout *int64 `json:"waitTimeout,omitempty" tf:"wait_timeout,omitempty"`
+	WaitTimeout *float64 `json:"waitTimeout,omitempty" tf:"wait_timeout,omitempty"`
+
+	// (Boolean) Whether window functions are computed to high precision. Disabling this trades exactness for speed in window function evaluation.
+	// Whether window functions are computed to high precision. Disabling this trades exactness for speed in window function evaluation.
+	WindowingUseHighPrecision *bool `json:"windowingUseHighPrecision,omitempty" tf:"windowing_use_high_precision,omitempty"`
 }
 
 type PropertiesParameters struct {
@@ -872,12 +1084,17 @@ type PropertiesParameters struct {
 	// (String, Sensitive) Custom password for admin user. Defaults to random string. This must be set only when a new service is being created.
 	// Custom password for admin user. Defaults to random string. This must be set only when a new service is being created.
 	// +kubebuilder:validation:Optional
-	AdminPasswordSecretRef *v1.LocalSecretKeySelector `json:"adminPasswordSecretRef,omitempty" tf:"-"`
+	AdminPasswordSecretRef *v2.LocalSecretKeySelector `json:"adminPasswordSecretRef,omitempty" tf:"-"`
 
 	// (String) Custom username for admin user. This must be set only when a new service is being created.
 	// Custom username for admin user. This must be set only when a new service is being created.
 	// +kubebuilder:validation:Optional
 	AdminUsername *string `json:"adminUsername,omitempty" tf:"admin_username,omitempty"`
+
+	// (Boolean) When enabled, the server automatically grants the EXECUTE and ALTER ROUTINE privileges to the creator of a stored routine and drops them when the routine is dropped.
+	// When enabled, the server automatically grants the EXECUTE and ALTER ROUTINE privileges to the creator of a stored routine and drops them when the routine is dropped.
+	// +kubebuilder:validation:Optional
+	AutomaticSpPrivileges *bool `json:"automaticSpPrivileges,omitempty" tf:"automatic_sp_privileges,omitempty"`
 
 	// (Boolean) Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
 	// Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
@@ -887,32 +1104,47 @@ type PropertiesParameters struct {
 	// (Number) The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
 	// +kubebuilder:validation:Optional
-	BackupHour *int64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
+	BackupHour *float64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
 
 	// (Number) The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
 	// +kubebuilder:validation:Optional
-	BackupMinute *int64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
+	BackupMinute *float64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
 
-	// (Number) The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector.
-	// The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector.
+	// traffic window rather than dropping it drastically in one step.
+	// The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector. Warning: reducing this value can make a large batch of binary logs eligible for purge at once. Depending on the volume, this can sometimes stall the MySQL commit path and block writes until the purge completes. To stay on the safe side, prefer lowering the value gradually in small decrements during a low-traffic window rather than dropping it drastically in one step.
 	// +kubebuilder:validation:Optional
-	BinlogRetentionPeriod *int64 `json:"binlogRetentionPeriod,omitempty" tf:"binlog_retention_period,omitempty"`
+	BinlogRetentionPeriod *float64 `json:"binlogRetentionPeriod,omitempty" tf:"binlog_retention_period,omitempty"`
 
 	// (Number) The number of seconds that the mysqld server waits for a connect packet before responding with Bad handshake.
 	// The number of seconds that the mysqld server waits for a connect packet before responding with Bad handshake.
 	// +kubebuilder:validation:Optional
-	ConnectTimeout *int64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
+	ConnectTimeout *float64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
 
 	// 12:00 to +12:00), a time zone name, or 'SYSTEM' to use the MySQL server default.
 	// Default server time zone as an offset from UTC (from -12:00 to +12:00), a time zone name, or 'SYSTEM' to use the MySQL server default.
 	// +kubebuilder:validation:Optional
 	DefaultTimeZone *string `json:"defaultTimeZone,omitempty" tf:"default_time_zone,omitempty"`
 
+	// (Number) Number of digits by which to increase the scale of the result of division operations performed with the / operator. Default is 4.
+	// Number of digits by which to increase the scale of the result of division operations performed with the / operator. Default is 4.
+	// +kubebuilder:validation:Optional
+	DivPrecisionIncrement *float64 `json:"divPrecisionIncrement,omitempty" tf:"div_precision_increment,omitempty"`
+
+	// (Boolean) Whether optimizer JSON output such as EXPLAIN FORMAT=JSON adds end markers that repeat a structure's key near its closing bracket, making large JSON structures easier to read.
+	// Whether optimizer JSON output such as EXPLAIN FORMAT=JSON adds end markers that repeat a structure's key near its closing bracket, making large JSON structures easier to read.
+	// +kubebuilder:validation:Optional
+	EndMarkersInJSON *bool `json:"endMarkersInJson,omitempty" tf:"end_markers_in_json,omitempty"`
+
+	// (Number) The number of equality ranges in a query at or above which the optimizer switches from index dives to index statistics when estimating the number of qualifying rows. 0 means always use index dives. Default is 200.
+	// The number of equality ranges in a query at or above which the optimizer switches from index dives to index statistics when estimating the number of qualifying rows. 0 means always use index dives. Default is 200.
+	// +kubebuilder:validation:Optional
+	EqRangeIndexDiveLimit *float64 `json:"eqRangeIndexDiveLimit,omitempty" tf:"eq_range_index_dive_limit,omitempty"`
+
 	// (Number) The maximum permitted result length in bytes for the GROUP_CONCAT() function.
 	// The maximum permitted result length in bytes for the GROUP_CONCAT() function.
 	// +kubebuilder:validation:Optional
-	GroupConcatMaxLen *int64 `json:"groupConcatMaxLen,omitempty" tf:"group_concat_max_len,omitempty"`
+	GroupConcatMaxLen *float64 `json:"groupConcatMaxLen,omitempty" tf:"group_concat_max_len,omitempty"`
 
 	// (List of String) IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
 	// IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
@@ -922,42 +1154,87 @@ type PropertiesParameters struct {
 	// (Number) The time, in seconds, before cached statistics expire.
 	// The time, in seconds, before cached statistics expire.
 	// +kubebuilder:validation:Optional
-	InformationSchemaStatsExpiry *int64 `json:"informationSchemaStatsExpiry,omitempty" tf:"information_schema_stats_expiry,omitempty"`
+	InformationSchemaStatsExpiry *float64 `json:"informationSchemaStatsExpiry,omitempty" tf:"information_schema_stats_expiry,omitempty"`
+
+	// dependent: it speeds up lookups for some workloads but its internal latch can become a contention point under high concurrency, in which case disabling it can improve throughput.
+	// Whether InnoDB adaptive hash indexing is enabled. The optimal setting is workload-dependent: it speeds up lookups for some workloads but its internal latch can become a contention point under high concurrency, in which case disabling it can improve throughput.
+	// +kubebuilder:validation:Optional
+	InnodbAdaptiveHashIndex *bool `json:"innodbAdaptiveHashIndex,omitempty" tf:"innodb_adaptive_hash_index,omitempty"`
 
 	// (Number) Maximum size for the InnoDB change buffer, as a percentage of the total size of the buffer pool. Default is 25.
 	// Maximum size for the InnoDB change buffer, as a percentage of the total size of the buffer pool. Default is 25.
 	// +kubebuilder:validation:Optional
-	InnodbChangeBufferMaxSize *int64 `json:"innodbChangeBufferMaxSize,omitempty" tf:"innodb_change_buffer_max_size,omitempty"`
+	InnodbChangeBufferMaxSize *float64 `json:"innodbChangeBufferMaxSize,omitempty" tf:"innodb_change_buffer_max_size,omitempty"`
 
 	// dirty pages in the same extent are not flushed, 1 - flush contiguous dirty pages in the same extent, 2 - flush dirty pages in the same extent.
 	// Specifies whether flushing a page from the InnoDB buffer pool also flushes other dirty pages in the same extent (default is 1): 0 - dirty pages in the same extent are not flushed, 1 - flush contiguous dirty pages in the same extent, 2 - flush dirty pages in the same extent.
 	// +kubebuilder:validation:Optional
-	InnodbFlushNeighbors *int64 `json:"innodbFlushNeighbors,omitempty" tf:"innodb_flush_neighbors,omitempty"`
+	InnodbFlushNeighbors *float64 `json:"innodbFlushNeighbors,omitempty" tf:"innodb_flush_neighbors,omitempty"`
+
+	// (Boolean) Whether stopword processing is applied when creating or rebuilding an InnoDB FULLTEXT index. Enabled by default.
+	// Whether stopword processing is applied when creating or rebuilding an InnoDB FULLTEXT index. Enabled by default.
+	// +kubebuilder:validation:Optional
+	InnodbFtEnableStopword *bool `json:"innodbFtEnableStopword,omitempty" tf:"innodb_ft_enable_stopword,omitempty"`
+
+	// (Number) Maximum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
+	// Maximum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
+	// +kubebuilder:validation:Optional
+	InnodbFtMaxTokenSize *float64 `json:"innodbFtMaxTokenSize,omitempty" tf:"innodb_ft_max_token_size,omitempty"`
 
 	// (Number) Minimum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
 	// Minimum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
 	// +kubebuilder:validation:Optional
-	InnodbFtMinTokenSize *int64 `json:"innodbFtMinTokenSize,omitempty" tf:"innodb_ft_min_token_size,omitempty"`
+	InnodbFtMinTokenSize *float64 `json:"innodbFtMinTokenSize,omitempty" tf:"innodb_ft_min_token_size,omitempty"`
+
+	// (Number) Number of words processed during each OPTIMIZE TABLE operation on an InnoDB FULLTEXT index. Default is 2000.
+	// Number of words processed during each OPTIMIZE TABLE operation on an InnoDB FULLTEXT index. Default is 2000.
+	// +kubebuilder:validation:Optional
+	InnodbFtNumWordOptimize *float64 `json:"innodbFtNumWordOptimize,omitempty" tf:"innodb_ft_num_word_optimize,omitempty"`
+
+	// (Number) Maximum memory in bytes used per query for the InnoDB FULLTEXT search query result cache. Aiven sizes this automatically based on the service plan's memory; setting a value overrides the calculated default.
+	// Maximum memory in bytes used per query for the InnoDB FULLTEXT search query result cache. Aiven sizes this automatically based on the service plan's memory; setting a value overrides the calculated default.
+	// +kubebuilder:validation:Optional
+	InnodbFtResultCacheLimit *float64 `json:"innodbFtResultCacheLimit,omitempty" tf:"innodb_ft_result_cache_limit,omitempty"`
 
 	// (String) This option is used to specify your own InnoDB FULLTEXT index stopword list for all InnoDB tables.
 	// This option is used to specify your own InnoDB FULLTEXT index stopword list for all InnoDB tables.
 	// +kubebuilder:validation:Optional
 	InnodbFtServerStopwordTable *string `json:"innodbFtServerStopwordTable,omitempty" tf:"innodb_ft_server_stopword_table,omitempty"`
 
+	// (String) This option is used to specify your own InnoDB FULLTEXT index stopword list for specific InnoDB tables.
+	// This option is used to specify your own InnoDB FULLTEXT index stopword list for specific InnoDB tables.
+	// +kubebuilder:validation:Optional
+	InnodbFtUserStopwordTable *string `json:"innodbFtUserStopwordTable,omitempty" tf:"innodb_ft_user_stopword_table,omitempty"`
+
+	// (Number) The number of I/O operations per second (IOPS) available to InnoDB background tasks, such as flushing pages from the buffer pool and merging data from the change buffer. Set this to a value appropriate for the underlying storage; it must not exceed innodb_io_capacity_max.
+	// The number of I/O operations per second (IOPS) available to InnoDB background tasks, such as flushing pages from the buffer pool and merging data from the change buffer. Set this to a value appropriate for the underlying storage; it must not exceed innodb_io_capacity_max.
+	// +kubebuilder:validation:Optional
+	InnodbIoCapacity *float64 `json:"innodbIoCapacity,omitempty" tf:"innodb_io_capacity,omitempty"`
+
+	// (Number) The maximum number of I/O operations per second (IOPS) that InnoDB background tasks may perform when flushing falls behind. Defaults to twice innodb_io_capacity (minimum 2000). This must be greater than or equal to innodb_io_capacity.
+	// The maximum number of I/O operations per second (IOPS) that InnoDB background tasks may perform when flushing falls behind. Defaults to twice innodb_io_capacity (minimum 2000). This must be greater than or equal to innodb_io_capacity.
+	// +kubebuilder:validation:Optional
+	InnodbIoCapacityMax *float64 `json:"innodbIoCapacityMax,omitempty" tf:"innodb_io_capacity_max,omitempty"`
+
 	// (Number) The length of time in seconds an InnoDB transaction waits for a row lock before giving up. Default is 120.
 	// The length of time in seconds an InnoDB transaction waits for a row lock before giving up. Default is 120.
 	// +kubebuilder:validation:Optional
-	InnodbLockWaitTimeout *int64 `json:"innodbLockWaitTimeout,omitempty" tf:"innodb_lock_wait_timeout,omitempty"`
+	InnodbLockWaitTimeout *float64 `json:"innodbLockWaitTimeout,omitempty" tf:"innodb_lock_wait_timeout,omitempty"`
 
 	// (Number) The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
 	// The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
 	// +kubebuilder:validation:Optional
-	InnodbLogBufferSize *int64 `json:"innodbLogBufferSize,omitempty" tf:"innodb_log_buffer_size,omitempty"`
+	InnodbLogBufferSize *float64 `json:"innodbLogBufferSize,omitempty" tf:"innodb_log_buffer_size,omitempty"`
 
 	// (Number) The upper limit in bytes on the size of the temporary log files used during online DDL operations for InnoDB tables.
 	// The upper limit in bytes on the size of the temporary log files used during online DDL operations for InnoDB tables.
 	// +kubebuilder:validation:Optional
-	InnodbOnlineAlterLogMaxSize *int64 `json:"innodbOnlineAlterLogMaxSize,omitempty" tf:"innodb_online_alter_log_max_size,omitempty"`
+	InnodbOnlineAlterLogMaxSize *float64 `json:"innodbOnlineAlterLogMaxSize,omitempty" tf:"innodb_online_alter_log_max_size,omitempty"`
+
+	// (Boolean) When enabled, OPTIMIZE TABLE on InnoDB tables only updates the FULLTEXT index instead of rebuilding the table. Intended to be enabled temporarily during FULLTEXT index maintenance and disabled afterwards; while enabled, OPTIMIZE TABLE does not reclaim table space.
+	// When enabled, OPTIMIZE TABLE on InnoDB tables only updates the FULLTEXT index instead of rebuilding the table. Intended to be enabled temporarily during FULLTEXT index maintenance and disabled afterwards; while enabled, OPTIMIZE TABLE does not reclaim table space.
+	// +kubebuilder:validation:Optional
+	InnodbOptimizeFulltextOnly *bool `json:"innodbOptimizeFulltextOnly,omitempty" tf:"innodb_optimize_fulltext_only,omitempty"`
 
 	// (Boolean) When enabled, information about all deadlocks in InnoDB user transactions is recorded in the error log. Disabled by default.
 	// When enabled, information about all deadlocks in InnoDB user transactions is recorded in the error log. Disabled by default.
@@ -967,7 +1244,7 @@ type PropertiesParameters struct {
 	// (Number) The number of I/O threads for read operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
 	// The number of I/O threads for read operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
 	// +kubebuilder:validation:Optional
-	InnodbReadIoThreads *int64 `json:"innodbReadIoThreads,omitempty" tf:"innodb_read_io_threads,omitempty"`
+	InnodbReadIoThreads *float64 `json:"innodbReadIoThreads,omitempty" tf:"innodb_read_io_threads,omitempty"`
 
 	// (Boolean) When enabled a transaction timeout causes InnoDB to abort and roll back the entire transaction. Changing this parameter will lead to a restart of the MySQL service.
 	// When enabled a transaction timeout causes InnoDB to abort and roll back the entire transaction. Changing this parameter will lead to a restart of the MySQL service.
@@ -977,17 +1254,17 @@ type PropertiesParameters struct {
 	// no limit).
 	// Defines the maximum number of threads permitted inside of InnoDB. Default is 0 (infinite concurrency - no limit).
 	// +kubebuilder:validation:Optional
-	InnodbThreadConcurrency *int64 `json:"innodbThreadConcurrency,omitempty" tf:"innodb_thread_concurrency,omitempty"`
+	InnodbThreadConcurrency *float64 `json:"innodbThreadConcurrency,omitempty" tf:"innodb_thread_concurrency,omitempty"`
 
 	// (Number) The number of I/O threads for write operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
 	// The number of I/O threads for write operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
 	// +kubebuilder:validation:Optional
-	InnodbWriteIoThreads *int64 `json:"innodbWriteIoThreads,omitempty" tf:"innodb_write_io_threads,omitempty"`
+	InnodbWriteIoThreads *float64 `json:"innodbWriteIoThreads,omitempty" tf:"innodb_write_io_threads,omitempty"`
 
 	// (Number) The number of seconds the server waits for activity on an interactive connection before closing it.
 	// The number of seconds the server waits for activity on an interactive connection before closing it.
 	// +kubebuilder:validation:Optional
-	InteractiveTimeout *int64 `json:"interactiveTimeout,omitempty" tf:"interactive_timeout,omitempty"`
+	InteractiveTimeout *float64 `json:"interactiveTimeout,omitempty" tf:"interactive_timeout,omitempty"`
 
 	// memory internal temporary tables.
 	// The storage engine for in-memory internal temporary tables.
@@ -1004,22 +1281,47 @@ type PropertiesParameters struct {
 	// +kubebuilder:validation:Optional
 	LongQueryTime *float64 `json:"longQueryTime,omitempty" tf:"long_query_time,omitempty"`
 
+	// sensitive (default), 1 = names stored lowercase, comparisons are case-insensitive. This option can only be set when creating the service and cannot be changed later. See https://dev.mysql.com/doc/refman/8.0/en/identifier-case-sensitivity.html for details.
+	// Sets how table and database names are stored and compared. 0 = case-sensitive (default), 1 = names stored lowercase, comparisons are case-insensitive. This option can only be set when creating the service and cannot be changed later. See https://dev.mysql.com/doc/refman/8.0/en/identifier-case-sensitivity.html for details.
+	// +kubebuilder:validation:Optional
+	LowerCaseTableNames *float64 `json:"lowerCaseTableNames,omitempty" tf:"lower_case_table_names,omitempty"`
+
 	// (Number) Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
 	// Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
 	// +kubebuilder:validation:Optional
-	MaxAllowedPacket *int64 `json:"maxAllowedPacket,omitempty" tf:"max_allowed_packet,omitempty"`
+	MaxAllowedPacket *float64 `json:"maxAllowedPacket,omitempty" tf:"max_allowed_packet,omitempty"`
+
+	// (Number) The maximum permitted number of simultaneous client connections. Lower this to reserve memory for other work. The value cannot exceed the limit provided by your service plan. Upgrading the plan does not raise a value you have set explicitly, so increase it yourself after an upgrade.
+	// The maximum permitted number of simultaneous client connections. Lower this to reserve memory for other work. The value cannot exceed the limit provided by your service plan. Upgrading the plan does not raise a value you have set explicitly, so increase it yourself after an upgrade.
+	// +kubebuilder:validation:Optional
+	MaxConnections *float64 `json:"maxConnections,omitempty" tf:"max_connections,omitempty"`
+
+	// only top-level SELECT statements. 0 (the default) means no timeout.
+	// Execution timeout in milliseconds for read-only top-level SELECT statements. 0 (the default) means no timeout.
+	// +kubebuilder:validation:Optional
+	MaxExecutionTime *float64 `json:"maxExecutionTime,omitempty" tf:"max_execution_time,omitempty"`
 
 	// memory tables. Also set tmp_table_size. Default is 16777216 (16M).
 	// Limits the size of internal in-memory tables. Also set tmp_table_size. Default is 16777216 (16M).
 	// +kubebuilder:validation:Optional
-	MaxHeapTableSize *int64 `json:"maxHeapTableSize,omitempty" tf:"max_heap_table_size,omitempty"`
+	MaxHeapTableSize *float64 `json:"maxHeapTableSize,omitempty" tf:"max_heap_table_size,omitempty"`
 
-	// (Block List, Max: 1) Migrate data from existing server. (see below for nested schema)
+	// (Number) Limit on the assumed maximum number of index seeks when looking up rows based on a key. Lowering this value causes the optimizer to prefer index lookups over table scans.
+	// Limit on the assumed maximum number of index seeks when looking up rows based on a key. Lowering this value causes the optimizer to prefer index lookups over table scans.
+	// +kubebuilder:validation:Optional
+	MaxSeeksForKey *float64 `json:"maxSeeksForKey,omitempty" tf:"max_seeks_for_key,omitempty"`
+
+	// account limit. Any other value must be at least 10 below max_connections, so that monitoring and your own admin sessions can still connect when an application saturates its own limit. Aiven's replication and management connections are unaffected however low you set this.
+	// The maximum number of simultaneous connections permitted to any single user account. 0, the default, means no per-account limit. Any other value must be at least 10 below max_connections, so that monitoring and your own admin sessions can still connect when an application saturates its own limit. Aiven's replication and management connections are unaffected however low you set this.
+	// +kubebuilder:validation:Optional
+	MaxUserConnections *float64 `json:"maxUserConnections,omitempty" tf:"max_user_connections,omitempty"`
+
+	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
 	// +kubebuilder:validation:Optional
 	Migration []MigrationParameters `json:"migration,omitempty" tf:"migration,omitempty"`
 
-	// (Block List, Max: 1) MySQL incremental backup configuration. (see below for nested schema)
+	// (Block List) MySQL incremental backup configuration. (see below for nested schema)
 	// MySQL incremental backup configuration.
 	// +kubebuilder:validation:Optional
 	MySQLIncrementalBackup []MySQLIncrementalBackupParameters `json:"mysqlIncrementalBackup,omitempty" tf:"mysql_incremental_backup,omitempty"`
@@ -1027,22 +1329,52 @@ type PropertiesParameters struct {
 	// (Number) Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
 	// Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
 	// +kubebuilder:validation:Optional
-	NetBufferLength *int64 `json:"netBufferLength,omitempty" tf:"net_buffer_length,omitempty"`
+	NetBufferLength *float64 `json:"netBufferLength,omitempty" tf:"net_buffer_length,omitempty"`
 
 	// (Number) The number of seconds to wait for more data from a connection before aborting the read.
 	// The number of seconds to wait for more data from a connection before aborting the read.
 	// +kubebuilder:validation:Optional
-	NetReadTimeout *int64 `json:"netReadTimeout,omitempty" tf:"net_read_timeout,omitempty"`
+	NetReadTimeout *float64 `json:"netReadTimeout,omitempty" tf:"net_read_timeout,omitempty"`
 
 	// (Number) The number of seconds to wait for a block to be written to a connection before aborting the write.
 	// The number of seconds to wait for a block to be written to a connection before aborting the write.
 	// +kubebuilder:validation:Optional
-	NetWriteTimeout *int64 `json:"netWriteTimeout,omitempty" tf:"net_write_timeout,omitempty"`
+	NetWriteTimeout *float64 `json:"netWriteTimeout,omitempty" tf:"net_write_timeout,omitempty"`
+
+	// promising partial plans from the optimizer search space. 0 disables heuristics (exhaustive search); 1 prunes plans based on the number of rows retrieved.
+	// Controls the heuristics applied during query optimization to prune less-promising partial plans from the optimizer search space. 0 disables heuristics (exhaustive search); 1 prunes plans based on the number of rows retrieved.
+	// +kubebuilder:validation:Optional
+	OptimizerPruneLevel *float64 `json:"optimizerPruneLevel,omitempty" tf:"optimizer_prune_level,omitempty"`
+
+	// (Number) Maximum depth of search performed by the query optimizer when choosing a join order. Larger values produce better plans for joins over many tables but take longer to compile; 0 lets the optimizer choose the depth automatically.
+	// Maximum depth of search performed by the query optimizer when choosing a join order. Larger values produce better plans for joins over many tables but take longer to compile; 0 lets the optimizer choose the depth automatically.
+	// +kubebuilder:validation:Optional
+	OptimizerSearchDepth *float64 `json:"optimizerSearchDepth,omitempty" tf:"optimizer_search_depth,omitempty"`
+
+	// separated list of optimizer flag assignments in the form flag=on|off|default, or the single value 'default' to reset all flags. Flags not listed keep their current values. Controls query optimizer behaviors such as index merge, hash join and semijoin strategies.
+	// Comma-separated list of optimizer flag assignments in the form flag=on|off|default, or the single value 'default' to reset all flags. Flags not listed keep their current values. Controls query optimizer behaviors such as index merge, hash join and semijoin strategies.
+	// +kubebuilder:validation:Optional
+	OptimizerSwitch *string `json:"optimizerSwitch,omitempty" tf:"optimizer_switch,omitempty"`
+
+	// (Number) The number of rows per thread in the events_statements_history table. Changing this parameter will lead to a restart of the MySQL service.
+	// The number of rows per thread in the events_statements_history table. Changing this parameter will lead to a restart of the MySQL service.
+	// +kubebuilder:validation:Optional
+	PerformanceSchemaEventsStatementsHistorySize *float64 `json:"performanceSchemaEventsStatementsHistorySize,omitempty" tf:"performance_schema_events_statements_history_size,omitempty"`
 
 	// (Boolean) Public Access. Allow access to the service from the public Internet.
 	// Public Access. Allow access to the service from the public Internet.
 	// +kubebuilder:validation:Optional
 	PublicAccess *bool `json:"publicAccess,omitempty" tf:"public_access,omitempty"`
+
+	// (Boolean) Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	// Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	// +kubebuilder:validation:Optional
+	PublicAccessPrometheus *bool `json:"publicAccessPrometheus,omitempty" tf:"public_access_prometheus,omitempty"`
+
+	// log budget; ensure the service disk is sized accordingly. The setting applies only on the node replicating from the external source; standby nodes always use the Aiven-managed default (the smaller of 5 GiB and 30% of the service disk), which is also used when this option is left unset. Changing this parameter will lead to a restart of the MySQL service.
+	// The maximum amount of space in bytes to use for all relay logs while replicating from an external migration source. When the limit is reached, the replication I/O thread stops fetching relay log events until the SQL thread has caught up. Raise this to give a large migration a bigger relay-log budget; ensure the service disk is sized accordingly. The setting applies only on the node replicating from the external source; standby nodes always use the Aiven-managed default (the smaller of 5 GiB and 30% of the service disk), which is also used when this option is left unset. Changing this parameter will lead to a restart of the MySQL service.
+	// +kubebuilder:validation:Optional
+	RelayLogSpaceLimit *float64 `json:"relayLogSpaceLimit,omitempty" tf:"relay_log_space_limit,omitempty"`
 
 	// (String) Global SQL mode. Set to empty to use MySQL server defaults. When creating a new service and not setting this field Aiven default SQL mode (strict, SQL standard compliant) will be assigned.
 	// Global SQL mode. Set to empty to use MySQL server defaults. When creating a new service and not setting this field Aiven default SQL mode (strict, SQL standard compliant) will be assigned.
@@ -1067,12 +1399,12 @@ type PropertiesParameters struct {
 	// (Number) Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
 	// Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
 	// +kubebuilder:validation:Optional
-	SortBufferSize *int64 `json:"sortBufferSize,omitempty" tf:"sort_buffer_size,omitempty"`
+	SortBufferSize *float64 `json:"sortBufferSize,omitempty" tf:"sort_buffer_size,omitempty"`
 
 	// memory tables. Also set max_heap_table_size. Default is 16777216 (16M).
 	// Limits the size of internal in-memory tables. Also set max_heap_table_size. Default is 16777216 (16M).
 	// +kubebuilder:validation:Optional
-	TmpTableSize *int64 `json:"tmpTableSize,omitempty" tf:"tmp_table_size,omitempty"`
+	TmpTableSize *float64 `json:"tmpTableSize,omitempty" tf:"tmp_table_size,omitempty"`
 
 	// (String) MySQL major version.
 	// MySQL major version.
@@ -1082,7 +1414,12 @@ type PropertiesParameters struct {
 	// (Number) The number of seconds the server waits for activity on a noninteractive connection before closing it.
 	// The number of seconds the server waits for activity on a noninteractive connection before closing it.
 	// +kubebuilder:validation:Optional
-	WaitTimeout *int64 `json:"waitTimeout,omitempty" tf:"wait_timeout,omitempty"`
+	WaitTimeout *float64 `json:"waitTimeout,omitempty" tf:"wait_timeout,omitempty"`
+
+	// (Boolean) Whether window functions are computed to high precision. Disabling this trades exactness for speed in window function evaluation.
+	// Whether window functions are computed to high precision. Disabling this trades exactness for speed in window function evaluation.
+	// +kubebuilder:validation:Optional
+	WindowingUseHighPrecision *bool `json:"windowingUseHighPrecision,omitempty" tf:"windowing_use_high_precision,omitempty"`
 }
 
 // ManagedDatabaseMysqlSpec defines the desired state of ManagedDatabaseMysql
@@ -1104,8 +1441,8 @@ type ManagedDatabaseMysqlSpec struct {
 
 // ManagedDatabaseMysqlStatus defines the observed state of ManagedDatabaseMysql.
 type ManagedDatabaseMysqlStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ManagedDatabaseMysqlObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ManagedDatabaseMysqlObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

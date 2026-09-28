@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type FirewallRuleInitParameters struct {
@@ -226,11 +225,11 @@ type FirewallRulesInitParameters struct {
 
 	// Reference to a Server in server to populate serverId.
 	// +kubebuilder:validation:Optional
-	ServerIDRef *v1.NamespacedReference `json:"serverIdRef,omitempty" tf:"-"`
+	ServerIDRef *v2.NamespacedReference `json:"serverIdRef,omitempty" tf:"-"`
 
 	// Selector for a Server in server to populate serverId.
 	// +kubebuilder:validation:Optional
-	ServerIDSelector *v1.NamespacedSelector `json:"serverIdSelector,omitempty" tf:"-"`
+	ServerIDSelector *v2.NamespacedSelector `json:"serverIdSelector,omitempty" tf:"-"`
 }
 
 type FirewallRulesObservation struct {
@@ -274,15 +273,15 @@ type FirewallRulesParameters struct {
 	// The UUID of the server to be protected with the firewall rules.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/server/v1alpha1.Server
 	// +kubebuilder:validation:Optional
-	ServerID *string `json:"serverId" tf:"server_id,omitempty"`
+	ServerID *string `json:"serverId,omitempty" tf:"server_id,omitempty"`
 
 	// Reference to a Server in server to populate serverId.
 	// +kubebuilder:validation:Optional
-	ServerIDRef *v1.NamespacedReference `json:"serverIdRef,omitempty" tf:"-"`
+	ServerIDRef *v2.NamespacedReference `json:"serverIdRef,omitempty" tf:"-"`
 
 	// Selector for a Server in server to populate serverId.
 	// +kubebuilder:validation:Optional
-	ServerIDSelector *v1.NamespacedSelector `json:"serverIdSelector,omitempty" tf:"-"`
+	ServerIDSelector *v2.NamespacedSelector `json:"serverIdSelector,omitempty" tf:"-"`
 }
 
 // FirewallRulesSpec defines the desired state of FirewallRules
@@ -304,8 +303,8 @@ type FirewallRulesSpec struct {
 
 // FirewallRulesStatus defines the observed state of FirewallRules.
 type FirewallRulesStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        FirewallRulesObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               FirewallRulesObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

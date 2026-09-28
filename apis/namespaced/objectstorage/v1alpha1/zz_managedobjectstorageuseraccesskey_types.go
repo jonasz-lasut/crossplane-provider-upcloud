@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ManagedObjectStorageUserAccessKeyInitParameters struct {
@@ -57,34 +56,34 @@ type ManagedObjectStorageUserAccessKeyParameters struct {
 	// Managed Object Storage service UUID.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/objectstorage/v1alpha1.ManagedObjectStorage
 	// +kubebuilder:validation:Optional
-	ServiceUUID *string `json:"serviceUuid" tf:"service_uuid,omitempty"`
+	ServiceUUID *string `json:"serviceUuid,omitempty" tf:"service_uuid,omitempty"`
 
 	// Reference to a ManagedObjectStorage in objectstorage to populate serviceUuid.
 	// +kubebuilder:validation:Optional
-	ServiceUUIDRef *v1.NamespacedReference `json:"serviceUuidRef,omitempty" tf:"-"`
+	ServiceUUIDRef *v2.NamespacedReference `json:"serviceUuidRef,omitempty" tf:"-"`
 
 	// Selector for a ManagedObjectStorage in objectstorage to populate serviceUuid.
 	// +kubebuilder:validation:Optional
-	ServiceUUIDSelector *v1.NamespacedSelector `json:"serviceUuidSelector,omitempty" tf:"-"`
+	ServiceUUIDSelector *v2.NamespacedSelector `json:"serviceUuidSelector,omitempty" tf:"-"`
 
 	// (String) Status of the key. Valid values: Active|Inactive
 	// Status of the key. Valid values: `Active`|`Inactive`
 	// +kubebuilder:validation:Optional
-	Status *string `json:"status" tf:"status,omitempty"`
+	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
 	// (String) Username.
 	// Username.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/objectstorage/v1alpha1.ManagedObjectStorageUser
 	// +kubebuilder:validation:Optional
-	Username *string `json:"username" tf:"username,omitempty"`
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
 	// Reference to a ManagedObjectStorageUser in objectstorage to populate username.
 	// +kubebuilder:validation:Optional
-	UsernameRef *v1.NamespacedReference `json:"usernameRef,omitempty" tf:"-"`
+	UsernameRef *v2.NamespacedReference `json:"usernameRef,omitempty" tf:"-"`
 
 	// Selector for a ManagedObjectStorageUser in objectstorage to populate username.
 	// +kubebuilder:validation:Optional
-	UsernameSelector *v1.NamespacedSelector `json:"usernameSelector,omitempty" tf:"-"`
+	UsernameSelector *v2.NamespacedSelector `json:"usernameSelector,omitempty" tf:"-"`
 }
 
 // ManagedObjectStorageUserAccessKeySpec defines the desired state of ManagedObjectStorageUserAccessKey
@@ -106,8 +105,8 @@ type ManagedObjectStorageUserAccessKeySpec struct {
 
 // ManagedObjectStorageUserAccessKeyStatus defines the observed state of ManagedObjectStorageUserAccessKey.
 type ManagedObjectStorageUserAccessKeyStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ManagedObjectStorageUserAccessKeyObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ManagedObjectStorageUserAccessKeyObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

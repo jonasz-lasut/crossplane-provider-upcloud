@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ManagedDatabaseUserInitParameters struct {
@@ -20,19 +19,19 @@ type ManagedDatabaseUserInitParameters struct {
 	// MySQL only, authentication type.
 	Authentication *string `json:"authentication,omitempty" tf:"authentication,omitempty"`
 
-	// (Block List, Max: 1) OpenSearch access control object. (see below for nested schema)
+	// (Block List) OpenSearch access control object. (see below for nested schema)
 	// OpenSearch access control object.
 	OpensearchAccessControl []OpensearchAccessControlInitParameters `json:"opensearchAccessControl,omitempty" tf:"opensearch_access_control,omitempty"`
 
 	// (String, Sensitive) Password for the database user. Defaults to a random value
 	// Password for the database user. Defaults to a random value
-	PasswordSecretRef *v1.LocalSecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+	PasswordSecretRef *v2.LocalSecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
-	// (Block List, Max: 1) PostgreSQL access control object. (see below for nested schema)
+	// (Block List) PostgreSQL access control object. (see below for nested schema)
 	// PostgreSQL access control object.
 	PgAccessControl []PgAccessControlInitParameters `json:"pgAccessControl,omitempty" tf:"pg_access_control,omitempty"`
 
-	// (Block List, Max: 1) Valkey access control object. (see below for nested schema)
+	// (Block List) Valkey access control object. (see below for nested schema)
 	// Valkey access control object.
 	ValkeyAccessControl []ValkeyAccessControlInitParameters `json:"valkeyAccessControl,omitempty" tf:"valkey_access_control,omitempty"`
 }
@@ -43,14 +42,14 @@ type ManagedDatabaseUserObservation struct {
 	// MySQL only, authentication type.
 	Authentication *string `json:"authentication,omitempty" tf:"authentication,omitempty"`
 
-	// (String) The ID of this resource.
+	// (String) ID of the user. ID is in {service UUID}/{username} format.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// (Block List, Max: 1) OpenSearch access control object. (see below for nested schema)
+	// (Block List) OpenSearch access control object. (see below for nested schema)
 	// OpenSearch access control object.
 	OpensearchAccessControl []OpensearchAccessControlObservation `json:"opensearchAccessControl,omitempty" tf:"opensearch_access_control,omitempty"`
 
-	// (Block List, Max: 1) PostgreSQL access control object. (see below for nested schema)
+	// (Block List) PostgreSQL access control object. (see below for nested schema)
 	// PostgreSQL access control object.
 	PgAccessControl []PgAccessControlObservation `json:"pgAccessControl,omitempty" tf:"pg_access_control,omitempty"`
 
@@ -62,7 +61,7 @@ type ManagedDatabaseUserObservation struct {
 	// Type of the user. Only normal type users can be created
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
-	// (Block List, Max: 1) Valkey access control object. (see below for nested schema)
+	// (Block List) Valkey access control object. (see below for nested schema)
 	// Valkey access control object.
 	ValkeyAccessControl []ValkeyAccessControlObservation `json:"valkeyAccessControl,omitempty" tf:"valkey_access_control,omitempty"`
 }
@@ -74,7 +73,7 @@ type ManagedDatabaseUserParameters struct {
 	// +kubebuilder:validation:Optional
 	Authentication *string `json:"authentication,omitempty" tf:"authentication,omitempty"`
 
-	// (Block List, Max: 1) OpenSearch access control object. (see below for nested schema)
+	// (Block List) OpenSearch access control object. (see below for nested schema)
 	// OpenSearch access control object.
 	// +kubebuilder:validation:Optional
 	OpensearchAccessControl []OpensearchAccessControlParameters `json:"opensearchAccessControl,omitempty" tf:"opensearch_access_control,omitempty"`
@@ -82,9 +81,9 @@ type ManagedDatabaseUserParameters struct {
 	// (String, Sensitive) Password for the database user. Defaults to a random value
 	// Password for the database user. Defaults to a random value
 	// +kubebuilder:validation:Optional
-	PasswordSecretRef *v1.LocalSecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+	PasswordSecretRef *v2.LocalSecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
-	// (Block List, Max: 1) PostgreSQL access control object. (see below for nested schema)
+	// (Block List) PostgreSQL access control object. (see below for nested schema)
 	// PostgreSQL access control object.
 	// +kubebuilder:validation:Optional
 	PgAccessControl []PgAccessControlParameters `json:"pgAccessControl,omitempty" tf:"pg_access_control,omitempty"`
@@ -93,17 +92,17 @@ type ManagedDatabaseUserParameters struct {
 	// The service to which the logical database belongs. Please note that reference fields (`serviceRef` and `serviceSelector`) only work for PostgreSQL databases. For other databases you need to leverage compositions and patches to pass database service ID to database user `service` field. See https://docs.crossplane.io/latest/concepts/patch-and-transform/#patching-between-resources for more info.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/database/v1alpha1.ManagedDatabasePostgresql
 	// +kubebuilder:validation:Optional
-	Service *string `json:"service" tf:"service,omitempty"`
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
 
 	// Reference to a ManagedDatabasePostgresql in database to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceRef *v1.NamespacedReference `json:"serviceRef,omitempty" tf:"-"`
+	ServiceRef *v2.NamespacedReference `json:"serviceRef,omitempty" tf:"-"`
 
 	// Selector for a ManagedDatabasePostgresql in database to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.NamespacedSelector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.NamespacedSelector `json:"serviceSelector,omitempty" tf:"-"`
 
-	// (Block List, Max: 1) Valkey access control object. (see below for nested schema)
+	// (Block List) Valkey access control object. (see below for nested schema)
 	// Valkey access control object.
 	// +kubebuilder:validation:Optional
 	ValkeyAccessControl []ValkeyAccessControlParameters `json:"valkeyAccessControl,omitempty" tf:"valkey_access_control,omitempty"`
@@ -111,24 +110,24 @@ type ManagedDatabaseUserParameters struct {
 
 type OpensearchAccessControlInitParameters struct {
 
-	// (Block List, Min: 1) Set user access control rules. (see below for nested schema)
+	// (Block List) Set user access control rules. (see below for nested schema)
 	// Set user access control rules.
 	Rules []RulesInitParameters `json:"rules,omitempty" tf:"rules,omitempty"`
 }
 
 type OpensearchAccessControlObservation struct {
 
-	// (Block List, Min: 1) Set user access control rules. (see below for nested schema)
+	// (Block List) Set user access control rules. (see below for nested schema)
 	// Set user access control rules.
 	Rules []RulesObservation `json:"rules,omitempty" tf:"rules,omitempty"`
 }
 
 type OpensearchAccessControlParameters struct {
 
-	// (Block List, Min: 1) Set user access control rules. (see below for nested schema)
+	// (Block List) Set user access control rules. (see below for nested schema)
 	// Set user access control rules.
 	// +kubebuilder:validation:Optional
-	Rules []RulesParameters `json:"rules" tf:"rules,omitempty"`
+	Rules []RulesParameters `json:"rules,omitempty" tf:"rules,omitempty"`
 }
 
 type PgAccessControlInitParameters struct {
@@ -268,15 +267,15 @@ type ManagedDatabaseUserSpec struct {
 
 // ManagedDatabaseUserStatus defines the observed state of ManagedDatabaseUser.
 type ManagedDatabaseUserStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ManagedDatabaseUserObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ManagedDatabaseUserObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// ManagedDatabaseUser is the Schema for the ManagedDatabaseUsers API. This resource represents a user in managed database
+// ManagedDatabaseUser is the Schema for the ManagedDatabaseUsers API. This resource represents a user in managed database.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

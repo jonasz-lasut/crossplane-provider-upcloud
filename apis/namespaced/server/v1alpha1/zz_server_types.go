@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type AdditionalIPAddressInitParameters struct {
@@ -191,11 +190,11 @@ type NetworkInterfaceInitParameters struct {
 
 	// Reference to a Network in network to populate network.
 	// +kubebuilder:validation:Optional
-	NetworkRef *v1.NamespacedReference `json:"networkRef,omitempty" tf:"-"`
+	NetworkRef *v2.NamespacedReference `json:"networkRef,omitempty" tf:"-"`
 
 	// Selector for a Network in network to populate network.
 	// +kubebuilder:validation:Optional
-	NetworkSelector *v1.NamespacedSelector `json:"networkSelector,omitempty" tf:"-"`
+	NetworkSelector *v2.NamespacedSelector `json:"networkSelector,omitempty" tf:"-"`
 
 	// (Boolean) true if source IP should be filtered.
 	// `true` if source IP should be filtered.
@@ -284,11 +283,11 @@ type NetworkInterfaceParameters struct {
 
 	// Reference to a Network in network to populate network.
 	// +kubebuilder:validation:Optional
-	NetworkRef *v1.NamespacedReference `json:"networkRef,omitempty" tf:"-"`
+	NetworkRef *v2.NamespacedReference `json:"networkRef,omitempty" tf:"-"`
 
 	// Selector for a Network in network to populate network.
 	// +kubebuilder:validation:Optional
-	NetworkSelector *v1.NamespacedSelector `json:"networkSelector,omitempty" tf:"-"`
+	NetworkSelector *v2.NamespacedSelector `json:"networkSelector,omitempty" tf:"-"`
 
 	// (Boolean) true if source IP should be filtered.
 	// `true` if source IP should be filtered.
@@ -332,7 +331,7 @@ type ServerInitParameters struct {
 	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
-	// (Block Set) Configure access credentials to the server (see below for nested schema)
+	// (Block List) Configure access credentials to the server (see below for nested schema)
 	// Configure access credentials to the server
 	Login []LoginInitParameters `json:"login,omitempty" tf:"login,omitempty"`
 
@@ -374,8 +373,8 @@ type ServerInitParameters struct {
 	// A set of storage devices associated with the server
 	StorageDevices []StorageDevicesInitParameters `json:"storageDevices,omitempty" tf:"storage_devices,omitempty"`
 
-	// (Set of String) The server related tags
-	// The server related tags
+	// (Set of String) Tags to attach to the server. Note that tags are an access control feature and only available for a limited set of resources. Use labels to describe and filter your resources.
+	// Tags to attach to the server. Note that tags are an access control feature and only available for a limited set of resources. Use labels to describe and filter your resources.
 	// +listType=set
 	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
 
@@ -438,7 +437,7 @@ type ServerObservation struct {
 	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
-	// (Block Set) Configure access credentials to the server (see below for nested schema)
+	// (Block List) Configure access credentials to the server (see below for nested schema)
 	// Configure access credentials to the server
 	Login []LoginObservation `json:"login,omitempty" tf:"login,omitempty"`
 
@@ -480,8 +479,8 @@ type ServerObservation struct {
 	// A set of storage devices associated with the server
 	StorageDevices []StorageDevicesObservation `json:"storageDevices,omitempty" tf:"storage_devices,omitempty"`
 
-	// (Set of String) The server related tags
-	// The server related tags
+	// (Set of String) Tags to attach to the server. Note that tags are an access control feature and only available for a limited set of resources. Use labels to describe and filter your resources.
+	// Tags to attach to the server. Note that tags are an access control feature and only available for a limited set of resources. Use labels to describe and filter your resources.
 	// +listType=set
 	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
 
@@ -535,7 +534,7 @@ type ServerParameters struct {
 	// (String) The hostname of the server.
 	// The hostname of the server.
 	// +kubebuilder:validation:Optional
-	Hostname *string `json:"hostname" tf:"hostname,omitempty"`
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
 
 	// (Boolean) If set to true, allows changing the server plan without requiring a reboot. This enables hot resizing of the server. If hot resizing fails, the apply operation will fail.
 	// If set to true, allows changing the server plan without requiring a reboot. This enables hot resizing of the server. If hot resizing fails, the apply operation will fail.
@@ -548,7 +547,7 @@ type ServerParameters struct {
 	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
-	// (Block Set) Configure access credentials to the server (see below for nested schema)
+	// (Block List) Configure access credentials to the server (see below for nested schema)
 	// Configure access credentials to the server
 	// +kubebuilder:validation:Optional
 	Login []LoginParameters `json:"login,omitempty" tf:"login,omitempty"`
@@ -599,8 +598,8 @@ type ServerParameters struct {
 	// +kubebuilder:validation:Optional
 	StorageDevices []StorageDevicesParameters `json:"storageDevices,omitempty" tf:"storage_devices,omitempty"`
 
-	// (Set of String) The server related tags
-	// The server related tags
+	// (Set of String) Tags to attach to the server. Note that tags are an access control feature and only available for a limited set of resources. Use labels to describe and filter your resources.
+	// Tags to attach to the server. Note that tags are an access control feature and only available for a limited set of resources. Use labels to describe and filter your resources.
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
@@ -633,7 +632,7 @@ type ServerParameters struct {
 	// fra1. You can list available zones with upctl zone list.
 	// The zone in which the server will be hosted, e.g. `de-fra1`. You can list available zones with `upctl zone list`.
 	// +kubebuilder:validation:Optional
-	Zone *string `json:"zone" tf:"zone,omitempty"`
+	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
 }
 
 type SimpleBackupInitParameters struct {
@@ -688,11 +687,11 @@ type StorageDevicesInitParameters struct {
 
 	// Reference to a Storage in storage to populate storage.
 	// +kubebuilder:validation:Optional
-	StorageRef *v1.NamespacedReference `json:"storageRef,omitempty" tf:"-"`
+	StorageRef *v2.NamespacedReference `json:"storageRef,omitempty" tf:"-"`
 
 	// Selector for a Storage in storage to populate storage.
 	// +kubebuilder:validation:Optional
-	StorageSelector *v1.NamespacedSelector `json:"storageSelector,omitempty" tf:"-"`
+	StorageSelector *v2.NamespacedSelector `json:"storageSelector,omitempty" tf:"-"`
 
 	// (String) Network interface type. For private network interfaces, a network must be specified with an existing network id.
 	// The device type the storage will be attached as
@@ -738,11 +737,11 @@ type StorageDevicesParameters struct {
 
 	// Reference to a Storage in storage to populate storage.
 	// +kubebuilder:validation:Optional
-	StorageRef *v1.NamespacedReference `json:"storageRef,omitempty" tf:"-"`
+	StorageRef *v2.NamespacedReference `json:"storageRef,omitempty" tf:"-"`
 
 	// Selector for a Storage in storage to populate storage.
 	// +kubebuilder:validation:Optional
-	StorageSelector *v1.NamespacedSelector `json:"storageSelector,omitempty" tf:"-"`
+	StorageSelector *v2.NamespacedSelector `json:"storageSelector,omitempty" tf:"-"`
 
 	// (String) Network interface type. For private network interfaces, a network must be specified with an existing network id.
 	// The device type the storage will be attached as
@@ -936,8 +935,8 @@ type ServerSpec struct {
 
 // ServerStatus defines the observed state of Server.
 type ServerStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ServerObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ServerObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -5,84 +5,84 @@ Copyright 2022 Upbound Inc.
 
 package v1alpha1
 
-import xpv1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+import xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 
 // GetCondition of this KubernetesCluster.
-func (mg *KubernetesCluster) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *KubernetesCluster) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this KubernetesCluster.
-func (mg *KubernetesCluster) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *KubernetesCluster) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this KubernetesCluster.
-func (mg *KubernetesCluster) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *KubernetesCluster) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this KubernetesCluster.
-func (mg *KubernetesCluster) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *KubernetesCluster) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this KubernetesCluster.
-func (mg *KubernetesCluster) SetConditions(c ...xpv1.Condition) {
+func (mg *KubernetesCluster) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this KubernetesCluster.
-func (mg *KubernetesCluster) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *KubernetesCluster) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this KubernetesCluster.
-func (mg *KubernetesCluster) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *KubernetesCluster) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this KubernetesCluster.
-func (mg *KubernetesCluster) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *KubernetesCluster) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
 // GetCondition of this KubernetesNodeGroup.
-func (mg *KubernetesNodeGroup) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *KubernetesNodeGroup) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this KubernetesNodeGroup.
-func (mg *KubernetesNodeGroup) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *KubernetesNodeGroup) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this KubernetesNodeGroup.
-func (mg *KubernetesNodeGroup) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *KubernetesNodeGroup) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this KubernetesNodeGroup.
-func (mg *KubernetesNodeGroup) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *KubernetesNodeGroup) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this KubernetesNodeGroup.
-func (mg *KubernetesNodeGroup) SetConditions(c ...xpv1.Condition) {
+func (mg *KubernetesNodeGroup) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this KubernetesNodeGroup.
-func (mg *KubernetesNodeGroup) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *KubernetesNodeGroup) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this KubernetesNodeGroup.
-func (mg *KubernetesNodeGroup) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *KubernetesNodeGroup) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this KubernetesNodeGroup.
-func (mg *KubernetesNodeGroup) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *KubernetesNodeGroup) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }

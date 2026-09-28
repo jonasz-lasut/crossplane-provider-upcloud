@@ -9,7 +9,7 @@ Copyright 2022 Upbound Inc.
 package v1alpha1
 
 import (
-	"github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	"github.com/crossplane/crossplane/apis/v2/core/v2"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -89,7 +89,7 @@ func (in *CPUInitParameters) DeepCopyInto(out *CPUInitParameters) {
 	}
 	if in.TopNSize != nil {
 		in, out := &in.TopNSize, &out.TopNSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WindowSize != nil {
@@ -119,7 +119,7 @@ func (in *CPUObservation) DeepCopyInto(out *CPUObservation) {
 	}
 	if in.TopNSize != nil {
 		in, out := &in.TopNSize, &out.TopNSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WindowSize != nil {
@@ -149,7 +149,7 @@ func (in *CPUParameters) DeepCopyInto(out *CPUParameters) {
 	}
 	if in.TopNSize != nil {
 		in, out := &in.TopNSize, &out.TopNSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WindowSize != nil {
@@ -189,7 +189,7 @@ func (in *ClusterRemoteStoreInitParameters) DeepCopyInto(out *ClusterRemoteStore
 	}
 	if in.TranslogMaxReaders != nil {
 		in, out := &in.TranslogMaxReaders, &out.TranslogMaxReaders
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -224,7 +224,7 @@ func (in *ClusterRemoteStoreObservation) DeepCopyInto(out *ClusterRemoteStoreObs
 	}
 	if in.TranslogMaxReaders != nil {
 		in, out := &in.TranslogMaxReaders, &out.TranslogMaxReaders
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -259,7 +259,7 @@ func (in *ClusterRemoteStoreParameters) DeepCopyInto(out *ClusterRemoteStorePara
 	}
 	if in.TranslogMaxReaders != nil {
 		in, out := &in.TranslogMaxReaders, &out.TranslogMaxReaders
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -385,7 +385,7 @@ func (in *ComponentsObservation) DeepCopyInto(out *ComponentsObservation) {
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Route != nil {
@@ -430,17 +430,17 @@ func (in *DiskWatermarksInitParameters) DeepCopyInto(out *DiskWatermarksInitPara
 	*out = *in
 	if in.FloodStage != nil {
 		in, out := &in.FloodStage, &out.FloodStage
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.High != nil {
 		in, out := &in.High, &out.High
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Low != nil {
 		in, out := &in.Low, &out.Low
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -460,17 +460,17 @@ func (in *DiskWatermarksObservation) DeepCopyInto(out *DiskWatermarksObservation
 	*out = *in
 	if in.FloodStage != nil {
 		in, out := &in.FloodStage, &out.FloodStage
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.High != nil {
 		in, out := &in.High, &out.High
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Low != nil {
 		in, out := &in.Low, &out.Low
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -490,17 +490,17 @@ func (in *DiskWatermarksParameters) DeepCopyInto(out *DiskWatermarksParameters) 
 	*out = *in
 	if in.FloodStage != nil {
 		in, out := &in.FloodStage, &out.FloodStage
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.High != nil {
 		in, out := &in.High, &out.High
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Low != nil {
 		in, out := &in.Low, &out.Low
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -530,12 +530,12 @@ func (in *IndexRollupInitParameters) DeepCopyInto(out *IndexRollupInitParameters
 	}
 	if in.RollupSearchBackoffCount != nil {
 		in, out := &in.RollupSearchBackoffCount, &out.RollupSearchBackoffCount
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.RollupSearchBackoffMillis != nil {
 		in, out := &in.RollupSearchBackoffMillis, &out.RollupSearchBackoffMillis
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.RollupSearchSearchAllJobs != nil {
@@ -570,12 +570,12 @@ func (in *IndexRollupObservation) DeepCopyInto(out *IndexRollupObservation) {
 	}
 	if in.RollupSearchBackoffCount != nil {
 		in, out := &in.RollupSearchBackoffCount, &out.RollupSearchBackoffCount
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.RollupSearchBackoffMillis != nil {
 		in, out := &in.RollupSearchBackoffMillis, &out.RollupSearchBackoffMillis
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.RollupSearchSearchAllJobs != nil {
@@ -610,12 +610,12 @@ func (in *IndexRollupParameters) DeepCopyInto(out *IndexRollupParameters) {
 	}
 	if in.RollupSearchBackoffCount != nil {
 		in, out := &in.RollupSearchBackoffCount, &out.RollupSearchBackoffCount
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.RollupSearchBackoffMillis != nil {
 		in, out := &in.RollupSearchBackoffMillis, &out.RollupSearchBackoffMillis
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.RollupSearchSearchAllJobs != nil {
@@ -640,17 +640,17 @@ func (in *IndexTemplateInitParameters) DeepCopyInto(out *IndexTemplateInitParame
 	*out = *in
 	if in.MappingNestedObjectsLimit != nil {
 		in, out := &in.MappingNestedObjectsLimit, &out.MappingNestedObjectsLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.NumberOfReplicas != nil {
 		in, out := &in.NumberOfReplicas, &out.NumberOfReplicas
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.NumberOfShards != nil {
 		in, out := &in.NumberOfShards, &out.NumberOfShards
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -670,17 +670,17 @@ func (in *IndexTemplateObservation) DeepCopyInto(out *IndexTemplateObservation) 
 	*out = *in
 	if in.MappingNestedObjectsLimit != nil {
 		in, out := &in.MappingNestedObjectsLimit, &out.MappingNestedObjectsLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.NumberOfReplicas != nil {
 		in, out := &in.NumberOfReplicas, &out.NumberOfReplicas
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.NumberOfShards != nil {
 		in, out := &in.NumberOfShards, &out.NumberOfShards
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -700,17 +700,17 @@ func (in *IndexTemplateParameters) DeepCopyInto(out *IndexTemplateParameters) {
 	*out = *in
 	if in.MappingNestedObjectsLimit != nil {
 		in, out := &in.MappingNestedObjectsLimit, &out.MappingNestedObjectsLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.NumberOfReplicas != nil {
 		in, out := &in.NumberOfReplicas, &out.NumberOfReplicas
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.NumberOfShards != nil {
 		in, out := &in.NumberOfShards, &out.NumberOfShards
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -730,7 +730,7 @@ func (in *InternalAuthenticationBackendLimitingInitParameters) DeepCopyInto(out 
 	*out = *in
 	if in.AllowedTries != nil {
 		in, out := &in.AllowedTries, &out.AllowedTries
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AuthenticationBackend != nil {
@@ -740,22 +740,22 @@ func (in *InternalAuthenticationBackendLimitingInitParameters) DeepCopyInto(out 
 	}
 	if in.BlockExpirySeconds != nil {
 		in, out := &in.BlockExpirySeconds, &out.BlockExpirySeconds
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxBlockedClients != nil {
 		in, out := &in.MaxBlockedClients, &out.MaxBlockedClients
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxTrackedClients != nil {
 		in, out := &in.MaxTrackedClients, &out.MaxTrackedClients
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.TimeWindowSeconds != nil {
 		in, out := &in.TimeWindowSeconds, &out.TimeWindowSeconds
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Type != nil {
@@ -780,7 +780,7 @@ func (in *InternalAuthenticationBackendLimitingObservation) DeepCopyInto(out *In
 	*out = *in
 	if in.AllowedTries != nil {
 		in, out := &in.AllowedTries, &out.AllowedTries
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AuthenticationBackend != nil {
@@ -790,22 +790,22 @@ func (in *InternalAuthenticationBackendLimitingObservation) DeepCopyInto(out *In
 	}
 	if in.BlockExpirySeconds != nil {
 		in, out := &in.BlockExpirySeconds, &out.BlockExpirySeconds
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxBlockedClients != nil {
 		in, out := &in.MaxBlockedClients, &out.MaxBlockedClients
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxTrackedClients != nil {
 		in, out := &in.MaxTrackedClients, &out.MaxTrackedClients
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.TimeWindowSeconds != nil {
 		in, out := &in.TimeWindowSeconds, &out.TimeWindowSeconds
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Type != nil {
@@ -830,7 +830,7 @@ func (in *InternalAuthenticationBackendLimitingParameters) DeepCopyInto(out *Int
 	*out = *in
 	if in.AllowedTries != nil {
 		in, out := &in.AllowedTries, &out.AllowedTries
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AuthenticationBackend != nil {
@@ -840,22 +840,22 @@ func (in *InternalAuthenticationBackendLimitingParameters) DeepCopyInto(out *Int
 	}
 	if in.BlockExpirySeconds != nil {
 		in, out := &in.BlockExpirySeconds, &out.BlockExpirySeconds
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxBlockedClients != nil {
 		in, out := &in.MaxBlockedClients, &out.MaxBlockedClients
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxTrackedClients != nil {
 		in, out := &in.MaxTrackedClients, &out.MaxTrackedClients
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.TimeWindowSeconds != nil {
 		in, out := &in.TimeWindowSeconds, &out.TimeWindowSeconds
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Type != nil {
@@ -885,7 +885,7 @@ func (in *JwtInitParameters) DeepCopyInto(out *JwtInitParameters) {
 	}
 	if in.JwtClockSkewToleranceSeconds != nil {
 		in, out := &in.JwtClockSkewToleranceSeconds, &out.JwtClockSkewToleranceSeconds
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.JwtHeader != nil {
@@ -945,7 +945,7 @@ func (in *JwtObservation) DeepCopyInto(out *JwtObservation) {
 	}
 	if in.JwtClockSkewToleranceSeconds != nil {
 		in, out := &in.JwtClockSkewToleranceSeconds, &out.JwtClockSkewToleranceSeconds
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.JwtHeader != nil {
@@ -1005,7 +1005,7 @@ func (in *JwtParameters) DeepCopyInto(out *JwtParameters) {
 	}
 	if in.JwtClockSkewToleranceSeconds != nil {
 		in, out := &in.JwtClockSkewToleranceSeconds, &out.JwtClockSkewToleranceSeconds
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.JwtHeader != nil {
@@ -1065,7 +1065,7 @@ func (in *LatencyInitParameters) DeepCopyInto(out *LatencyInitParameters) {
 	}
 	if in.TopNSize != nil {
 		in, out := &in.TopNSize, &out.TopNSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WindowSize != nil {
@@ -1095,7 +1095,7 @@ func (in *LatencyObservation) DeepCopyInto(out *LatencyObservation) {
 	}
 	if in.TopNSize != nil {
 		in, out := &in.TopNSize, &out.TopNSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WindowSize != nil {
@@ -1125,7 +1125,7 @@ func (in *LatencyParameters) DeepCopyInto(out *LatencyParameters) {
 	}
 	if in.TopNSize != nil {
 		in, out := &in.TopNSize, &out.TopNSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WindowSize != nil {
@@ -1284,12 +1284,12 @@ func (in *ManagedDatabaseLogicalDatabaseParameters) DeepCopyInto(out *ManagedDat
 	}
 	if in.ServiceRef != nil {
 		in, out := &in.ServiceRef, &out.ServiceRef
-		*out = new(v1.Reference)
+		*out = new(v2.Reference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.ServiceSelector != nil {
 		in, out := &in.ServiceSelector, &out.ServiceSelector
-		*out = new(v1.Selector)
+		*out = new(v2.Selector)
 		(*in).DeepCopyInto(*out)
 	}
 }
@@ -1307,7 +1307,7 @@ func (in *ManagedDatabaseLogicalDatabaseParameters) DeepCopy() *ManagedDatabaseL
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabaseLogicalDatabaseSpec) DeepCopyInto(out *ManagedDatabaseLogicalDatabaseSpec) {
 	*out = *in
-	in.ResourceSpec.DeepCopyInto(&out.ResourceSpec)
+	in.ClusterManagedResourceSpec.DeepCopyInto(&out.ClusterManagedResourceSpec)
 	in.ForProvider.DeepCopyInto(&out.ForProvider)
 	in.InitProvider.DeepCopyInto(&out.InitProvider)
 }
@@ -1325,7 +1325,7 @@ func (in *ManagedDatabaseLogicalDatabaseSpec) DeepCopy() *ManagedDatabaseLogical
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabaseLogicalDatabaseStatus) DeepCopyInto(out *ManagedDatabaseLogicalDatabaseStatus) {
 	*out = *in
-	in.ResourceStatus.DeepCopyInto(&out.ResourceStatus)
+	in.ManagedResourceStatus.DeepCopyInto(&out.ManagedResourceStatus)
 	in.AtProvider.DeepCopyInto(&out.AtProvider)
 }
 
@@ -1371,7 +1371,7 @@ func (in *ManagedDatabaseMysqlInitParameters) DeepCopyInto(out *ManagedDatabaseM
 	*out = *in
 	if in.AdditionalDiskSpaceGib != nil {
 		in, out := &in.AdditionalDiskSpaceGib, &out.AdditionalDiskSpaceGib
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Labels != nil {
@@ -1415,9 +1415,7 @@ func (in *ManagedDatabaseMysqlInitParameters) DeepCopyInto(out *ManagedDatabaseM
 	if in.NodeStates != nil {
 		in, out := &in.NodeStates, &out.NodeStates
 		*out = make([]NodeStatesInitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		copy(*out, *in)
 	}
 	if in.Plan != nil {
 		in, out := &in.Plan, &out.Plan
@@ -1500,7 +1498,7 @@ func (in *ManagedDatabaseMysqlObservation) DeepCopyInto(out *ManagedDatabaseMysq
 	*out = *in
 	if in.AdditionalDiskSpaceGib != nil {
 		in, out := &in.AdditionalDiskSpaceGib, &out.AdditionalDiskSpaceGib
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Components != nil {
@@ -1639,7 +1637,7 @@ func (in *ManagedDatabaseMysqlParameters) DeepCopyInto(out *ManagedDatabaseMysql
 	*out = *in
 	if in.AdditionalDiskSpaceGib != nil {
 		in, out := &in.AdditionalDiskSpaceGib, &out.AdditionalDiskSpaceGib
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Labels != nil {
@@ -1683,9 +1681,7 @@ func (in *ManagedDatabaseMysqlParameters) DeepCopyInto(out *ManagedDatabaseMysql
 	if in.NodeStates != nil {
 		in, out := &in.NodeStates, &out.NodeStates
 		*out = make([]NodeStatesParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		copy(*out, *in)
 	}
 	if in.Plan != nil {
 		in, out := &in.Plan, &out.Plan
@@ -1734,7 +1730,7 @@ func (in *ManagedDatabaseMysqlParameters) DeepCopy() *ManagedDatabaseMysqlParame
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabaseMysqlSpec) DeepCopyInto(out *ManagedDatabaseMysqlSpec) {
 	*out = *in
-	in.ResourceSpec.DeepCopyInto(&out.ResourceSpec)
+	in.ClusterManagedResourceSpec.DeepCopyInto(&out.ClusterManagedResourceSpec)
 	in.ForProvider.DeepCopyInto(&out.ForProvider)
 	in.InitProvider.DeepCopyInto(&out.InitProvider)
 }
@@ -1752,7 +1748,7 @@ func (in *ManagedDatabaseMysqlSpec) DeepCopy() *ManagedDatabaseMysqlSpec {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabaseMysqlStatus) DeepCopyInto(out *ManagedDatabaseMysqlStatus) {
 	*out = *in
-	in.ResourceStatus.DeepCopyInto(&out.ResourceStatus)
+	in.ManagedResourceStatus.DeepCopyInto(&out.ManagedResourceStatus)
 	in.AtProvider.DeepCopyInto(&out.AtProvider)
 }
 
@@ -1823,7 +1819,7 @@ func (in *ManagedDatabaseOpensearchComponentsObservation) DeepCopyInto(out *Mana
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Route != nil {
@@ -1873,7 +1869,7 @@ func (in *ManagedDatabaseOpensearchInitParameters) DeepCopyInto(out *ManagedData
 	}
 	if in.AdditionalDiskSpaceGib != nil {
 		in, out := &in.AdditionalDiskSpaceGib, &out.AdditionalDiskSpaceGib
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ExtendedAccessControl != nil {
@@ -1922,9 +1918,7 @@ func (in *ManagedDatabaseOpensearchInitParameters) DeepCopyInto(out *ManagedData
 	if in.NodeStates != nil {
 		in, out := &in.NodeStates, &out.NodeStates
 		*out = make([]ManagedDatabaseOpensearchNodeStatesInitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		copy(*out, *in)
 	}
 	if in.Plan != nil {
 		in, out := &in.Plan, &out.Plan
@@ -2027,12 +2021,12 @@ func (in *ManagedDatabaseOpensearchNetworkInitParameters) DeepCopyInto(out *Mana
 	}
 	if in.UUIDRef != nil {
 		in, out := &in.UUIDRef, &out.UUIDRef
-		*out = new(v1.Reference)
+		*out = new(v2.Reference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.UUIDSelector != nil {
 		in, out := &in.UUIDSelector, &out.UUIDSelector
-		*out = new(v1.Selector)
+		*out = new(v2.Selector)
 		(*in).DeepCopyInto(*out)
 	}
 }
@@ -2107,12 +2101,12 @@ func (in *ManagedDatabaseOpensearchNetworkParameters) DeepCopyInto(out *ManagedD
 	}
 	if in.UUIDRef != nil {
 		in, out := &in.UUIDRef, &out.UUIDRef
-		*out = new(v1.Reference)
+		*out = new(v2.Reference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.UUIDSelector != nil {
 		in, out := &in.UUIDSelector, &out.UUIDSelector
-		*out = new(v1.Selector)
+		*out = new(v2.Selector)
 		(*in).DeepCopyInto(*out)
 	}
 }
@@ -2130,11 +2124,6 @@ func (in *ManagedDatabaseOpensearchNetworkParameters) DeepCopy() *ManagedDatabas
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabaseOpensearchNodeStatesInitParameters) DeepCopyInto(out *ManagedDatabaseOpensearchNodeStatesInitParameters) {
 	*out = *in
-	if in.Role != nil {
-		in, out := &in.Role, &out.Role
-		*out = new(string)
-		**out = **in
-	}
 }
 
 // DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new ManagedDatabaseOpensearchNodeStatesInitParameters.
@@ -2180,11 +2169,6 @@ func (in *ManagedDatabaseOpensearchNodeStatesObservation) DeepCopy() *ManagedDat
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabaseOpensearchNodeStatesParameters) DeepCopyInto(out *ManagedDatabaseOpensearchNodeStatesParameters) {
 	*out = *in
-	if in.Role != nil {
-		in, out := &in.Role, &out.Role
-		*out = new(string)
-		**out = **in
-	}
 }
 
 // DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new ManagedDatabaseOpensearchNodeStatesParameters.
@@ -2207,7 +2191,7 @@ func (in *ManagedDatabaseOpensearchObservation) DeepCopyInto(out *ManagedDatabas
 	}
 	if in.AdditionalDiskSpaceGib != nil {
 		in, out := &in.AdditionalDiskSpaceGib, &out.AdditionalDiskSpaceGib
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Components != nil {
@@ -2356,7 +2340,7 @@ func (in *ManagedDatabaseOpensearchParameters) DeepCopyInto(out *ManagedDatabase
 	}
 	if in.AdditionalDiskSpaceGib != nil {
 		in, out := &in.AdditionalDiskSpaceGib, &out.AdditionalDiskSpaceGib
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ExtendedAccessControl != nil {
@@ -2405,9 +2389,7 @@ func (in *ManagedDatabaseOpensearchParameters) DeepCopyInto(out *ManagedDatabase
 	if in.NodeStates != nil {
 		in, out := &in.NodeStates, &out.NodeStates
 		*out = make([]ManagedDatabaseOpensearchNodeStatesParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		copy(*out, *in)
 	}
 	if in.Plan != nil {
 		in, out := &in.Plan, &out.Plan
@@ -2480,12 +2462,12 @@ func (in *ManagedDatabaseOpensearchPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.ClusterFilecacheRemoteDataRatio != nil {
 		in, out := &in.ClusterFilecacheRemoteDataRatio, &out.ClusterFilecacheRemoteDataRatio
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ClusterMaxShardsPerNode != nil {
 		in, out := &in.ClusterMaxShardsPerNode, &out.ClusterMaxShardsPerNode
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ClusterRemoteStore != nil {
@@ -2502,7 +2484,7 @@ func (in *ManagedDatabaseOpensearchPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.ClusterRoutingAllocationNodeConcurrentRecoveries != nil {
 		in, out := &in.ClusterRoutingAllocationNodeConcurrentRecoveries, &out.ClusterRoutingAllocationNodeConcurrentRecoveries
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ClusterSearchRequestSlowlog != nil {
@@ -2558,7 +2540,7 @@ func (in *ManagedDatabaseOpensearchPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.EmailSenderPasswordSecretRef != nil {
 		in, out := &in.EmailSenderPasswordSecretRef, &out.EmailSenderPasswordSecretRef
-		*out = new(v1.SecretKeySelector)
+		*out = new(v2.SecretKeySelector)
 		**out = **in
 	}
 	if in.EmailSenderUsername != nil {
@@ -2588,17 +2570,17 @@ func (in *ManagedDatabaseOpensearchPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.HTTPMaxContentLength != nil {
 		in, out := &in.HTTPMaxContentLength, &out.HTTPMaxContentLength
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HTTPMaxHeaderSize != nil {
 		in, out := &in.HTTPMaxHeaderSize, &out.HTTPMaxHeaderSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HTTPMaxInitialLineLength != nil {
 		in, out := &in.HTTPMaxInitialLineLength, &out.HTTPMaxInitialLineLength
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IPFilter != nil {
@@ -2639,42 +2621,42 @@ func (in *ManagedDatabaseOpensearchPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.IndicesFielddataCacheSize != nil {
 		in, out := &in.IndicesFielddataCacheSize, &out.IndicesFielddataCacheSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesMemoryIndexBufferSize != nil {
 		in, out := &in.IndicesMemoryIndexBufferSize, &out.IndicesMemoryIndexBufferSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesMemoryMaxIndexBufferSize != nil {
 		in, out := &in.IndicesMemoryMaxIndexBufferSize, &out.IndicesMemoryMaxIndexBufferSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesMemoryMinIndexBufferSize != nil {
 		in, out := &in.IndicesMemoryMinIndexBufferSize, &out.IndicesMemoryMinIndexBufferSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesQueriesCacheSize != nil {
 		in, out := &in.IndicesQueriesCacheSize, &out.IndicesQueriesCacheSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesQueryBoolMaxClauseCount != nil {
 		in, out := &in.IndicesQueryBoolMaxClauseCount, &out.IndicesQueryBoolMaxClauseCount
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesRecoveryMaxBytesPerSec != nil {
 		in, out := &in.IndicesRecoveryMaxBytesPerSec, &out.IndicesRecoveryMaxBytesPerSec
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesRecoveryMaxConcurrentFileChunks != nil {
 		in, out := &in.IndicesRecoveryMaxConcurrentFileChunks, &out.IndicesRecoveryMaxConcurrentFileChunks
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IsmEnabled != nil {
@@ -2689,22 +2671,22 @@ func (in *ManagedDatabaseOpensearchPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.IsmHistoryMaxAge != nil {
 		in, out := &in.IsmHistoryMaxAge, &out.IsmHistoryMaxAge
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IsmHistoryMaxDocs != nil {
 		in, out := &in.IsmHistoryMaxDocs, &out.IsmHistoryMaxDocs
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IsmHistoryRolloverCheckPeriod != nil {
 		in, out := &in.IsmHistoryRolloverCheckPeriod, &out.IsmHistoryRolloverCheckPeriod
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IsmHistoryRolloverRetentionPeriod != nil {
 		in, out := &in.IsmHistoryRolloverRetentionPeriod, &out.IsmHistoryRolloverRetentionPeriod
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Jwt != nil {
@@ -2726,8 +2708,39 @@ func (in *ManagedDatabaseOpensearchPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.KnnMemoryCircuitBreakerLimit != nil {
 		in, out := &in.KnnMemoryCircuitBreakerLimit, &out.KnnMemoryCircuitBreakerLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
+	}
+	if in.MLCommonsConnectorAccessControlEnabled != nil {
+		in, out := &in.MLCommonsConnectorAccessControlEnabled, &out.MLCommonsConnectorAccessControlEnabled
+		*out = new(bool)
+		**out = **in
+	}
+	if in.MLCommonsModelAccessControlEnabled != nil {
+		in, out := &in.MLCommonsModelAccessControlEnabled, &out.MLCommonsModelAccessControlEnabled
+		*out = new(bool)
+		**out = **in
+	}
+	if in.MLCommonsNativeMemoryThreshold != nil {
+		in, out := &in.MLCommonsNativeMemoryThreshold, &out.MLCommonsNativeMemoryThreshold
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MLCommonsOnlyRunOnMLNode != nil {
+		in, out := &in.MLCommonsOnlyRunOnMLNode, &out.MLCommonsOnlyRunOnMLNode
+		*out = new(bool)
+		**out = **in
+	}
+	if in.MLCommonsTrustedConnectorEndpointsRegex != nil {
+		in, out := &in.MLCommonsTrustedConnectorEndpointsRegex, &out.MLCommonsTrustedConnectorEndpointsRegex
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
 	}
 	if in.NodeSearchCacheSize != nil {
 		in, out := &in.NodeSearchCacheSize, &out.NodeSearchCacheSize
@@ -2760,6 +2773,11 @@ func (in *ManagedDatabaseOpensearchPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.PublicAccess != nil {
 		in, out := &in.PublicAccess, &out.PublicAccess
+		*out = new(bool)
+		**out = **in
+	}
+	if in.PublicAccessPrometheus != nil {
+		in, out := &in.PublicAccessPrometheus, &out.PublicAccessPrometheus
 		*out = new(bool)
 		**out = **in
 	}
@@ -2809,7 +2827,7 @@ func (in *ManagedDatabaseOpensearchPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.SearchMaxBuckets != nil {
 		in, out := &in.SearchMaxBuckets, &out.SearchMaxBuckets
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Segrep != nil {
@@ -2833,57 +2851,57 @@ func (in *ManagedDatabaseOpensearchPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.ThreadPoolAnalyzeQueueSize != nil {
 		in, out := &in.ThreadPoolAnalyzeQueueSize, &out.ThreadPoolAnalyzeQueueSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolAnalyzeSize != nil {
 		in, out := &in.ThreadPoolAnalyzeSize, &out.ThreadPoolAnalyzeSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolForceMergeSize != nil {
 		in, out := &in.ThreadPoolForceMergeSize, &out.ThreadPoolForceMergeSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolGetQueueSize != nil {
 		in, out := &in.ThreadPoolGetQueueSize, &out.ThreadPoolGetQueueSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolGetSize != nil {
 		in, out := &in.ThreadPoolGetSize, &out.ThreadPoolGetSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolSearchQueueSize != nil {
 		in, out := &in.ThreadPoolSearchQueueSize, &out.ThreadPoolSearchQueueSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolSearchSize != nil {
 		in, out := &in.ThreadPoolSearchSize, &out.ThreadPoolSearchSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolSearchThrottledQueueSize != nil {
 		in, out := &in.ThreadPoolSearchThrottledQueueSize, &out.ThreadPoolSearchThrottledQueueSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolSearchThrottledSize != nil {
 		in, out := &in.ThreadPoolSearchThrottledSize, &out.ThreadPoolSearchThrottledSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolWriteQueueSize != nil {
 		in, out := &in.ThreadPoolWriteQueueSize, &out.ThreadPoolWriteQueueSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolWriteSize != nil {
 		in, out := &in.ThreadPoolWriteSize, &out.ThreadPoolWriteSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Version != nil {
@@ -2930,12 +2948,12 @@ func (in *ManagedDatabaseOpensearchPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.ClusterFilecacheRemoteDataRatio != nil {
 		in, out := &in.ClusterFilecacheRemoteDataRatio, &out.ClusterFilecacheRemoteDataRatio
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ClusterMaxShardsPerNode != nil {
 		in, out := &in.ClusterMaxShardsPerNode, &out.ClusterMaxShardsPerNode
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ClusterRemoteStore != nil {
@@ -2952,7 +2970,7 @@ func (in *ManagedDatabaseOpensearchPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.ClusterRoutingAllocationNodeConcurrentRecoveries != nil {
 		in, out := &in.ClusterRoutingAllocationNodeConcurrentRecoveries, &out.ClusterRoutingAllocationNodeConcurrentRecoveries
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ClusterSearchRequestSlowlog != nil {
@@ -3033,17 +3051,17 @@ func (in *ManagedDatabaseOpensearchPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.HTTPMaxContentLength != nil {
 		in, out := &in.HTTPMaxContentLength, &out.HTTPMaxContentLength
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HTTPMaxHeaderSize != nil {
 		in, out := &in.HTTPMaxHeaderSize, &out.HTTPMaxHeaderSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HTTPMaxInitialLineLength != nil {
 		in, out := &in.HTTPMaxInitialLineLength, &out.HTTPMaxInitialLineLength
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IPFilter != nil {
@@ -3084,42 +3102,42 @@ func (in *ManagedDatabaseOpensearchPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.IndicesFielddataCacheSize != nil {
 		in, out := &in.IndicesFielddataCacheSize, &out.IndicesFielddataCacheSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesMemoryIndexBufferSize != nil {
 		in, out := &in.IndicesMemoryIndexBufferSize, &out.IndicesMemoryIndexBufferSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesMemoryMaxIndexBufferSize != nil {
 		in, out := &in.IndicesMemoryMaxIndexBufferSize, &out.IndicesMemoryMaxIndexBufferSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesMemoryMinIndexBufferSize != nil {
 		in, out := &in.IndicesMemoryMinIndexBufferSize, &out.IndicesMemoryMinIndexBufferSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesQueriesCacheSize != nil {
 		in, out := &in.IndicesQueriesCacheSize, &out.IndicesQueriesCacheSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesQueryBoolMaxClauseCount != nil {
 		in, out := &in.IndicesQueryBoolMaxClauseCount, &out.IndicesQueryBoolMaxClauseCount
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesRecoveryMaxBytesPerSec != nil {
 		in, out := &in.IndicesRecoveryMaxBytesPerSec, &out.IndicesRecoveryMaxBytesPerSec
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesRecoveryMaxConcurrentFileChunks != nil {
 		in, out := &in.IndicesRecoveryMaxConcurrentFileChunks, &out.IndicesRecoveryMaxConcurrentFileChunks
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IsmEnabled != nil {
@@ -3134,22 +3152,22 @@ func (in *ManagedDatabaseOpensearchPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.IsmHistoryMaxAge != nil {
 		in, out := &in.IsmHistoryMaxAge, &out.IsmHistoryMaxAge
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IsmHistoryMaxDocs != nil {
 		in, out := &in.IsmHistoryMaxDocs, &out.IsmHistoryMaxDocs
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IsmHistoryRolloverCheckPeriod != nil {
 		in, out := &in.IsmHistoryRolloverCheckPeriod, &out.IsmHistoryRolloverCheckPeriod
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IsmHistoryRolloverRetentionPeriod != nil {
 		in, out := &in.IsmHistoryRolloverRetentionPeriod, &out.IsmHistoryRolloverRetentionPeriod
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Jwt != nil {
@@ -3171,8 +3189,39 @@ func (in *ManagedDatabaseOpensearchPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.KnnMemoryCircuitBreakerLimit != nil {
 		in, out := &in.KnnMemoryCircuitBreakerLimit, &out.KnnMemoryCircuitBreakerLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
+	}
+	if in.MLCommonsConnectorAccessControlEnabled != nil {
+		in, out := &in.MLCommonsConnectorAccessControlEnabled, &out.MLCommonsConnectorAccessControlEnabled
+		*out = new(bool)
+		**out = **in
+	}
+	if in.MLCommonsModelAccessControlEnabled != nil {
+		in, out := &in.MLCommonsModelAccessControlEnabled, &out.MLCommonsModelAccessControlEnabled
+		*out = new(bool)
+		**out = **in
+	}
+	if in.MLCommonsNativeMemoryThreshold != nil {
+		in, out := &in.MLCommonsNativeMemoryThreshold, &out.MLCommonsNativeMemoryThreshold
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MLCommonsOnlyRunOnMLNode != nil {
+		in, out := &in.MLCommonsOnlyRunOnMLNode, &out.MLCommonsOnlyRunOnMLNode
+		*out = new(bool)
+		**out = **in
+	}
+	if in.MLCommonsTrustedConnectorEndpointsRegex != nil {
+		in, out := &in.MLCommonsTrustedConnectorEndpointsRegex, &out.MLCommonsTrustedConnectorEndpointsRegex
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
 	}
 	if in.NodeSearchCacheSize != nil {
 		in, out := &in.NodeSearchCacheSize, &out.NodeSearchCacheSize
@@ -3205,6 +3254,11 @@ func (in *ManagedDatabaseOpensearchPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.PublicAccess != nil {
 		in, out := &in.PublicAccess, &out.PublicAccess
+		*out = new(bool)
+		**out = **in
+	}
+	if in.PublicAccessPrometheus != nil {
+		in, out := &in.PublicAccessPrometheus, &out.PublicAccessPrometheus
 		*out = new(bool)
 		**out = **in
 	}
@@ -3254,7 +3308,7 @@ func (in *ManagedDatabaseOpensearchPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.SearchMaxBuckets != nil {
 		in, out := &in.SearchMaxBuckets, &out.SearchMaxBuckets
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Segrep != nil {
@@ -3278,57 +3332,57 @@ func (in *ManagedDatabaseOpensearchPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.ThreadPoolAnalyzeQueueSize != nil {
 		in, out := &in.ThreadPoolAnalyzeQueueSize, &out.ThreadPoolAnalyzeQueueSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolAnalyzeSize != nil {
 		in, out := &in.ThreadPoolAnalyzeSize, &out.ThreadPoolAnalyzeSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolForceMergeSize != nil {
 		in, out := &in.ThreadPoolForceMergeSize, &out.ThreadPoolForceMergeSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolGetQueueSize != nil {
 		in, out := &in.ThreadPoolGetQueueSize, &out.ThreadPoolGetQueueSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolGetSize != nil {
 		in, out := &in.ThreadPoolGetSize, &out.ThreadPoolGetSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolSearchQueueSize != nil {
 		in, out := &in.ThreadPoolSearchQueueSize, &out.ThreadPoolSearchQueueSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolSearchSize != nil {
 		in, out := &in.ThreadPoolSearchSize, &out.ThreadPoolSearchSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolSearchThrottledQueueSize != nil {
 		in, out := &in.ThreadPoolSearchThrottledQueueSize, &out.ThreadPoolSearchThrottledQueueSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolSearchThrottledSize != nil {
 		in, out := &in.ThreadPoolSearchThrottledSize, &out.ThreadPoolSearchThrottledSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolWriteQueueSize != nil {
 		in, out := &in.ThreadPoolWriteQueueSize, &out.ThreadPoolWriteQueueSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolWriteSize != nil {
 		in, out := &in.ThreadPoolWriteSize, &out.ThreadPoolWriteSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Version != nil {
@@ -3375,12 +3429,12 @@ func (in *ManagedDatabaseOpensearchPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.ClusterFilecacheRemoteDataRatio != nil {
 		in, out := &in.ClusterFilecacheRemoteDataRatio, &out.ClusterFilecacheRemoteDataRatio
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ClusterMaxShardsPerNode != nil {
 		in, out := &in.ClusterMaxShardsPerNode, &out.ClusterMaxShardsPerNode
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ClusterRemoteStore != nil {
@@ -3397,7 +3451,7 @@ func (in *ManagedDatabaseOpensearchPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.ClusterRoutingAllocationNodeConcurrentRecoveries != nil {
 		in, out := &in.ClusterRoutingAllocationNodeConcurrentRecoveries, &out.ClusterRoutingAllocationNodeConcurrentRecoveries
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ClusterSearchRequestSlowlog != nil {
@@ -3453,7 +3507,7 @@ func (in *ManagedDatabaseOpensearchPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.EmailSenderPasswordSecretRef != nil {
 		in, out := &in.EmailSenderPasswordSecretRef, &out.EmailSenderPasswordSecretRef
-		*out = new(v1.SecretKeySelector)
+		*out = new(v2.SecretKeySelector)
 		**out = **in
 	}
 	if in.EmailSenderUsername != nil {
@@ -3483,17 +3537,17 @@ func (in *ManagedDatabaseOpensearchPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.HTTPMaxContentLength != nil {
 		in, out := &in.HTTPMaxContentLength, &out.HTTPMaxContentLength
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HTTPMaxHeaderSize != nil {
 		in, out := &in.HTTPMaxHeaderSize, &out.HTTPMaxHeaderSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HTTPMaxInitialLineLength != nil {
 		in, out := &in.HTTPMaxInitialLineLength, &out.HTTPMaxInitialLineLength
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IPFilter != nil {
@@ -3534,42 +3588,42 @@ func (in *ManagedDatabaseOpensearchPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.IndicesFielddataCacheSize != nil {
 		in, out := &in.IndicesFielddataCacheSize, &out.IndicesFielddataCacheSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesMemoryIndexBufferSize != nil {
 		in, out := &in.IndicesMemoryIndexBufferSize, &out.IndicesMemoryIndexBufferSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesMemoryMaxIndexBufferSize != nil {
 		in, out := &in.IndicesMemoryMaxIndexBufferSize, &out.IndicesMemoryMaxIndexBufferSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesMemoryMinIndexBufferSize != nil {
 		in, out := &in.IndicesMemoryMinIndexBufferSize, &out.IndicesMemoryMinIndexBufferSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesQueriesCacheSize != nil {
 		in, out := &in.IndicesQueriesCacheSize, &out.IndicesQueriesCacheSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesQueryBoolMaxClauseCount != nil {
 		in, out := &in.IndicesQueryBoolMaxClauseCount, &out.IndicesQueryBoolMaxClauseCount
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesRecoveryMaxBytesPerSec != nil {
 		in, out := &in.IndicesRecoveryMaxBytesPerSec, &out.IndicesRecoveryMaxBytesPerSec
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IndicesRecoveryMaxConcurrentFileChunks != nil {
 		in, out := &in.IndicesRecoveryMaxConcurrentFileChunks, &out.IndicesRecoveryMaxConcurrentFileChunks
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IsmEnabled != nil {
@@ -3584,22 +3638,22 @@ func (in *ManagedDatabaseOpensearchPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.IsmHistoryMaxAge != nil {
 		in, out := &in.IsmHistoryMaxAge, &out.IsmHistoryMaxAge
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IsmHistoryMaxDocs != nil {
 		in, out := &in.IsmHistoryMaxDocs, &out.IsmHistoryMaxDocs
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IsmHistoryRolloverCheckPeriod != nil {
 		in, out := &in.IsmHistoryRolloverCheckPeriod, &out.IsmHistoryRolloverCheckPeriod
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IsmHistoryRolloverRetentionPeriod != nil {
 		in, out := &in.IsmHistoryRolloverRetentionPeriod, &out.IsmHistoryRolloverRetentionPeriod
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Jwt != nil {
@@ -3621,8 +3675,39 @@ func (in *ManagedDatabaseOpensearchPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.KnnMemoryCircuitBreakerLimit != nil {
 		in, out := &in.KnnMemoryCircuitBreakerLimit, &out.KnnMemoryCircuitBreakerLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
+	}
+	if in.MLCommonsConnectorAccessControlEnabled != nil {
+		in, out := &in.MLCommonsConnectorAccessControlEnabled, &out.MLCommonsConnectorAccessControlEnabled
+		*out = new(bool)
+		**out = **in
+	}
+	if in.MLCommonsModelAccessControlEnabled != nil {
+		in, out := &in.MLCommonsModelAccessControlEnabled, &out.MLCommonsModelAccessControlEnabled
+		*out = new(bool)
+		**out = **in
+	}
+	if in.MLCommonsNativeMemoryThreshold != nil {
+		in, out := &in.MLCommonsNativeMemoryThreshold, &out.MLCommonsNativeMemoryThreshold
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MLCommonsOnlyRunOnMLNode != nil {
+		in, out := &in.MLCommonsOnlyRunOnMLNode, &out.MLCommonsOnlyRunOnMLNode
+		*out = new(bool)
+		**out = **in
+	}
+	if in.MLCommonsTrustedConnectorEndpointsRegex != nil {
+		in, out := &in.MLCommonsTrustedConnectorEndpointsRegex, &out.MLCommonsTrustedConnectorEndpointsRegex
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
 	}
 	if in.NodeSearchCacheSize != nil {
 		in, out := &in.NodeSearchCacheSize, &out.NodeSearchCacheSize
@@ -3655,6 +3740,11 @@ func (in *ManagedDatabaseOpensearchPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.PublicAccess != nil {
 		in, out := &in.PublicAccess, &out.PublicAccess
+		*out = new(bool)
+		**out = **in
+	}
+	if in.PublicAccessPrometheus != nil {
+		in, out := &in.PublicAccessPrometheus, &out.PublicAccessPrometheus
 		*out = new(bool)
 		**out = **in
 	}
@@ -3704,7 +3794,7 @@ func (in *ManagedDatabaseOpensearchPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.SearchMaxBuckets != nil {
 		in, out := &in.SearchMaxBuckets, &out.SearchMaxBuckets
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Segrep != nil {
@@ -3728,57 +3818,57 @@ func (in *ManagedDatabaseOpensearchPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.ThreadPoolAnalyzeQueueSize != nil {
 		in, out := &in.ThreadPoolAnalyzeQueueSize, &out.ThreadPoolAnalyzeQueueSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolAnalyzeSize != nil {
 		in, out := &in.ThreadPoolAnalyzeSize, &out.ThreadPoolAnalyzeSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolForceMergeSize != nil {
 		in, out := &in.ThreadPoolForceMergeSize, &out.ThreadPoolForceMergeSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolGetQueueSize != nil {
 		in, out := &in.ThreadPoolGetQueueSize, &out.ThreadPoolGetQueueSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolGetSize != nil {
 		in, out := &in.ThreadPoolGetSize, &out.ThreadPoolGetSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolSearchQueueSize != nil {
 		in, out := &in.ThreadPoolSearchQueueSize, &out.ThreadPoolSearchQueueSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolSearchSize != nil {
 		in, out := &in.ThreadPoolSearchSize, &out.ThreadPoolSearchSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolSearchThrottledQueueSize != nil {
 		in, out := &in.ThreadPoolSearchThrottledQueueSize, &out.ThreadPoolSearchThrottledQueueSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolSearchThrottledSize != nil {
 		in, out := &in.ThreadPoolSearchThrottledSize, &out.ThreadPoolSearchThrottledSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolWriteQueueSize != nil {
 		in, out := &in.ThreadPoolWriteQueueSize, &out.ThreadPoolWriteQueueSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ThreadPoolWriteSize != nil {
 		in, out := &in.ThreadPoolWriteSize, &out.ThreadPoolWriteSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Version != nil {
@@ -3801,7 +3891,7 @@ func (in *ManagedDatabaseOpensearchPropertiesParameters) DeepCopy() *ManagedData
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabaseOpensearchSpec) DeepCopyInto(out *ManagedDatabaseOpensearchSpec) {
 	*out = *in
-	in.ResourceSpec.DeepCopyInto(&out.ResourceSpec)
+	in.ClusterManagedResourceSpec.DeepCopyInto(&out.ClusterManagedResourceSpec)
 	in.ForProvider.DeepCopyInto(&out.ForProvider)
 	in.InitProvider.DeepCopyInto(&out.InitProvider)
 }
@@ -3819,7 +3909,7 @@ func (in *ManagedDatabaseOpensearchSpec) DeepCopy() *ManagedDatabaseOpensearchSp
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabaseOpensearchStatus) DeepCopyInto(out *ManagedDatabaseOpensearchStatus) {
 	*out = *in
-	in.ResourceStatus.DeepCopyInto(&out.ResourceStatus)
+	in.ManagedResourceStatus.DeepCopyInto(&out.ManagedResourceStatus)
 	in.AtProvider.DeepCopyInto(&out.AtProvider)
 }
 
@@ -3890,7 +3980,7 @@ func (in *ManagedDatabasePostgresqlComponentsObservation) DeepCopyInto(out *Mana
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Route != nil {
@@ -3935,7 +4025,7 @@ func (in *ManagedDatabasePostgresqlInitParameters) DeepCopyInto(out *ManagedData
 	*out = *in
 	if in.AdditionalDiskSpaceGib != nil {
 		in, out := &in.AdditionalDiskSpaceGib, &out.AdditionalDiskSpaceGib
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Labels != nil {
@@ -3979,9 +4069,7 @@ func (in *ManagedDatabasePostgresqlInitParameters) DeepCopyInto(out *ManagedData
 	if in.NodeStates != nil {
 		in, out := &in.NodeStates, &out.NodeStates
 		*out = make([]ManagedDatabasePostgresqlNodeStatesInitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		copy(*out, *in)
 	}
 	if in.Plan != nil {
 		in, out := &in.Plan, &out.Plan
@@ -4084,12 +4172,12 @@ func (in *ManagedDatabasePostgresqlNetworkInitParameters) DeepCopyInto(out *Mana
 	}
 	if in.UUIDRef != nil {
 		in, out := &in.UUIDRef, &out.UUIDRef
-		*out = new(v1.Reference)
+		*out = new(v2.Reference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.UUIDSelector != nil {
 		in, out := &in.UUIDSelector, &out.UUIDSelector
-		*out = new(v1.Selector)
+		*out = new(v2.Selector)
 		(*in).DeepCopyInto(*out)
 	}
 }
@@ -4164,12 +4252,12 @@ func (in *ManagedDatabasePostgresqlNetworkParameters) DeepCopyInto(out *ManagedD
 	}
 	if in.UUIDRef != nil {
 		in, out := &in.UUIDRef, &out.UUIDRef
-		*out = new(v1.Reference)
+		*out = new(v2.Reference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.UUIDSelector != nil {
 		in, out := &in.UUIDSelector, &out.UUIDSelector
-		*out = new(v1.Selector)
+		*out = new(v2.Selector)
 		(*in).DeepCopyInto(*out)
 	}
 }
@@ -4187,11 +4275,6 @@ func (in *ManagedDatabasePostgresqlNetworkParameters) DeepCopy() *ManagedDatabas
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabasePostgresqlNodeStatesInitParameters) DeepCopyInto(out *ManagedDatabasePostgresqlNodeStatesInitParameters) {
 	*out = *in
-	if in.Role != nil {
-		in, out := &in.Role, &out.Role
-		*out = new(string)
-		**out = **in
-	}
 }
 
 // DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new ManagedDatabasePostgresqlNodeStatesInitParameters.
@@ -4237,11 +4320,6 @@ func (in *ManagedDatabasePostgresqlNodeStatesObservation) DeepCopy() *ManagedDat
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabasePostgresqlNodeStatesParameters) DeepCopyInto(out *ManagedDatabasePostgresqlNodeStatesParameters) {
 	*out = *in
-	if in.Role != nil {
-		in, out := &in.Role, &out.Role
-		*out = new(string)
-		**out = **in
-	}
 }
 
 // DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new ManagedDatabasePostgresqlNodeStatesParameters.
@@ -4259,7 +4337,7 @@ func (in *ManagedDatabasePostgresqlObservation) DeepCopyInto(out *ManagedDatabas
 	*out = *in
 	if in.AdditionalDiskSpaceGib != nil {
 		in, out := &in.AdditionalDiskSpaceGib, &out.AdditionalDiskSpaceGib
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Components != nil {
@@ -4403,7 +4481,7 @@ func (in *ManagedDatabasePostgresqlParameters) DeepCopyInto(out *ManagedDatabase
 	*out = *in
 	if in.AdditionalDiskSpaceGib != nil {
 		in, out := &in.AdditionalDiskSpaceGib, &out.AdditionalDiskSpaceGib
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Labels != nil {
@@ -4447,9 +4525,7 @@ func (in *ManagedDatabasePostgresqlParameters) DeepCopyInto(out *ManagedDatabase
 	if in.NodeStates != nil {
 		in, out := &in.NodeStates, &out.NodeStates
 		*out = make([]ManagedDatabasePostgresqlNodeStatesParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		copy(*out, *in)
 	}
 	if in.Plan != nil {
 		in, out := &in.Plan, &out.Plan
@@ -4500,7 +4576,7 @@ func (in *ManagedDatabasePostgresqlPropertiesInitParameters) DeepCopyInto(out *M
 	*out = *in
 	if in.AdminPasswordSecretRef != nil {
 		in, out := &in.AdminPasswordSecretRef, &out.AdminPasswordSecretRef
-		*out = new(v1.SecretKeySelector)
+		*out = new(v2.SecretKeySelector)
 		**out = **in
 	}
 	if in.AdminUsername != nil {
@@ -4520,32 +4596,32 @@ func (in *ManagedDatabasePostgresqlPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.AutovacuumAnalyzeThreshold != nil {
 		in, out := &in.AutovacuumAnalyzeThreshold, &out.AutovacuumAnalyzeThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumFreezeMaxAge != nil {
 		in, out := &in.AutovacuumFreezeMaxAge, &out.AutovacuumFreezeMaxAge
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumMaxWorkers != nil {
 		in, out := &in.AutovacuumMaxWorkers, &out.AutovacuumMaxWorkers
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumNaptime != nil {
 		in, out := &in.AutovacuumNaptime, &out.AutovacuumNaptime
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumVacuumCostDelay != nil {
 		in, out := &in.AutovacuumVacuumCostDelay, &out.AutovacuumVacuumCostDelay
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumVacuumCostLimit != nil {
 		in, out := &in.AutovacuumVacuumCostLimit, &out.AutovacuumVacuumCostLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumVacuumScaleFactor != nil {
@@ -4555,32 +4631,42 @@ func (in *ManagedDatabasePostgresqlPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.AutovacuumVacuumThreshold != nil {
 		in, out := &in.AutovacuumVacuumThreshold, &out.AutovacuumVacuumThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BackupHour != nil {
 		in, out := &in.BackupHour, &out.BackupHour
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.BackupIntervalHours != nil {
+		in, out := &in.BackupIntervalHours, &out.BackupIntervalHours
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BackupMinute != nil {
 		in, out := &in.BackupMinute, &out.BackupMinute
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.BackupRetentionDays != nil {
+		in, out := &in.BackupRetentionDays, &out.BackupRetentionDays
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BgwriterDelay != nil {
 		in, out := &in.BgwriterDelay, &out.BgwriterDelay
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BgwriterFlushAfter != nil {
 		in, out := &in.BgwriterFlushAfter, &out.BgwriterFlushAfter
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BgwriterLruMaxpages != nil {
 		in, out := &in.BgwriterLruMaxpages, &out.BgwriterLruMaxpages
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BgwriterLruMultiplier != nil {
@@ -4590,12 +4676,17 @@ func (in *ManagedDatabasePostgresqlPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.DeadlockTimeout != nil {
 		in, out := &in.DeadlockTimeout, &out.DeadlockTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.DefaultToastCompression != nil {
 		in, out := &in.DefaultToastCompression, &out.DefaultToastCompression
 		*out = new(string)
+		**out = **in
+	}
+	if in.EnableHaReplicaDNS != nil {
+		in, out := &in.EnableHaReplicaDNS, &out.EnableHaReplicaDNS
+		*out = new(bool)
 		**out = **in
 	}
 	if in.IPFilter != nil {
@@ -4611,22 +4702,22 @@ func (in *ManagedDatabasePostgresqlPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.IdleInTransactionSessionTimeout != nil {
 		in, out := &in.IdleInTransactionSessionTimeout, &out.IdleInTransactionSessionTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IoCombineLimit != nil {
 		in, out := &in.IoCombineLimit, &out.IoCombineLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IoMaxCombineLimit != nil {
 		in, out := &in.IoMaxCombineLimit, &out.IoMaxCombineLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IoMaxConcurrency != nil {
 		in, out := &in.IoMaxConcurrency, &out.IoMaxConcurrency
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IoMethod != nil {
@@ -4636,7 +4727,7 @@ func (in *ManagedDatabasePostgresqlPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.IoWorkers != nil {
 		in, out := &in.IoWorkers, &out.IoWorkers
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Jit != nil {
@@ -4646,7 +4737,7 @@ func (in *ManagedDatabasePostgresqlPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.LogAutovacuumMinDuration != nil {
 		in, out := &in.LogAutovacuumMinDuration, &out.LogAutovacuumMinDuration
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.LogErrorVerbosity != nil {
@@ -4661,92 +4752,92 @@ func (in *ManagedDatabasePostgresqlPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.LogMinDurationStatement != nil {
 		in, out := &in.LogMinDurationStatement, &out.LogMinDurationStatement
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.LogTempFiles != nil {
 		in, out := &in.LogTempFiles, &out.LogTempFiles
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxConnections != nil {
 		in, out := &in.MaxConnections, &out.MaxConnections
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxFilesPerProcess != nil {
 		in, out := &in.MaxFilesPerProcess, &out.MaxFilesPerProcess
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxLocksPerTransaction != nil {
 		in, out := &in.MaxLocksPerTransaction, &out.MaxLocksPerTransaction
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxLogicalReplicationWorkers != nil {
 		in, out := &in.MaxLogicalReplicationWorkers, &out.MaxLogicalReplicationWorkers
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxParallelWorkers != nil {
 		in, out := &in.MaxParallelWorkers, &out.MaxParallelWorkers
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxParallelWorkersPerGather != nil {
 		in, out := &in.MaxParallelWorkersPerGather, &out.MaxParallelWorkersPerGather
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxPredLocksPerTransaction != nil {
 		in, out := &in.MaxPredLocksPerTransaction, &out.MaxPredLocksPerTransaction
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxPreparedTransactions != nil {
 		in, out := &in.MaxPreparedTransactions, &out.MaxPreparedTransactions
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxReplicationSlots != nil {
 		in, out := &in.MaxReplicationSlots, &out.MaxReplicationSlots
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxSlotWalKeepSize != nil {
 		in, out := &in.MaxSlotWalKeepSize, &out.MaxSlotWalKeepSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxStackDepth != nil {
 		in, out := &in.MaxStackDepth, &out.MaxStackDepth
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxStandbyArchiveDelay != nil {
 		in, out := &in.MaxStandbyArchiveDelay, &out.MaxStandbyArchiveDelay
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxStandbyStreamingDelay != nil {
 		in, out := &in.MaxStandbyStreamingDelay, &out.MaxStandbyStreamingDelay
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxSyncWorkersPerSubscription != nil {
 		in, out := &in.MaxSyncWorkersPerSubscription, &out.MaxSyncWorkersPerSubscription
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxWalSenders != nil {
 		in, out := &in.MaxWalSenders, &out.MaxWalSenders
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxWorkerProcesses != nil {
 		in, out := &in.MaxWorkerProcesses, &out.MaxWorkerProcesses
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Migration != nil {
@@ -4758,17 +4849,17 @@ func (in *ManagedDatabasePostgresqlPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.NodeCount != nil {
 		in, out := &in.NodeCount, &out.NodeCount
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.PasswordEncryptionSecretRef != nil {
 		in, out := &in.PasswordEncryptionSecretRef, &out.PasswordEncryptionSecretRef
-		*out = new(v1.SecretKeySelector)
+		*out = new(v2.SecretKeySelector)
 		**out = **in
 	}
 	if in.PgPartmanBgwInterval != nil {
 		in, out := &in.PgPartmanBgwInterval, &out.PgPartmanBgwInterval
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.PgPartmanBgwRole != nil {
@@ -4788,7 +4879,17 @@ func (in *ManagedDatabasePostgresqlPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.PgStatMonitorPgsmMaxBuckets != nil {
 		in, out := &in.PgStatMonitorPgsmMaxBuckets, &out.PgStatMonitorPgsmMaxBuckets
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.PgStatPlansEnable != nil {
+		in, out := &in.PgStatPlansEnable, &out.PgStatPlansEnable
+		*out = new(bool)
+		**out = **in
+	}
+	if in.PgStatPlansTrack != nil {
+		in, out := &in.PgStatPlansTrack, &out.PgStatPlansTrack
+		*out = new(string)
 		**out = **in
 	}
 	if in.PgStatStatementsTrack != nil {
@@ -4822,6 +4923,11 @@ func (in *ManagedDatabasePostgresqlPropertiesInitParameters) DeepCopyInto(out *M
 		*out = new(bool)
 		**out = **in
 	}
+	if in.PublicAccessPrometheus != nil {
+		in, out := &in.PublicAccessPrometheus, &out.PublicAccessPrometheus
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ServiceLog != nil {
 		in, out := &in.ServiceLog, &out.ServiceLog
 		*out = new(bool)
@@ -4832,6 +4938,11 @@ func (in *ManagedDatabasePostgresqlPropertiesInitParameters) DeepCopyInto(out *M
 		*out = new(float64)
 		**out = **in
 	}
+	if in.SynchronousCommit != nil {
+		in, out := &in.SynchronousCommit, &out.SynchronousCommit
+		*out = new(string)
+		**out = **in
+	}
 	if in.SynchronousReplication != nil {
 		in, out := &in.SynchronousReplication, &out.SynchronousReplication
 		*out = new(string)
@@ -4839,7 +4950,7 @@ func (in *ManagedDatabasePostgresqlPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.TempFileLimit != nil {
 		in, out := &in.TempFileLimit, &out.TempFileLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Timescaledb != nil {
@@ -4856,7 +4967,7 @@ func (in *ManagedDatabasePostgresqlPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.TrackActivityQuerySize != nil {
 		in, out := &in.TrackActivityQuerySize, &out.TrackActivityQuerySize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.TrackCommitTimestamp != nil {
@@ -4886,17 +4997,17 @@ func (in *ManagedDatabasePostgresqlPropertiesInitParameters) DeepCopyInto(out *M
 	}
 	if in.WalSenderTimeout != nil {
 		in, out := &in.WalSenderTimeout, &out.WalSenderTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WalWriterDelay != nil {
 		in, out := &in.WalWriterDelay, &out.WalWriterDelay
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WorkMem != nil {
 		in, out := &in.WorkMem, &out.WorkMem
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -4931,32 +5042,32 @@ func (in *ManagedDatabasePostgresqlPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.AutovacuumAnalyzeThreshold != nil {
 		in, out := &in.AutovacuumAnalyzeThreshold, &out.AutovacuumAnalyzeThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumFreezeMaxAge != nil {
 		in, out := &in.AutovacuumFreezeMaxAge, &out.AutovacuumFreezeMaxAge
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumMaxWorkers != nil {
 		in, out := &in.AutovacuumMaxWorkers, &out.AutovacuumMaxWorkers
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumNaptime != nil {
 		in, out := &in.AutovacuumNaptime, &out.AutovacuumNaptime
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumVacuumCostDelay != nil {
 		in, out := &in.AutovacuumVacuumCostDelay, &out.AutovacuumVacuumCostDelay
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumVacuumCostLimit != nil {
 		in, out := &in.AutovacuumVacuumCostLimit, &out.AutovacuumVacuumCostLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumVacuumScaleFactor != nil {
@@ -4966,32 +5077,42 @@ func (in *ManagedDatabasePostgresqlPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.AutovacuumVacuumThreshold != nil {
 		in, out := &in.AutovacuumVacuumThreshold, &out.AutovacuumVacuumThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BackupHour != nil {
 		in, out := &in.BackupHour, &out.BackupHour
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.BackupIntervalHours != nil {
+		in, out := &in.BackupIntervalHours, &out.BackupIntervalHours
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BackupMinute != nil {
 		in, out := &in.BackupMinute, &out.BackupMinute
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.BackupRetentionDays != nil {
+		in, out := &in.BackupRetentionDays, &out.BackupRetentionDays
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BgwriterDelay != nil {
 		in, out := &in.BgwriterDelay, &out.BgwriterDelay
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BgwriterFlushAfter != nil {
 		in, out := &in.BgwriterFlushAfter, &out.BgwriterFlushAfter
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BgwriterLruMaxpages != nil {
 		in, out := &in.BgwriterLruMaxpages, &out.BgwriterLruMaxpages
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BgwriterLruMultiplier != nil {
@@ -5001,12 +5122,17 @@ func (in *ManagedDatabasePostgresqlPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.DeadlockTimeout != nil {
 		in, out := &in.DeadlockTimeout, &out.DeadlockTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.DefaultToastCompression != nil {
 		in, out := &in.DefaultToastCompression, &out.DefaultToastCompression
 		*out = new(string)
+		**out = **in
+	}
+	if in.EnableHaReplicaDNS != nil {
+		in, out := &in.EnableHaReplicaDNS, &out.EnableHaReplicaDNS
+		*out = new(bool)
 		**out = **in
 	}
 	if in.IPFilter != nil {
@@ -5022,22 +5148,22 @@ func (in *ManagedDatabasePostgresqlPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.IdleInTransactionSessionTimeout != nil {
 		in, out := &in.IdleInTransactionSessionTimeout, &out.IdleInTransactionSessionTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IoCombineLimit != nil {
 		in, out := &in.IoCombineLimit, &out.IoCombineLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IoMaxCombineLimit != nil {
 		in, out := &in.IoMaxCombineLimit, &out.IoMaxCombineLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IoMaxConcurrency != nil {
 		in, out := &in.IoMaxConcurrency, &out.IoMaxConcurrency
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IoMethod != nil {
@@ -5047,7 +5173,7 @@ func (in *ManagedDatabasePostgresqlPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.IoWorkers != nil {
 		in, out := &in.IoWorkers, &out.IoWorkers
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Jit != nil {
@@ -5057,7 +5183,7 @@ func (in *ManagedDatabasePostgresqlPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.LogAutovacuumMinDuration != nil {
 		in, out := &in.LogAutovacuumMinDuration, &out.LogAutovacuumMinDuration
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.LogErrorVerbosity != nil {
@@ -5072,92 +5198,92 @@ func (in *ManagedDatabasePostgresqlPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.LogMinDurationStatement != nil {
 		in, out := &in.LogMinDurationStatement, &out.LogMinDurationStatement
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.LogTempFiles != nil {
 		in, out := &in.LogTempFiles, &out.LogTempFiles
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxConnections != nil {
 		in, out := &in.MaxConnections, &out.MaxConnections
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxFilesPerProcess != nil {
 		in, out := &in.MaxFilesPerProcess, &out.MaxFilesPerProcess
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxLocksPerTransaction != nil {
 		in, out := &in.MaxLocksPerTransaction, &out.MaxLocksPerTransaction
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxLogicalReplicationWorkers != nil {
 		in, out := &in.MaxLogicalReplicationWorkers, &out.MaxLogicalReplicationWorkers
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxParallelWorkers != nil {
 		in, out := &in.MaxParallelWorkers, &out.MaxParallelWorkers
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxParallelWorkersPerGather != nil {
 		in, out := &in.MaxParallelWorkersPerGather, &out.MaxParallelWorkersPerGather
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxPredLocksPerTransaction != nil {
 		in, out := &in.MaxPredLocksPerTransaction, &out.MaxPredLocksPerTransaction
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxPreparedTransactions != nil {
 		in, out := &in.MaxPreparedTransactions, &out.MaxPreparedTransactions
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxReplicationSlots != nil {
 		in, out := &in.MaxReplicationSlots, &out.MaxReplicationSlots
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxSlotWalKeepSize != nil {
 		in, out := &in.MaxSlotWalKeepSize, &out.MaxSlotWalKeepSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxStackDepth != nil {
 		in, out := &in.MaxStackDepth, &out.MaxStackDepth
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxStandbyArchiveDelay != nil {
 		in, out := &in.MaxStandbyArchiveDelay, &out.MaxStandbyArchiveDelay
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxStandbyStreamingDelay != nil {
 		in, out := &in.MaxStandbyStreamingDelay, &out.MaxStandbyStreamingDelay
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxSyncWorkersPerSubscription != nil {
 		in, out := &in.MaxSyncWorkersPerSubscription, &out.MaxSyncWorkersPerSubscription
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxWalSenders != nil {
 		in, out := &in.MaxWalSenders, &out.MaxWalSenders
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxWorkerProcesses != nil {
 		in, out := &in.MaxWorkerProcesses, &out.MaxWorkerProcesses
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Migration != nil {
@@ -5169,12 +5295,12 @@ func (in *ManagedDatabasePostgresqlPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.NodeCount != nil {
 		in, out := &in.NodeCount, &out.NodeCount
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.PgPartmanBgwInterval != nil {
 		in, out := &in.PgPartmanBgwInterval, &out.PgPartmanBgwInterval
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.PgPartmanBgwRole != nil {
@@ -5194,7 +5320,17 @@ func (in *ManagedDatabasePostgresqlPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.PgStatMonitorPgsmMaxBuckets != nil {
 		in, out := &in.PgStatMonitorPgsmMaxBuckets, &out.PgStatMonitorPgsmMaxBuckets
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.PgStatPlansEnable != nil {
+		in, out := &in.PgStatPlansEnable, &out.PgStatPlansEnable
+		*out = new(bool)
+		**out = **in
+	}
+	if in.PgStatPlansTrack != nil {
+		in, out := &in.PgStatPlansTrack, &out.PgStatPlansTrack
+		*out = new(string)
 		**out = **in
 	}
 	if in.PgStatStatementsTrack != nil {
@@ -5228,6 +5364,11 @@ func (in *ManagedDatabasePostgresqlPropertiesObservation) DeepCopyInto(out *Mana
 		*out = new(bool)
 		**out = **in
 	}
+	if in.PublicAccessPrometheus != nil {
+		in, out := &in.PublicAccessPrometheus, &out.PublicAccessPrometheus
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ServiceLog != nil {
 		in, out := &in.ServiceLog, &out.ServiceLog
 		*out = new(bool)
@@ -5238,6 +5379,11 @@ func (in *ManagedDatabasePostgresqlPropertiesObservation) DeepCopyInto(out *Mana
 		*out = new(float64)
 		**out = **in
 	}
+	if in.SynchronousCommit != nil {
+		in, out := &in.SynchronousCommit, &out.SynchronousCommit
+		*out = new(string)
+		**out = **in
+	}
 	if in.SynchronousReplication != nil {
 		in, out := &in.SynchronousReplication, &out.SynchronousReplication
 		*out = new(string)
@@ -5245,7 +5391,7 @@ func (in *ManagedDatabasePostgresqlPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.TempFileLimit != nil {
 		in, out := &in.TempFileLimit, &out.TempFileLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Timescaledb != nil {
@@ -5262,7 +5408,7 @@ func (in *ManagedDatabasePostgresqlPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.TrackActivityQuerySize != nil {
 		in, out := &in.TrackActivityQuerySize, &out.TrackActivityQuerySize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.TrackCommitTimestamp != nil {
@@ -5292,17 +5438,17 @@ func (in *ManagedDatabasePostgresqlPropertiesObservation) DeepCopyInto(out *Mana
 	}
 	if in.WalSenderTimeout != nil {
 		in, out := &in.WalSenderTimeout, &out.WalSenderTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WalWriterDelay != nil {
 		in, out := &in.WalWriterDelay, &out.WalWriterDelay
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WorkMem != nil {
 		in, out := &in.WorkMem, &out.WorkMem
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -5322,7 +5468,7 @@ func (in *ManagedDatabasePostgresqlPropertiesParameters) DeepCopyInto(out *Manag
 	*out = *in
 	if in.AdminPasswordSecretRef != nil {
 		in, out := &in.AdminPasswordSecretRef, &out.AdminPasswordSecretRef
-		*out = new(v1.SecretKeySelector)
+		*out = new(v2.SecretKeySelector)
 		**out = **in
 	}
 	if in.AdminUsername != nil {
@@ -5342,32 +5488,32 @@ func (in *ManagedDatabasePostgresqlPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.AutovacuumAnalyzeThreshold != nil {
 		in, out := &in.AutovacuumAnalyzeThreshold, &out.AutovacuumAnalyzeThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumFreezeMaxAge != nil {
 		in, out := &in.AutovacuumFreezeMaxAge, &out.AutovacuumFreezeMaxAge
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumMaxWorkers != nil {
 		in, out := &in.AutovacuumMaxWorkers, &out.AutovacuumMaxWorkers
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumNaptime != nil {
 		in, out := &in.AutovacuumNaptime, &out.AutovacuumNaptime
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumVacuumCostDelay != nil {
 		in, out := &in.AutovacuumVacuumCostDelay, &out.AutovacuumVacuumCostDelay
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumVacuumCostLimit != nil {
 		in, out := &in.AutovacuumVacuumCostLimit, &out.AutovacuumVacuumCostLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutovacuumVacuumScaleFactor != nil {
@@ -5377,32 +5523,42 @@ func (in *ManagedDatabasePostgresqlPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.AutovacuumVacuumThreshold != nil {
 		in, out := &in.AutovacuumVacuumThreshold, &out.AutovacuumVacuumThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BackupHour != nil {
 		in, out := &in.BackupHour, &out.BackupHour
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.BackupIntervalHours != nil {
+		in, out := &in.BackupIntervalHours, &out.BackupIntervalHours
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BackupMinute != nil {
 		in, out := &in.BackupMinute, &out.BackupMinute
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.BackupRetentionDays != nil {
+		in, out := &in.BackupRetentionDays, &out.BackupRetentionDays
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BgwriterDelay != nil {
 		in, out := &in.BgwriterDelay, &out.BgwriterDelay
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BgwriterFlushAfter != nil {
 		in, out := &in.BgwriterFlushAfter, &out.BgwriterFlushAfter
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BgwriterLruMaxpages != nil {
 		in, out := &in.BgwriterLruMaxpages, &out.BgwriterLruMaxpages
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BgwriterLruMultiplier != nil {
@@ -5412,12 +5568,17 @@ func (in *ManagedDatabasePostgresqlPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.DeadlockTimeout != nil {
 		in, out := &in.DeadlockTimeout, &out.DeadlockTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.DefaultToastCompression != nil {
 		in, out := &in.DefaultToastCompression, &out.DefaultToastCompression
 		*out = new(string)
+		**out = **in
+	}
+	if in.EnableHaReplicaDNS != nil {
+		in, out := &in.EnableHaReplicaDNS, &out.EnableHaReplicaDNS
+		*out = new(bool)
 		**out = **in
 	}
 	if in.IPFilter != nil {
@@ -5433,22 +5594,22 @@ func (in *ManagedDatabasePostgresqlPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.IdleInTransactionSessionTimeout != nil {
 		in, out := &in.IdleInTransactionSessionTimeout, &out.IdleInTransactionSessionTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IoCombineLimit != nil {
 		in, out := &in.IoCombineLimit, &out.IoCombineLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IoMaxCombineLimit != nil {
 		in, out := &in.IoMaxCombineLimit, &out.IoMaxCombineLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IoMaxConcurrency != nil {
 		in, out := &in.IoMaxConcurrency, &out.IoMaxConcurrency
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IoMethod != nil {
@@ -5458,7 +5619,7 @@ func (in *ManagedDatabasePostgresqlPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.IoWorkers != nil {
 		in, out := &in.IoWorkers, &out.IoWorkers
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Jit != nil {
@@ -5468,7 +5629,7 @@ func (in *ManagedDatabasePostgresqlPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.LogAutovacuumMinDuration != nil {
 		in, out := &in.LogAutovacuumMinDuration, &out.LogAutovacuumMinDuration
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.LogErrorVerbosity != nil {
@@ -5483,92 +5644,92 @@ func (in *ManagedDatabasePostgresqlPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.LogMinDurationStatement != nil {
 		in, out := &in.LogMinDurationStatement, &out.LogMinDurationStatement
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.LogTempFiles != nil {
 		in, out := &in.LogTempFiles, &out.LogTempFiles
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxConnections != nil {
 		in, out := &in.MaxConnections, &out.MaxConnections
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxFilesPerProcess != nil {
 		in, out := &in.MaxFilesPerProcess, &out.MaxFilesPerProcess
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxLocksPerTransaction != nil {
 		in, out := &in.MaxLocksPerTransaction, &out.MaxLocksPerTransaction
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxLogicalReplicationWorkers != nil {
 		in, out := &in.MaxLogicalReplicationWorkers, &out.MaxLogicalReplicationWorkers
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxParallelWorkers != nil {
 		in, out := &in.MaxParallelWorkers, &out.MaxParallelWorkers
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxParallelWorkersPerGather != nil {
 		in, out := &in.MaxParallelWorkersPerGather, &out.MaxParallelWorkersPerGather
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxPredLocksPerTransaction != nil {
 		in, out := &in.MaxPredLocksPerTransaction, &out.MaxPredLocksPerTransaction
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxPreparedTransactions != nil {
 		in, out := &in.MaxPreparedTransactions, &out.MaxPreparedTransactions
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxReplicationSlots != nil {
 		in, out := &in.MaxReplicationSlots, &out.MaxReplicationSlots
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxSlotWalKeepSize != nil {
 		in, out := &in.MaxSlotWalKeepSize, &out.MaxSlotWalKeepSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxStackDepth != nil {
 		in, out := &in.MaxStackDepth, &out.MaxStackDepth
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxStandbyArchiveDelay != nil {
 		in, out := &in.MaxStandbyArchiveDelay, &out.MaxStandbyArchiveDelay
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxStandbyStreamingDelay != nil {
 		in, out := &in.MaxStandbyStreamingDelay, &out.MaxStandbyStreamingDelay
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxSyncWorkersPerSubscription != nil {
 		in, out := &in.MaxSyncWorkersPerSubscription, &out.MaxSyncWorkersPerSubscription
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxWalSenders != nil {
 		in, out := &in.MaxWalSenders, &out.MaxWalSenders
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxWorkerProcesses != nil {
 		in, out := &in.MaxWorkerProcesses, &out.MaxWorkerProcesses
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Migration != nil {
@@ -5580,17 +5741,17 @@ func (in *ManagedDatabasePostgresqlPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.NodeCount != nil {
 		in, out := &in.NodeCount, &out.NodeCount
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.PasswordEncryptionSecretRef != nil {
 		in, out := &in.PasswordEncryptionSecretRef, &out.PasswordEncryptionSecretRef
-		*out = new(v1.SecretKeySelector)
+		*out = new(v2.SecretKeySelector)
 		**out = **in
 	}
 	if in.PgPartmanBgwInterval != nil {
 		in, out := &in.PgPartmanBgwInterval, &out.PgPartmanBgwInterval
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.PgPartmanBgwRole != nil {
@@ -5610,7 +5771,17 @@ func (in *ManagedDatabasePostgresqlPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.PgStatMonitorPgsmMaxBuckets != nil {
 		in, out := &in.PgStatMonitorPgsmMaxBuckets, &out.PgStatMonitorPgsmMaxBuckets
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.PgStatPlansEnable != nil {
+		in, out := &in.PgStatPlansEnable, &out.PgStatPlansEnable
+		*out = new(bool)
+		**out = **in
+	}
+	if in.PgStatPlansTrack != nil {
+		in, out := &in.PgStatPlansTrack, &out.PgStatPlansTrack
+		*out = new(string)
 		**out = **in
 	}
 	if in.PgStatStatementsTrack != nil {
@@ -5644,6 +5815,11 @@ func (in *ManagedDatabasePostgresqlPropertiesParameters) DeepCopyInto(out *Manag
 		*out = new(bool)
 		**out = **in
 	}
+	if in.PublicAccessPrometheus != nil {
+		in, out := &in.PublicAccessPrometheus, &out.PublicAccessPrometheus
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ServiceLog != nil {
 		in, out := &in.ServiceLog, &out.ServiceLog
 		*out = new(bool)
@@ -5654,6 +5830,11 @@ func (in *ManagedDatabasePostgresqlPropertiesParameters) DeepCopyInto(out *Manag
 		*out = new(float64)
 		**out = **in
 	}
+	if in.SynchronousCommit != nil {
+		in, out := &in.SynchronousCommit, &out.SynchronousCommit
+		*out = new(string)
+		**out = **in
+	}
 	if in.SynchronousReplication != nil {
 		in, out := &in.SynchronousReplication, &out.SynchronousReplication
 		*out = new(string)
@@ -5661,7 +5842,7 @@ func (in *ManagedDatabasePostgresqlPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.TempFileLimit != nil {
 		in, out := &in.TempFileLimit, &out.TempFileLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Timescaledb != nil {
@@ -5678,7 +5859,7 @@ func (in *ManagedDatabasePostgresqlPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.TrackActivityQuerySize != nil {
 		in, out := &in.TrackActivityQuerySize, &out.TrackActivityQuerySize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.TrackCommitTimestamp != nil {
@@ -5708,17 +5889,17 @@ func (in *ManagedDatabasePostgresqlPropertiesParameters) DeepCopyInto(out *Manag
 	}
 	if in.WalSenderTimeout != nil {
 		in, out := &in.WalSenderTimeout, &out.WalSenderTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WalWriterDelay != nil {
 		in, out := &in.WalWriterDelay, &out.WalWriterDelay
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WorkMem != nil {
 		in, out := &in.WorkMem, &out.WorkMem
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -5736,7 +5917,7 @@ func (in *ManagedDatabasePostgresqlPropertiesParameters) DeepCopy() *ManagedData
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabasePostgresqlSpec) DeepCopyInto(out *ManagedDatabasePostgresqlSpec) {
 	*out = *in
-	in.ResourceSpec.DeepCopyInto(&out.ResourceSpec)
+	in.ClusterManagedResourceSpec.DeepCopyInto(&out.ClusterManagedResourceSpec)
 	in.ForProvider.DeepCopyInto(&out.ForProvider)
 	in.InitProvider.DeepCopyInto(&out.InitProvider)
 }
@@ -5754,7 +5935,7 @@ func (in *ManagedDatabasePostgresqlSpec) DeepCopy() *ManagedDatabasePostgresqlSp
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabasePostgresqlStatus) DeepCopyInto(out *ManagedDatabasePostgresqlStatus) {
 	*out = *in
-	in.ResourceStatus.DeepCopyInto(&out.ResourceStatus)
+	in.ManagedResourceStatus.DeepCopyInto(&out.ManagedResourceStatus)
 	in.AtProvider.DeepCopyInto(&out.AtProvider)
 }
 
@@ -5812,7 +5993,7 @@ func (in *ManagedDatabaseUserInitParameters) DeepCopyInto(out *ManagedDatabaseUs
 	}
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
-		*out = new(v1.SecretKeySelector)
+		*out = new(v2.SecretKeySelector)
 		**out = **in
 	}
 	if in.PgAccessControl != nil {
@@ -5946,7 +6127,7 @@ func (in *ManagedDatabaseUserParameters) DeepCopyInto(out *ManagedDatabaseUserPa
 	}
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
-		*out = new(v1.SecretKeySelector)
+		*out = new(v2.SecretKeySelector)
 		**out = **in
 	}
 	if in.PgAccessControl != nil {
@@ -5963,12 +6144,12 @@ func (in *ManagedDatabaseUserParameters) DeepCopyInto(out *ManagedDatabaseUserPa
 	}
 	if in.ServiceRef != nil {
 		in, out := &in.ServiceRef, &out.ServiceRef
-		*out = new(v1.Reference)
+		*out = new(v2.Reference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.ServiceSelector != nil {
 		in, out := &in.ServiceSelector, &out.ServiceSelector
-		*out = new(v1.Selector)
+		*out = new(v2.Selector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.ValkeyAccessControl != nil {
@@ -5993,7 +6174,7 @@ func (in *ManagedDatabaseUserParameters) DeepCopy() *ManagedDatabaseUserParamete
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabaseUserSpec) DeepCopyInto(out *ManagedDatabaseUserSpec) {
 	*out = *in
-	in.ResourceSpec.DeepCopyInto(&out.ResourceSpec)
+	in.ClusterManagedResourceSpec.DeepCopyInto(&out.ClusterManagedResourceSpec)
 	in.ForProvider.DeepCopyInto(&out.ForProvider)
 	in.InitProvider.DeepCopyInto(&out.InitProvider)
 }
@@ -6011,7 +6192,7 @@ func (in *ManagedDatabaseUserSpec) DeepCopy() *ManagedDatabaseUserSpec {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabaseUserStatus) DeepCopyInto(out *ManagedDatabaseUserStatus) {
 	*out = *in
-	in.ResourceStatus.DeepCopyInto(&out.ResourceStatus)
+	in.ManagedResourceStatus.DeepCopyInto(&out.ManagedResourceStatus)
 	in.AtProvider.DeepCopyInto(&out.AtProvider)
 }
 
@@ -6082,7 +6263,7 @@ func (in *ManagedDatabaseValkeyComponentsObservation) DeepCopyInto(out *ManagedD
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Route != nil {
@@ -6127,7 +6308,7 @@ func (in *ManagedDatabaseValkeyInitParameters) DeepCopyInto(out *ManagedDatabase
 	*out = *in
 	if in.AdditionalDiskSpaceGib != nil {
 		in, out := &in.AdditionalDiskSpaceGib, &out.AdditionalDiskSpaceGib
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Labels != nil {
@@ -6171,9 +6352,7 @@ func (in *ManagedDatabaseValkeyInitParameters) DeepCopyInto(out *ManagedDatabase
 	if in.NodeStates != nil {
 		in, out := &in.NodeStates, &out.NodeStates
 		*out = make([]ManagedDatabaseValkeyNodeStatesInitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		copy(*out, *in)
 	}
 	if in.Plan != nil {
 		in, out := &in.Plan, &out.Plan
@@ -6276,12 +6455,12 @@ func (in *ManagedDatabaseValkeyNetworkInitParameters) DeepCopyInto(out *ManagedD
 	}
 	if in.UUIDRef != nil {
 		in, out := &in.UUIDRef, &out.UUIDRef
-		*out = new(v1.Reference)
+		*out = new(v2.Reference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.UUIDSelector != nil {
 		in, out := &in.UUIDSelector, &out.UUIDSelector
-		*out = new(v1.Selector)
+		*out = new(v2.Selector)
 		(*in).DeepCopyInto(*out)
 	}
 }
@@ -6356,12 +6535,12 @@ func (in *ManagedDatabaseValkeyNetworkParameters) DeepCopyInto(out *ManagedDatab
 	}
 	if in.UUIDRef != nil {
 		in, out := &in.UUIDRef, &out.UUIDRef
-		*out = new(v1.Reference)
+		*out = new(v2.Reference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.UUIDSelector != nil {
 		in, out := &in.UUIDSelector, &out.UUIDSelector
-		*out = new(v1.Selector)
+		*out = new(v2.Selector)
 		(*in).DeepCopyInto(*out)
 	}
 }
@@ -6379,11 +6558,6 @@ func (in *ManagedDatabaseValkeyNetworkParameters) DeepCopy() *ManagedDatabaseVal
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabaseValkeyNodeStatesInitParameters) DeepCopyInto(out *ManagedDatabaseValkeyNodeStatesInitParameters) {
 	*out = *in
-	if in.Role != nil {
-		in, out := &in.Role, &out.Role
-		*out = new(string)
-		**out = **in
-	}
 }
 
 // DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new ManagedDatabaseValkeyNodeStatesInitParameters.
@@ -6429,11 +6603,6 @@ func (in *ManagedDatabaseValkeyNodeStatesObservation) DeepCopy() *ManagedDatabas
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabaseValkeyNodeStatesParameters) DeepCopyInto(out *ManagedDatabaseValkeyNodeStatesParameters) {
 	*out = *in
-	if in.Role != nil {
-		in, out := &in.Role, &out.Role
-		*out = new(string)
-		**out = **in
-	}
 }
 
 // DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new ManagedDatabaseValkeyNodeStatesParameters.
@@ -6451,7 +6620,7 @@ func (in *ManagedDatabaseValkeyObservation) DeepCopyInto(out *ManagedDatabaseVal
 	*out = *in
 	if in.AdditionalDiskSpaceGib != nil {
 		in, out := &in.AdditionalDiskSpaceGib, &out.AdditionalDiskSpaceGib
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Components != nil {
@@ -6590,7 +6759,7 @@ func (in *ManagedDatabaseValkeyParameters) DeepCopyInto(out *ManagedDatabaseValk
 	*out = *in
 	if in.AdditionalDiskSpaceGib != nil {
 		in, out := &in.AdditionalDiskSpaceGib, &out.AdditionalDiskSpaceGib
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Labels != nil {
@@ -6634,9 +6803,7 @@ func (in *ManagedDatabaseValkeyParameters) DeepCopyInto(out *ManagedDatabaseValk
 	if in.NodeStates != nil {
 		in, out := &in.NodeStates, &out.NodeStates
 		*out = make([]ManagedDatabaseValkeyNodeStatesParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		copy(*out, *in)
 	}
 	if in.Plan != nil {
 		in, out := &in.Plan, &out.Plan
@@ -6692,12 +6859,12 @@ func (in *ManagedDatabaseValkeyPropertiesInitParameters) DeepCopyInto(out *Manag
 	}
 	if in.BackupHour != nil {
 		in, out := &in.BackupHour, &out.BackupHour
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BackupMinute != nil {
 		in, out := &in.BackupMinute, &out.BackupMinute
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.FrequentSnapshots != nil {
@@ -6728,6 +6895,11 @@ func (in *ManagedDatabaseValkeyPropertiesInitParameters) DeepCopyInto(out *Manag
 		*out = new(bool)
 		**out = **in
 	}
+	if in.PublicAccessPrometheus != nil {
+		in, out := &in.PublicAccessPrometheus, &out.PublicAccessPrometheus
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ServiceLog != nil {
 		in, out := &in.ServiceLog, &out.ServiceLog
 		*out = new(bool)
@@ -6740,22 +6912,27 @@ func (in *ManagedDatabaseValkeyPropertiesInitParameters) DeepCopyInto(out *Manag
 	}
 	if in.ValkeyActiveExpireEffort != nil {
 		in, out := &in.ValkeyActiveExpireEffort, &out.ValkeyActiveExpireEffort
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.ValkeyActivedefrag != nil {
+		in, out := &in.ValkeyActivedefrag, &out.ValkeyActivedefrag
+		*out = new(bool)
 		**out = **in
 	}
 	if in.ValkeyIoThreads != nil {
 		in, out := &in.ValkeyIoThreads, &out.ValkeyIoThreads
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ValkeyLfuDecayTime != nil {
 		in, out := &in.ValkeyLfuDecayTime, &out.ValkeyLfuDecayTime
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ValkeyLfuLogFactor != nil {
 		in, out := &in.ValkeyLfuLogFactor, &out.ValkeyLfuLogFactor
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ValkeyMaxmemoryPolicy != nil {
@@ -6770,7 +6947,7 @@ func (in *ManagedDatabaseValkeyPropertiesInitParameters) DeepCopyInto(out *Manag
 	}
 	if in.ValkeyNumberOfDatabases != nil {
 		in, out := &in.ValkeyNumberOfDatabases, &out.ValkeyNumberOfDatabases
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ValkeyPersistence != nil {
@@ -6780,7 +6957,7 @@ func (in *ManagedDatabaseValkeyPropertiesInitParameters) DeepCopyInto(out *Manag
 	}
 	if in.ValkeyPubsubClientOutputBufferLimit != nil {
 		in, out := &in.ValkeyPubsubClientOutputBufferLimit, &out.ValkeyPubsubClientOutputBufferLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ValkeySSL != nil {
@@ -6790,7 +6967,12 @@ func (in *ManagedDatabaseValkeyPropertiesInitParameters) DeepCopyInto(out *Manag
 	}
 	if in.ValkeyTimeout != nil {
 		in, out := &in.ValkeyTimeout, &out.ValkeyTimeout
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.ValkeyVersion != nil {
+		in, out := &in.ValkeyVersion, &out.ValkeyVersion
+		*out = new(string)
 		**out = **in
 	}
 }
@@ -6835,12 +7017,12 @@ func (in *ManagedDatabaseValkeyPropertiesMigrationInitParameters) DeepCopyInto(o
 	}
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
-		*out = new(v1.SecretKeySelector)
+		*out = new(v2.SecretKeySelector)
 		**out = **in
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.SSL != nil {
@@ -6895,7 +7077,7 @@ func (in *ManagedDatabaseValkeyPropertiesMigrationObservation) DeepCopyInto(out 
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.SSL != nil {
@@ -6950,12 +7132,12 @@ func (in *ManagedDatabaseValkeyPropertiesMigrationParameters) DeepCopyInto(out *
 	}
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
-		*out = new(v1.SecretKeySelector)
+		*out = new(v2.SecretKeySelector)
 		**out = **in
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.SSL != nil {
@@ -6990,12 +7172,12 @@ func (in *ManagedDatabaseValkeyPropertiesObservation) DeepCopyInto(out *ManagedD
 	}
 	if in.BackupHour != nil {
 		in, out := &in.BackupHour, &out.BackupHour
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BackupMinute != nil {
 		in, out := &in.BackupMinute, &out.BackupMinute
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.FrequentSnapshots != nil {
@@ -7026,6 +7208,11 @@ func (in *ManagedDatabaseValkeyPropertiesObservation) DeepCopyInto(out *ManagedD
 		*out = new(bool)
 		**out = **in
 	}
+	if in.PublicAccessPrometheus != nil {
+		in, out := &in.PublicAccessPrometheus, &out.PublicAccessPrometheus
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ServiceLog != nil {
 		in, out := &in.ServiceLog, &out.ServiceLog
 		*out = new(bool)
@@ -7038,22 +7225,27 @@ func (in *ManagedDatabaseValkeyPropertiesObservation) DeepCopyInto(out *ManagedD
 	}
 	if in.ValkeyActiveExpireEffort != nil {
 		in, out := &in.ValkeyActiveExpireEffort, &out.ValkeyActiveExpireEffort
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.ValkeyActivedefrag != nil {
+		in, out := &in.ValkeyActivedefrag, &out.ValkeyActivedefrag
+		*out = new(bool)
 		**out = **in
 	}
 	if in.ValkeyIoThreads != nil {
 		in, out := &in.ValkeyIoThreads, &out.ValkeyIoThreads
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ValkeyLfuDecayTime != nil {
 		in, out := &in.ValkeyLfuDecayTime, &out.ValkeyLfuDecayTime
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ValkeyLfuLogFactor != nil {
 		in, out := &in.ValkeyLfuLogFactor, &out.ValkeyLfuLogFactor
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ValkeyMaxmemoryPolicy != nil {
@@ -7068,7 +7260,7 @@ func (in *ManagedDatabaseValkeyPropertiesObservation) DeepCopyInto(out *ManagedD
 	}
 	if in.ValkeyNumberOfDatabases != nil {
 		in, out := &in.ValkeyNumberOfDatabases, &out.ValkeyNumberOfDatabases
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ValkeyPersistence != nil {
@@ -7078,7 +7270,7 @@ func (in *ManagedDatabaseValkeyPropertiesObservation) DeepCopyInto(out *ManagedD
 	}
 	if in.ValkeyPubsubClientOutputBufferLimit != nil {
 		in, out := &in.ValkeyPubsubClientOutputBufferLimit, &out.ValkeyPubsubClientOutputBufferLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ValkeySSL != nil {
@@ -7088,7 +7280,12 @@ func (in *ManagedDatabaseValkeyPropertiesObservation) DeepCopyInto(out *ManagedD
 	}
 	if in.ValkeyTimeout != nil {
 		in, out := &in.ValkeyTimeout, &out.ValkeyTimeout
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.ValkeyVersion != nil {
+		in, out := &in.ValkeyVersion, &out.ValkeyVersion
+		*out = new(string)
 		**out = **in
 	}
 }
@@ -7113,12 +7310,12 @@ func (in *ManagedDatabaseValkeyPropertiesParameters) DeepCopyInto(out *ManagedDa
 	}
 	if in.BackupHour != nil {
 		in, out := &in.BackupHour, &out.BackupHour
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BackupMinute != nil {
 		in, out := &in.BackupMinute, &out.BackupMinute
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.FrequentSnapshots != nil {
@@ -7149,6 +7346,11 @@ func (in *ManagedDatabaseValkeyPropertiesParameters) DeepCopyInto(out *ManagedDa
 		*out = new(bool)
 		**out = **in
 	}
+	if in.PublicAccessPrometheus != nil {
+		in, out := &in.PublicAccessPrometheus, &out.PublicAccessPrometheus
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ServiceLog != nil {
 		in, out := &in.ServiceLog, &out.ServiceLog
 		*out = new(bool)
@@ -7161,22 +7363,27 @@ func (in *ManagedDatabaseValkeyPropertiesParameters) DeepCopyInto(out *ManagedDa
 	}
 	if in.ValkeyActiveExpireEffort != nil {
 		in, out := &in.ValkeyActiveExpireEffort, &out.ValkeyActiveExpireEffort
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.ValkeyActivedefrag != nil {
+		in, out := &in.ValkeyActivedefrag, &out.ValkeyActivedefrag
+		*out = new(bool)
 		**out = **in
 	}
 	if in.ValkeyIoThreads != nil {
 		in, out := &in.ValkeyIoThreads, &out.ValkeyIoThreads
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ValkeyLfuDecayTime != nil {
 		in, out := &in.ValkeyLfuDecayTime, &out.ValkeyLfuDecayTime
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ValkeyLfuLogFactor != nil {
 		in, out := &in.ValkeyLfuLogFactor, &out.ValkeyLfuLogFactor
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ValkeyMaxmemoryPolicy != nil {
@@ -7191,7 +7398,7 @@ func (in *ManagedDatabaseValkeyPropertiesParameters) DeepCopyInto(out *ManagedDa
 	}
 	if in.ValkeyNumberOfDatabases != nil {
 		in, out := &in.ValkeyNumberOfDatabases, &out.ValkeyNumberOfDatabases
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ValkeyPersistence != nil {
@@ -7201,7 +7408,7 @@ func (in *ManagedDatabaseValkeyPropertiesParameters) DeepCopyInto(out *ManagedDa
 	}
 	if in.ValkeyPubsubClientOutputBufferLimit != nil {
 		in, out := &in.ValkeyPubsubClientOutputBufferLimit, &out.ValkeyPubsubClientOutputBufferLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ValkeySSL != nil {
@@ -7211,7 +7418,12 @@ func (in *ManagedDatabaseValkeyPropertiesParameters) DeepCopyInto(out *ManagedDa
 	}
 	if in.ValkeyTimeout != nil {
 		in, out := &in.ValkeyTimeout, &out.ValkeyTimeout
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.ValkeyVersion != nil {
+		in, out := &in.ValkeyVersion, &out.ValkeyVersion
+		*out = new(string)
 		**out = **in
 	}
 }
@@ -7229,7 +7441,7 @@ func (in *ManagedDatabaseValkeyPropertiesParameters) DeepCopy() *ManagedDatabase
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabaseValkeySpec) DeepCopyInto(out *ManagedDatabaseValkeySpec) {
 	*out = *in
-	in.ResourceSpec.DeepCopyInto(&out.ResourceSpec)
+	in.ClusterManagedResourceSpec.DeepCopyInto(&out.ClusterManagedResourceSpec)
 	in.ForProvider.DeepCopyInto(&out.ForProvider)
 	in.InitProvider.DeepCopyInto(&out.InitProvider)
 }
@@ -7247,7 +7459,7 @@ func (in *ManagedDatabaseValkeySpec) DeepCopy() *ManagedDatabaseValkeySpec {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ManagedDatabaseValkeyStatus) DeepCopyInto(out *ManagedDatabaseValkeyStatus) {
 	*out = *in
-	in.ResourceStatus.DeepCopyInto(&out.ResourceStatus)
+	in.ManagedResourceStatus.DeepCopyInto(&out.ManagedResourceStatus)
 	in.AtProvider.DeepCopyInto(&out.AtProvider)
 }
 
@@ -7271,7 +7483,7 @@ func (in *MemoryInitParameters) DeepCopyInto(out *MemoryInitParameters) {
 	}
 	if in.TopNSize != nil {
 		in, out := &in.TopNSize, &out.TopNSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WindowSize != nil {
@@ -7301,7 +7513,7 @@ func (in *MemoryObservation) DeepCopyInto(out *MemoryObservation) {
 	}
 	if in.TopNSize != nil {
 		in, out := &in.TopNSize, &out.TopNSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WindowSize != nil {
@@ -7331,7 +7543,7 @@ func (in *MemoryParameters) DeepCopyInto(out *MemoryParameters) {
 	}
 	if in.TopNSize != nil {
 		in, out := &in.TopNSize, &out.TopNSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WindowSize != nil {
@@ -7359,6 +7571,11 @@ func (in *MigrationInitParameters) DeepCopyInto(out *MigrationInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.DumpTool != nil {
+		in, out := &in.DumpTool, &out.DumpTool
+		*out = new(string)
+		**out = **in
+	}
 	if in.Host != nil {
 		in, out := &in.Host, &out.Host
 		*out = new(string)
@@ -7381,12 +7598,17 @@ func (in *MigrationInitParameters) DeepCopyInto(out *MigrationInitParameters) {
 	}
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
-		*out = new(v1.SecretKeySelector)
+		*out = new(v2.SecretKeySelector)
 		**out = **in
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.ReestablishReplication != nil {
+		in, out := &in.ReestablishReplication, &out.ReestablishReplication
+		*out = new(bool)
 		**out = **in
 	}
 	if in.SSL != nil {
@@ -7419,6 +7641,11 @@ func (in *MigrationObservation) DeepCopyInto(out *MigrationObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.DumpTool != nil {
+		in, out := &in.DumpTool, &out.DumpTool
+		*out = new(string)
+		**out = **in
+	}
 	if in.Host != nil {
 		in, out := &in.Host, &out.Host
 		*out = new(string)
@@ -7441,7 +7668,12 @@ func (in *MigrationObservation) DeepCopyInto(out *MigrationObservation) {
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.ReestablishReplication != nil {
+		in, out := &in.ReestablishReplication, &out.ReestablishReplication
+		*out = new(bool)
 		**out = **in
 	}
 	if in.SSL != nil {
@@ -7474,6 +7706,11 @@ func (in *MigrationParameters) DeepCopyInto(out *MigrationParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.DumpTool != nil {
+		in, out := &in.DumpTool, &out.DumpTool
+		*out = new(string)
+		**out = **in
+	}
 	if in.Host != nil {
 		in, out := &in.Host, &out.Host
 		*out = new(string)
@@ -7496,12 +7733,17 @@ func (in *MigrationParameters) DeepCopyInto(out *MigrationParameters) {
 	}
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
-		*out = new(v1.SecretKeySelector)
+		*out = new(v2.SecretKeySelector)
 		**out = **in
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.ReestablishReplication != nil {
+		in, out := &in.ReestablishReplication, &out.ReestablishReplication
+		*out = new(bool)
 		**out = **in
 	}
 	if in.SSL != nil {
@@ -7626,12 +7868,12 @@ func (in *NetworkInitParameters) DeepCopyInto(out *NetworkInitParameters) {
 	}
 	if in.UUIDRef != nil {
 		in, out := &in.UUIDRef, &out.UUIDRef
-		*out = new(v1.Reference)
+		*out = new(v2.Reference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.UUIDSelector != nil {
 		in, out := &in.UUIDSelector, &out.UUIDSelector
-		*out = new(v1.Selector)
+		*out = new(v2.Selector)
 		(*in).DeepCopyInto(*out)
 	}
 }
@@ -7706,12 +7948,12 @@ func (in *NetworkParameters) DeepCopyInto(out *NetworkParameters) {
 	}
 	if in.UUIDRef != nil {
 		in, out := &in.UUIDRef, &out.UUIDRef
-		*out = new(v1.Reference)
+		*out = new(v2.Reference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.UUIDSelector != nil {
 		in, out := &in.UUIDSelector, &out.UUIDSelector
-		*out = new(v1.Selector)
+		*out = new(v2.Selector)
 		(*in).DeepCopyInto(*out)
 	}
 }
@@ -7741,7 +7983,7 @@ func (in *NodeDuressInitParameters) DeepCopyInto(out *NodeDuressInitParameters) 
 	}
 	if in.NumSuccessiveBreaches != nil {
 		in, out := &in.NumSuccessiveBreaches, &out.NumSuccessiveBreaches
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -7771,7 +8013,7 @@ func (in *NodeDuressObservation) DeepCopyInto(out *NodeDuressObservation) {
 	}
 	if in.NumSuccessiveBreaches != nil {
 		in, out := &in.NumSuccessiveBreaches, &out.NumSuccessiveBreaches
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -7801,7 +8043,7 @@ func (in *NodeDuressParameters) DeepCopyInto(out *NodeDuressParameters) {
 	}
 	if in.NumSuccessiveBreaches != nil {
 		in, out := &in.NumSuccessiveBreaches, &out.NumSuccessiveBreaches
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -7879,11 +8121,6 @@ func (in *NodeParameters) DeepCopy() *NodeParameters {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *NodeStatesInitParameters) DeepCopyInto(out *NodeStatesInitParameters) {
 	*out = *in
-	if in.Role != nil {
-		in, out := &in.Role, &out.Role
-		*out = new(string)
-		**out = **in
-	}
 }
 
 // DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new NodeStatesInitParameters.
@@ -7929,11 +8166,6 @@ func (in *NodeStatesObservation) DeepCopy() *NodeStatesObservation {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *NodeStatesParameters) DeepCopyInto(out *NodeStatesParameters) {
 	*out = *in
-	if in.Role != nil {
-		in, out := &in.Role, &out.Role
-		*out = new(string)
-		**out = **in
-	}
 }
 
 // DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new NodeStatesParameters.
@@ -7986,12 +8218,12 @@ func (in *OpenIDInitParameters) DeepCopyInto(out *OpenIDInitParameters) {
 	}
 	if in.RefreshRateLimitCount != nil {
 		in, out := &in.RefreshRateLimitCount, &out.RefreshRateLimitCount
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.RefreshRateLimitTimeWindowMs != nil {
 		in, out := &in.RefreshRateLimitTimeWindowMs, &out.RefreshRateLimitTimeWindowMs
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.RolesKey != nil {
@@ -8061,12 +8293,12 @@ func (in *OpenIDObservation) DeepCopyInto(out *OpenIDObservation) {
 	}
 	if in.RefreshRateLimitCount != nil {
 		in, out := &in.RefreshRateLimitCount, &out.RefreshRateLimitCount
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.RefreshRateLimitTimeWindowMs != nil {
 		in, out := &in.RefreshRateLimitTimeWindowMs, &out.RefreshRateLimitTimeWindowMs
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.RolesKey != nil {
@@ -8136,12 +8368,12 @@ func (in *OpenIDParameters) DeepCopyInto(out *OpenIDParameters) {
 	}
 	if in.RefreshRateLimitCount != nil {
 		in, out := &in.RefreshRateLimitCount, &out.RefreshRateLimitCount
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.RefreshRateLimitTimeWindowMs != nil {
 		in, out := &in.RefreshRateLimitTimeWindowMs, &out.RefreshRateLimitTimeWindowMs
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.RolesKey != nil {
@@ -8247,7 +8479,7 @@ func (in *OpensearchDashboardsInitParameters) DeepCopyInto(out *OpensearchDashbo
 	}
 	if in.MaxOldSpaceSize != nil {
 		in, out := &in.MaxOldSpaceSize, &out.MaxOldSpaceSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MultipleDataSourceEnabled != nil {
@@ -8257,7 +8489,17 @@ func (in *OpensearchDashboardsInitParameters) DeepCopyInto(out *OpensearchDashbo
 	}
 	if in.OpensearchRequestTimeout != nil {
 		in, out := &in.OpensearchRequestTimeout, &out.OpensearchRequestTimeout
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.SessionKeepalive != nil {
+		in, out := &in.SessionKeepalive, &out.SessionKeepalive
+		*out = new(bool)
+		**out = **in
+	}
+	if in.SessionTTL != nil {
+		in, out := &in.SessionTTL, &out.SessionTTL
+		*out = new(string)
 		**out = **in
 	}
 }
@@ -8282,7 +8524,7 @@ func (in *OpensearchDashboardsObservation) DeepCopyInto(out *OpensearchDashboard
 	}
 	if in.MaxOldSpaceSize != nil {
 		in, out := &in.MaxOldSpaceSize, &out.MaxOldSpaceSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MultipleDataSourceEnabled != nil {
@@ -8292,7 +8534,17 @@ func (in *OpensearchDashboardsObservation) DeepCopyInto(out *OpensearchDashboard
 	}
 	if in.OpensearchRequestTimeout != nil {
 		in, out := &in.OpensearchRequestTimeout, &out.OpensearchRequestTimeout
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.SessionKeepalive != nil {
+		in, out := &in.SessionKeepalive, &out.SessionKeepalive
+		*out = new(bool)
+		**out = **in
+	}
+	if in.SessionTTL != nil {
+		in, out := &in.SessionTTL, &out.SessionTTL
+		*out = new(string)
 		**out = **in
 	}
 }
@@ -8317,7 +8569,7 @@ func (in *OpensearchDashboardsParameters) DeepCopyInto(out *OpensearchDashboards
 	}
 	if in.MaxOldSpaceSize != nil {
 		in, out := &in.MaxOldSpaceSize, &out.MaxOldSpaceSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MultipleDataSourceEnabled != nil {
@@ -8327,7 +8579,17 @@ func (in *OpensearchDashboardsParameters) DeepCopyInto(out *OpensearchDashboards
 	}
 	if in.OpensearchRequestTimeout != nil {
 		in, out := &in.OpensearchRequestTimeout, &out.OpensearchRequestTimeout
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.SessionKeepalive != nil {
+		in, out := &in.SessionKeepalive, &out.SessionKeepalive
+		*out = new(bool)
+		**out = **in
+	}
+	if in.SessionTTL != nil {
+		in, out := &in.SessionTTL, &out.SessionTTL
+		*out = new(string)
 		**out = **in
 	}
 }
@@ -8528,7 +8790,7 @@ func (in *PgauditInitParameters) DeepCopyInto(out *PgauditInitParameters) {
 	}
 	if in.LogMaxStringLength != nil {
 		in, out := &in.LogMaxStringLength, &out.LogMaxStringLength
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.LogNestedStatements != nil {
@@ -8543,7 +8805,7 @@ func (in *PgauditInitParameters) DeepCopyInto(out *PgauditInitParameters) {
 	}
 	if in.LogParameterMaxSize != nil {
 		in, out := &in.LogParameterMaxSize, &out.LogParameterMaxSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.LogRelation != nil {
@@ -8619,7 +8881,7 @@ func (in *PgauditObservation) DeepCopyInto(out *PgauditObservation) {
 	}
 	if in.LogMaxStringLength != nil {
 		in, out := &in.LogMaxStringLength, &out.LogMaxStringLength
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.LogNestedStatements != nil {
@@ -8634,7 +8896,7 @@ func (in *PgauditObservation) DeepCopyInto(out *PgauditObservation) {
 	}
 	if in.LogParameterMaxSize != nil {
 		in, out := &in.LogParameterMaxSize, &out.LogParameterMaxSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.LogRelation != nil {
@@ -8710,7 +8972,7 @@ func (in *PgauditParameters) DeepCopyInto(out *PgauditParameters) {
 	}
 	if in.LogMaxStringLength != nil {
 		in, out := &in.LogMaxStringLength, &out.LogMaxStringLength
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.LogNestedStatements != nil {
@@ -8725,7 +8987,7 @@ func (in *PgauditParameters) DeepCopyInto(out *PgauditParameters) {
 	}
 	if in.LogParameterMaxSize != nil {
 		in, out := &in.LogParameterMaxSize, &out.LogParameterMaxSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.LogRelation != nil {
@@ -8770,12 +9032,12 @@ func (in *PgbouncerInitParameters) DeepCopyInto(out *PgbouncerInitParameters) {
 	*out = *in
 	if in.AutodbIdleTimeout != nil {
 		in, out := &in.AutodbIdleTimeout, &out.AutodbIdleTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutodbMaxDBConnections != nil {
 		in, out := &in.AutodbMaxDBConnections, &out.AutodbMaxDBConnections
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutodbPoolMode != nil {
@@ -8785,7 +9047,7 @@ func (in *PgbouncerInitParameters) DeepCopyInto(out *PgbouncerInitParameters) {
 	}
 	if in.AutodbPoolSize != nil {
 		in, out := &in.AutodbPoolSize, &out.AutodbPoolSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IgnoreStartupParameters != nil {
@@ -8801,22 +9063,32 @@ func (in *PgbouncerInitParameters) DeepCopyInto(out *PgbouncerInitParameters) {
 	}
 	if in.MaxPreparedStatements != nil {
 		in, out := &in.MaxPreparedStatements, &out.MaxPreparedStatements
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MinPoolSize != nil {
 		in, out := &in.MinPoolSize, &out.MinPoolSize
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.ServerConnectTimeout != nil {
+		in, out := &in.ServerConnectTimeout, &out.ServerConnectTimeout
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServerIdleTimeout != nil {
 		in, out := &in.ServerIdleTimeout, &out.ServerIdleTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServerLifetime != nil {
 		in, out := &in.ServerLifetime, &out.ServerLifetime
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.ServerLoginRetry != nil {
+		in, out := &in.ServerLoginRetry, &out.ServerLoginRetry
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServerResetQueryAlways != nil {
@@ -8841,12 +9113,12 @@ func (in *PgbouncerObservation) DeepCopyInto(out *PgbouncerObservation) {
 	*out = *in
 	if in.AutodbIdleTimeout != nil {
 		in, out := &in.AutodbIdleTimeout, &out.AutodbIdleTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutodbMaxDBConnections != nil {
 		in, out := &in.AutodbMaxDBConnections, &out.AutodbMaxDBConnections
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutodbPoolMode != nil {
@@ -8856,7 +9128,7 @@ func (in *PgbouncerObservation) DeepCopyInto(out *PgbouncerObservation) {
 	}
 	if in.AutodbPoolSize != nil {
 		in, out := &in.AutodbPoolSize, &out.AutodbPoolSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IgnoreStartupParameters != nil {
@@ -8872,22 +9144,32 @@ func (in *PgbouncerObservation) DeepCopyInto(out *PgbouncerObservation) {
 	}
 	if in.MaxPreparedStatements != nil {
 		in, out := &in.MaxPreparedStatements, &out.MaxPreparedStatements
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MinPoolSize != nil {
 		in, out := &in.MinPoolSize, &out.MinPoolSize
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.ServerConnectTimeout != nil {
+		in, out := &in.ServerConnectTimeout, &out.ServerConnectTimeout
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServerIdleTimeout != nil {
 		in, out := &in.ServerIdleTimeout, &out.ServerIdleTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServerLifetime != nil {
 		in, out := &in.ServerLifetime, &out.ServerLifetime
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.ServerLoginRetry != nil {
+		in, out := &in.ServerLoginRetry, &out.ServerLoginRetry
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServerResetQueryAlways != nil {
@@ -8912,12 +9194,12 @@ func (in *PgbouncerParameters) DeepCopyInto(out *PgbouncerParameters) {
 	*out = *in
 	if in.AutodbIdleTimeout != nil {
 		in, out := &in.AutodbIdleTimeout, &out.AutodbIdleTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutodbMaxDBConnections != nil {
 		in, out := &in.AutodbMaxDBConnections, &out.AutodbMaxDBConnections
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.AutodbPoolMode != nil {
@@ -8927,7 +9209,7 @@ func (in *PgbouncerParameters) DeepCopyInto(out *PgbouncerParameters) {
 	}
 	if in.AutodbPoolSize != nil {
 		in, out := &in.AutodbPoolSize, &out.AutodbPoolSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IgnoreStartupParameters != nil {
@@ -8943,22 +9225,32 @@ func (in *PgbouncerParameters) DeepCopyInto(out *PgbouncerParameters) {
 	}
 	if in.MaxPreparedStatements != nil {
 		in, out := &in.MaxPreparedStatements, &out.MaxPreparedStatements
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MinPoolSize != nil {
 		in, out := &in.MinPoolSize, &out.MinPoolSize
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.ServerConnectTimeout != nil {
+		in, out := &in.ServerConnectTimeout, &out.ServerConnectTimeout
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServerIdleTimeout != nil {
 		in, out := &in.ServerIdleTimeout, &out.ServerIdleTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServerLifetime != nil {
 		in, out := &in.ServerLifetime, &out.ServerLifetime
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.ServerLoginRetry != nil {
+		in, out := &in.ServerLoginRetry, &out.ServerLoginRetry
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServerResetQueryAlways != nil {
@@ -8983,7 +9275,7 @@ func (in *PglookoutInitParameters) DeepCopyInto(out *PglookoutInitParameters) {
 	*out = *in
 	if in.MaxFailoverReplicationTimeLag != nil {
 		in, out := &in.MaxFailoverReplicationTimeLag, &out.MaxFailoverReplicationTimeLag
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -9003,7 +9295,7 @@ func (in *PglookoutObservation) DeepCopyInto(out *PglookoutObservation) {
 	*out = *in
 	if in.MaxFailoverReplicationTimeLag != nil {
 		in, out := &in.MaxFailoverReplicationTimeLag, &out.MaxFailoverReplicationTimeLag
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -9023,7 +9315,7 @@ func (in *PglookoutParameters) DeepCopyInto(out *PglookoutParameters) {
 	*out = *in
 	if in.MaxFailoverReplicationTimeLag != nil {
 		in, out := &in.MaxFailoverReplicationTimeLag, &out.MaxFailoverReplicationTimeLag
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -9130,12 +9422,17 @@ func (in *PropertiesInitParameters) DeepCopyInto(out *PropertiesInitParameters) 
 	*out = *in
 	if in.AdminPasswordSecretRef != nil {
 		in, out := &in.AdminPasswordSecretRef, &out.AdminPasswordSecretRef
-		*out = new(v1.SecretKeySelector)
+		*out = new(v2.SecretKeySelector)
 		**out = **in
 	}
 	if in.AdminUsername != nil {
 		in, out := &in.AdminUsername, &out.AdminUsername
 		*out = new(string)
+		**out = **in
+	}
+	if in.AutomaticSpPrivileges != nil {
+		in, out := &in.AutomaticSpPrivileges, &out.AutomaticSpPrivileges
+		*out = new(bool)
 		**out = **in
 	}
 	if in.AutomaticUtilityNetworkIPFilter != nil {
@@ -9145,22 +9442,22 @@ func (in *PropertiesInitParameters) DeepCopyInto(out *PropertiesInitParameters) 
 	}
 	if in.BackupHour != nil {
 		in, out := &in.BackupHour, &out.BackupHour
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BackupMinute != nil {
 		in, out := &in.BackupMinute, &out.BackupMinute
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BinlogRetentionPeriod != nil {
 		in, out := &in.BinlogRetentionPeriod, &out.BinlogRetentionPeriod
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ConnectTimeout != nil {
 		in, out := &in.ConnectTimeout, &out.ConnectTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.DefaultTimeZone != nil {
@@ -9168,9 +9465,24 @@ func (in *PropertiesInitParameters) DeepCopyInto(out *PropertiesInitParameters) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.DivPrecisionIncrement != nil {
+		in, out := &in.DivPrecisionIncrement, &out.DivPrecisionIncrement
+		*out = new(float64)
+		**out = **in
+	}
+	if in.EndMarkersInJSON != nil {
+		in, out := &in.EndMarkersInJSON, &out.EndMarkersInJSON
+		*out = new(bool)
+		**out = **in
+	}
+	if in.EqRangeIndexDiveLimit != nil {
+		in, out := &in.EqRangeIndexDiveLimit, &out.EqRangeIndexDiveLimit
+		*out = new(float64)
+		**out = **in
+	}
 	if in.GroupConcatMaxLen != nil {
 		in, out := &in.GroupConcatMaxLen, &out.GroupConcatMaxLen
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IPFilter != nil {
@@ -9186,22 +9498,47 @@ func (in *PropertiesInitParameters) DeepCopyInto(out *PropertiesInitParameters) 
 	}
 	if in.InformationSchemaStatsExpiry != nil {
 		in, out := &in.InformationSchemaStatsExpiry, &out.InformationSchemaStatsExpiry
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbAdaptiveHashIndex != nil {
+		in, out := &in.InnodbAdaptiveHashIndex, &out.InnodbAdaptiveHashIndex
+		*out = new(bool)
 		**out = **in
 	}
 	if in.InnodbChangeBufferMaxSize != nil {
 		in, out := &in.InnodbChangeBufferMaxSize, &out.InnodbChangeBufferMaxSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbFlushNeighbors != nil {
 		in, out := &in.InnodbFlushNeighbors, &out.InnodbFlushNeighbors
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbFtEnableStopword != nil {
+		in, out := &in.InnodbFtEnableStopword, &out.InnodbFtEnableStopword
+		*out = new(bool)
+		**out = **in
+	}
+	if in.InnodbFtMaxTokenSize != nil {
+		in, out := &in.InnodbFtMaxTokenSize, &out.InnodbFtMaxTokenSize
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbFtMinTokenSize != nil {
 		in, out := &in.InnodbFtMinTokenSize, &out.InnodbFtMinTokenSize
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbFtNumWordOptimize != nil {
+		in, out := &in.InnodbFtNumWordOptimize, &out.InnodbFtNumWordOptimize
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbFtResultCacheLimit != nil {
+		in, out := &in.InnodbFtResultCacheLimit, &out.InnodbFtResultCacheLimit
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbFtServerStopwordTable != nil {
@@ -9209,19 +9546,39 @@ func (in *PropertiesInitParameters) DeepCopyInto(out *PropertiesInitParameters) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.InnodbFtUserStopwordTable != nil {
+		in, out := &in.InnodbFtUserStopwordTable, &out.InnodbFtUserStopwordTable
+		*out = new(string)
+		**out = **in
+	}
+	if in.InnodbIoCapacity != nil {
+		in, out := &in.InnodbIoCapacity, &out.InnodbIoCapacity
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbIoCapacityMax != nil {
+		in, out := &in.InnodbIoCapacityMax, &out.InnodbIoCapacityMax
+		*out = new(float64)
+		**out = **in
+	}
 	if in.InnodbLockWaitTimeout != nil {
 		in, out := &in.InnodbLockWaitTimeout, &out.InnodbLockWaitTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbLogBufferSize != nil {
 		in, out := &in.InnodbLogBufferSize, &out.InnodbLogBufferSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbOnlineAlterLogMaxSize != nil {
 		in, out := &in.InnodbOnlineAlterLogMaxSize, &out.InnodbOnlineAlterLogMaxSize
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbOptimizeFulltextOnly != nil {
+		in, out := &in.InnodbOptimizeFulltextOnly, &out.InnodbOptimizeFulltextOnly
+		*out = new(bool)
 		**out = **in
 	}
 	if in.InnodbPrintAllDeadlocks != nil {
@@ -9231,7 +9588,7 @@ func (in *PropertiesInitParameters) DeepCopyInto(out *PropertiesInitParameters) 
 	}
 	if in.InnodbReadIoThreads != nil {
 		in, out := &in.InnodbReadIoThreads, &out.InnodbReadIoThreads
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbRollbackOnTimeout != nil {
@@ -9241,17 +9598,17 @@ func (in *PropertiesInitParameters) DeepCopyInto(out *PropertiesInitParameters) 
 	}
 	if in.InnodbThreadConcurrency != nil {
 		in, out := &in.InnodbThreadConcurrency, &out.InnodbThreadConcurrency
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbWriteIoThreads != nil {
 		in, out := &in.InnodbWriteIoThreads, &out.InnodbWriteIoThreads
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InteractiveTimeout != nil {
 		in, out := &in.InteractiveTimeout, &out.InteractiveTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InternalTmpMemStorageEngine != nil {
@@ -9269,14 +9626,39 @@ func (in *PropertiesInitParameters) DeepCopyInto(out *PropertiesInitParameters) 
 		*out = new(float64)
 		**out = **in
 	}
+	if in.LowerCaseTableNames != nil {
+		in, out := &in.LowerCaseTableNames, &out.LowerCaseTableNames
+		*out = new(float64)
+		**out = **in
+	}
 	if in.MaxAllowedPacket != nil {
 		in, out := &in.MaxAllowedPacket, &out.MaxAllowedPacket
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxConnections != nil {
+		in, out := &in.MaxConnections, &out.MaxConnections
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxExecutionTime != nil {
+		in, out := &in.MaxExecutionTime, &out.MaxExecutionTime
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxHeapTableSize != nil {
 		in, out := &in.MaxHeapTableSize, &out.MaxHeapTableSize
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxSeeksForKey != nil {
+		in, out := &in.MaxSeeksForKey, &out.MaxSeeksForKey
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxUserConnections != nil {
+		in, out := &in.MaxUserConnections, &out.MaxUserConnections
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Migration != nil {
@@ -9295,22 +9677,52 @@ func (in *PropertiesInitParameters) DeepCopyInto(out *PropertiesInitParameters) 
 	}
 	if in.NetBufferLength != nil {
 		in, out := &in.NetBufferLength, &out.NetBufferLength
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.NetReadTimeout != nil {
 		in, out := &in.NetReadTimeout, &out.NetReadTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.NetWriteTimeout != nil {
 		in, out := &in.NetWriteTimeout, &out.NetWriteTimeout
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.OptimizerPruneLevel != nil {
+		in, out := &in.OptimizerPruneLevel, &out.OptimizerPruneLevel
+		*out = new(float64)
+		**out = **in
+	}
+	if in.OptimizerSearchDepth != nil {
+		in, out := &in.OptimizerSearchDepth, &out.OptimizerSearchDepth
+		*out = new(float64)
+		**out = **in
+	}
+	if in.OptimizerSwitch != nil {
+		in, out := &in.OptimizerSwitch, &out.OptimizerSwitch
+		*out = new(string)
+		**out = **in
+	}
+	if in.PerformanceSchemaEventsStatementsHistorySize != nil {
+		in, out := &in.PerformanceSchemaEventsStatementsHistorySize, &out.PerformanceSchemaEventsStatementsHistorySize
+		*out = new(float64)
 		**out = **in
 	}
 	if in.PublicAccess != nil {
 		in, out := &in.PublicAccess, &out.PublicAccess
 		*out = new(bool)
+		**out = **in
+	}
+	if in.PublicAccessPrometheus != nil {
+		in, out := &in.PublicAccessPrometheus, &out.PublicAccessPrometheus
+		*out = new(bool)
+		**out = **in
+	}
+	if in.RelayLogSpaceLimit != nil {
+		in, out := &in.RelayLogSpaceLimit, &out.RelayLogSpaceLimit
+		*out = new(float64)
 		**out = **in
 	}
 	if in.SQLMode != nil {
@@ -9335,12 +9747,12 @@ func (in *PropertiesInitParameters) DeepCopyInto(out *PropertiesInitParameters) 
 	}
 	if in.SortBufferSize != nil {
 		in, out := &in.SortBufferSize, &out.SortBufferSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.TmpTableSize != nil {
 		in, out := &in.TmpTableSize, &out.TmpTableSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Version != nil {
@@ -9350,7 +9762,12 @@ func (in *PropertiesInitParameters) DeepCopyInto(out *PropertiesInitParameters) 
 	}
 	if in.WaitTimeout != nil {
 		in, out := &in.WaitTimeout, &out.WaitTimeout
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.WindowingUseHighPrecision != nil {
+		in, out := &in.WindowingUseHighPrecision, &out.WindowingUseHighPrecision
+		*out = new(bool)
 		**out = **in
 	}
 }
@@ -9395,12 +9812,12 @@ func (in *PropertiesMigrationInitParameters) DeepCopyInto(out *PropertiesMigrati
 	}
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
-		*out = new(v1.SecretKeySelector)
+		*out = new(v2.SecretKeySelector)
 		**out = **in
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.SSL != nil {
@@ -9455,7 +9872,7 @@ func (in *PropertiesMigrationObservation) DeepCopyInto(out *PropertiesMigrationO
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.SSL != nil {
@@ -9510,12 +9927,12 @@ func (in *PropertiesMigrationParameters) DeepCopyInto(out *PropertiesMigrationPa
 	}
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
-		*out = new(v1.SecretKeySelector)
+		*out = new(v2.SecretKeySelector)
 		**out = **in
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.SSL != nil {
@@ -9548,6 +9965,11 @@ func (in *PropertiesObservation) DeepCopyInto(out *PropertiesObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.AutomaticSpPrivileges != nil {
+		in, out := &in.AutomaticSpPrivileges, &out.AutomaticSpPrivileges
+		*out = new(bool)
+		**out = **in
+	}
 	if in.AutomaticUtilityNetworkIPFilter != nil {
 		in, out := &in.AutomaticUtilityNetworkIPFilter, &out.AutomaticUtilityNetworkIPFilter
 		*out = new(bool)
@@ -9555,22 +9977,22 @@ func (in *PropertiesObservation) DeepCopyInto(out *PropertiesObservation) {
 	}
 	if in.BackupHour != nil {
 		in, out := &in.BackupHour, &out.BackupHour
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BackupMinute != nil {
 		in, out := &in.BackupMinute, &out.BackupMinute
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BinlogRetentionPeriod != nil {
 		in, out := &in.BinlogRetentionPeriod, &out.BinlogRetentionPeriod
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ConnectTimeout != nil {
 		in, out := &in.ConnectTimeout, &out.ConnectTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.DefaultTimeZone != nil {
@@ -9578,9 +10000,24 @@ func (in *PropertiesObservation) DeepCopyInto(out *PropertiesObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.DivPrecisionIncrement != nil {
+		in, out := &in.DivPrecisionIncrement, &out.DivPrecisionIncrement
+		*out = new(float64)
+		**out = **in
+	}
+	if in.EndMarkersInJSON != nil {
+		in, out := &in.EndMarkersInJSON, &out.EndMarkersInJSON
+		*out = new(bool)
+		**out = **in
+	}
+	if in.EqRangeIndexDiveLimit != nil {
+		in, out := &in.EqRangeIndexDiveLimit, &out.EqRangeIndexDiveLimit
+		*out = new(float64)
+		**out = **in
+	}
 	if in.GroupConcatMaxLen != nil {
 		in, out := &in.GroupConcatMaxLen, &out.GroupConcatMaxLen
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IPFilter != nil {
@@ -9596,22 +10033,47 @@ func (in *PropertiesObservation) DeepCopyInto(out *PropertiesObservation) {
 	}
 	if in.InformationSchemaStatsExpiry != nil {
 		in, out := &in.InformationSchemaStatsExpiry, &out.InformationSchemaStatsExpiry
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbAdaptiveHashIndex != nil {
+		in, out := &in.InnodbAdaptiveHashIndex, &out.InnodbAdaptiveHashIndex
+		*out = new(bool)
 		**out = **in
 	}
 	if in.InnodbChangeBufferMaxSize != nil {
 		in, out := &in.InnodbChangeBufferMaxSize, &out.InnodbChangeBufferMaxSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbFlushNeighbors != nil {
 		in, out := &in.InnodbFlushNeighbors, &out.InnodbFlushNeighbors
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbFtEnableStopword != nil {
+		in, out := &in.InnodbFtEnableStopword, &out.InnodbFtEnableStopword
+		*out = new(bool)
+		**out = **in
+	}
+	if in.InnodbFtMaxTokenSize != nil {
+		in, out := &in.InnodbFtMaxTokenSize, &out.InnodbFtMaxTokenSize
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbFtMinTokenSize != nil {
 		in, out := &in.InnodbFtMinTokenSize, &out.InnodbFtMinTokenSize
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbFtNumWordOptimize != nil {
+		in, out := &in.InnodbFtNumWordOptimize, &out.InnodbFtNumWordOptimize
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbFtResultCacheLimit != nil {
+		in, out := &in.InnodbFtResultCacheLimit, &out.InnodbFtResultCacheLimit
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbFtServerStopwordTable != nil {
@@ -9619,19 +10081,39 @@ func (in *PropertiesObservation) DeepCopyInto(out *PropertiesObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.InnodbFtUserStopwordTable != nil {
+		in, out := &in.InnodbFtUserStopwordTable, &out.InnodbFtUserStopwordTable
+		*out = new(string)
+		**out = **in
+	}
+	if in.InnodbIoCapacity != nil {
+		in, out := &in.InnodbIoCapacity, &out.InnodbIoCapacity
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbIoCapacityMax != nil {
+		in, out := &in.InnodbIoCapacityMax, &out.InnodbIoCapacityMax
+		*out = new(float64)
+		**out = **in
+	}
 	if in.InnodbLockWaitTimeout != nil {
 		in, out := &in.InnodbLockWaitTimeout, &out.InnodbLockWaitTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbLogBufferSize != nil {
 		in, out := &in.InnodbLogBufferSize, &out.InnodbLogBufferSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbOnlineAlterLogMaxSize != nil {
 		in, out := &in.InnodbOnlineAlterLogMaxSize, &out.InnodbOnlineAlterLogMaxSize
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbOptimizeFulltextOnly != nil {
+		in, out := &in.InnodbOptimizeFulltextOnly, &out.InnodbOptimizeFulltextOnly
+		*out = new(bool)
 		**out = **in
 	}
 	if in.InnodbPrintAllDeadlocks != nil {
@@ -9641,7 +10123,7 @@ func (in *PropertiesObservation) DeepCopyInto(out *PropertiesObservation) {
 	}
 	if in.InnodbReadIoThreads != nil {
 		in, out := &in.InnodbReadIoThreads, &out.InnodbReadIoThreads
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbRollbackOnTimeout != nil {
@@ -9651,17 +10133,17 @@ func (in *PropertiesObservation) DeepCopyInto(out *PropertiesObservation) {
 	}
 	if in.InnodbThreadConcurrency != nil {
 		in, out := &in.InnodbThreadConcurrency, &out.InnodbThreadConcurrency
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbWriteIoThreads != nil {
 		in, out := &in.InnodbWriteIoThreads, &out.InnodbWriteIoThreads
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InteractiveTimeout != nil {
 		in, out := &in.InteractiveTimeout, &out.InteractiveTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InternalTmpMemStorageEngine != nil {
@@ -9679,14 +10161,39 @@ func (in *PropertiesObservation) DeepCopyInto(out *PropertiesObservation) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.LowerCaseTableNames != nil {
+		in, out := &in.LowerCaseTableNames, &out.LowerCaseTableNames
+		*out = new(float64)
+		**out = **in
+	}
 	if in.MaxAllowedPacket != nil {
 		in, out := &in.MaxAllowedPacket, &out.MaxAllowedPacket
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxConnections != nil {
+		in, out := &in.MaxConnections, &out.MaxConnections
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxExecutionTime != nil {
+		in, out := &in.MaxExecutionTime, &out.MaxExecutionTime
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxHeapTableSize != nil {
 		in, out := &in.MaxHeapTableSize, &out.MaxHeapTableSize
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxSeeksForKey != nil {
+		in, out := &in.MaxSeeksForKey, &out.MaxSeeksForKey
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxUserConnections != nil {
+		in, out := &in.MaxUserConnections, &out.MaxUserConnections
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Migration != nil {
@@ -9705,22 +10212,52 @@ func (in *PropertiesObservation) DeepCopyInto(out *PropertiesObservation) {
 	}
 	if in.NetBufferLength != nil {
 		in, out := &in.NetBufferLength, &out.NetBufferLength
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.NetReadTimeout != nil {
 		in, out := &in.NetReadTimeout, &out.NetReadTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.NetWriteTimeout != nil {
 		in, out := &in.NetWriteTimeout, &out.NetWriteTimeout
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.OptimizerPruneLevel != nil {
+		in, out := &in.OptimizerPruneLevel, &out.OptimizerPruneLevel
+		*out = new(float64)
+		**out = **in
+	}
+	if in.OptimizerSearchDepth != nil {
+		in, out := &in.OptimizerSearchDepth, &out.OptimizerSearchDepth
+		*out = new(float64)
+		**out = **in
+	}
+	if in.OptimizerSwitch != nil {
+		in, out := &in.OptimizerSwitch, &out.OptimizerSwitch
+		*out = new(string)
+		**out = **in
+	}
+	if in.PerformanceSchemaEventsStatementsHistorySize != nil {
+		in, out := &in.PerformanceSchemaEventsStatementsHistorySize, &out.PerformanceSchemaEventsStatementsHistorySize
+		*out = new(float64)
 		**out = **in
 	}
 	if in.PublicAccess != nil {
 		in, out := &in.PublicAccess, &out.PublicAccess
 		*out = new(bool)
+		**out = **in
+	}
+	if in.PublicAccessPrometheus != nil {
+		in, out := &in.PublicAccessPrometheus, &out.PublicAccessPrometheus
+		*out = new(bool)
+		**out = **in
+	}
+	if in.RelayLogSpaceLimit != nil {
+		in, out := &in.RelayLogSpaceLimit, &out.RelayLogSpaceLimit
+		*out = new(float64)
 		**out = **in
 	}
 	if in.SQLMode != nil {
@@ -9745,12 +10282,12 @@ func (in *PropertiesObservation) DeepCopyInto(out *PropertiesObservation) {
 	}
 	if in.SortBufferSize != nil {
 		in, out := &in.SortBufferSize, &out.SortBufferSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.TmpTableSize != nil {
 		in, out := &in.TmpTableSize, &out.TmpTableSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Version != nil {
@@ -9760,7 +10297,12 @@ func (in *PropertiesObservation) DeepCopyInto(out *PropertiesObservation) {
 	}
 	if in.WaitTimeout != nil {
 		in, out := &in.WaitTimeout, &out.WaitTimeout
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.WindowingUseHighPrecision != nil {
+		in, out := &in.WindowingUseHighPrecision, &out.WindowingUseHighPrecision
+		*out = new(bool)
 		**out = **in
 	}
 }
@@ -9780,12 +10322,17 @@ func (in *PropertiesParameters) DeepCopyInto(out *PropertiesParameters) {
 	*out = *in
 	if in.AdminPasswordSecretRef != nil {
 		in, out := &in.AdminPasswordSecretRef, &out.AdminPasswordSecretRef
-		*out = new(v1.SecretKeySelector)
+		*out = new(v2.SecretKeySelector)
 		**out = **in
 	}
 	if in.AdminUsername != nil {
 		in, out := &in.AdminUsername, &out.AdminUsername
 		*out = new(string)
+		**out = **in
+	}
+	if in.AutomaticSpPrivileges != nil {
+		in, out := &in.AutomaticSpPrivileges, &out.AutomaticSpPrivileges
+		*out = new(bool)
 		**out = **in
 	}
 	if in.AutomaticUtilityNetworkIPFilter != nil {
@@ -9795,22 +10342,22 @@ func (in *PropertiesParameters) DeepCopyInto(out *PropertiesParameters) {
 	}
 	if in.BackupHour != nil {
 		in, out := &in.BackupHour, &out.BackupHour
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BackupMinute != nil {
 		in, out := &in.BackupMinute, &out.BackupMinute
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.BinlogRetentionPeriod != nil {
 		in, out := &in.BinlogRetentionPeriod, &out.BinlogRetentionPeriod
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ConnectTimeout != nil {
 		in, out := &in.ConnectTimeout, &out.ConnectTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.DefaultTimeZone != nil {
@@ -9818,9 +10365,24 @@ func (in *PropertiesParameters) DeepCopyInto(out *PropertiesParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.DivPrecisionIncrement != nil {
+		in, out := &in.DivPrecisionIncrement, &out.DivPrecisionIncrement
+		*out = new(float64)
+		**out = **in
+	}
+	if in.EndMarkersInJSON != nil {
+		in, out := &in.EndMarkersInJSON, &out.EndMarkersInJSON
+		*out = new(bool)
+		**out = **in
+	}
+	if in.EqRangeIndexDiveLimit != nil {
+		in, out := &in.EqRangeIndexDiveLimit, &out.EqRangeIndexDiveLimit
+		*out = new(float64)
+		**out = **in
+	}
 	if in.GroupConcatMaxLen != nil {
 		in, out := &in.GroupConcatMaxLen, &out.GroupConcatMaxLen
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.IPFilter != nil {
@@ -9836,22 +10398,47 @@ func (in *PropertiesParameters) DeepCopyInto(out *PropertiesParameters) {
 	}
 	if in.InformationSchemaStatsExpiry != nil {
 		in, out := &in.InformationSchemaStatsExpiry, &out.InformationSchemaStatsExpiry
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbAdaptiveHashIndex != nil {
+		in, out := &in.InnodbAdaptiveHashIndex, &out.InnodbAdaptiveHashIndex
+		*out = new(bool)
 		**out = **in
 	}
 	if in.InnodbChangeBufferMaxSize != nil {
 		in, out := &in.InnodbChangeBufferMaxSize, &out.InnodbChangeBufferMaxSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbFlushNeighbors != nil {
 		in, out := &in.InnodbFlushNeighbors, &out.InnodbFlushNeighbors
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbFtEnableStopword != nil {
+		in, out := &in.InnodbFtEnableStopword, &out.InnodbFtEnableStopword
+		*out = new(bool)
+		**out = **in
+	}
+	if in.InnodbFtMaxTokenSize != nil {
+		in, out := &in.InnodbFtMaxTokenSize, &out.InnodbFtMaxTokenSize
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbFtMinTokenSize != nil {
 		in, out := &in.InnodbFtMinTokenSize, &out.InnodbFtMinTokenSize
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbFtNumWordOptimize != nil {
+		in, out := &in.InnodbFtNumWordOptimize, &out.InnodbFtNumWordOptimize
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbFtResultCacheLimit != nil {
+		in, out := &in.InnodbFtResultCacheLimit, &out.InnodbFtResultCacheLimit
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbFtServerStopwordTable != nil {
@@ -9859,19 +10446,39 @@ func (in *PropertiesParameters) DeepCopyInto(out *PropertiesParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.InnodbFtUserStopwordTable != nil {
+		in, out := &in.InnodbFtUserStopwordTable, &out.InnodbFtUserStopwordTable
+		*out = new(string)
+		**out = **in
+	}
+	if in.InnodbIoCapacity != nil {
+		in, out := &in.InnodbIoCapacity, &out.InnodbIoCapacity
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbIoCapacityMax != nil {
+		in, out := &in.InnodbIoCapacityMax, &out.InnodbIoCapacityMax
+		*out = new(float64)
+		**out = **in
+	}
 	if in.InnodbLockWaitTimeout != nil {
 		in, out := &in.InnodbLockWaitTimeout, &out.InnodbLockWaitTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbLogBufferSize != nil {
 		in, out := &in.InnodbLogBufferSize, &out.InnodbLogBufferSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbOnlineAlterLogMaxSize != nil {
 		in, out := &in.InnodbOnlineAlterLogMaxSize, &out.InnodbOnlineAlterLogMaxSize
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.InnodbOptimizeFulltextOnly != nil {
+		in, out := &in.InnodbOptimizeFulltextOnly, &out.InnodbOptimizeFulltextOnly
+		*out = new(bool)
 		**out = **in
 	}
 	if in.InnodbPrintAllDeadlocks != nil {
@@ -9881,7 +10488,7 @@ func (in *PropertiesParameters) DeepCopyInto(out *PropertiesParameters) {
 	}
 	if in.InnodbReadIoThreads != nil {
 		in, out := &in.InnodbReadIoThreads, &out.InnodbReadIoThreads
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbRollbackOnTimeout != nil {
@@ -9891,17 +10498,17 @@ func (in *PropertiesParameters) DeepCopyInto(out *PropertiesParameters) {
 	}
 	if in.InnodbThreadConcurrency != nil {
 		in, out := &in.InnodbThreadConcurrency, &out.InnodbThreadConcurrency
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InnodbWriteIoThreads != nil {
 		in, out := &in.InnodbWriteIoThreads, &out.InnodbWriteIoThreads
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InteractiveTimeout != nil {
 		in, out := &in.InteractiveTimeout, &out.InteractiveTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.InternalTmpMemStorageEngine != nil {
@@ -9919,14 +10526,39 @@ func (in *PropertiesParameters) DeepCopyInto(out *PropertiesParameters) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.LowerCaseTableNames != nil {
+		in, out := &in.LowerCaseTableNames, &out.LowerCaseTableNames
+		*out = new(float64)
+		**out = **in
+	}
 	if in.MaxAllowedPacket != nil {
 		in, out := &in.MaxAllowedPacket, &out.MaxAllowedPacket
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxConnections != nil {
+		in, out := &in.MaxConnections, &out.MaxConnections
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxExecutionTime != nil {
+		in, out := &in.MaxExecutionTime, &out.MaxExecutionTime
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MaxHeapTableSize != nil {
 		in, out := &in.MaxHeapTableSize, &out.MaxHeapTableSize
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxSeeksForKey != nil {
+		in, out := &in.MaxSeeksForKey, &out.MaxSeeksForKey
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxUserConnections != nil {
+		in, out := &in.MaxUserConnections, &out.MaxUserConnections
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Migration != nil {
@@ -9945,22 +10577,52 @@ func (in *PropertiesParameters) DeepCopyInto(out *PropertiesParameters) {
 	}
 	if in.NetBufferLength != nil {
 		in, out := &in.NetBufferLength, &out.NetBufferLength
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.NetReadTimeout != nil {
 		in, out := &in.NetReadTimeout, &out.NetReadTimeout
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.NetWriteTimeout != nil {
 		in, out := &in.NetWriteTimeout, &out.NetWriteTimeout
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.OptimizerPruneLevel != nil {
+		in, out := &in.OptimizerPruneLevel, &out.OptimizerPruneLevel
+		*out = new(float64)
+		**out = **in
+	}
+	if in.OptimizerSearchDepth != nil {
+		in, out := &in.OptimizerSearchDepth, &out.OptimizerSearchDepth
+		*out = new(float64)
+		**out = **in
+	}
+	if in.OptimizerSwitch != nil {
+		in, out := &in.OptimizerSwitch, &out.OptimizerSwitch
+		*out = new(string)
+		**out = **in
+	}
+	if in.PerformanceSchemaEventsStatementsHistorySize != nil {
+		in, out := &in.PerformanceSchemaEventsStatementsHistorySize, &out.PerformanceSchemaEventsStatementsHistorySize
+		*out = new(float64)
 		**out = **in
 	}
 	if in.PublicAccess != nil {
 		in, out := &in.PublicAccess, &out.PublicAccess
 		*out = new(bool)
+		**out = **in
+	}
+	if in.PublicAccessPrometheus != nil {
+		in, out := &in.PublicAccessPrometheus, &out.PublicAccessPrometheus
+		*out = new(bool)
+		**out = **in
+	}
+	if in.RelayLogSpaceLimit != nil {
+		in, out := &in.RelayLogSpaceLimit, &out.RelayLogSpaceLimit
+		*out = new(float64)
 		**out = **in
 	}
 	if in.SQLMode != nil {
@@ -9985,12 +10647,12 @@ func (in *PropertiesParameters) DeepCopyInto(out *PropertiesParameters) {
 	}
 	if in.SortBufferSize != nil {
 		in, out := &in.SortBufferSize, &out.SortBufferSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.TmpTableSize != nil {
 		in, out := &in.TmpTableSize, &out.TmpTableSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Version != nil {
@@ -10000,7 +10662,12 @@ func (in *PropertiesParameters) DeepCopyInto(out *PropertiesParameters) {
 	}
 	if in.WaitTimeout != nil {
 		in, out := &in.WaitTimeout, &out.WaitTimeout
-		*out = new(int64)
+		*out = new(float64)
+		**out = **in
+	}
+	if in.WindowingUseHighPrecision != nil {
+		in, out := &in.WindowingUseHighPrecision, &out.WindowingUseHighPrecision
+		*out = new(bool)
 		**out = **in
 	}
 }
@@ -10025,7 +10692,7 @@ func (in *RemoteStoreInitParameters) DeepCopyInto(out *RemoteStoreInitParameters
 	}
 	if in.SegmentPressureConsecutiveFailuresLimit != nil {
 		in, out := &in.SegmentPressureConsecutiveFailuresLimit, &out.SegmentPressureConsecutiveFailuresLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.SegmentPressureEnabled != nil {
@@ -10060,7 +10727,7 @@ func (in *RemoteStoreObservation) DeepCopyInto(out *RemoteStoreObservation) {
 	}
 	if in.SegmentPressureConsecutiveFailuresLimit != nil {
 		in, out := &in.SegmentPressureConsecutiveFailuresLimit, &out.SegmentPressureConsecutiveFailuresLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.SegmentPressureEnabled != nil {
@@ -10095,7 +10762,7 @@ func (in *RemoteStoreParameters) DeepCopyInto(out *RemoteStoreParameters) {
 	}
 	if in.SegmentPressureConsecutiveFailuresLimit != nil {
 		in, out := &in.SegmentPressureConsecutiveFailuresLimit, &out.SegmentPressureConsecutiveFailuresLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.SegmentPressureEnabled != nil {
@@ -10581,7 +11248,7 @@ func (in *SearchShardTaskInitParameters) DeepCopyInto(out *SearchShardTaskInitPa
 	*out = *in
 	if in.CPUTimeMillisThreshold != nil {
 		in, out := &in.CPUTimeMillisThreshold, &out.CPUTimeMillisThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.CancellationBurst != nil {
@@ -10601,12 +11268,12 @@ func (in *SearchShardTaskInitParameters) DeepCopyInto(out *SearchShardTaskInitPa
 	}
 	if in.ElapsedTimeMillisThreshold != nil {
 		in, out := &in.ElapsedTimeMillisThreshold, &out.ElapsedTimeMillisThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HeapMovingAverageWindowSize != nil {
 		in, out := &in.HeapMovingAverageWindowSize, &out.HeapMovingAverageWindowSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HeapPercentThreshold != nil {
@@ -10641,7 +11308,7 @@ func (in *SearchShardTaskObservation) DeepCopyInto(out *SearchShardTaskObservati
 	*out = *in
 	if in.CPUTimeMillisThreshold != nil {
 		in, out := &in.CPUTimeMillisThreshold, &out.CPUTimeMillisThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.CancellationBurst != nil {
@@ -10661,12 +11328,12 @@ func (in *SearchShardTaskObservation) DeepCopyInto(out *SearchShardTaskObservati
 	}
 	if in.ElapsedTimeMillisThreshold != nil {
 		in, out := &in.ElapsedTimeMillisThreshold, &out.ElapsedTimeMillisThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HeapMovingAverageWindowSize != nil {
 		in, out := &in.HeapMovingAverageWindowSize, &out.HeapMovingAverageWindowSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HeapPercentThreshold != nil {
@@ -10701,7 +11368,7 @@ func (in *SearchShardTaskParameters) DeepCopyInto(out *SearchShardTaskParameters
 	*out = *in
 	if in.CPUTimeMillisThreshold != nil {
 		in, out := &in.CPUTimeMillisThreshold, &out.CPUTimeMillisThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.CancellationBurst != nil {
@@ -10721,12 +11388,12 @@ func (in *SearchShardTaskParameters) DeepCopyInto(out *SearchShardTaskParameters
 	}
 	if in.ElapsedTimeMillisThreshold != nil {
 		in, out := &in.ElapsedTimeMillisThreshold, &out.ElapsedTimeMillisThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HeapMovingAverageWindowSize != nil {
 		in, out := &in.HeapMovingAverageWindowSize, &out.HeapMovingAverageWindowSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HeapPercentThreshold != nil {
@@ -10761,7 +11428,7 @@ func (in *SearchTaskInitParameters) DeepCopyInto(out *SearchTaskInitParameters) 
 	*out = *in
 	if in.CPUTimeMillisThreshold != nil {
 		in, out := &in.CPUTimeMillisThreshold, &out.CPUTimeMillisThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.CancellationBurst != nil {
@@ -10781,12 +11448,12 @@ func (in *SearchTaskInitParameters) DeepCopyInto(out *SearchTaskInitParameters) 
 	}
 	if in.ElapsedTimeMillisThreshold != nil {
 		in, out := &in.ElapsedTimeMillisThreshold, &out.ElapsedTimeMillisThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HeapMovingAverageWindowSize != nil {
 		in, out := &in.HeapMovingAverageWindowSize, &out.HeapMovingAverageWindowSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HeapPercentThreshold != nil {
@@ -10821,7 +11488,7 @@ func (in *SearchTaskObservation) DeepCopyInto(out *SearchTaskObservation) {
 	*out = *in
 	if in.CPUTimeMillisThreshold != nil {
 		in, out := &in.CPUTimeMillisThreshold, &out.CPUTimeMillisThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.CancellationBurst != nil {
@@ -10841,12 +11508,12 @@ func (in *SearchTaskObservation) DeepCopyInto(out *SearchTaskObservation) {
 	}
 	if in.ElapsedTimeMillisThreshold != nil {
 		in, out := &in.ElapsedTimeMillisThreshold, &out.ElapsedTimeMillisThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HeapMovingAverageWindowSize != nil {
 		in, out := &in.HeapMovingAverageWindowSize, &out.HeapMovingAverageWindowSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HeapPercentThreshold != nil {
@@ -10881,7 +11548,7 @@ func (in *SearchTaskParameters) DeepCopyInto(out *SearchTaskParameters) {
 	*out = *in
 	if in.CPUTimeMillisThreshold != nil {
 		in, out := &in.CPUTimeMillisThreshold, &out.CPUTimeMillisThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.CancellationBurst != nil {
@@ -10901,12 +11568,12 @@ func (in *SearchTaskParameters) DeepCopyInto(out *SearchTaskParameters) {
 	}
 	if in.ElapsedTimeMillisThreshold != nil {
 		in, out := &in.ElapsedTimeMillisThreshold, &out.ElapsedTimeMillisThreshold
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HeapMovingAverageWindowSize != nil {
 		in, out := &in.HeapMovingAverageWindowSize, &out.HeapMovingAverageWindowSize
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.HeapPercentThreshold != nil {
@@ -10941,7 +11608,7 @@ func (in *SegrepInitParameters) DeepCopyInto(out *SegrepInitParameters) {
 	*out = *in
 	if in.PressureCheckpointLimit != nil {
 		in, out := &in.PressureCheckpointLimit, &out.PressureCheckpointLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.PressureEnabled != nil {
@@ -10976,7 +11643,7 @@ func (in *SegrepObservation) DeepCopyInto(out *SegrepObservation) {
 	*out = *in
 	if in.PressureCheckpointLimit != nil {
 		in, out := &in.PressureCheckpointLimit, &out.PressureCheckpointLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.PressureEnabled != nil {
@@ -11011,7 +11678,7 @@ func (in *SegrepParameters) DeepCopyInto(out *SegrepParameters) {
 	*out = *in
 	if in.PressureCheckpointLimit != nil {
 		in, out := &in.PressureCheckpointLimit, &out.PressureCheckpointLimit
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 	if in.PressureEnabled != nil {
@@ -11328,7 +11995,7 @@ func (in *TimescaledbInitParameters) DeepCopyInto(out *TimescaledbInitParameters
 	*out = *in
 	if in.MaxBackgroundWorkers != nil {
 		in, out := &in.MaxBackgroundWorkers, &out.MaxBackgroundWorkers
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -11348,7 +12015,7 @@ func (in *TimescaledbObservation) DeepCopyInto(out *TimescaledbObservation) {
 	*out = *in
 	if in.MaxBackgroundWorkers != nil {
 		in, out := &in.MaxBackgroundWorkers, &out.MaxBackgroundWorkers
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -11368,7 +12035,7 @@ func (in *TimescaledbParameters) DeepCopyInto(out *TimescaledbParameters) {
 	*out = *in
 	if in.MaxBackgroundWorkers != nil {
 		in, out := &in.MaxBackgroundWorkers, &out.MaxBackgroundWorkers
-		*out = new(int64)
+		*out = new(float64)
 		**out = **in
 	}
 }

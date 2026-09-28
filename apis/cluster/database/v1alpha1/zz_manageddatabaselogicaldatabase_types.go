@@ -10,69 +10,69 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ManagedDatabaseLogicalDatabaseInitParameters struct {
 
-	// (String) Default character set for the database (LC_CTYPE)
-	// Default character set for the database (LC_CTYPE)
+	// (String) Default character set for the database (LC_CTYPE), PostgreSQL only.
+	// Default character set for the database (LC_CTYPE), PostgreSQL only.
 	CharacterSet *string `json:"characterSet,omitempty" tf:"character_set,omitempty"`
 
-	// (String) Default collation for the database (LC_COLLATE)
-	// Default collation for the database (LC_COLLATE)
+	// (String) Default collation for the database (LC_COLLATE), PostgreSQL only.
+	// Default collation for the database (LC_COLLATE), PostgreSQL only.
 	Collation *string `json:"collation,omitempty" tf:"collation,omitempty"`
 }
 
 type ManagedDatabaseLogicalDatabaseObservation struct {
 
-	// (String) Default character set for the database (LC_CTYPE)
-	// Default character set for the database (LC_CTYPE)
+	// (String) Default character set for the database (LC_CTYPE), PostgreSQL only.
+	// Default character set for the database (LC_CTYPE), PostgreSQL only.
 	CharacterSet *string `json:"characterSet,omitempty" tf:"character_set,omitempty"`
 
-	// (String) Default collation for the database (LC_COLLATE)
-	// Default collation for the database (LC_COLLATE)
+	// (String) Default collation for the database (LC_COLLATE), PostgreSQL only.
+	// Default collation for the database (LC_COLLATE), PostgreSQL only.
 	Collation *string `json:"collation,omitempty" tf:"collation,omitempty"`
 
-	// (String) The ID of this resource.
+	// (String) ID of the logical database. ID is in {service UUID}/{database name} format.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// (String) Service's UUID for which this user belongs to
+	// (String) UUID of the service to which this logical database belongs.
 	// The service to which the logical database belongs. Please note that reference fields (`serviceRef` and `serviceSelector`) only work for PostgreSQL databases. For other databases you need to leverage compositions and patches to pass database service ID to logical database `service` field. See https://docs.crossplane.io/latest/concepts/patch-and-transform/#patching-between-resources for more info.
 	Service *string `json:"service,omitempty" tf:"service,omitempty"`
 }
 
 type ManagedDatabaseLogicalDatabaseParameters struct {
 
-	// (String) Default character set for the database (LC_CTYPE)
-	// Default character set for the database (LC_CTYPE)
+	// (String) Default character set for the database (LC_CTYPE), PostgreSQL only.
+	// Default character set for the database (LC_CTYPE), PostgreSQL only.
 	// +kubebuilder:validation:Optional
 	CharacterSet *string `json:"characterSet,omitempty" tf:"character_set,omitempty"`
 
-	// (String) Default collation for the database (LC_COLLATE)
-	// Default collation for the database (LC_COLLATE)
+	// (String) Default collation for the database (LC_COLLATE), PostgreSQL only.
+	// Default collation for the database (LC_COLLATE), PostgreSQL only.
 	// +kubebuilder:validation:Optional
 	Collation *string `json:"collation,omitempty" tf:"collation,omitempty"`
 
-	// (String) Service's UUID for which this user belongs to
+	// (String) UUID of the service to which this logical database belongs.
 	// The service to which the logical database belongs. Please note that reference fields (`serviceRef` and `serviceSelector`) only work for PostgreSQL databases. For other databases you need to leverage compositions and patches to pass database service ID to logical database `service` field. See https://docs.crossplane.io/latest/concepts/patch-and-transform/#patching-between-resources for more info.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/cluster/database/v1alpha1.ManagedDatabasePostgresql
 	// +kubebuilder:validation:Optional
-	Service *string `json:"service" tf:"service,omitempty"`
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
 
 	// Reference to a ManagedDatabasePostgresql in database to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceRef *v1.Reference `json:"serviceRef,omitempty" tf:"-"`
+	ServiceRef *v2.Reference `json:"serviceRef,omitempty" tf:"-"`
 
 	// Selector for a ManagedDatabasePostgresql in database to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.Selector `json:"serviceSelector,omitempty" tf:"-"`
 }
 
 // ManagedDatabaseLogicalDatabaseSpec defines the desired state of ManagedDatabaseLogicalDatabase
 type ManagedDatabaseLogicalDatabaseSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     ManagedDatabaseLogicalDatabaseParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   ManagedDatabaseLogicalDatabaseParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -88,15 +88,15 @@ type ManagedDatabaseLogicalDatabaseSpec struct {
 
 // ManagedDatabaseLogicalDatabaseStatus defines the observed state of ManagedDatabaseLogicalDatabase.
 type ManagedDatabaseLogicalDatabaseStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ManagedDatabaseLogicalDatabaseObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ManagedDatabaseLogicalDatabaseObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// ManagedDatabaseLogicalDatabase is the Schema for the ManagedDatabaseLogicalDatabases API. This resource represents a logical database in managed database
+// ManagedDatabaseLogicalDatabase is the Schema for the ManagedDatabaseLogicalDatabases API. This resource represents a logical database in managed database.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

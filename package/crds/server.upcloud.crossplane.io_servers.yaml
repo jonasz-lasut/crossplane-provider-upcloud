@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.1
   name: servers.server.upcloud.crossplane.io
 spec:
   group: server.upcloud.crossplane.io
@@ -115,7 +115,7 @@ spec:
                     x-kubernetes-map-type: granular
                   login:
                     description: |-
-                      (Block Set) Configure access credentials to the server (see below for nested schema)
+                      (Block List) Configure access credentials to the server (see below for nested schema)
                       Configure access credentials to the server
                     items:
                       properties:
@@ -435,8 +435,8 @@ spec:
                     type: array
                   tags:
                     description: |-
-                      (Set of String) The server related tags
-                      The server related tags
+                      (Set of String) Tags to attach to the server. Note that tags are an access control feature and only available for a limited set of resources. Use labels to describe and filter your resources.
+                      Tags to attach to the server. Note that tags are an access control feature and only available for a limited set of resources. Use labels to describe and filter your resources.
                     items:
                       type: string
                     type: array
@@ -604,7 +604,7 @@ spec:
                     x-kubernetes-map-type: granular
                   login:
                     description: |-
-                      (Block Set) Configure access credentials to the server (see below for nested schema)
+                      (Block List) Configure access credentials to the server (see below for nested schema)
                       Configure access credentials to the server
                     items:
                       properties:
@@ -924,8 +924,8 @@ spec:
                     type: array
                   tags:
                     description: |-
-                      (Set of String) The server related tags
-                      The server related tags
+                      (Set of String) Tags to attach to the server. Note that tags are an access control feature and only available for a limited set of resources. Use labels to describe and filter your resources.
+                      Tags to attach to the server. Note that tags are an access control feature and only available for a limited set of resources. Use labels to describe and filter your resources.
                     items:
                       type: string
                     type: array
@@ -1183,7 +1183,7 @@ spec:
                     x-kubernetes-map-type: granular
                   login:
                     description: |-
-                      (Block Set) Configure access credentials to the server (see below for nested schema)
+                      (Block List) Configure access credentials to the server (see below for nested schema)
                       Configure access credentials to the server
                     items:
                       properties:
@@ -1366,8 +1366,8 @@ spec:
                     type: array
                   tags:
                     description: |-
-                      (Set of String) The server related tags
-                      The server related tags
+                      (Set of String) Tags to attach to the server. Note that tags are an access control feature and only available for a limited set of resources. Use labels to describe and filter your resources.
+                      Tags to attach to the server. Note that tags are an access control feature and only available for a limited set of resources. Use labels to describe and filter your resources.
                     items:
                       type: string
                     type: array
@@ -1533,6 +1533,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
               observedGeneration:
                 description: |-
                   ObservedGeneration is the latest metadata.generation

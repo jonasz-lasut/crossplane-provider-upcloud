@@ -2,7 +2,7 @@ name: UpCloudLtd/upcloud
 resources:
     upcloud_file_storage:
         subCategory: File Storage
-        description: Resource for managing UpCloud file storages (EXPERIMENTAL)
+        description: Resource for managing UpCloud file storages. See UpCloud File Storage https://upcloud.com/products/file-storage/ product page for more details about the service.
         name: upcloud_file_storage
         title: upcloud_file_storage Resource - terraform-provider-upcloud
         examples:
@@ -10,6 +10,7 @@ resources:
               manifest: |-
                 {
                   "configured_status": "stopped",
+                  "encrypt": true,
                   "labels": {
                     "customer": "example-customer",
                     "environment": "staging"
@@ -23,24 +24,26 @@ resources:
                       "uuid": "${upcloud_network.this.id}"
                     }
                   ],
-                  "share": [
-                    {
-                      "acl": [
-                        {
-                          "permission": "rw",
-                          "target": "172.16.8.12"
-                        }
-                      ],
-                      "name": "write-to-project",
-                      "path": "/project"
-                    }
-                  ],
                   "size": 250,
                   "zone": "fi-hel2"
                 }
               references:
                 network.uuid: upcloud_network.this.id
               dependencies:
+                upcloud_file_storage_share.example: |-
+                    {
+                      "file_storage": "${upcloud_file_storage.example.id}",
+                      "name": "write-to-project",
+                      "path": "/project"
+                    }
+                upcloud_file_storage_share_acl.example: |-
+                    {
+                      "file_storage": "${upcloud_file_storage.example.id}",
+                      "name": "acl-for-project",
+                      "permission": "rw",
+                      "share_name": "${upcloud_file_storage_share.example.name}",
+                      "target": "172.16.8.12"
+                    }
                 upcloud_network.this: |-
                     {
                       "ip_network": [
@@ -54,21 +57,41 @@ resources:
                       "zone": "fi-hel2"
                     }
         argumentDocs:
-            acl: (Block Set) Access control entries (1–50). (see below for nested schema)
             configured_status: (String) The service configured status indicates the service's current intended status. Managed by the customer.
+            encrypt: (Boolean) Sets if the file storage is encrypted at rest. Encryption can only be enabled at creation time and cannot be changed later. Defaults to false.
             family: (String) IP family, e.g. IPv4.
             id: (String) UUID of the file storage.
             ip_address: (String) IP address to assign (optional, auto-assign otherwise).
             labels: (Map of String) User defined key-value pairs to classify the file storage.
             name: (String) Name of the file storage service.
             network: (Block Set) Network attached to this file storage (currently supports at most one of these blocks). (see below for nested schema)
-            path: (String) Absolute path exported by the share (e.g. /public).
-            permission: '(String) Access level: ''ro'' or ''rw''.'
-            share: (Block Set) List of shares exported by this file storage. (see below for nested schema)
             size: (Number) Size of the file storage in GB.
-            target: (String) Target IP/CIDR or '*'.
             uuid: (String) UUID of an existing private network to attach.
             zone: (String) Zone in which the service will be hosted, e.g. fi-hel1. You can list available zones with upctl zone list.
+        importStatements: []
+    upcloud_file_storage_share Resource - terraform-provider-upcloud:
+        subCategory: File Storage
+        description: This resource represents a File Storage service.
+        name: upcloud_file_storage_share Resource - terraform-provider-upcloud
+        title: upcloud_file_storage_share Resource - terraform-provider-upcloud
+        argumentDocs:
+            file_storage: (String) UUID of the file storage service.
+            id: (String) UUID of the file storage share.
+            name: (String) Unique name of the share (1–64 chars).
+            path: (String) Absolute path exported by the share (e.g. /public).
+        importStatements: []
+    upcloud_file_storage_share_acl Resource - terraform-provider-upcloud:
+        subCategory: File Storage
+        description: This resource represents a File Storage Share ACL entry.
+        name: upcloud_file_storage_share_acl Resource - terraform-provider-upcloud
+        title: upcloud_file_storage_share_acl Resource - terraform-provider-upcloud
+        argumentDocs:
+            file_storage: (String) UUID of the file storage service.
+            id: (String) UUID of the file storage share ACL.
+            name: (String) Unique name of the ACL entry (1–64 chars).
+            permission: '(String) Access level: ''ro'' or ''rw''.'
+            share_name: (String) Name of the share.
+            target: (String) Target IP/CIDR or '*'.
         importStatements: []
     upcloud_firewall_rules:
         subCategory: Servers
@@ -140,6 +163,96 @@ resources:
             source_port_start: (String) The source port range starts from this port number
         importStatements:
             - terraform import upcloud_firewall_rules.my_example_rules 049d7ca2-757e-4fb1-a833-f87ee056547a
+    upcloud_firewall_ruleset:
+        subCategory: Servers
+        description: This resource represents an UpCloud SDN firewall ruleset. Rules are managed as an ordered list; their position in the API is determined by their order in the rules list.
+        name: upcloud_firewall_ruleset
+        title: upcloud_firewall_ruleset Resource - terraform-provider-upcloud
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "default_dns_rules_enabled": true,
+                  "description": "Example firewall ruleset for production servers",
+                  "labels": {
+                    "environment": "production",
+                    "managed_by": "terraform"
+                  },
+                  "name": "example-ruleset"
+                }
+              dependencies:
+                upcloud_server.example: |-
+                    {
+                      "hostname": "terraform.example.tld",
+                      "network_interface": [
+                        {
+                          "type": "utility"
+                        }
+                      ],
+                      "plan": "1xCPU-1GB",
+                      "template": [
+                        {
+                          "storage": "Ubuntu Server 24.04 LTS (Noble Numbat)"
+                        }
+                      ],
+                      "zone": "de-fra1"
+                    }
+            - name: server_ruleset
+              manifest: |-
+                {
+                  "description": "Firewall rules for example server",
+                  "name": "server-ruleset",
+                  "server_uuid": "${upcloud_server.example.id}"
+                }
+              references:
+                server_uuid: upcloud_server.example.id
+              dependencies:
+                upcloud_server.example: |-
+                    {
+                      "hostname": "terraform.example.tld",
+                      "network_interface": [
+                        {
+                          "type": "utility"
+                        }
+                      ],
+                      "plan": "1xCPU-1GB",
+                      "template": [
+                        {
+                          "storage": "Ubuntu Server 24.04 LTS (Noble Numbat)"
+                        }
+                      ],
+                      "zone": "de-fra1"
+                    }
+        argumentDocs:
+            action: (String) Rule action.
+            comment: (String) Rule comment.
+            created_at: (String) Creation timestamp.
+            default_dns_rules_enabled: (Boolean) Whether default DNS rules are enabled.
+            description: (String) Description of the firewall ruleset.
+            destination_address_cidr: (String) Destination CIDR block.
+            destination_address_end: (String) End of destination IP address range.
+            destination_address_start: (String) Start of destination IP address range.
+            destination_port_end: (Number) End of destination port range.
+            destination_port_start: (Number) Start of destination port range.
+            direction: (String) Traffic direction the rule applies to.
+            enabled: (Boolean) Whether the ruleset is enabled.
+            family: (String) Address family.
+            icmp_type: (Number) ICMP type number.
+            id: (String) Firewall ruleset UUID.
+            labels: (Map of String) Ruleset labels as key/value pairs.
+            name: (String) Name of the firewall ruleset.
+            position: (Number) Rule position (1-based). Computed from the rule's index in the list.
+            protocol: (String) IP protocol.
+            rules: (Attributes List) Ordered list of firewall rules. Rules are applied in list order; the position attribute reflects the 1-based index assigned by the API and cannot be configured. (see below for nested schema)
+            server_uuid: (String) Optional server UUID to bind with this ruleset. Create-only in API.
+            source_address_cidr: (String) Source CIDR block.
+            source_address_end: (String) End of source IP address range.
+            source_address_start: (String) Start of source IP address range.
+            source_port_end: (Number) End of source port range.
+            source_port_start: (Number) Start of source port range.
+            updated_at: (String) Last update timestamp.
+            version: (Number) Ruleset version.
+        importStatements: []
     upcloud_floating_ip_address:
         subCategory: Network
         description: This resource represents a UpCloud floating IP address resource.
@@ -230,6 +343,7 @@ resources:
                     "managed-by": "terraform"
                   },
                   "name": "gateway-example-gw",
+                  "plan": "development",
                   "router": [
                     {
                       "id": "${upcloud_router.this.id}"
@@ -265,17 +379,17 @@ resources:
                       "name": "gateway-example-router"
                     }
         argumentDocs:
-            address: '(Block Set, Max: 1) IP addresses assigned to the gateway. (see below for nested schema)'
-            addresses: (Set of Object, Deprecated) IP addresses assigned to the gateway. (see below for nested schema)
+            address: (Block Set) IP addresses assigned to the gateway. (see below for nested schema)
+            addresses: (Attributes Set) Use 'address' attribute instead. This attribute will be removed in the next major version of the provider. (see below for nested schema)
             configured_status: (String) The service configured status indicates the service's current intended status. Managed by the customer.
-            connections: (List of String) Names of connections attached to the gateway. Note that this field can have outdated information as connections are created by a separate resource. To make sure that you have the most recent data run 'terrafrom refresh'.
-            features: (Set of String) Features enabled for the gateway. For more details, see documentation.
-            id: (String) The ID of this resource.
-            labels: (Map of String) User defined key-value pairs to classify the network gateway.
+            connections: (List of String) Names of connections attached to the gateway. Note that this field can have outdated information as connections are created by a separate resource. To make sure that you have the most recent data run 'terraform refresh'.
+            features: (Set of String) Features enabled for the gateway. Valid item values are nat and vpn. For more details, see documentation on NAT and VPN gateways.
+            id: (String) Gateway UUID.
+            labels: (Map of String) User defined key-value pairs to classify the gateway.
             name: (String) Gateway name. Needs to be unique within the account.
             operational_state: (String) The service operational state indicates the service's current operational, effective state. Managed by the system.
-            plan: (String) Gateway pricing plan.
-            router: '(Block List, Min: 1, Max: 1) Attached Router from where traffic is routed towards the network gateway service. (see below for nested schema)'
+            plan: (String) Gateway pricing plan, defaults to development. You can list available plans with upctl gateway plans.
+            router: (Block List) Attached Router from where traffic is routed towards the network gateway service. (see below for nested schema)
             zone: (String) Zone in which the gateway will be hosted, e.g. de-fra1.
         importStatements: []
     upcloud_gateway_connection:
@@ -611,7 +725,7 @@ resources:
         importStatements: []
     upcloud_kubernetes_node_group:
         subCategory: Kubernetes
-        description: This resource represents a Managed Kubernetes https://upcloud.com/products/managed-kubernetes cluster.
+        description: This resource represents a node group in a Managed Kubernetes https://upcloud.com/products/managed-kubernetes cluster. The node groups are used to define the worker nodes of the cluster.
         name: upcloud_kubernetes_node_group
         title: upcloud_kubernetes_node_group Resource - terraform-provider-upcloud
         examples:
@@ -769,7 +883,8 @@ resources:
             kubelet_args: (Block Set) Additional arguments for kubelet for the nodes in this group. Configure the arguments without leading --. The API will prefix the arguments with -- when preparing kubelet call.
             labels: (Map of String) User defined key-value pairs to classify the node_group.
             memory: (Number) The amount of memory in megabytes to assign to individual node group node. Value needs to be divisible by 1024.
-            name: (String) The name of the node group. Needs to be unique within a cluster.
+            name: (String) The name of the node group. Needs to be unique within a cluster. Either name or name_prefix must be specified.
+            name_prefix: (String) Like name, but appends a random string to the end to create a unique name beginning with the specified prefix. This enables using create_before_destroy lifecycle setting. Conflicts with name.
             node_count: (Number) Amount of nodes to provision in the node group.
             plan: (String) The server plan used for the node group. You can list available plans with upctl server plans
             ssh_keys: (Set of String) You can optionally select SSH keys to be added as authorized keys to the nodes in this node group. This allows you to connect to the nodes via SSH once they are running.
@@ -1005,6 +1120,7 @@ resources:
             hostnames: (List of String) Certificate hostnames.
             id: (String) The UUID of the certificate bundle.
             key_type: (String) Private key type (rsa / ecdsa).
+            labels: (Map of String) User defined key-value pairs to classify the dynamic certificate bundle.
             name: (String) The name of the certificate bundle. Must be unique within customer account.
             not_after: (String) The time after which a certificate is no longer valid.
             not_before: (String) The time on which a certificate becomes valid.
@@ -1098,6 +1214,12 @@ resources:
                 {
                   "actions": [
                     {
+                      "http_rewrite_path": [
+                        {
+                          "match_pattern": "^/old/(.*)$",
+                          "rewrite_to": "/new/\\1"
+                        }
+                      ],
                       "use_backend": [
                         {
                           "backend_name": "${resource.upcloud_loadbalancer_backend.lb_be_1.name}"
@@ -1181,12 +1303,15 @@ resources:
             http_method: (Block List) Matches by HTTP method. (see below for nested schema)
             http_redirect: (Block List) Redirects HTTP requests to specified location or URL scheme. Only either location or scheme can be defined at a time. (see below for nested schema)
             http_return: (Block List) Returns HTTP response with specified HTTP status. (see below for nested schema)
+            http_rewrite_path: (Block List) Rewrites the HTTP request path using regex pattern matching. (see below for nested schema)
+            http_rewrite_uri: (Block List) Rewrites the entire HTTP request URI using regex pattern matching. (see below for nested schema)
             http_status: (Block List) Matches by HTTP status. (see below for nested schema)
             http_status_range: (Block List) Matches by range of HTTP statuses. (see below for nested schema)
             id: (String) ID of the frontend rule. ID is in {load balancer UUID}/{frontend name}/{frontend rule name} format.
             ignore_case: (Boolean) Defines if case should be ignored. Defaults to false.
             inverse: (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
             location: (String) Target location.
+            match_pattern: (String) Regex pattern to match against the request path.
             matchers: (Block List) Set of rule matchers. If rule doesn't have matchers, then action applies to all incoming requests. (see below for nested schema)
             matching_condition: (String) Defines boolean operator used to combine multiple matchers. Defaults to and.
             method: (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
@@ -1199,6 +1324,7 @@ resources:
             range_start: (Number) Integer value.
             request_header: (Block List) Matches by HTTP request header value. Header name must be provided. (see below for nested schema)
             response_header: (Block List) Matches by HTTP response header value. Header name must be provided. (see below for nested schema)
+            rewrite_to: (String) Replacement pattern.
             scheme: (String) Target scheme.
             set_forwarded_headers: (Block List) Adds 'X-Forwarded-For / -Proto / -Port' headers in your forwarded requests (see below for nested schema)
             set_request_header: (Block List) Set request header (see below for nested schema)
@@ -1293,6 +1419,7 @@ resources:
             certificate: (String) Certificate as base64 encoded string. Must be in PEM format.
             id: (String) The UUID of the certificate bundle.
             intermediates: (String) Intermediate certificates as base64 encoded string. Must be in PEM format.
+            labels: (Map of String) User defined key-value pairs to classify the manual certificate bundle.
             name: (String) The name of the certificate bundle. Must be unique within customer account.
             not_after: (String) The time after which a certificate is no longer valid.
             not_before: (String) The time on which a certificate becomes valid.
@@ -1368,7 +1495,7 @@ resources:
                   "max_sessions": 0,
                   "name": "lb-be-1-sm-1-test",
                   "port": 8000,
-                  "weight": 0
+                  "weight": 10
                 }
               references:
                 backend: resource.upcloud_loadbalancer_backend.lb_be_1.id
@@ -1408,9 +1535,47 @@ resources:
             port: (Number) Server port. Port is optional and can be specified in DNS SRV record.
             weight: (Number) Weight of the member. The higher the weight, the more traffic the member receives.
         importStatements: []
+    upcloud_managed_database_connection_pool:
+        subCategory: Databases
+        description: This resource represents a connection pool in a managed database (PostgreSQL).
+        name: upcloud_managed_database_connection_pool
+        title: upcloud_managed_database_connection_pool Resource - terraform-provider-upcloud
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "database": "defaultdb",
+                  "mode": "session",
+                  "name": "example-2",
+                  "service": "${upcloud_managed_database_postgresql.example.id}",
+                  "size": 95
+                }
+              references:
+                service: upcloud_managed_database_postgresql.example.id
+              dependencies:
+                upcloud_managed_database_postgresql.example: |-
+                    {
+                      "maintenance_window_dow": "friday",
+                      "maintenance_window_time": "10:00:00",
+                      "name": "postgres",
+                      "plan": "1x1xCPU-2GB-25GB",
+                      "powered": true,
+                      "title": "postgres",
+                      "zone": "pl-waw1"
+                    }
+        argumentDocs:
+            connection_uri: (String) Connection URI for the connection pool.
+            database: (String) Name of the database.
+            id: (String) ID of the connection pool. ID is in {service UUID}/{connection pool name} format.
+            mode: (String) Connection pool mode.
+            name: (String) Connection pool name.
+            service: (String) UUID of the service to which this connection pool belongs.
+            size: (Number) Connection pool size.
+            username: (String) Service username. If not set, all users are allowed to access this connection pool.
+        importStatements: []
     upcloud_managed_database_logical_database:
         subCategory: Databases
-        description: This resource represents a logical database in managed database
+        description: This resource represents a logical database in managed database.
         name: upcloud_managed_database_logical_database
         title: upcloud_managed_database_logical_database Resource - terraform-provider-upcloud
         examples:
@@ -1461,11 +1626,11 @@ resources:
                       "zone": "fi-hel1"
                     }
         argumentDocs:
-            character_set: (String) Default character set for the database (LC_CTYPE)
-            collation: (String) Default collation for the database (LC_COLLATE)
-            id: (String) The ID of this resource.
-            name: (String) Name of the logical database
-            service: (String) Service's UUID for which this user belongs to
+            character_set: (String) Default character set for the database (LC_CTYPE), PostgreSQL only.
+            collation: (String) Default collation for the database (LC_COLLATE), PostgreSQL only.
+            id: (String) ID of the logical database. ID is in {service UUID}/{database name} format.
+            name: (String) Name of the logical database.
+            service: (String) UUID of the service to which this logical database belongs.
         importStatements: []
     upcloud_managed_database_mysql:
         subCategory: Databases
@@ -1512,31 +1677,45 @@ resources:
             additional_disk_space_gib: (Number) Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
             admin_password: (String, Sensitive) Custom password for admin user. Defaults to random string. This must be set only when a new service is being created.
             admin_username: (String) Custom username for admin user. This must be set only when a new service is being created.
+            automatic_sp_privileges: (Boolean) When enabled, the server automatically grants the EXECUTE and ALTER ROUTINE privileges to the creator of a stored routine and drops them when the routine is dropped.
             automatic_utility_network_ip_filter: (Boolean) Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
             backup_hour: (Number) The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
             backup_minute: (Number) The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
-            binlog_retention_period: (Number) The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector.
-            component: (String)
-            components: (List of Object) Service component information (see below for nested schema)
+            binlog_retention_period: '(Number) The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector. Warning: reducing this value can make a large batch of binary logs eligible for purge at once. Depending on the volume, this can sometimes stall the MySQL commit path and block writes until the purge completes. To stay on the safe side, prefer lowering the value gradually in small decrements during a low-traffic window rather than dropping it drastically in one step.'
+            component: (String) Component name.
+            components: (Attributes List) Service component information (see below for nested schema)
             connect_timeout: (Number) The number of seconds that the mysqld server waits for a connect packet before responding with Bad handshake.
             dbname: (String) Database name for bootstrapping the initial connection.
             default_time_zone: (String) Default server time zone as an offset from UTC (from -12:00 to +12:00), a time zone name, or 'SYSTEM' to use the MySQL server default.
+            div_precision_increment: (Number) Number of digits by which to increase the scale of the result of division operations performed with the / operator. Default is 4.
+            dump_tool: '(String) MySQL migration dump tool. Experimental! Tool to use for database dump and restore during migration. Default: mysqldump.'
             enabled: (Boolean) Enable incremental backups. Enable periodic incremental backups. When enabled, full_backup_week_schedule must be set. Incremental backups only store changes since the last backup, making them faster and more storage-efficient than full backups. This is particularly useful for large databases where daily full backups would be too time-consuming or expensive.
+            end_markers_in_json: (Boolean) Whether optimizer JSON output such as EXPLAIN FORMAT=JSON adds end markers that repeat a structure's key near its closing bracket, making large JSON structures easier to read.
+            eq_range_index_dive_limit: (Number) The number of equality ranges in a query at or above which the optimizer switches from index dives to index statistics when estimating the number of qualifying rows. 0 means always use index dives. Default is 200.
             family: (String) Network family. Currently only IPv4 is supported.
             full_backup_week_schedule: '(String) Full backup week schedule. Comma-separated list of days of the week when full backups should be created. Valid values: mon, tue, wed, thu, fri, sat, sun.'
             group_concat_max_len: (Number) The maximum permitted result length in bytes for the GROUP_CONCAT() function.
             host: (String) Hostname or IP address of the server where to migrate data from.
-            id: (String) The ID of this resource.
+            id: (String) UUID of the database.
             ignore_dbs: (String) Comma-separated list of databases, which should be ignored during migration (supported by MySQL and PostgreSQL only at the moment).
             ignore_roles: (String) Comma-separated list of database roles, which should be ignored during migration (supported by PostgreSQL only at the moment).
             information_schema_stats_expiry: (Number) The time, in seconds, before cached statistics expire.
+            innodb_adaptive_hash_index: '(Boolean) Whether InnoDB adaptive hash indexing is enabled. The optimal setting is workload-dependent: it speeds up lookups for some workloads but its internal latch can become a contention point under high concurrency, in which case disabling it can improve throughput.'
             innodb_change_buffer_max_size: (Number) Maximum size for the InnoDB change buffer, as a percentage of the total size of the buffer pool. Default is 25.
             innodb_flush_neighbors: '(Number) Specifies whether flushing a page from the InnoDB buffer pool also flushes other dirty pages in the same extent (default is 1): 0 - dirty pages in the same extent are not flushed, 1 - flush contiguous dirty pages in the same extent, 2 - flush dirty pages in the same extent.'
+            innodb_ft_enable_stopword: (Boolean) Whether stopword processing is applied when creating or rebuilding an InnoDB FULLTEXT index. Enabled by default.
+            innodb_ft_max_token_size: (Number) Maximum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
             innodb_ft_min_token_size: (Number) Minimum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
+            innodb_ft_num_word_optimize: (Number) Number of words processed during each OPTIMIZE TABLE operation on an InnoDB FULLTEXT index. Default is 2000.
+            innodb_ft_result_cache_limit: (Number) Maximum memory in bytes used per query for the InnoDB FULLTEXT search query result cache. Aiven sizes this automatically based on the service plan's memory; setting a value overrides the calculated default.
             innodb_ft_server_stopword_table: (String) This option is used to specify your own InnoDB FULLTEXT index stopword list for all InnoDB tables.
+            innodb_ft_user_stopword_table: (String) This option is used to specify your own InnoDB FULLTEXT index stopword list for specific InnoDB tables.
+            innodb_io_capacity: (Number) The number of I/O operations per second (IOPS) available to InnoDB background tasks, such as flushing pages from the buffer pool and merging data from the change buffer. Set this to a value appropriate for the underlying storage; it must not exceed innodb_io_capacity_max.
+            innodb_io_capacity_max: (Number) The maximum number of I/O operations per second (IOPS) that InnoDB background tasks may perform when flushing falls behind. Defaults to twice innodb_io_capacity (minimum 2000). This must be greater than or equal to innodb_io_capacity.
             innodb_lock_wait_timeout: (Number) The length of time in seconds an InnoDB transaction waits for a row lock before giving up. Default is 120.
             innodb_log_buffer_size: (Number) The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
             innodb_online_alter_log_max_size: (Number) The upper limit in bytes on the size of the temporary log files used during online DDL operations for InnoDB tables.
+            innodb_optimize_fulltext_only: (Boolean) When enabled, OPTIMIZE TABLE on InnoDB tables only updates the FULLTEXT index instead of rebuilding the table. Intended to be enabled temporarily during FULLTEXT index maintenance and disabled afterwards; while enabled, OPTIMIZE TABLE does not reclaim table space.
             innodb_print_all_deadlocks: (Boolean) When enabled, information about all deadlocks in InnoDB user transactions is recorded in the error log. Disabled by default.
             innodb_read_io_threads: (Number) The number of I/O threads for read operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
             innodb_rollback_on_timeout: (Boolean) When enabled a transaction timeout causes InnoDB to abort and roll back the entire transaction. Changing this parameter will lead to a restart of the MySQL service.
@@ -1545,34 +1724,46 @@ resources:
             interactive_timeout: (Number) The number of seconds the server waits for activity on an interactive connection before closing it.
             internal_tmp_mem_storage_engine: (String) The storage engine for in-memory internal temporary tables.
             ip_filter: (List of String) IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
-            labels: (Map of String) User defined key-value pairs to classify the managed database.
+            labels: (Map of String) User defined key-value pairs to classify the database.
             log_output: (String) The slow log output destination when slow_query_log is ON. To enable MySQL AI Insights, choose INSIGHTS. To use MySQL AI Insights and the mysql.slow_log table at the same time, choose INSIGHTS,TABLE. To only use the mysql.slow_log table, choose TABLE. To silence slow logs, choose NONE.
             long_query_time: (Number) The slow_query_logs work as SQL statements that take more than long_query_time seconds to execute.
+            lower_case_table_names: (Number) Sets how table and database names are stored and compared. 0 = case-sensitive (default), 1 = names stored lowercase, comparisons are case-insensitive. This option can only be set when creating the service and cannot be changed later. See https://dev.mysql.com/doc/refman/8.0/en/identifier-case-sensitivity.html for details.
             maintenance_window_dow: (String) Maintenance window day of week. Lower case weekday name (monday, tuesday, ...)
             maintenance_window_time: (String) Maintenance window UTC time in hh:mm:ss format
             max_allowed_packet: (Number) Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
+            max_connections: (Number) The maximum permitted number of simultaneous client connections. Lower this to reserve memory for other work. The value cannot exceed the limit provided by your service plan. Upgrading the plan does not raise a value you have set explicitly, so increase it yourself after an upgrade.
+            max_execution_time: (Number) Execution timeout in milliseconds for read-only top-level SELECT statements. 0 (the default) means no timeout.
             max_heap_table_size: (Number) Limits the size of internal in-memory tables. Also set tmp_table_size. Default is 16777216 (16M).
+            max_seeks_for_key: (Number) Limit on the assumed maximum number of index seeks when looking up rows based on a key. Lowering this value causes the optimizer to prefer index lookups over table scans.
+            max_user_connections: (Number) The maximum number of simultaneous connections permitted to any single user account. 0, the default, means no per-account limit. Any other value must be at least 10 below max_connections, so that monitoring and your own admin sessions can still connect when an application saturates its own limit. Aiven's replication and management connections are unaffected however low you set this.
             method: (String) The migration method to be used (currently supported only by Redis, Dragonfly, MySQL and PostgreSQL service types).
-            migration: '(Block List, Max: 1) Migrate data from existing server. (see below for nested schema)'
-            mysql_incremental_backup: '(Block List, Max: 1) MySQL incremental backup configuration. (see below for nested schema)'
+            migration: (Block List) Migrate data from existing server. (see below for nested schema)
+            mysql_incremental_backup: (Block List) MySQL incremental backup configuration. (see below for nested schema)
             name: (String) Name of the service. The name is used as a prefix for the logical hostname. Must be unique within an account
             net_buffer_length: (Number) Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
             net_read_timeout: (Number) The number of seconds to wait for more data from a connection before aborting the read.
             net_write_timeout: (Number) The number of seconds to wait for a block to be written to a connection before aborting the write.
-            network: '(Block Set, Max: 8) Private networks attached to the managed database (see below for nested schema)'
-            node_states: (List of Object) Information about nodes providing the managed service (see below for nested schema)
+            network: (Block Set) Private networks attached to the managed database (see below for nested schema)
+            node_states: (Attributes List) Information about nodes providing the managed service (see below for nested schema)
+            optimizer_prune_level: (Number) Controls the heuristics applied during query optimization to prune less-promising partial plans from the optimizer search space. 0 disables heuristics (exhaustive search); 1 prunes plans based on the number of rows retrieved.
+            optimizer_search_depth: (Number) Maximum depth of search performed by the query optimizer when choosing a join order. Larger values produce better plans for joins over many tables but take longer to compile; 0 lets the optimizer choose the depth automatically.
+            optimizer_switch: (String) Comma-separated list of optimizer flag assignments in the form flag=on|off|default, or the single value 'default' to reset all flags. Flags not listed keep their current values. Controls query optimizer behaviors such as index merge, hash join and semijoin strategies.
             password: (String, Sensitive) Password for authentication with the server where to migrate data from.
+            performance_schema_events_statements_history_size: (Number) The number of rows per thread in the events_statements_history table. Changing this parameter will lead to a restart of the MySQL service.
             plan: (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans mysql.
             port: (Number) Port number of the server where to migrate data from.
             powered: (Boolean) The administrative power state of the service
             primary_database: (String) Primary database name
-            properties: '(Block List, Max: 1) Database Engine properties for MySQL (see below for nested schema)'
+            properties: (Block List) Database engine properties. (see below for nested schema)
             public_access: (Boolean) Public Access. Allow access to the service from the public Internet.
-            role: (String)
-            route: (String)
+            public_access_prometheus: (Boolean) Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+            reestablish_replication: (Boolean) Skip dump-restore part and start replication.
+            relay_log_space_limit: (Number) The maximum amount of space in bytes to use for all relay logs while replicating from an external migration source. When the limit is reached, the replication I/O thread stops fetching relay log events until the SQL thread has caught up. Raise this to give a large migration a bigger relay-log budget; ensure the service disk is sized accordingly. The setting applies only on the node replicating from the external source; standby nodes always use the Aiven-managed default (the smaller of 5 GiB and 30% of the service disk), which is also used when this option is left unset. Changing this parameter will lead to a restart of the MySQL service.
+            role: (String) Role of the node
+            route: (String) Component network route type
             service_host: (String) Hostname to the service instance
             service_log: (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
-            service_password: (String, Sensitive) Primary username's password to the service instance
+            service_password: (String, Sensitive) Primary password to the service instance
             service_port: (String) Port to the service instance
             service_uri: (String, Sensitive) URI to the service instance
             service_username: (String) Primary username to the service instance
@@ -1581,16 +1772,17 @@ resources:
             sql_mode: (String) Global SQL mode. Set to empty to use MySQL server defaults. When creating a new service and not setting this field Aiven default SQL mode (strict, SQL standard compliant) will be assigned.
             sql_require_primary_key: (Boolean) Require primary key to be defined for new tables or old tables modified with ALTER TABLE and fail if missing. It is recommended to always have primary keys because various functionality may break if any large table is missing them.
             ssl: (Boolean) The server where to migrate data from is secured with SSL.
-            state: (String) State of the service
+            state: (String) The current state of the service
             termination_protection: (Boolean) If set to true, prevents the managed service from being powered off, or deleted.
-            title: (String) Title of a managed database instance
+            title: (String) Title of the managed database instance
             tmp_table_size: (Number) Limits the size of internal in-memory tables. Also set max_heap_table_size. Default is 16777216 (16M).
-            type: (String) Type of the service
-            usage: (String)
+            type: (String) Type of the managed database instance
+            usage: (String) Usage of the component
             username: (String) User name for authentication with the server where to migrate data from.
             uuid: (String) Private network UUID. Must reside in the same zone as the database.
             version: (String) MySQL major version.
             wait_timeout: (Number) The number of seconds the server waits for activity on a noninteractive connection before closing it.
+            windowing_use_high_precision: (Boolean) Whether window functions are computed to high precision. Disabling this trades exactness for speed in window function evaluation.
             zone: (String) Zone where the instance resides, e.g. de-fra1. You can list available zones with upctl zone list.
         importStatements: []
     upcloud_managed_database_opensearch:
@@ -1628,7 +1820,7 @@ resources:
             action_destructive_requires_name: (Boolean) Require explicit index names when deleting.
             additional_disk_space_gib: (Number) Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
             allowed_tries: (Number) The number of login attempts allowed before login is blocked.
-            auth_failure_listeners: '(Block List, Max: 1) Opensearch Security Plugin Settings. (see below for nested schema)'
+            auth_failure_listeners: (Block List) Opensearch Security Plugin Settings. (see below for nested schema)
             authentication_backend: (String) The internal backend. Enter internal.
             automatic_utility_network_ip_filter: (Boolean) Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
             block_expiry_seconds: (Number) The duration of time that login remains blocked after a failed login.
@@ -1639,23 +1831,23 @@ resources:
             client_secret: (String) The client secret of the OpenID Connect. The client secret of the OpenID Connect client configured in your IdP. Required.
             cluster_filecache_remote_data_ratio: (Number) The limit of how much total remote data can be referenced. Defines a limit of how much total remote data can be referenced as a ratio of the size of the disk reserved for the file cache. This is designed to be a safeguard to prevent oversubscribing a cluster. Defaults to 0.
             cluster_max_shards_per_node: (Number) Controls the number of shards allowed in the cluster per data node.
-            cluster_remote_store: '(Block List, Max: 1) (see below for nested schema)'
+            cluster_remote_store: (Block List) (see below for nested schema)
             cluster_routing_allocation_balance_prefer_primary: (Boolean) When set to true, OpenSearch attempts to evenly distribute the primary shards between the cluster nodes. Enabling this setting does not always guarantee an equal number of primary shards on each node, especially in the event of a failover. Changing this setting to false after it was set to true does not invoke redistribution of primary shards. Default is false.
             cluster_routing_allocation_node_concurrent_recoveries: (Number) Concurrent incoming/outgoing shard recoveries per node. How many concurrent incoming/outgoing shard recoveries (normally replicas) are allowed to happen on a node. Defaults to node cpu count * 2.
-            cluster_search_request_slowlog: '(Block List, Max: 1) (see below for nested schema)'
-            component: (String)
-            components: (List of Object) Service component information (see below for nested schema)
+            cluster_search_request_slowlog: (Block List) (see below for nested schema)
+            component: (String) Component name.
+            components: (Attributes List) Service component information (see below for nested schema)
             connect_url: (String) OpenID Connect metadata/configuration URL. The URL of your IdP where the Security plugin can find the OpenID Connect metadata/configuration settings.
-            cpu: '(Block List, Max: 1) Top N queries monitoring by CPU. (see below for nested schema)'
+            cpu: (Block List) Top N queries monitoring by CPU. (see below for nested schema)
             cpu_threshold: (Number) The CPU usage threshold (as a percentage) required for a node to be considered to be under duress. The CPU usage threshold (as a percentage) required for a node to be considered to be under duress. Default is 0.9.
             cpu_time_millis_threshold: (Number) The CPU usage threshold (in milliseconds) required for a single search shard task before it is considered for cancellation. The CPU usage threshold (in milliseconds) required for a single search shard task before it is considered for cancellation. Default is 15000.
             custom_domain: (String) Custom domain. Serve the web frontend using a custom CNAME pointing to the Aiven DNS name. When you set a custom domain for a service deployed in a VPC, the service certificate is only created for the public-* hostname and the custom domain.
             custom_keystores: (List of String) OpenSearch custom keystores. Allow to register custom keystores in OpenSearch.
             custom_repos: (List of String) OpenSearch custom repositories. Allow to register object storage repositories in OpenSearch.
             debug: (String) Debug threshold for total request took time. The value should be in the form count and unit, where unit one of (s,m,h,d,nanos,ms,micros) or -1. Default is -1.
-            disk_watermarks: '(Block List, Max: 1) Watermark settings. (see below for nested schema)'
+            disk_watermarks: (Block List) Watermark settings. (see below for nested schema)
             elapsed_time_millis_threshold: (Number) The elapsed time threshold (in milliseconds) required for a single search shard task before it is considered for cancellation. The elapsed time threshold (in milliseconds) required for a single search shard task before it is considered for cancellation. Default is 30000.
-            elasticsearch_version: (String) Elasticsearch version.
+            elasticsearch_version: (String) OpenSearch version.
             email_sender_name: (String) Sender name placeholder to be used in Opensearch Dashboards and Opensearch keystore. This should be identical to the Sender name defined in Opensearch dashboards.
             email_sender_password: (String, Sensitive) Sender password for Opensearch alerts to authenticate with SMTP server. Sender password for Opensearch alerts to authenticate with SMTP server.
             email_sender_username: (String) Sender username for Opensearch alerts.
@@ -1680,17 +1872,17 @@ resources:
             heap_threshold: (Number) The heap usage threshold (as a percentage) required for a node to be considered to be under duress. The heap usage threshold (as a percentage) required for a node to be considered to be under duress. Default is 0.7.
             heap_variance: (Number) The minimum variance required for a single search shard task’s heap usage compared to the rolling average of previously completed tasks before it is considered for cancellation. The minimum variance required for a single search shard task’s heap usage compared to the rolling average of previously completed tasks before it is considered for cancellation. Default is 2.0.
             high: (Number) High watermark (percentage). The high watermark for disk usage.
-            host: (String)
+            host: (String) Hostname of the component
             http_max_content_length: (Number) Maximum content length for HTTP requests to the OpenSearch HTTP API, in bytes.
             http_max_header_size: (Number) The max size of allowed headers, in bytes.
             http_max_initial_line_length: (Number) The max length of an HTTP URL, in bytes.
-            id: (String) The ID of this resource.
+            id: (String) UUID of the database.
             idp_entity_id: (String) Identity Provider Entity ID. The unique identifier for the Identity Provider (IdP) entity that is used for SAML authentication. This value is typically provided by the IdP.
             idp_metadata_url: (String) Identity Provider (IdP) SAML metadata URL. The URL of the SAML metadata for the Identity Provider (IdP). This is used to configure SAML-based authentication with the IdP.
             idp_pemtrustedcas_content: (String) PEM-encoded root CA Content for SAML IdP server verification. This parameter specifies the PEM-encoded root certificate authority (CA) content for the SAML identity provider (IdP) server verification. The root CA content is used to verify the SSL/TLS certificate presented by the server.
             index_patterns: (List of String) Index patterns.
-            index_rollup: '(Block List, Max: 1) Index rollup settings. (see below for nested schema)'
-            index_template: '(Block List, Max: 1) Template settings for all new indexes. (see below for nested schema)'
+            index_rollup: (Block List) Index rollup settings. (see below for nested schema)
+            index_template: (Block List) Template settings for all new indexes. (see below for nested schema)
             indices_fielddata_cache_size: (Number) Relative amount. Maximum amount of heap memory used for field data cache. This is an expert setting; decreasing the value too much will increase overhead of loading field data; too much memory used for field data cache will decrease amount of heap available for other operations.
             indices_memory_index_buffer_size: (Number) Percentage value. Default is 10%. Total amount of heap used for indexing buffer, before writing segments to disk. This is an expert setting. Too low value will slow down indexing; too high value will increase indexing performance but causes performance issues for query performance.
             indices_memory_max_index_buffer_size: (Number) Absolute value. Default is unbound. Doesn't work without indices.memory.index_buffer_size. Maximum amount of heap used for query cache, an absolute indices.memory.index_buffer_size maximum hard limit.
@@ -1700,7 +1892,7 @@ resources:
             indices_recovery_max_bytes_per_sec: (Number) Limits total inbound and outbound recovery traffic for each node. Applies to both peer recoveries as well as snapshot recoveries (i.e., restores from a snapshot). Defaults to 40mb.
             indices_recovery_max_concurrent_file_chunks: (Number) Number of file chunks sent in parallel for each recovery. Defaults to 2.
             info: (String) Info threshold for total request took time. The value should be in the form count and unit, where unit one of (s,m,h,d,nanos,ms,micros) or -1. Default is -1.
-            internal_authentication_backend_limiting: '(Block List, Max: 1) (see below for nested schema)'
+            internal_authentication_backend_limiting: (Block List) (see below for nested schema)
             ip_filter: (List of String) IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
             ism_enabled: (Boolean) Specifies whether ISM is enabled or not.
             ism_history_enabled: (Boolean) Specifies whether audit history is enabled or not. The logs from ISM are automatically indexed to a logs document.
@@ -1708,15 +1900,15 @@ resources:
             ism_history_max_docs: (Number) The maximum number of documents before rolling over the audit history index.
             ism_history_rollover_check_period: (Number) The time between rollover checks for the audit history index in hours.
             ism_history_rollover_retention_period: (Number) How long audit history indices are kept in days.
-            jwt: '(Block List, Max: 1) OpenSearch JWT Configuration. (see below for nested schema)'
+            jwt: (Block List) OpenSearch JWT Configuration. (see below for nested schema)
             jwt_clock_skew_tolerance_seconds: (Number) JWT clock skew tolerance in seconds. The maximum allowed time difference in seconds between the JWT issuer's clock and the OpenSearch server's clock. This helps prevent token validation failures due to minor time synchronization issues.
             jwt_header: (String) HTTP header name for JWT token. The HTTP header name where the JWT token is transmitted. Typically 'Authorization' for Bearer tokens.
             jwt_url_parameter: (String) URL parameter name for JWT token. If the JWT token is transmitted as a URL parameter instead of an HTTP header, specify the parameter name here.
             keep_index_refresh_interval: (Boolean) Don't reset index.refresh_interval to the default value. Aiven automation resets index.refresh_interval to default value for every index to be sure that indices are always visible to search. If it doesn't fit your case, you can disable this by setting up this flag to true.
             knn_memory_circuit_breaker_enabled: (Boolean) Enable or disable KNN memory circuit breaker. Defaults to true.
             knn_memory_circuit_breaker_limit: (Number) Maximum amount of memory in percentage that can be used for the KNN index. Defaults to 50% of the JVM heap size. 0 is used to set it to null which can be used to invalidate caches.
-            labels: (Map of String) User defined key-value pairs to classify the managed database.
-            latency: '(Block List, Max: 1) Top N queries monitoring by latency. (see below for nested schema)'
+            labels: (Map of String) User defined key-value pairs to classify the database.
+            latency: (Block List) Top N queries monitoring by latency. (see below for nested schema)
             level: (String) Log level.
             low: (Number) Low watermark (percentage). The low watermark for disk usage.
             lower: |-
@@ -1730,86 +1922,94 @@ resources:
             max_blocked_clients: (Number) The maximum number of blocked IP addresses.
             max_old_space_size: '(Number) Limits the maximum amount of memory (in MiB) the OpenSearch Dashboards process can use. This sets the max_old_space_size option of the nodejs running the OpenSearch Dashboards. Note: the memory reserved by OpenSearch Dashboards is not available for OpenSearch.'
             max_tracked_clients: (Number) The maximum number of tracked IP addresses that have failed login.
-            memory: '(Block List, Max: 1) Top N queries monitoring by memory. (see below for nested schema)'
+            memory: (Block List) Top N queries monitoring by memory. (see below for nested schema)
             min_limit: |-
                 (Number) Shard min limit. Specify the minimum assigned quota for a new shard in any role (coordinator, primary, or replica).
                 Shard indexing backpressure increases or decreases this allocated quota based on the inflow of traffic for the shard.
                 Default is 0.001.
+            ml_commons_connector_access_control_enabled: (Boolean) plugins.ml_commons.connector_access_control_enabled. When set to true, the setting allows admins to control access and permissions to the connector API using backend_roles. Defaults to false.
+            ml_commons_model_access_control_enabled: (Boolean) plugins.ml_commons.model_access_control.enabled. Enable or disable model access control for ML Commons. When enabled, access to ML models is controlled by security permissions. Defaults to false.
+            ml_commons_native_memory_threshold: (Number) plugins.ml_commons.native_memory_threshold. Native memory threshold percentage for ML Commons. Controls the maximum percentage of native memory that can be used by ML Commons operations. Defaults to 90%.
+            ml_commons_only_run_on_ml_node: (Boolean) plugins.ml_commons.only_run_on_ml_node. Enable or disable running ML Commons tasks only on ML nodes. When enabled, ML tasks will only execute on nodes designated as ML nodes. Defaults to true.
+            ml_commons_trusted_connector_endpoints_regex: (List of String) plugins.ml_commons.trusted_connector_endpoints_regex. Adds the trusted endpoints to the cluster settings. Supports Java regex expressions.
             mode: (String) The search backpressure mode. The search backpressure mode. Valid values are monitor_only, enforced, or disabled. Default is monitor_only.
             multiple_data_source_enabled: (Boolean) Enable or disable multiple data sources in OpenSearch Dashboards.
             name: (String) Name of the service. The name is used as a prefix for the logical hostname. Must be unique within an account
-            network: '(Block Set, Max: 8) Private networks attached to the managed database (see below for nested schema)'
-            node: '(Block List, Max: 1) (see below for nested schema)'
-            node_duress: '(Block List, Max: 1) Node duress settings. (see below for nested schema)'
+            network: (Block Set) Private networks attached to the managed database (see below for nested schema)
+            node: (Block List) (see below for nested schema)
+            node_duress: (Block List) Node duress settings. (see below for nested schema)
             node_search_cache_size: (String) The limit of how much total remote data can be referenced. Defines a limit of how much total remote data can be referenced as a ratio of the size of the disk reserved for the file cache. This is designed to be a safeguard to prevent oversubscribing a cluster. Defaults to 5gb. Requires restarting all OpenSearch nodes.
-            node_states: (List of Object) Information about nodes providing the managed service (see below for nested schema)
+            node_states: (Attributes List) Information about nodes providing the managed service (see below for nested schema)
             num_successive_breaches: (Number) The number of successive limit breaches after which the node is considered to be under duress. The number of successive limit breaches after which the node is considered to be under duress. Default is 3.
             number_of_replicas: (Number) The number of replicas each primary shard has. Deprecated, use an index template instead.
             number_of_shards: (Number) The number of primary shards that an index should have. Deprecated, use an index template instead.
-            openid: '(Block List, Max: 1) OpenSearch OpenID Connect Configuration. (see below for nested schema)'
-            opensearch_dashboards: '(Block List, Max: 1) OpenSearch Dashboards settings. (see below for nested schema)'
+            openid: (Block List) OpenSearch OpenID Connect Configuration. (see below for nested schema)
+            opensearch_dashboards: (Block List) OpenSearch Dashboards settings. (see below for nested schema)
             opensearch_request_timeout: (Number) Timeout in milliseconds for requests made by OpenSearch Dashboards towards OpenSearch.
-            operating_factor: '(Block List, Max: 1) Operating factor. (see below for nested schema)'
+            operating_factor: (Block List) Operating factor. (see below for nested schema)
             optimal: |-
                 (Number) Optimal occupancy of the allocated quota of memory for the shard. Specify the optimal occupancy of the allocated quota of memory for the shard.
                 If the total memory usage of a shard is at this level,
                 shard indexing backpressure doesn’t change the current allocated memory for that shard.
                 Default is 0.85.
-            override_main_response_version: (Boolean) Compatibility mode sets OpenSearch to report its version as 7.10 so clients continue to work. Default is false.
+            override_main_response_version: (Boolean) Compatibility mode sets OpenSearch to report its version as 7.10 so clients continue to work. Default is false. Deprecated and ignored for service version 3.3 and higher.
             plan: (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans opensearch.
             plugins_alerting_filter_by_backend_roles: (Boolean) Enable or disable filtering of alerting by backend roles. Requires Security plugin. Defaults to false.
-            port: (Number)
+            port: (Number) Port number of the component
             powered: (Boolean) The administrative power state of the service
             pressure_checkpoint_limit: (Number) The maximum number of indexing checkpoints that a replica shard can fall behind when copying from primary. Once segrep.pressure.checkpoint.limit is breached along with segrep.pressure.time.limit, the segment replication backpressure mechanism is initiated. Default is 4 checkpoints.
             pressure_enabled: (Boolean) Enables the segment replication backpressure mechanism. Default is false.
             pressure_replica_stale_limit: (Number) The maximum number of stale replica shards that can exist in a replication group. Once segrep.pressure.replica.stale.limit is breached, the segment replication backpressure mechanism is initiated. Default is .5, which is 50% of a replication group.
             pressure_time_limit: (String) The maximum amount of time that a replica shard can take to copy from the primary shard. Once segrep.pressure.time.limit is breached along with segrep.pressure.checkpoint.limit, the segment replication backpressure mechanism is initiated. Default is 5 minutes.
             primary_database: (String) Primary database name
-            primary_parameter: '(Block List, Max: 1) Primary parameter. (see below for nested schema)'
-            properties: '(Block List, Max: 1) Database Engine properties for OpenSearch (see below for nested schema)'
+            primary_parameter: (Block List) Primary parameter. (see below for nested schema)
+            properties: (Block List) Database engine properties. (see below for nested schema)
             public_access: (Boolean) Public Access. Allow access to the service from the public Internet.
+            public_access_prometheus: (Boolean) Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
             refresh_rate_limit_count: (Number) The maximum number of unknown key IDs in the time frame. The maximum number of unknown key IDs in the time frame. Default is 10. Optional.
             refresh_rate_limit_time_window_ms: (Number) The time frame to use when checking the maximum number of unknown key IDs, in milliseconds. The time frame to use when checking the maximum number of unknown key IDs, in milliseconds. Optional.Default is 10000 (10 seconds).
-            reindex_remote_whitelist: (List of String) Whitelisted addresses for reindexing. Changing this value will cause all OpenSearch instances to restart.
-            remote_store: '(Block List, Max: 1) (see below for nested schema)'
+            reindex_remote_whitelist: (List of String) reindex_remote_allowlist. Whitelisted addresses for reindexing. Changing this value will cause all OpenSearch instances to restart.
+            remote_store: (Block List) (see below for nested schema)
             required_audience: (String) Required JWT audience. If specified, the JWT must contain an 'aud' claim that matches this value. This provides additional security by ensuring the JWT was issued for the expected audience.
             required_issuer: (String) Required JWT issuer. If specified, the JWT must contain an 'iss' claim that matches this value. This provides additional security by ensuring the JWT was issued by the expected issuer.
-            role: (String)
+            role: (String) Role of the node
             roles_key: (String) JWT claim key for roles. The key in the JWT payload that contains the user's roles. If specified, roles will be extracted from the JWT for authorization.
             rollup_dashboards_enabled: (Boolean) plugins.rollup.dashboards.enabled. Whether rollups are enabled in OpenSearch Dashboards. Defaults to true.
             rollup_enabled: (Boolean) plugins.rollup.enabled. Whether the rollup plugin is enabled. Defaults to true.
             rollup_search_backoff_count: (Number) plugins.rollup.search.backoff_count. How many retries the plugin should attempt for failed rollup jobs. Defaults to 5.
             rollup_search_backoff_millis: (Number) plugins.rollup.search.backoff_millis. The backoff time between retries for failed rollup jobs. Defaults to 1000ms.
             rollup_search_search_all_jobs: (Boolean) plugins.rollup.search.all_jobs. Whether OpenSearch should return all jobs that match all specified search terms. If disabled, OpenSearch returns just one, as opposed to all, of the jobs that matches the search terms. Defaults to false.
-            route: (String)
-            saml: '(Block List, Max: 1) OpenSearch SAML configuration. (see below for nested schema)'
+            route: (String) Component network route type
+            saml: (Block List) OpenSearch SAML configuration. (see below for nested schema)
             scope: (String) The scope of the identity token issued by the IdP. The scope of the identity token issued by the IdP. Optional. Default is openid profile email address phone.
             script_max_compilations_rate: (String) Script max compilation rate - circuit breaker to prevent/minimize OOMs. Script compilation circuit breaker limits the number of inline script compilations within a period of time. Default is use-context.
-            search_backpressure: '(Block List, Max: 1) Search Backpressure Settings. (see below for nested schema)'
-            search_insights_top_queries: '(Block List, Max: 1) (see below for nested schema)'
+            search_backpressure: (Block List) Search Backpressure Settings. (see below for nested schema)
+            search_insights_top_queries: (Block List) (see below for nested schema)
             search_max_buckets: (Number) Maximum number of aggregation buckets allowed in a single response. OpenSearch default value is used when this is not defined.
-            search_shard_task: '(Block List, Max: 1) Search shard settings. (see below for nested schema)'
-            search_task: '(Block List, Max: 1) Search task settings. (see below for nested schema)'
+            search_shard_task: (Block List) Search shard settings. (see below for nested schema)
+            search_task: (Block List) Search task settings. (see below for nested schema)
             segment_pressure_bytes_lag_variance_factor: (Number) The variance factor that is used to calculate the dynamic bytes lag threshold. The variance factor that is used together with the moving average to calculate the dynamic bytes lag threshold for activating remote segment backpressure. Defaults to 10.
             segment_pressure_consecutive_failures_limit: (Number) The minimum consecutive failure count for activating remote segment backpressure. The minimum consecutive failure count for activating remote segment backpressure. Defaults to 5.
             segment_pressure_enabled: (Boolean) Enables remote segment backpressure. Enables remote segment backpressure. Default is true.
             segment_pressure_time_lag_variance_factor: (Number) The variance factor that is used to calculate the dynamic bytes lag threshold. The variance factor that is used together with the moving average to calculate the dynamic time lag threshold for activating remote segment backpressure. Defaults to 10.
-            segrep: '(Block List, Max: 1) Segment Replication Backpressure Settings. (see below for nested schema)'
+            segrep: (Block List) Segment Replication Backpressure Settings. (see below for nested schema)
             service_host: (String) Hostname to the service instance
             service_log: (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
-            service_password: (String, Sensitive) Primary username's password to the service instance
+            service_password: (String, Sensitive) Primary password to the service instance
             service_port: (String) Port to the service instance
             service_uri: (String, Sensitive) URI to the service instance
             service_username: (String) Primary username to the service instance
-            shard: '(Block List, Max: 1) (see below for nested schema)'
-            shard_indexing_pressure: '(Block List, Max: 1) Shard indexing back pressure settings. (see below for nested schema)'
+            session_keepalive: (Boolean) Determines whether the session TTL resets (is “kept alive”) on each user activity. Optional. Default is true.
+            session_ttl: (String) Defines the time-to-live (TTL) for user sessions. The value should be a time value with unit, e.g. 1m, 5s, 1h, 3d, 100ms. Default is 1 hour.
+            shard: (Block List) (see below for nested schema)
+            shard_indexing_pressure: (Block List) Shard indexing back pressure settings. (see below for nested schema)
             signing_key: (String) JWT signing key. The secret key used to sign and verify JWT tokens. This should be a secure, randomly generated key HMAC key or public RSA/ECDSA key.
             soft_limit: |-
                 (Number) Node soft limit. Define the percentage of the node-level memory
                 threshold that acts as a soft indicator for strain on a node.
                 Default is 0.7.
             sp_entity_id: (String) Service Provider Entity ID. The unique identifier for the Service Provider (SP) entity that is used for SAML authentication. This value is typically provided by the SP.
-            state: (String) State of the service
+            state: (String) The current state of the service
             state_global_metadata_upload_timeout: (String) The amount of time to wait for the cluster state upload to complete. The amount of time to wait for the cluster state upload to complete. Defaults to 20s.
             state_metadata_manifest_upload_timeout: (String) The amount of time to wait for the manifest file upload to complete. The amount of time to wait for the manifest file upload to complete. The manifest file contains the details of each of the files uploaded for a single cluster state, both index metadata files and global metadata files. Defaults to 20s.
             subject_key: (String) JWT claim key for subject. The key in the JWT payload that contains the user's subject identifier. If not specified, the 'sub' claim is used by default.
@@ -1825,25 +2025,25 @@ resources:
             thread_pool_search_throttled_size: (Number) search_throttled thread pool size. Size for the thread pool. See documentation for exact details. Do note this may have maximum value depending on CPU count - value is automatically lowered if set to higher than maximum value.
             thread_pool_write_queue_size: (Number) write thread pool queue size. Size for the thread pool queue. See documentation for exact details.
             thread_pool_write_size: (Number) write thread pool size. Size for the thread pool. See documentation for exact details. Do note this may have maximum value depending on CPU count - value is automatically lowered if set to higher than maximum value.
-            threshold: '(Block List, Max: 1) (see below for nested schema)'
+            threshold: (Block List) (see below for nested schema)
             time_window_seconds: (Number) The window of time in which the value for allowed_tries is enforced.
-            title: (String) Title of a managed database instance
+            title: (String) Title of the managed database instance
             top_n_size: (Number) Specify the value of N for the top N queries by the metric.
             total_heap_percent_threshold: (Number) The heap usage threshold (as a percentage) required for the sum of heap usages of all search shard tasks before cancellation is applied. The heap usage threshold (as a percentage) required for the sum of heap usages of all search shard tasks before cancellation is applied. Default is 0.5.
             trace: (String) Trace threshold for total request took time. The value should be in the form count and unit, where unit one of (s,m,h,d,nanos,ms,micros) or -1. Default is -1.
             translog_buffer_interval: (String) The default value of the translog buffer interval. The default value of the translog buffer interval used when performing periodic translog updates. This setting is only effective when the index setting index.remote_store.translog.buffer_interval is not present. Defaults to 650ms.
             translog_max_readers: (Number) The maximum number of open translog files for remote-backed indexes. Sets the maximum number of open translog files for remote-backed indexes. This limits the total number of translog files per shard. After reaching this limit, the remote store flushes the translog files. Default is 1000. The minimum required is 100.
-            type: (String) Type of the service
+            type: (String) Type of the managed database instance
             upper: |-
                 (Number) Upper occupancy limit of the allocated quota of memory for the shard. Specify the upper occupancy limit of the allocated quota of memory for the shard.
                 If the total memory usage of a shard is above this limit,
                 shard indexing backpressure increases the current allocated memory for that shard.
                 Default is 0.95.
-            usage: (String)
+            usage: (String) Usage of the component
             uuid: (String) Private network UUID. Must reside in the same zone as the database.
             version: (String) OpenSearch version.
             warn: (String) Warning threshold for total request took time. The value should be in the form count and unit, where unit one of (s,m,h,d,nanos,ms,micros) or -1. Default is -1.
-            window_size: (String) The window size of the top N queries by the metric. Configure the window size of the top N queries.
+            window_size: (String) The window size of the top N queries by the metric. Configure the window size of the top N queries. The value should be a time value with unit, e.g. 1m, 5s, 1h.
             zone: (String) Zone where the instance resides, e.g. de-fra1. You can list available zones with upctl zone list.
         importStatements: []
     upcloud_managed_database_postgresql:
@@ -1894,20 +2094,23 @@ resources:
             autovacuum_vacuum_scale_factor: (Number) Specifies a fraction of the table size to add to autovacuum_vacuum_threshold when deciding whether to trigger a VACUUM (e.g. 0.2 for 20% of the table size). The default is 0.2.
             autovacuum_vacuum_threshold: (Number) Specifies the minimum number of updated or deleted tuples needed to trigger a VACUUM in any one table. The default is 50.
             backup_hour: (Number) The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
+            backup_interval_hours: (Number) Backup interval in hours. Interval in hours between automatic backups. Minimum value is 3 hours. Must be a divisor of 24 (3, 4, 6, 8, 12, 24).  (Applicable to ACU plans only).
             backup_minute: (Number) The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
+            backup_retention_days: (Number) Backup retention in days. Number of days to retain automatic backups. Backups older than this value will be automatically deleted. (Applicable to ACU plans only).
             bgwriter_delay: (Number) Specifies the delay between activity rounds for the background writer in milliseconds. The default is 200.
             bgwriter_flush_after: (Number) Whenever more than bgwriter_flush_after bytes have been written by the background writer, attempt to force the OS to issue these writes to the underlying storage. Specified in kilobytes. Setting of 0 disables forced writeback. The default is 512.
             bgwriter_lru_maxpages: (Number) In each round, no more than this many buffers will be written by the background writer. Setting this to zero disables background writing. The default is 100.
             bgwriter_lru_multiplier: (Number) The average recent need for new buffers is multiplied by bgwriter_lru_multiplier to arrive at an estimate of the number that will be needed during the next round, (up to bgwriter_lru_maxpages). 1.0 represents a “just in time” policy of writing exactly the number of buffers predicted to be needed. Larger values provide some cushion against spikes in demand, while smaller values intentionally leave writes to be done by server processes. The default is 2.0.
-            component: (String)
-            components: (List of Object) Service component information (see below for nested schema)
+            component: (String) Component name.
+            components: (Attributes List) Service component information (see below for nested schema)
             dbname: (String) Database name for bootstrapping the initial connection.
             deadlock_timeout: (Number) This is the amount of time, in milliseconds, to wait on a lock before checking to see if there is a deadlock condition. The default is 1000 (upstream default).
             default_toast_compression: (String) Specifies the default TOAST compression method for values of compressible columns. The default is lz4. Only available for PostgreSQL 14+.
+            enable_ha_replica_dns: (Boolean) Enable HA replica DNS. Creates a dedicated read-only DNS that automatically falls back to the primary if standby nodes are unavailable. It switches back when a standby recovers.
             family: (String) Network family. Currently only IPv4 is supported.
             feature_enabled: (Boolean) Enable pgaudit extension. Enable pgaudit extension. When enabled, pgaudit extension will be automatically installed.Otherwise, extension will be uninstalled but auditing configurations will be preserved.
             host: (String) Hostname or IP address of the server where to migrate data from.
-            id: (String) The ID of this resource.
+            id: (String) UUID of the database.
             idle_in_transaction_session_timeout: (Number) Time out sessions with open transactions after this number of milliseconds.
             ignore_dbs: (String) Comma-separated list of databases, which should be ignored during migration (supported by MySQL and PostgreSQL only at the moment).
             ignore_roles: (String) Comma-separated list of database roles, which should be ignored during migration (supported by PostgreSQL only at the moment).
@@ -1916,10 +2119,10 @@ resources:
             io_max_combine_limit: '(Number) EXPERIMENTAL: Controls the largest I/O size in operations that combine I/O in 8kB units, and silently limits the user-settable parameter io_combine_limit. Version 18 and up only. Changing this parameter causes a service restart.'
             io_max_concurrency: '(Number) EXPERIMENTAL: Controls the maximum number of I/O operations that one process can execute simultaneously. Version 18 and up only. Changing this parameter causes a service restart.'
             io_method: '(String) EXPERIMENTAL: Controls the maximum number of I/O operations that one process can execute simultaneously. Version 18 and up only. Changing this parameter causes a service restart.'
-            io_workers: '(Number) io_max_concurrency. EXPERIMENTAL: Number of IO worker processes, for io_method=worker. Version 18 and up only. Changing this parameter causes a service restart.'
+            io_workers: '(Number) EXPERIMENTAL: Number of IO worker processes, for io_method=worker. Version 18 and up only.'
             ip_filter: (List of String) IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
             jit: (Boolean) Controls system-wide use of Just-in-Time Compilation (JIT).
-            labels: (Map of String) User defined key-value pairs to classify the managed database.
+            labels: (Map of String) User defined key-value pairs to classify the database.
             log: (List of String) Log. Specifies which classes of statements will be logged by session audit logging.
             log_autovacuum_min_duration: (Number) Causes each action executed by autovacuum to be logged if it ran for at least the specified number of milliseconds. Setting this to zero logs all autovacuum actions. Minus-one disables logging autovacuum actions. The default is 1000.
             log_catalog: |-
@@ -1952,11 +2155,11 @@ resources:
             maintenance_window_dow: (String) Maintenance window day of week. Lower case weekday name (monday, tuesday, ...)
             maintenance_window_time: (String) Maintenance window UTC time in hh:mm:ss format
             max_background_workers: (Number) The number of background workers for timescaledb operations. You should configure this setting to the sum of your number of databases and the total number of concurrent background workers you want running at any given point in time. Changing this parameter causes a service restart.
-            max_connections: (Number) Sets the PostgreSQL maximum number of concurrent connections to the database server. This is a limited-release parameter. Contact your account team to confirm your eligibility. You cannot decrease this parameter value when set. For services with a read replica, first increase the read replica's value. After the change is applied to the replica, you can increase the primary service's value. Changing this parameter causes a service restart.
+            max_connections: (Number) Sets the PostgreSQL maximum number of concurrent connections to the database server. For services with a read replica, first increase the read replica's value. After the change is applied to the replica, you can increase the primary service's value. Changing this parameter causes a service restart.
             max_failover_replication_time_lag: (Number) Max Failover Replication Time Lag. Number of seconds of master unavailability before triggering database failover to standby.
             max_files_per_process: (Number) PostgreSQL maximum number of files that can be open per process. The default is 1000 (upstream default). Changing this parameter causes a service restart.
             max_locks_per_transaction: (Number) PostgreSQL maximum locks per transaction. Changing this parameter causes a service restart.
-            max_logical_replication_workers: (Number) PostgreSQL maximum logical replication workers (taken from the pool of max_parallel_workers). The default is 4 (upstream default). Changing this parameter causes a service restart.
+            max_logical_replication_workers: (Number) PostgreSQL maximum logical replication workers (taken from the pool defined by max_worker_processes). The default is 4 (upstream default). Changing this parameter causes a service restart.
             max_parallel_workers: (Number) Sets the maximum number of workers that the system can support for parallel queries. The default is 8 (upstream default).
             max_parallel_workers_per_gather: (Number) Sets the maximum number of workers that can be started by a single Gather or Gather Merge node. The default is 2 (upstream default).
             max_pred_locks_per_transaction: (Number) PostgreSQL maximum predicate locks per transaction. The default is 64 (upstream default). Changing this parameter causes a service restart.
@@ -1971,56 +2174,62 @@ resources:
             max_wal_senders: (Number) PostgreSQL maximum WAL senders. The default is 20. Changing this parameter causes a service restart.
             max_worker_processes: (Number) Sets the maximum number of background processes that the system can support. The default is 8. Changing this parameter causes a service restart.
             method: (String) The migration method to be used (currently supported only by Redis, Dragonfly, MySQL and PostgreSQL service types).
-            migration: '(Block List, Max: 1) Migrate data from existing server. (see below for nested schema)'
+            migration: (Block List) Migrate data from existing server. (see below for nested schema)
             min_pool_size: (Number) Add more server connections to pool if below this number. Improves behavior when usual load comes suddenly back after period of total inactivity. The value is effectively capped at the pool size.
             name: (String) Name of the service. The name is used as a prefix for the logical hostname. Must be unique within an account
-            network: '(Block Set, Max: 8) Private networks attached to the managed database (see below for nested schema)'
+            network: (Block Set) Private networks attached to the managed database (see below for nested schema)
             node_count: (Number) Number of nodes for the service.
-            node_states: (List of Object) Information about nodes providing the managed service (see below for nested schema)
+            node_states: (Attributes List) Information about nodes providing the managed service (see below for nested schema)
             password: (String, Sensitive) Password for authentication with the server where to migrate data from.
             password_encryption: (String, Sensitive) Chooses the algorithm for encrypting passwords.
             pg_partman_bgw_interval: (Number) Sets the time interval in seconds to run pg_partman's scheduled tasks. The default is 3600.
             pg_partman_bgw_role: (String) Controls which role to use for pg_partman's scheduled background tasks.
             pg_stat_monitor_enable: (Boolean) Enable pg_stat_monitor extension if available for the current cluster. Enable the pg_stat_monitor extension. Changing this parameter causes a service restart. When this extension is enabled, pg_stat_statements results for utility commands are unreliable.
-            pg_stat_monitor_pgsm_enable_query_plan: (Boolean) Enables or disables query plan monitoring. Changing this parameter causes a service restart. Only available for PostgreSQL 13+.
+            pg_stat_monitor_pgsm_enable_query_plan: (Boolean) Enables or disables query plan monitoring. Only available for PostgreSQL 13+.
             pg_stat_monitor_pgsm_max_buckets: (Number) Sets the maximum number of buckets. Changing this parameter causes a service restart. Only available for PostgreSQL 13+.
+            pg_stat_plans_enable: (Boolean) Enable pg_stat_plans extension if available for the current cluster. Enable the pg_stat_plans extension. Changing this parameter causes a service restart. Tracks execution plans for SQL queries.
+            pg_stat_plans_track: (String) Controls which statements' plans are tracked. Specify top to track top-level statements (those issued directly by clients), all to also track nested statements (such as statements invoked within functions), or none to disable plan tracking. The default is top.
             pg_stat_statements_track: (String) Controls which statements are counted. Specify top to track top-level statements (those issued directly by clients), all to also track nested statements (such as statements invoked within functions), or none to disable statement statistics collection. The default is top.
-            pgaudit: '(Block List, Max: 1) PGAudit settings. System-wide settings for the pgaudit extension. (see below for nested schema)'
-            pgbouncer: '(Block List, Max: 1) PGBouncer connection pooling settings. System-wide settings for pgbouncer. (see below for nested schema)'
-            pglookout: '(Block List, Max: 1) PGLookout settings. System-wide settings for pglookout. (see below for nested schema)'
+            pgaudit: (Block List) PGAudit settings. System-wide settings for the pgaudit extension. (see below for nested schema)
+            pgbouncer: (Block List) PGBouncer connection pooling settings. System-wide settings for pgbouncer. (see below for nested schema)
+            pglookout: (Block List) PGLookout settings. System-wide settings for pglookout. (see below for nested schema)
             plan: (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans pg.
             port: (Number) Port number of the server where to migrate data from.
             powered: (Boolean) The administrative power state of the service
             primary_database: (String) Primary database name
-            properties: '(Block List, Max: 1) Database Engine properties for PostgreSQL (see below for nested schema)'
+            properties: (Block List) Database engine properties. (see below for nested schema)
             public_access: (Boolean) Public Access. Allow access to the service from the public Internet.
+            public_access_prometheus: (Boolean) Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
             role: (String) Role. Specifies the master role to use for object audit logging.
-            route: (String)
+            route: (String) Component network route type
+            server_connect_timeout: (Number) If connection and login don’t finish in this amount of time, the connection will be closed. [seconds].
             server_idle_timeout: (Number) If a server connection has been idle more than this many seconds it will be dropped. If 0 then timeout is disabled. [seconds].
             server_lifetime: (Number) The pooler will close an unused server connection that has been connected longer than this. [seconds].
+            server_login_retry: (Number) If login to the server failed, because of failure to connect or from authentication, the pooler waits this much before retrying to connect. During the waiting interval, new clients trying to connect to the failing server will get an error immediately without another connection attempt. [seconds].
             server_reset_query_always: (Boolean) Run server_reset_query (DISCARD ALL) in all pooling modes.
             service_host: (String) Hostname to the service instance
             service_log: (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
-            service_password: (String, Sensitive) Primary username's password to the service instance
+            service_password: (String, Sensitive) Primary password to the service instance
             service_port: (String) Port to the service instance
             service_uri: (String, Sensitive) URI to the service instance
             service_username: (String) Primary username to the service instance
             shared_buffers_percentage: (Number) Percentage of total RAM that the database server uses for shared memory buffers. Valid range is 20-60 (float), which corresponds to 20% - 60%. This setting adjusts the shared_buffers configuration value. Changing this parameter causes a service restart.
             ssl: (Boolean) The server where to migrate data from is secured with SSL.
             sslmode: (String) SSL Connection Mode for PostgreSQL
-            state: (String) State of the service
-            synchronous_replication: (String) Synchronous replication type. Note that the service plan also needs to support synchronous replication.
+            state: (String) The current state of the service
+            synchronous_commit: (String) Sets the current transaction's synchronization level. The default is off. This setting takes precedence over synchronous_replication.
+            synchronous_replication: (String) Synchronous replication type. (deprecated, use synchronous_commit instead). Note that the service plan also needs to support synchronous replication. This setting is deprecated. Use synchronous_commit instead. Any change to this setting will automatically update synchronous_commit. Setting the value to quorum changes synchronous_commit to remote_write, while setting it to off changes synchronous_commit to off.
             temp_file_limit: (Number) PostgreSQL temporary file limit in KiB, -1 for unlimited.
             termination_protection: (Boolean) If set to true, prevents the managed service from being powered off, or deleted.
-            timescaledb: '(Block List, Max: 1) TimescaleDB extension configuration values. System-wide settings for the timescaledb extension. (see below for nested schema)'
+            timescaledb: (Block List) TimescaleDB extension configuration values. System-wide settings for the timescaledb extension. (see below for nested schema)
             timezone: (String) PostgreSQL service timezone.
-            title: (String) Title of a managed database instance
+            title: (String) Title of the managed database instance
             track_activity_query_size: (Number) Specifies the number of bytes reserved to track the currently executing command for each active session. Changing this parameter causes a service restart.
             track_commit_timestamp: (String) Record commit time of transactions. Changing this parameter causes a service restart.
             track_functions: (String) Enables tracking of function call counts and time used.
             track_io_timing: (String) Enables timing of database I/O calls. The default is off. When on, it will repeatedly query the operating system for the current time, which may cause significant overhead on some platforms.
-            type: (String) Type of the service
-            usage: (String)
+            type: (String) Type of the managed database instance
+            usage: (String) Usage of the component
             username: (String) User name for authentication with the server where to migrate data from.
             uuid: (String) Private network UUID. Must reside in the same zone as the database.
             variant: (String) Variant of the PostgreSQL service, may affect the features that are exposed by default.
@@ -2032,7 +2241,7 @@ resources:
         importStatements: []
     upcloud_managed_database_user:
         subCategory: Databases
-        description: This resource represents a user in managed database
+        description: This resource represents a user in managed database.
         name: upcloud_managed_database_user
         title: upcloud_managed_database_user Resource - terraform-provider-upcloud
         examples:
@@ -2059,18 +2268,18 @@ resources:
             categories: (List of String) Set access control to all commands in specified categories.
             channels: (List of String) Set access control to Pub/Sub channels.
             commands: (List of String) Set access control to commands.
-            id: (String) The ID of this resource.
+            id: (String) ID of the user. ID is in {service UUID}/{username} format.
             index: (String) Set index name, pattern or top level API.
             keys: (List of String) Set access control to keys.
-            opensearch_access_control: '(Block List, Max: 1) OpenSearch access control object. (see below for nested schema)'
+            opensearch_access_control: (Block List) OpenSearch access control object. (see below for nested schema)
             password: (String, Sensitive) Password for the database user. Defaults to a random value
             permission: (String) Set permission access.
-            pg_access_control: '(Block List, Max: 1) PostgreSQL access control object. (see below for nested schema)'
-            rules: '(Block List, Min: 1) Set user access control rules. (see below for nested schema)'
+            pg_access_control: (Block List) PostgreSQL access control object. (see below for nested schema)
+            rules: (Block List) Set user access control rules. (see below for nested schema)
             service: (String) Service's UUID for which this user belongs to
             type: (String) Type of the user. Only normal type users can be created
             username: (String) Name of the database user
-            valkey_access_control: '(Block List, Max: 1) Valkey access control object. (see below for nested schema)'
+            valkey_access_control: (Block List) Valkey access control object. (see below for nested schema)
         importStatements: []
     upcloud_managed_database_valkey:
         subCategory: Databases
@@ -2104,49 +2313,51 @@ resources:
             automatic_utility_network_ip_filter: (Boolean) Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
             backup_hour: (Number) The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
             backup_minute: (Number) The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
-            component: (String)
-            components: (List of Object) Service component information (see below for nested schema)
+            component: (String) Component name.
+            components: (Attributes List) Service component information (see below for nested schema)
             dbname: (String) Database name for bootstrapping the initial connection.
             family: (String) Network family. Currently only IPv4 is supported.
             frequent_snapshots: (Boolean) Frequent RDB snapshots. When enabled, Valkey will create frequent local RDB snapshots. When disabled, Valkey will only take RDB snapshots when a backup is created, based on the backup schedule. This setting is ignored when valkey_persistence is set to off.
             host: (String) Hostname or IP address of the server where to migrate data from.
-            id: (String) The ID of this resource.
+            id: (String) UUID of the database.
             ignore_dbs: (String) Comma-separated list of databases, which should be ignored during migration (supported by MySQL and PostgreSQL only at the moment).
             ignore_roles: (String) Comma-separated list of database roles, which should be ignored during migration (supported by PostgreSQL only at the moment).
             ip_filter: (List of String) IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
-            labels: (Map of String) User defined key-value pairs to classify the managed database.
+            labels: (Map of String) User defined key-value pairs to classify the database.
             maintenance_window_dow: (String) Maintenance window day of week. Lower case weekday name (monday, tuesday, ...)
             maintenance_window_time: (String) Maintenance window UTC time in hh:mm:ss format
             method: (String) The migration method to be used (currently supported only by Redis, Dragonfly, MySQL and PostgreSQL service types).
-            migration: '(Block List, Max: 1) Migrate data from existing server. (see below for nested schema)'
+            migration: (Block List) Migrate data from existing server. (see below for nested schema)
             name: (String) Name of the service. The name is used as a prefix for the logical hostname. Must be unique within an account
-            network: '(Block Set, Max: 8) Private networks attached to the managed database (see below for nested schema)'
-            node_states: (List of Object) Information about nodes providing the managed service (see below for nested schema)
+            network: (Block Set) Private networks attached to the managed database (see below for nested schema)
+            node_states: (Attributes List) Information about nodes providing the managed service (see below for nested schema)
             password: (String, Sensitive) Password for authentication with the server where to migrate data from.
             plan: (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans valkey.
             port: (Number) Port number of the server where to migrate data from.
             powered: (Boolean) The administrative power state of the service
             primary_database: (String) Primary database name
-            properties: '(Block List, Max: 1) Database Engine properties for Valkey (see below for nested schema)'
+            properties: (Block List) Database engine properties. (see below for nested schema)
             public_access: (Boolean) Public Access. Allow access to the service from the public Internet.
-            role: (String)
-            route: (String)
+            public_access_prometheus: (Boolean) Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+            role: (String) Role of the node
+            route: (String) Component network route type
             service_host: (String) Hostname to the service instance
             service_log: (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
-            service_password: (String, Sensitive) Primary username's password to the service instance
+            service_password: (String, Sensitive) Primary password to the service instance
             service_port: (String) Port to the service instance
             service_uri: (String, Sensitive) URI to the service instance
             service_username: (String) Primary username to the service instance
             ssl: (Boolean) The server where to migrate data from is secured with SSL.
-            state: (String) State of the service
+            state: (String) The current state of the service
             termination_protection: (Boolean) If set to true, prevents the managed service from being powered off, or deleted.
-            title: (String) Title of a managed database instance
-            type: (String) Type of the service
-            usage: (String)
+            title: (String) Title of the managed database instance
+            type: (String) Type of the managed database instance
+            usage: (String) Usage of the component
             username: (String) User name for authentication with the server where to migrate data from.
             uuid: (String) Private network UUID. Must reside in the same zone as the database.
             valkey_acl_channels_default: (String) Default ACL for pub/sub channels used when a Valkey user is created. Determines default pub/sub channels' ACL for new users if ACL is not supplied. When this option is not defined, all_channels is assumed to keep backward compatibility. This option doesn't affect Valkey configuration acl-pubsub-default.
             valkey_active_expire_effort: (Number) Active expire effort. Valkey reclaims expired keys both when accessed and in the background. The background process scans for expired keys to free memory. Increasing the active-expire-effort setting (default 1, max 10) uses more CPU to reclaim expired keys faster, reducing memory usage but potentially increasing latency.
+            valkey_activedefrag: (Boolean) Active memory defragmentation. Enable active memory defragmentation. When enabled, Valkey relocates objects off sparsely-used memory pages to reduce fragmentation and return memory to the operating system. Defragmentation runs on the main thread and consumes CPU, so it may increase latency under load.
             valkey_io_threads: (Number) Valkey IO thread count. Set Valkey IO thread count. Changing this will cause a restart of the Valkey service.
             valkey_lfu_decay_time: (Number) LFU maxmemory-policy counter decay time in minutes.
             valkey_lfu_log_factor: (Number) Counter logarithm factor for volatile-lfu and allkeys-lfu maxmemory-policies.
@@ -2157,6 +2368,7 @@ resources:
             valkey_pubsub_client_output_buffer_limit: (Number) Pub/sub client output buffer hard limit in MB. Set output buffer limit for pub / sub clients in MB. The value is the hard limit, the soft limit is 1/4 of the hard limit. When setting the limit, be mindful of the available memory in the selected service plan.
             valkey_ssl: (Boolean) Require SSL to access Valkey.
             valkey_timeout: (Number) Valkey idle connection timeout in seconds.
+            valkey_version: (String) Valkey major version.
             zone: (String) Zone where the instance resides, e.g. de-fra1. You can list available zones with upctl zone list.
         importStatements: []
     upcloud_managed_object_storage:
@@ -2217,7 +2429,7 @@ resources:
             operational_state: (String) Operational state of the Managed Object Storage service.
             region: (String) Region in which the service will be hosted, see upcloud_managed_object_storage_regions data source or use upctl object-storage regions to list available regions.
             sts_url: (String) URL for STS.
-            type: (String) Network type.
+            type: (String) Network type (private or public).
             updated_at: (String) Update time.
             uuid: (String) Private network uuid. For public networks the field should be omitted.
         importStatements: []
@@ -2280,6 +2492,7 @@ resources:
         argumentDocs:
             domain_name: (String) Must be a subdomain and consist of 3 to 5 parts such as objects.example.com. Cannot be root-level domain e.g. example.com.
             id: (String) ID of the custom domain. ID is in {object storage UUID}/{domain name} format.
+            mode: (String) Routing mode for the domain. Defaults to api.
             service_uuid: (String) Managed Object Storage service UUID.
             type: (String) At the moment only public is accepted.
         importStatements: []
@@ -2311,13 +2524,54 @@ resources:
             attachment_count: (Number) Attachment count.
             created_at: (String) Creation time.
             default_version_id: (String) Default version id.
-            description: (String) Description of the policy.
+            description: (String) Description of the policy. This property is immutable after creation.
             document: (String) Policy document, URL-encoded compliant with RFC 3986. Extra whitespace and escapes are ignored when determining if the document has changed.
             id: (String) ID of the policy. ID is in {object storage UUID}/{policy name} format.
             name: (String) Policy name.
             service_uuid: (String) Managed Object Storage service UUID.
             system: (Boolean) Defines whether the policy was set up by the system.
             updated_at: (String) Update time.
+        importStatements: []
+    upcloud_managed_object_storage_static_site:
+        subCategory: Object Storage
+        description: This resource represents an UpCloud Managed Object Storage static site.
+        name: upcloud_managed_object_storage_static_site
+        title: upcloud_managed_object_storage_static_site Resource - terraform-provider-upcloud
+        examples:
+            - name: this
+              manifest: |-
+                {
+                  "bucket_name": "example",
+                  "bucket_prefix": "public/",
+                  "error_pages": [
+                    {
+                      "error_document": "404.html",
+                      "status_code": 404
+                    }
+                  ],
+                  "service_uuid": "1201cd6f-20cd-44b6-939d-ae1c861769e7"
+                }
+              dependencies:
+                upcloud_managed_object_storage.this: |-
+                    {
+                      "configured_status": "started",
+                      "name": "example",
+                      "region": "europe-1"
+                    }
+        argumentDocs:
+            bucket_name: (String) S3 bucket from which static content is served. Must have a public read policy.
+            bucket_prefix: (String) Path prefix within the bucket. For example, dist/ serves content from the dist/ folder. Defaults to empty string (bucket root).
+            domain_name: (String) A custom domain in static-website mode attached to the service.
+            enabled: (Boolean) Enable or disable serving content on this domain. Defaults to true.
+            error_document: (String) Path to the error page document within the bucket.
+            error_pages: (Attributes List) Custom error pages served when the storage backend returns an error status. (see below for nested schema)
+            id: (String) ID of the static site. ID is in {object storage UUID}/{domain name} format.
+            index_document: (String) Name of the index document. Defaults to index.html.
+            service_uuid: (String) Managed Object Storage service UUID.
+            spa_mode: (Boolean) Whether to enable single-page application mode. In SPA mode, the index document is served for all paths, which is useful for client-side routing.
+            status_code: (Number) Exact HTTP status code to match. Mutually exclusive with status range.
+            status_range_end: (Number) End of the status code range (inclusive). Must be greater than start.
+            status_range_start: (Number) Start of the status code range (inclusive).
         importStatements: []
     upcloud_managed_object_storage_user:
         subCategory: Object Storage
@@ -2458,11 +2712,14 @@ resources:
                     }
         argumentDocs:
             address: (String) The CIDR range of the subnet
+            auto_populated: (Boolean) Whether the route was auto-populated by DHCP.
             dhcp: (Boolean) Is DHCP enabled?
             dhcp_default_route: (Boolean) Is the gateway the DHCP default route?
             dhcp_dns: (Set of String) The DNS servers given by DHCP
+            dhcp_effective_routes: (Attributes Set) Routes provided to DHCP clients in this subnet (read-only). (see below for nested schema)
             dhcp_routes: (Set of String) The additional DHCP classless static routes given by DHCP
             dhcp_routes_configuration: (Attributes) DHCP routes auto-population configuration. (see below for nested schema)
+            effective_routes: (Attributes Set) Effective routes applied to this network (read-only). (see below for nested schema)
             effective_routes_auto_population: (Attributes) Automatically populate effective routes. (see below for nested schema)
             enabled: (Boolean) Enable or disable route auto-population.
             exclude_by_source: (Set of String) Exclude routes coming from specific sources (router-connected-networks, static-route).
@@ -2474,7 +2731,11 @@ resources:
             ip_network: (Block List) IP subnet within the network. Network must have exactly one IP subnet. (see below for nested schema)
             labels: (Map of String) User defined key-value pairs to classify the network.
             name: (String) Name of the network.
+            nexthop: (String) Next hop address for this DHCP route.
+            route: (String) Destination prefix (CIDR) of the DHCP route.
             router: (String) UUID of a router to attach to this network.
+            source: (String) Origin of the route (e.g., static-route, router-connected-networks).
+            source_resource_id: (String) UUID of the source resource that provided this route, if applicable.
             type: (String) The network type
             zone: (String) The zone the network is in, e.g. de-fra1. You can list available zones with upctl zone list.
         importStatements:
@@ -2626,13 +2887,14 @@ resources:
             ip_address_floating: (Boolean) true indicates that the primary IP address is a floating IP address.
             keys: (List of String) A list of ssh keys to access the server
             labels: (Map of String) User defined key-value pairs to classify the server.
-            login: (Block Set) Configure access credentials to the server (see below for nested schema)
+            login: (Block List) Configure access credentials to the server (see below for nested schema)
             mac_address: (String) The MAC address of the interface.
             mem: (Number) The amount of memory for the server (in megabytes)
             metadata: (Boolean) Is metadata service active for the server. The metadata service must be enabled when using recent cloud-init based templates.
             network: (String) The UUID of the network to attach this interface to. Required for private network interfaces.
             network_interface: (Block List) One or more blocks describing the network interfaces of the server.
             nic_model: (String) The model of the server's network interfaces
+            password: (String, Sensitive) The generated one-time password for the server
             password_delivery: (String) The delivery method for the server's root password (one of none, email or sms)
             plan: (String) The pricing plan used for the server. You can list available server plans with upctl server plans
             retention: (Number) The number of days before a backup is automatically deleted
@@ -2642,7 +2904,7 @@ resources:
             source_ip_filtering: (Boolean) true if source IP should be filtered.
             storage: (String) The UUID of the storage to attach to the server.
             storage_devices: (Block Set) A set of storage devices associated with the server (see below for nested schema)
-            tags: (Set of String) The server related tags
+            tags: (Set of String) Tags to attach to the server. Note that tags are an access control feature and only available for a limited set of resources. Use labels to describe and filter your resources.
             template: (Block List) Block describing the preconfigured operating system (see below for nested schema)
             tier: (String) The storage tier to use.
             time: (String) Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
@@ -2955,12 +3217,12 @@ resources:
         importStatements: []
     upcloud_tag Resource - terraform-provider-upcloud:
         subCategory: Cloud
-        description: This resource is deprecated, use tags schema in server resource
+        description: ~> Consider using labels instead of tags. Tags are an access control feature and only available for a limited set of resources. Use labels to describe and filter your resources. Resource for managing tags. When tagging multiple servers with the same tag, use this resource to create the tag and tags field of the server resource to tag the server.
         name: upcloud_tag Resource - terraform-provider-upcloud
         title: upcloud_tag Resource - terraform-provider-upcloud
         argumentDocs:
-            description: (String) Free form text representing the meaning of the tag
-            id: (String) The ID of this resource.
-            name: (String) The value representing the tag
-            servers: (Set of String) A collection of servers that have been assigned the tag
+            description: (String) Free form text representing the meaning of the tag.
+            id: (String) The ID of the tag. Contains the same value as name.
+            name: (String) The name of the tag.
+            servers: (Set of String) A collection of servers that have been assigned the tag.
         importStatements: []

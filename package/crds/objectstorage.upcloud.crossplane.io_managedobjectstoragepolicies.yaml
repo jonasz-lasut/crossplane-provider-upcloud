@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.1
   name: managedobjectstoragepolicies.objectstorage.upcloud.crossplane.io
 spec:
   group: objectstorage.upcloud.crossplane.io
@@ -76,8 +76,8 @@ spec:
                 properties:
                   description:
                     description: |-
-                      (String) Description of the policy.
-                      Description of the policy.
+                      (String) Description of the policy. This property is immutable after creation.
+                      Description of the policy. This property is immutable after creation.
                     type: string
                   document:
                     description: |-
@@ -181,8 +181,8 @@ spec:
                 properties:
                   description:
                     description: |-
-                      (String) Description of the policy.
-                      Description of the policy.
+                      (String) Description of the policy. This property is immutable after creation.
+                      Description of the policy. This property is immutable after creation.
                     type: string
                   document:
                     description: |-
@@ -309,8 +309,8 @@ spec:
                     type: string
                   description:
                     description: |-
-                      (String) Description of the policy.
-                      Description of the policy.
+                      (String) Description of the policy. This property is immutable after creation.
+                      Description of the policy. This property is immutable after creation.
                     type: string
                   document:
                     description: |-
@@ -383,6 +383,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
               observedGeneration:
                 description: |-
                   ObservedGeneration is the latest metadata.generation

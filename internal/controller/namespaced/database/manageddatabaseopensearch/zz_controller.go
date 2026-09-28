@@ -25,6 +25,15 @@ import (
 	features "github.com/crossplane-contrib/provider-upcloud/internal/features"
 )
 
+// SetupWebhookWithManager registers the conversion webhook for ManagedDatabaseOpensearch.
+func SetupWebhookWithManager(mgr ctrl.Manager) error {
+	if err := ctrl.NewWebhookManagedBy(mgr, &v1alpha1.ManagedDatabaseOpensearch{}).
+		Complete(); err != nil {
+		return errors.Wrap(err, "cannot register webhook for the kind v1alpha1.ManagedDatabaseOpensearch")
+	}
+	return nil
+}
+
 // SetupGated adds a controller that reconciles ManagedDatabaseOpensearch managed resources.
 func SetupGated(mgr ctrl.Manager, o tjcontroller.Options) error {
 	o.Options.Gate.Register(func() {
@@ -43,12 +52,12 @@ func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
 	ac := tjcontroller.NewAPICallbacks(mgr, xpresource.ManagedKind(v1alpha1.ManagedDatabaseOpensearch_GroupVersionKind), tjcontroller.WithEventHandler(eventHandler), tjcontroller.WithStatusUpdates(false))
 	opts := []managed.ReconcilerOption{
 		managed.WithExternalConnecter(
-			tjcontroller.NewTerraformPluginSDKAsyncConnector(mgr.GetClient(), o.OperationTrackerStore, o.SetupFn, o.Provider.Resources["upcloud_managed_database_opensearch"],
-				tjcontroller.WithTerraformPluginSDKAsyncLogger(o.Logger),
-				tjcontroller.WithTerraformPluginSDKAsyncConnectorEventHandler(eventHandler),
-				tjcontroller.WithTerraformPluginSDKAsyncCallbackProvider(ac),
-				tjcontroller.WithTerraformPluginSDKAsyncMetricRecorder(metrics.NewMetricRecorder(v1alpha1.ManagedDatabaseOpensearch_GroupVersionKind, mgr, o.PollInterval)),
-				tjcontroller.WithTerraformPluginSDKAsyncManagementPolicies(o.Features.Enabled(features.EnableBetaManagementPolicies)))),
+			tjcontroller.NewTerraformPluginFrameworkAsyncConnector(mgr.GetClient(), o.OperationTrackerStore, o.SetupFn, o.Provider.Resources["upcloud_managed_database_opensearch"],
+				tjcontroller.WithTerraformPluginFrameworkAsyncLogger(o.Logger),
+				tjcontroller.WithTerraformPluginFrameworkAsyncConnectorEventHandler(eventHandler),
+				tjcontroller.WithTerraformPluginFrameworkAsyncCallbackProvider(ac),
+				tjcontroller.WithTerraformPluginFrameworkAsyncMetricRecorder(metrics.NewMetricRecorder(v1alpha1.ManagedDatabaseOpensearch_GroupVersionKind, mgr, o.PollInterval)),
+				tjcontroller.WithTerraformPluginFrameworkAsyncManagementPolicies(o.Features.Enabled(features.EnableBetaManagementPolicies)))),
 		managed.WithLogger(o.Logger.WithValues("controller", name)),
 		managed.WithRecorder(event.NewAPIRecorder(mgr.GetEventRecorderFor(name))),
 		managed.WithFinalizer(tjcontroller.NewOperationTrackerFinalizer(o.OperationTrackerStore, xpresource.NewAPIFinalizer(mgr.GetClient(), managed.FinalizerName))),
@@ -64,16 +73,6 @@ func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
 	}
 	if o.MetricOptions != nil {
 		opts = append(opts, managed.WithMetricRecorder(o.MetricOptions.MRMetrics))
-	}
-
-	// register webhooks for the kind v1alpha1.ManagedDatabaseOpensearch
-	// if they're enabled.
-	if o.StartWebhooks {
-		if err := ctrl.NewWebhookManagedBy(mgr).
-			For(&v1alpha1.ManagedDatabaseOpensearch{}).
-			Complete(); err != nil {
-			return errors.Wrap(err, "cannot register webhook for the kind v1alpha1.ManagedDatabaseOpensearch")
-		}
 	}
 
 	if o.MetricOptions != nil && o.MetricOptions.MRStateMetrics != nil {

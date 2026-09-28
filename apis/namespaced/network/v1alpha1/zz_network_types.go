@@ -10,9 +10,29 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
+
+type DHCPEffectiveRoutesInitParameters struct {
+}
+
+type DHCPEffectiveRoutesObservation struct {
+
+	// populated by DHCP.
+	// Whether the route was auto-populated by DHCP.
+	AutoPopulated *bool `json:"autoPopulated,omitempty" tf:"auto_populated,omitempty"`
+
+	// (String) Next hop address for this DHCP route.
+	// Next hop address for this DHCP route.
+	Nexthop *string `json:"nexthop,omitempty" tf:"nexthop,omitempty"`
+
+	// (String) Destination prefix (CIDR) of the DHCP route.
+	// Destination prefix (CIDR) of the DHCP route.
+	Route *string `json:"route,omitempty" tf:"route,omitempty"`
+}
+
+type DHCPEffectiveRoutesParameters struct {
+}
 
 type DHCPRoutesConfigurationInitParameters struct {
 
@@ -103,6 +123,35 @@ type EffectiveRoutesAutoPopulationParameters struct {
 	FilterByRouteType []*string `json:"filterByRouteType,omitempty" tf:"filter_by_route_type,omitempty"`
 }
 
+type EffectiveRoutesInitParameters struct {
+}
+
+type EffectiveRoutesObservation struct {
+
+	// (String) Next hop address for this DHCP route.
+	// Next hop address for this route.
+	Nexthop *string `json:"nexthop,omitempty" tf:"nexthop,omitempty"`
+
+	// (String) Destination prefix (CIDR) of the DHCP route.
+	// Destination CIDR of the route.
+	Route *string `json:"route,omitempty" tf:"route,omitempty"`
+
+	// route, router-connected-networks).
+	// Origin of the route (e.g., static-route, router-connected-networks).
+	Source *string `json:"source,omitempty" tf:"source,omitempty"`
+
+	// (String) UUID of the source resource that provided this route, if applicable.
+	// UUID of the source resource that provided this route, if applicable.
+	SourceResourceID *string `json:"sourceResourceId,omitempty" tf:"source_resource_id,omitempty"`
+
+	// (String) The network type
+	// Route type (service or user).
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type EffectiveRoutesParameters struct {
+}
+
 type IPNetworkInitParameters struct {
 
 	// (String) The CIDR range of the subnet
@@ -157,6 +206,9 @@ type IPNetworkObservation struct {
 	// (Boolean) Is the gateway the DHCP default route?
 	// Is the gateway the DHCP default route?
 	DHCPDefaultRoute *bool `json:"dhcpDefaultRoute,omitempty" tf:"dhcp_default_route,omitempty"`
+
+	// only). (see below for nested schema)
+	DHCPEffectiveRoutes []DHCPEffectiveRoutesObservation `json:"dhcpEffectiveRoutes,omitempty" tf:"dhcp_effective_routes,omitempty"`
 
 	// (Set of String) The additional DHCP classless static routes given by DHCP
 	// The additional DHCP classless static routes given by DHCP
@@ -241,11 +293,11 @@ type NetworkInitParameters struct {
 
 	// Reference to a Router in network to populate router.
 	// +kubebuilder:validation:Optional
-	RouterRef *v1.NamespacedReference `json:"routerRef,omitempty" tf:"-"`
+	RouterRef *v2.NamespacedReference `json:"routerRef,omitempty" tf:"-"`
 
 	// Selector for a Router in network to populate router.
 	// +kubebuilder:validation:Optional
-	RouterSelector *v1.NamespacedSelector `json:"routerSelector,omitempty" tf:"-"`
+	RouterSelector *v2.NamespacedSelector `json:"routerSelector,omitempty" tf:"-"`
 
 	// fra1. You can list available zones with upctl zone list.
 	// The zone the network is in, e.g. `de-fra1`. You can list available zones with `upctl zone list`.
@@ -253,6 +305,9 @@ type NetworkInitParameters struct {
 }
 
 type NetworkObservation struct {
+
+	// only). (see below for nested schema)
+	EffectiveRoutes []EffectiveRoutesObservation `json:"effectiveRoutes,omitempty" tf:"effective_routes,omitempty"`
 
 	// (String) UUID of the network.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -299,7 +354,7 @@ type NetworkParameters struct {
 	// (String) Name of the network.
 	// Name of the network.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name" tf:"name,omitempty"`
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// (String) UUID of a router to attach to this network.
 	// UUID of a router to attach to this network.
@@ -309,16 +364,16 @@ type NetworkParameters struct {
 
 	// Reference to a Router in network to populate router.
 	// +kubebuilder:validation:Optional
-	RouterRef *v1.NamespacedReference `json:"routerRef,omitempty" tf:"-"`
+	RouterRef *v2.NamespacedReference `json:"routerRef,omitempty" tf:"-"`
 
 	// Selector for a Router in network to populate router.
 	// +kubebuilder:validation:Optional
-	RouterSelector *v1.NamespacedSelector `json:"routerSelector,omitempty" tf:"-"`
+	RouterSelector *v2.NamespacedSelector `json:"routerSelector,omitempty" tf:"-"`
 
 	// fra1. You can list available zones with upctl zone list.
 	// The zone the network is in, e.g. `de-fra1`. You can list available zones with `upctl zone list`.
 	// +kubebuilder:validation:Optional
-	Zone *string `json:"zone" tf:"zone,omitempty"`
+	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
 }
 
 // NetworkSpec defines the desired state of Network
@@ -340,8 +395,8 @@ type NetworkSpec struct {
 
 // NetworkStatus defines the observed state of Network.
 type NetworkStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        NetworkObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               NetworkObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type RouterInitParameters struct {
@@ -67,17 +66,17 @@ type RouterParameters struct {
 	// User defined key-value pairs to classify the router.
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
-	Labels map[string]*string `json:"labels" tf:"labels,omitempty"`
+	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// (String) Name of the router.
 	// Name of the router.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name" tf:"name,omitempty"`
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// (Block Set) A collection of user managed static routes for this router. (see below for nested schema)
 	// A collection of user managed static routes for this router.
 	// +kubebuilder:validation:Optional
-	StaticRoute []StaticRouteParameters `json:"staticRoute" tf:"static_route,omitempty"`
+	StaticRoute []StaticRouteParameters `json:"staticRoute,omitempty" tf:"static_route,omitempty"`
 }
 
 type StaticRouteInitParameters struct {
@@ -172,8 +171,8 @@ type RouterSpec struct {
 
 // RouterStatus defines the observed state of Router.
 type RouterStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        RouterObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               RouterObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

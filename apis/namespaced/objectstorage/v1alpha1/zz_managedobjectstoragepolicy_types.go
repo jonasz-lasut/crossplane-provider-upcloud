@@ -10,14 +10,13 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ManagedObjectStoragePolicyInitParameters struct {
 
-	// (String) Description of the policy.
-	// Description of the policy.
+	// (String) Description of the policy. This property is immutable after creation.
+	// Description of the policy. This property is immutable after creation.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// encoded compliant with RFC 3986. Extra whitespace and escapes are ignored when determining if the document has changed.
@@ -43,8 +42,8 @@ type ManagedObjectStoragePolicyObservation struct {
 	// Default version id.
 	DefaultVersionID *string `json:"defaultVersionId,omitempty" tf:"default_version_id,omitempty"`
 
-	// (String) Description of the policy.
-	// Description of the policy.
+	// (String) Description of the policy. This property is immutable after creation.
+	// Description of the policy. This property is immutable after creation.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// encoded compliant with RFC 3986. Extra whitespace and escapes are ignored when determining if the document has changed.
@@ -69,29 +68,29 @@ type ManagedObjectStoragePolicyObservation struct {
 
 type ManagedObjectStoragePolicyParameters struct {
 
-	// (String) Description of the policy.
-	// Description of the policy.
+	// (String) Description of the policy. This property is immutable after creation.
+	// Description of the policy. This property is immutable after creation.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// encoded compliant with RFC 3986. Extra whitespace and escapes are ignored when determining if the document has changed.
 	// Policy document, URL-encoded compliant with RFC 3986. Extra whitespace and escapes are ignored when determining if the document has changed.
 	// +kubebuilder:validation:Optional
-	Document *string `json:"document" tf:"document,omitempty"`
+	Document *string `json:"document,omitempty" tf:"document,omitempty"`
 
 	// (String) Managed Object Storage service UUID.
 	// Managed Object Storage service UUID.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/objectstorage/v1alpha1.ManagedObjectStorage
 	// +kubebuilder:validation:Optional
-	ServiceUUID *string `json:"serviceUuid" tf:"service_uuid,omitempty"`
+	ServiceUUID *string `json:"serviceUuid,omitempty" tf:"service_uuid,omitempty"`
 
 	// Reference to a ManagedObjectStorage in objectstorage to populate serviceUuid.
 	// +kubebuilder:validation:Optional
-	ServiceUUIDRef *v1.NamespacedReference `json:"serviceUuidRef,omitempty" tf:"-"`
+	ServiceUUIDRef *v2.NamespacedReference `json:"serviceUuidRef,omitempty" tf:"-"`
 
 	// Selector for a ManagedObjectStorage in objectstorage to populate serviceUuid.
 	// +kubebuilder:validation:Optional
-	ServiceUUIDSelector *v1.NamespacedSelector `json:"serviceUuidSelector,omitempty" tf:"-"`
+	ServiceUUIDSelector *v2.NamespacedSelector `json:"serviceUuidSelector,omitempty" tf:"-"`
 }
 
 // ManagedObjectStoragePolicySpec defines the desired state of ManagedObjectStoragePolicy
@@ -113,8 +112,8 @@ type ManagedObjectStoragePolicySpec struct {
 
 // ManagedObjectStoragePolicyStatus defines the observed state of ManagedObjectStoragePolicy.
 type ManagedObjectStoragePolicyStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ManagedObjectStoragePolicyObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ManagedObjectStoragePolicyObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

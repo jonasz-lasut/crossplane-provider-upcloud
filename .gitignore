@@ -12,3 +12,6 @@ cover.out
 
 # ignore kubeconfig that is copied when running tests
 kubeconfig
+
+# transient Claude Code agent worktrees
+.claude/worktrees/

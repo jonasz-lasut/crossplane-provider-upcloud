@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ManagedObjectStorageUserInitParameters struct {
@@ -40,21 +40,21 @@ type ManagedObjectStorageUserParameters struct {
 	// Managed Object Storage service UUID.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/cluster/objectstorage/v1alpha1.ManagedObjectStorage
 	// +kubebuilder:validation:Optional
-	ServiceUUID *string `json:"serviceUuid" tf:"service_uuid,omitempty"`
+	ServiceUUID *string `json:"serviceUuid,omitempty" tf:"service_uuid,omitempty"`
 
 	// Reference to a ManagedObjectStorage in objectstorage to populate serviceUuid.
 	// +kubebuilder:validation:Optional
-	ServiceUUIDRef *v1.Reference `json:"serviceUuidRef,omitempty" tf:"-"`
+	ServiceUUIDRef *v2.Reference `json:"serviceUuidRef,omitempty" tf:"-"`
 
 	// Selector for a ManagedObjectStorage in objectstorage to populate serviceUuid.
 	// +kubebuilder:validation:Optional
-	ServiceUUIDSelector *v1.Selector `json:"serviceUuidSelector,omitempty" tf:"-"`
+	ServiceUUIDSelector *v2.Selector `json:"serviceUuidSelector,omitempty" tf:"-"`
 }
 
 // ManagedObjectStorageUserSpec defines the desired state of ManagedObjectStorageUser
 type ManagedObjectStorageUserSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     ManagedObjectStorageUserParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   ManagedObjectStorageUserParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -70,8 +70,8 @@ type ManagedObjectStorageUserSpec struct {
 
 // ManagedObjectStorageUserStatus defines the observed state of ManagedObjectStorageUser.
 type ManagedObjectStorageUserStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ManagedObjectStorageUserObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ManagedObjectStorageUserObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

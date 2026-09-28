@@ -7,7 +7,12 @@ import (
 )
 
 // SDKResources is a list of all supported database resources implemented with Terraform legacy SDKv2.
-var SDKResources = []string{
+// As of terraform-provider-upcloud v5.44.1 every managed database resource is
+// implemented with the Terraform Plugin Framework.
+var SDKResources = []string{}
+
+// PluginFrameworkResources is a list of all supported database resources implemented with Terraform Plugin Framework.
+var PluginFrameworkResources = []string{
 	"upcloud_managed_database_postgresql",
 	"upcloud_managed_database_mysql",
 	"upcloud_managed_database_opensearch",
@@ -15,9 +20,6 @@ var SDKResources = []string{
 	"upcloud_managed_database_logical_database",
 	"upcloud_managed_database_user",
 }
-
-// PluginFrameworkResources is a list of all supported database resources implemented with Terraform Plugin Framework.
-var PluginFrameworkResources = []string{}
 
 // AllResources is a list of all supported database resources.
 var AllResources = append(SDKResources, PluginFrameworkResources...)

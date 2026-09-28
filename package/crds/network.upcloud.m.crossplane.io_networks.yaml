@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.1
   name: networks.network.upcloud.m.crossplane.io
 spec:
   group: network.upcloud.m.crossplane.io
@@ -529,6 +529,37 @@ spec:
             properties:
               atProvider:
                 properties:
+                  effectiveRoutes:
+                    description: only). (see below for nested schema)
+                    items:
+                      properties:
+                        nexthop:
+                          description: |-
+                            (String) Next hop address for this DHCP route.
+                            Next hop address for this route.
+                          type: string
+                        route:
+                          description: |-
+                            (String) Destination prefix (CIDR) of the DHCP route.
+                            Destination CIDR of the route.
+                          type: string
+                        source:
+                          description: |-
+                            route, router-connected-networks).
+                            Origin of the route (e.g., static-route, router-connected-networks).
+                          type: string
+                        sourceResourceId:
+                          description: |-
+                            (String) UUID of the source resource that provided this route, if applicable.
+                            UUID of the source resource that provided this route, if applicable.
+                          type: string
+                        type:
+                          description: |-
+                            (String) The network type
+                            Route type (service or user).
+                          type: string
+                      type: object
+                    type: array
                   id:
                     description: (String) UUID of the network.
                     type: string
@@ -561,6 +592,27 @@ spec:
                             type: string
                           type: array
                           x-kubernetes-list-type: set
+                        dhcpEffectiveRoutes:
+                          description: only). (see below for nested schema)
+                          items:
+                            properties:
+                              autoPopulated:
+                                description: |-
+                                  populated by DHCP.
+                                  Whether the route was auto-populated by DHCP.
+                                type: boolean
+                              nexthop:
+                                description: |-
+                                  (String) Next hop address for this DHCP route.
+                                  Next hop address for this DHCP route.
+                                type: string
+                              route:
+                                description: |-
+                                  (String) Destination prefix (CIDR) of the DHCP route.
+                                  Destination prefix (CIDR) of the DHCP route.
+                                type: string
+                            type: object
+                          type: array
                         dhcpRoutes:
                           description: |-
                             (Set of String) The additional DHCP classless static routes given by DHCP
@@ -695,6 +747,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
               observedGeneration:
                 description: |-
                   ObservedGeneration is the latest metadata.generation

@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ManagedDatabaseValkeyComponentsInitParameters struct {
@@ -18,8 +18,8 @@ type ManagedDatabaseValkeyComponentsInitParameters struct {
 
 type ManagedDatabaseValkeyComponentsObservation struct {
 
-	// (String)
-	// Type of the component
+	// (String) Component name.
+	// Component name.
 	Component *string `json:"component,omitempty" tf:"component,omitempty"`
 
 	// (String) Hostname or IP address of the server where to migrate data from.
@@ -28,13 +28,13 @@ type ManagedDatabaseValkeyComponentsObservation struct {
 
 	// (Number) Port number of the server where to migrate data from.
 	// Port number of the component
-	Port *int64 `json:"port,omitempty" tf:"port,omitempty"`
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
-	// (String)
+	// (String) Component network route type
 	// Component network route type
 	Route *string `json:"route,omitempty" tf:"route,omitempty"`
 
-	// (String)
+	// (String) Usage of the component
 	// Usage of the component
 	Usage *string `json:"usage,omitempty" tf:"usage,omitempty"`
 }
@@ -46,10 +46,10 @@ type ManagedDatabaseValkeyInitParameters struct {
 
 	// (Number) Not supported for valkey databases. Should be left unconfigured.
 	// Not supported for `valkey` databases. Should be left unconfigured.
-	AdditionalDiskSpaceGib *int64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
+	AdditionalDiskSpaceGib *float64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
 
-	// value pairs to classify the managed database.
-	// User defined key-value pairs to classify the managed database.
+	// value pairs to classify the database.
+	// User defined key-value pairs to classify the database.
 	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
@@ -65,12 +65,11 @@ type ManagedDatabaseValkeyInitParameters struct {
 	// Name of the service. The name is used as a prefix for the logical hostname. Must be unique within an account
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (Block Set, Max: 8) Private networks attached to the managed database (see below for nested schema)
+	// (Block Set) Private networks attached to the managed database (see below for nested schema)
 	// Private networks attached to the managed database
 	Network []ManagedDatabaseValkeyNetworkInitParameters `json:"network,omitempty" tf:"network,omitempty"`
 
-	// (List of Object) Information about nodes providing the managed service (see below for nested schema)
-	// Information about nodes providing the managed service
+	// (Attributes List) Information about nodes providing the managed service (see below for nested schema)
 	NodeStates []ManagedDatabaseValkeyNodeStatesInitParameters `json:"nodeStates,omitempty" tf:"node_states,omitempty"`
 
 	// (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans valkey.
@@ -81,16 +80,16 @@ type ManagedDatabaseValkeyInitParameters struct {
 	// The administrative power state of the service
 	Powered *bool `json:"powered,omitempty" tf:"powered,omitempty"`
 
-	// (Block List, Max: 1) Database Engine properties for Valkey (see below for nested schema)
-	// Database Engine properties for Valkey
+	// (Block List) Database engine properties. (see below for nested schema)
+	// Database engine properties.
 	Properties []ManagedDatabaseValkeyPropertiesInitParameters `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (Boolean) If set to true, prevents the managed service from being powered off, or deleted.
 	// If set to true, prevents the managed service from being powered off, or deleted.
 	TerminationProtection *bool `json:"terminationProtection,omitempty" tf:"termination_protection,omitempty"`
 
-	// (String) Title of a managed database instance
-	// Title of a managed database instance
+	// (String) Title of the managed database instance
+	// Title of the managed database instance
 	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 
 	// fra1. You can list available zones with upctl zone list.
@@ -108,7 +107,7 @@ type ManagedDatabaseValkeyNetworkInitParameters struct {
 	// The name of the network. Must be unique within the service.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (String) Type of the service
+	// (String) Type of the managed database instance
 	// The type of the network. Must be private.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
@@ -119,11 +118,11 @@ type ManagedDatabaseValkeyNetworkInitParameters struct {
 
 	// Reference to a Network in network to populate uuid.
 	// +kubebuilder:validation:Optional
-	UUIDRef *v1.Reference `json:"uuidRef,omitempty" tf:"-"`
+	UUIDRef *v2.Reference `json:"uuidRef,omitempty" tf:"-"`
 
 	// Selector for a Network in network to populate uuid.
 	// +kubebuilder:validation:Optional
-	UUIDSelector *v1.Selector `json:"uuidSelector,omitempty" tf:"-"`
+	UUIDSelector *v2.Selector `json:"uuidSelector,omitempty" tf:"-"`
 }
 
 type ManagedDatabaseValkeyNetworkObservation struct {
@@ -136,7 +135,7 @@ type ManagedDatabaseValkeyNetworkObservation struct {
 	// The name of the network. Must be unique within the service.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (String) Type of the service
+	// (String) Type of the managed database instance
 	// The type of the network. Must be private.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
@@ -157,7 +156,7 @@ type ManagedDatabaseValkeyNetworkParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
-	// (String) Type of the service
+	// (String) Type of the managed database instance
 	// The type of the network. Must be private.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
@@ -166,22 +165,18 @@ type ManagedDatabaseValkeyNetworkParameters struct {
 	// Private network UUID. Must reside in the same zone as the database.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/cluster/network/v1alpha1.Network
 	// +kubebuilder:validation:Optional
-	UUID *string `json:"uuid" tf:"uuid,omitempty"`
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 
 	// Reference to a Network in network to populate uuid.
 	// +kubebuilder:validation:Optional
-	UUIDRef *v1.Reference `json:"uuidRef,omitempty" tf:"-"`
+	UUIDRef *v2.Reference `json:"uuidRef,omitempty" tf:"-"`
 
 	// Selector for a Network in network to populate uuid.
 	// +kubebuilder:validation:Optional
-	UUIDSelector *v1.Selector `json:"uuidSelector,omitempty" tf:"-"`
+	UUIDSelector *v2.Selector `json:"uuidSelector,omitempty" tf:"-"`
 }
 
 type ManagedDatabaseValkeyNodeStatesInitParameters struct {
-
-	// (String)
-	// Role of the node
-	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 }
 
 type ManagedDatabaseValkeyNodeStatesObservation struct {
@@ -190,38 +185,32 @@ type ManagedDatabaseValkeyNodeStatesObservation struct {
 	// Name plus a node iteration
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (String)
+	// (String) Role of the node
 	// Role of the node
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
-	// (String) State of the service
-	// State of the node
+	// (String) The current state of the service
+	// Current state of the node
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 }
 
 type ManagedDatabaseValkeyNodeStatesParameters struct {
-
-	// (String)
-	// Role of the node
-	// +kubebuilder:validation:Optional
-	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 }
 
 type ManagedDatabaseValkeyObservation struct {
 
 	// (Number) Not supported for valkey databases. Should be left unconfigured.
 	// Not supported for `valkey` databases. Should be left unconfigured.
-	AdditionalDiskSpaceGib *int64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
+	AdditionalDiskSpaceGib *float64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
 
-	// (List of Object) Service component information (see below for nested schema)
-	// Service component information
+	// (Attributes List) Service component information (see below for nested schema)
 	Components []ManagedDatabaseValkeyComponentsObservation `json:"components,omitempty" tf:"components,omitempty"`
 
-	// (String) The ID of this resource.
+	// (String) UUID of the database.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// value pairs to classify the managed database.
-	// User defined key-value pairs to classify the managed database.
+	// value pairs to classify the database.
+	// User defined key-value pairs to classify the database.
 	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
@@ -237,12 +226,11 @@ type ManagedDatabaseValkeyObservation struct {
 	// Name of the service. The name is used as a prefix for the logical hostname. Must be unique within an account
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (Block Set, Max: 8) Private networks attached to the managed database (see below for nested schema)
+	// (Block Set) Private networks attached to the managed database (see below for nested schema)
 	// Private networks attached to the managed database
 	Network []ManagedDatabaseValkeyNetworkObservation `json:"network,omitempty" tf:"network,omitempty"`
 
-	// (List of Object) Information about nodes providing the managed service (see below for nested schema)
-	// Information about nodes providing the managed service
+	// (Attributes List) Information about nodes providing the managed service (see below for nested schema)
 	NodeStates []ManagedDatabaseValkeyNodeStatesObservation `json:"nodeStates,omitempty" tf:"node_states,omitempty"`
 
 	// (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans valkey.
@@ -257,8 +245,8 @@ type ManagedDatabaseValkeyObservation struct {
 	// Primary database name
 	PrimaryDatabase *string `json:"primaryDatabase,omitempty" tf:"primary_database,omitempty"`
 
-	// (Block List, Max: 1) Database Engine properties for Valkey (see below for nested schema)
-	// Database Engine properties for Valkey
+	// (Block List) Database engine properties. (see below for nested schema)
+	// Database engine properties.
 	Properties []ManagedDatabaseValkeyPropertiesObservation `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (String) Hostname to the service instance
@@ -273,20 +261,20 @@ type ManagedDatabaseValkeyObservation struct {
 	// Primary username to the service instance
 	ServiceUsername *string `json:"serviceUsername,omitempty" tf:"service_username,omitempty"`
 
-	// (String) State of the service
-	// State of the service
+	// (String) The current state of the service
+	// The current state of the service
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 
 	// (Boolean) If set to true, prevents the managed service from being powered off, or deleted.
 	// If set to true, prevents the managed service from being powered off, or deleted.
 	TerminationProtection *bool `json:"terminationProtection,omitempty" tf:"termination_protection,omitempty"`
 
-	// (String) Title of a managed database instance
-	// Title of a managed database instance
+	// (String) Title of the managed database instance
+	// Title of the managed database instance
 	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 
-	// (String) Type of the service
-	// Type of the service
+	// (String) Type of the managed database instance
+	// Type of the managed database instance
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// fra1. You can list available zones with upctl zone list.
@@ -299,10 +287,10 @@ type ManagedDatabaseValkeyParameters struct {
 	// (Number) Not supported for valkey databases. Should be left unconfigured.
 	// Not supported for `valkey` databases. Should be left unconfigured.
 	// +kubebuilder:validation:Optional
-	AdditionalDiskSpaceGib *int64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
+	AdditionalDiskSpaceGib *float64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
 
-	// value pairs to classify the managed database.
-	// User defined key-value pairs to classify the managed database.
+	// value pairs to classify the database.
+	// User defined key-value pairs to classify the database.
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
@@ -320,30 +308,29 @@ type ManagedDatabaseValkeyParameters struct {
 	// (String) Name of the service. The name is used as a prefix for the logical hostname. Must be unique within an account
 	// Name of the service. The name is used as a prefix for the logical hostname. Must be unique within an account
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name" tf:"name,omitempty"`
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (Block Set, Max: 8) Private networks attached to the managed database (see below for nested schema)
+	// (Block Set) Private networks attached to the managed database (see below for nested schema)
 	// Private networks attached to the managed database
 	// +kubebuilder:validation:Optional
 	Network []ManagedDatabaseValkeyNetworkParameters `json:"network,omitempty" tf:"network,omitempty"`
 
-	// (List of Object) Information about nodes providing the managed service (see below for nested schema)
-	// Information about nodes providing the managed service
+	// (Attributes List) Information about nodes providing the managed service (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	NodeStates []ManagedDatabaseValkeyNodeStatesParameters `json:"nodeStates,omitempty" tf:"node_states,omitempty"`
 
 	// (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans valkey.
 	// Service plan to use. This determines how much resources the instance will have. You can list available plans with `upctl database plans valkey`.
 	// +kubebuilder:validation:Optional
-	Plan *string `json:"plan" tf:"plan,omitempty"`
+	Plan *string `json:"plan,omitempty" tf:"plan,omitempty"`
 
 	// (Boolean) The administrative power state of the service
 	// The administrative power state of the service
 	// +kubebuilder:validation:Optional
 	Powered *bool `json:"powered,omitempty" tf:"powered,omitempty"`
 
-	// (Block List, Max: 1) Database Engine properties for Valkey (see below for nested schema)
-	// Database Engine properties for Valkey
+	// (Block List) Database engine properties. (see below for nested schema)
+	// Database engine properties.
 	// +kubebuilder:validation:Optional
 	Properties []ManagedDatabaseValkeyPropertiesParameters `json:"properties,omitempty" tf:"properties,omitempty"`
 
@@ -352,15 +339,15 @@ type ManagedDatabaseValkeyParameters struct {
 	// +kubebuilder:validation:Optional
 	TerminationProtection *bool `json:"terminationProtection,omitempty" tf:"termination_protection,omitempty"`
 
-	// (String) Title of a managed database instance
-	// Title of a managed database instance
+	// (String) Title of the managed database instance
+	// Title of the managed database instance
 	// +kubebuilder:validation:Optional
-	Title *string `json:"title" tf:"title,omitempty"`
+	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 
 	// fra1. You can list available zones with upctl zone list.
 	// Zone where the instance resides, e.g. `de-fra1`. You can list available zones with `upctl zone list`.
 	// +kubebuilder:validation:Optional
-	Zone *string `json:"zone" tf:"zone,omitempty"`
+	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
 }
 
 type ManagedDatabaseValkeyPropertiesInitParameters struct {
@@ -371,11 +358,11 @@ type ManagedDatabaseValkeyPropertiesInitParameters struct {
 
 	// (Number) The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
-	BackupHour *int64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
+	BackupHour *float64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
 
 	// (Number) The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
-	BackupMinute *int64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
+	BackupMinute *float64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
 
 	// (Boolean) Frequent RDB snapshots. When enabled, Valkey will create frequent local RDB snapshots. When disabled, Valkey will only take RDB snapshots when a backup is created, based on the backup schedule. This setting is ignored when valkey_persistence is set to off.
 	// Frequent RDB snapshots. When enabled, Valkey will create frequent local RDB snapshots. When disabled, Valkey will only take RDB snapshots when a backup is created, based on the backup schedule. This setting is ignored when `valkey_persistence` is set to `off`.
@@ -385,13 +372,17 @@ type ManagedDatabaseValkeyPropertiesInitParameters struct {
 	// IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
 	IPFilter []*string `json:"ipFilter,omitempty" tf:"ip_filter,omitempty"`
 
-	// (Block List, Max: 1) Migrate data from existing server. (see below for nested schema)
+	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
 	Migration []ManagedDatabaseValkeyPropertiesMigrationInitParameters `json:"migration,omitempty" tf:"migration,omitempty"`
 
 	// (Boolean) Public Access. Allow access to the service from the public Internet.
 	// Public Access. Allow access to the service from the public Internet.
 	PublicAccess *bool `json:"publicAccess,omitempty" tf:"public_access,omitempty"`
+
+	// (Boolean) Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	// Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	PublicAccessPrometheus *bool `json:"publicAccessPrometheus,omitempty" tf:"public_access_prometheus,omitempty"`
 
 	// (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	// Service logging. Store logs for the service so that they are available in the HTTP API and console.
@@ -403,19 +394,23 @@ type ManagedDatabaseValkeyPropertiesInitParameters struct {
 
 	// expire-effort setting (default 1, max 10) uses more CPU to reclaim expired keys faster, reducing memory usage but potentially increasing latency.
 	// Active expire effort. Valkey reclaims expired keys both when accessed and in the background. The background process scans for expired keys to free memory. Increasing the active-expire-effort setting (default 1, max 10) uses more CPU to reclaim expired keys faster, reducing memory usage but potentially increasing latency.
-	ValkeyActiveExpireEffort *int64 `json:"valkeyActiveExpireEffort,omitempty" tf:"valkey_active_expire_effort,omitempty"`
+	ValkeyActiveExpireEffort *float64 `json:"valkeyActiveExpireEffort,omitempty" tf:"valkey_active_expire_effort,omitempty"`
+
+	// used memory pages to reduce fragmentation and return memory to the operating system. Defragmentation runs on the main thread and consumes CPU, so it may increase latency under load.
+	// Active memory defragmentation. Enable active memory defragmentation. When enabled, Valkey relocates objects off sparsely-used memory pages to reduce fragmentation and return memory to the operating system. Defragmentation runs on the main thread and consumes CPU, so it may increase latency under load.
+	ValkeyActivedefrag *bool `json:"valkeyActivedefrag,omitempty" tf:"valkey_activedefrag,omitempty"`
 
 	// (Number) Valkey IO thread count. Set Valkey IO thread count. Changing this will cause a restart of the Valkey service.
 	// Valkey IO thread count. Set Valkey IO thread count. Changing this will cause a restart of the Valkey service.
-	ValkeyIoThreads *int64 `json:"valkeyIoThreads,omitempty" tf:"valkey_io_threads,omitempty"`
+	ValkeyIoThreads *float64 `json:"valkeyIoThreads,omitempty" tf:"valkey_io_threads,omitempty"`
 
 	// policy counter decay time in minutes.
 	// LFU maxmemory-policy counter decay time in minutes.
-	ValkeyLfuDecayTime *int64 `json:"valkeyLfuDecayTime,omitempty" tf:"valkey_lfu_decay_time,omitempty"`
+	ValkeyLfuDecayTime *float64 `json:"valkeyLfuDecayTime,omitempty" tf:"valkey_lfu_decay_time,omitempty"`
 
 	// lfu and allkeys-lfu maxmemory-policies.
 	// Counter logarithm factor for volatile-lfu and allkeys-lfu maxmemory-policies.
-	ValkeyLfuLogFactor *int64 `json:"valkeyLfuLogFactor,omitempty" tf:"valkey_lfu_log_factor,omitempty"`
+	ValkeyLfuLogFactor *float64 `json:"valkeyLfuLogFactor,omitempty" tf:"valkey_lfu_log_factor,omitempty"`
 
 	// policy.
 	// Valkey maxmemory-policy.
@@ -427,7 +422,7 @@ type ManagedDatabaseValkeyPropertiesInitParameters struct {
 
 	// (Number) Number of Valkey databases. Set number of Valkey databases. Changing this will cause a restart of the Valkey service.
 	// Number of Valkey databases. Set number of Valkey databases. Changing this will cause a restart of the Valkey service.
-	ValkeyNumberOfDatabases *int64 `json:"valkeyNumberOfDatabases,omitempty" tf:"valkey_number_of_databases,omitempty"`
+	ValkeyNumberOfDatabases *float64 `json:"valkeyNumberOfDatabases,omitempty" tf:"valkey_number_of_databases,omitempty"`
 
 	// (String) Valkey persistence. When persistence is 'rdb', Valkey does RDB dumps each 10 minutes if any key is changed. Also RDB dumps are done according to backup schedule for backup purposes. When persistence is 'off', no RDB dumps and backups are done, so data can be lost at any moment if service is restarted for any reason, or if service is powered off. Also service can't be forked.
 	// Valkey persistence. When persistence is 'rdb', Valkey does RDB dumps each 10 minutes if any key is changed. Also RDB dumps are done according to backup schedule for backup purposes. When persistence is 'off', no RDB dumps and backups are done, so data can be lost at any moment if service is restarted for any reason, or if service is powered off. Also service can't be forked.
@@ -435,7 +430,7 @@ type ManagedDatabaseValkeyPropertiesInitParameters struct {
 
 	// (Number) Pub/sub client output buffer hard limit in MB. Set output buffer limit for pub / sub clients in MB. The value is the hard limit, the soft limit is 1/4 of the hard limit. When setting the limit, be mindful of the available memory in the selected service plan.
 	// Pub/sub client output buffer hard limit in MB. Set output buffer limit for pub / sub clients in MB. The value is the hard limit, the soft limit is 1/4 of the hard limit. When setting the limit, be mindful of the available memory in the selected service plan.
-	ValkeyPubsubClientOutputBufferLimit *int64 `json:"valkeyPubsubClientOutputBufferLimit,omitempty" tf:"valkey_pubsub_client_output_buffer_limit,omitempty"`
+	ValkeyPubsubClientOutputBufferLimit *float64 `json:"valkeyPubsubClientOutputBufferLimit,omitempty" tf:"valkey_pubsub_client_output_buffer_limit,omitempty"`
 
 	// (Boolean) Require SSL to access Valkey.
 	// Require SSL to access Valkey.
@@ -443,7 +438,11 @@ type ManagedDatabaseValkeyPropertiesInitParameters struct {
 
 	// (Number) Valkey idle connection timeout in seconds.
 	// Valkey idle connection timeout in seconds.
-	ValkeyTimeout *int64 `json:"valkeyTimeout,omitempty" tf:"valkey_timeout,omitempty"`
+	ValkeyTimeout *float64 `json:"valkeyTimeout,omitempty" tf:"valkey_timeout,omitempty"`
+
+	// (String) Valkey major version.
+	// Valkey major version.
+	ValkeyVersion *string `json:"valkeyVersion,omitempty" tf:"valkey_version,omitempty"`
 }
 
 type ManagedDatabaseValkeyPropertiesMigrationInitParameters struct {
@@ -470,11 +469,11 @@ type ManagedDatabaseValkeyPropertiesMigrationInitParameters struct {
 
 	// (String, Sensitive) Password for authentication with the server where to migrate data from.
 	// Password for authentication with the server where to migrate data from.
-	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+	PasswordSecretRef *v2.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// (Number) Port number of the server where to migrate data from.
 	// Port number of the server where to migrate data from.
-	Port *int64 `json:"port,omitempty" tf:"port,omitempty"`
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
 	// (Boolean) The server where to migrate data from is secured with SSL.
 	// The server where to migrate data from is secured with SSL.
@@ -509,7 +508,7 @@ type ManagedDatabaseValkeyPropertiesMigrationObservation struct {
 
 	// (Number) Port number of the server where to migrate data from.
 	// Port number of the server where to migrate data from.
-	Port *int64 `json:"port,omitempty" tf:"port,omitempty"`
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
 	// (Boolean) The server where to migrate data from is secured with SSL.
 	// The server where to migrate data from is secured with SSL.
@@ -550,12 +549,12 @@ type ManagedDatabaseValkeyPropertiesMigrationParameters struct {
 	// (String, Sensitive) Password for authentication with the server where to migrate data from.
 	// Password for authentication with the server where to migrate data from.
 	// +kubebuilder:validation:Optional
-	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+	PasswordSecretRef *v2.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// (Number) Port number of the server where to migrate data from.
 	// Port number of the server where to migrate data from.
 	// +kubebuilder:validation:Optional
-	Port *int64 `json:"port,omitempty" tf:"port,omitempty"`
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
 	// (Boolean) The server where to migrate data from is secured with SSL.
 	// The server where to migrate data from is secured with SSL.
@@ -576,11 +575,11 @@ type ManagedDatabaseValkeyPropertiesObservation struct {
 
 	// (Number) The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
-	BackupHour *int64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
+	BackupHour *float64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
 
 	// (Number) The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
-	BackupMinute *int64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
+	BackupMinute *float64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
 
 	// (Boolean) Frequent RDB snapshots. When enabled, Valkey will create frequent local RDB snapshots. When disabled, Valkey will only take RDB snapshots when a backup is created, based on the backup schedule. This setting is ignored when valkey_persistence is set to off.
 	// Frequent RDB snapshots. When enabled, Valkey will create frequent local RDB snapshots. When disabled, Valkey will only take RDB snapshots when a backup is created, based on the backup schedule. This setting is ignored when `valkey_persistence` is set to `off`.
@@ -590,13 +589,17 @@ type ManagedDatabaseValkeyPropertiesObservation struct {
 	// IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
 	IPFilter []*string `json:"ipFilter,omitempty" tf:"ip_filter,omitempty"`
 
-	// (Block List, Max: 1) Migrate data from existing server. (see below for nested schema)
+	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
 	Migration []ManagedDatabaseValkeyPropertiesMigrationObservation `json:"migration,omitempty" tf:"migration,omitempty"`
 
 	// (Boolean) Public Access. Allow access to the service from the public Internet.
 	// Public Access. Allow access to the service from the public Internet.
 	PublicAccess *bool `json:"publicAccess,omitempty" tf:"public_access,omitempty"`
+
+	// (Boolean) Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	// Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	PublicAccessPrometheus *bool `json:"publicAccessPrometheus,omitempty" tf:"public_access_prometheus,omitempty"`
 
 	// (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	// Service logging. Store logs for the service so that they are available in the HTTP API and console.
@@ -608,19 +611,23 @@ type ManagedDatabaseValkeyPropertiesObservation struct {
 
 	// expire-effort setting (default 1, max 10) uses more CPU to reclaim expired keys faster, reducing memory usage but potentially increasing latency.
 	// Active expire effort. Valkey reclaims expired keys both when accessed and in the background. The background process scans for expired keys to free memory. Increasing the active-expire-effort setting (default 1, max 10) uses more CPU to reclaim expired keys faster, reducing memory usage but potentially increasing latency.
-	ValkeyActiveExpireEffort *int64 `json:"valkeyActiveExpireEffort,omitempty" tf:"valkey_active_expire_effort,omitempty"`
+	ValkeyActiveExpireEffort *float64 `json:"valkeyActiveExpireEffort,omitempty" tf:"valkey_active_expire_effort,omitempty"`
+
+	// used memory pages to reduce fragmentation and return memory to the operating system. Defragmentation runs on the main thread and consumes CPU, so it may increase latency under load.
+	// Active memory defragmentation. Enable active memory defragmentation. When enabled, Valkey relocates objects off sparsely-used memory pages to reduce fragmentation and return memory to the operating system. Defragmentation runs on the main thread and consumes CPU, so it may increase latency under load.
+	ValkeyActivedefrag *bool `json:"valkeyActivedefrag,omitempty" tf:"valkey_activedefrag,omitempty"`
 
 	// (Number) Valkey IO thread count. Set Valkey IO thread count. Changing this will cause a restart of the Valkey service.
 	// Valkey IO thread count. Set Valkey IO thread count. Changing this will cause a restart of the Valkey service.
-	ValkeyIoThreads *int64 `json:"valkeyIoThreads,omitempty" tf:"valkey_io_threads,omitempty"`
+	ValkeyIoThreads *float64 `json:"valkeyIoThreads,omitempty" tf:"valkey_io_threads,omitempty"`
 
 	// policy counter decay time in minutes.
 	// LFU maxmemory-policy counter decay time in minutes.
-	ValkeyLfuDecayTime *int64 `json:"valkeyLfuDecayTime,omitempty" tf:"valkey_lfu_decay_time,omitempty"`
+	ValkeyLfuDecayTime *float64 `json:"valkeyLfuDecayTime,omitempty" tf:"valkey_lfu_decay_time,omitempty"`
 
 	// lfu and allkeys-lfu maxmemory-policies.
 	// Counter logarithm factor for volatile-lfu and allkeys-lfu maxmemory-policies.
-	ValkeyLfuLogFactor *int64 `json:"valkeyLfuLogFactor,omitempty" tf:"valkey_lfu_log_factor,omitempty"`
+	ValkeyLfuLogFactor *float64 `json:"valkeyLfuLogFactor,omitempty" tf:"valkey_lfu_log_factor,omitempty"`
 
 	// policy.
 	// Valkey maxmemory-policy.
@@ -632,7 +639,7 @@ type ManagedDatabaseValkeyPropertiesObservation struct {
 
 	// (Number) Number of Valkey databases. Set number of Valkey databases. Changing this will cause a restart of the Valkey service.
 	// Number of Valkey databases. Set number of Valkey databases. Changing this will cause a restart of the Valkey service.
-	ValkeyNumberOfDatabases *int64 `json:"valkeyNumberOfDatabases,omitempty" tf:"valkey_number_of_databases,omitempty"`
+	ValkeyNumberOfDatabases *float64 `json:"valkeyNumberOfDatabases,omitempty" tf:"valkey_number_of_databases,omitempty"`
 
 	// (String) Valkey persistence. When persistence is 'rdb', Valkey does RDB dumps each 10 minutes if any key is changed. Also RDB dumps are done according to backup schedule for backup purposes. When persistence is 'off', no RDB dumps and backups are done, so data can be lost at any moment if service is restarted for any reason, or if service is powered off. Also service can't be forked.
 	// Valkey persistence. When persistence is 'rdb', Valkey does RDB dumps each 10 minutes if any key is changed. Also RDB dumps are done according to backup schedule for backup purposes. When persistence is 'off', no RDB dumps and backups are done, so data can be lost at any moment if service is restarted for any reason, or if service is powered off. Also service can't be forked.
@@ -640,7 +647,7 @@ type ManagedDatabaseValkeyPropertiesObservation struct {
 
 	// (Number) Pub/sub client output buffer hard limit in MB. Set output buffer limit for pub / sub clients in MB. The value is the hard limit, the soft limit is 1/4 of the hard limit. When setting the limit, be mindful of the available memory in the selected service plan.
 	// Pub/sub client output buffer hard limit in MB. Set output buffer limit for pub / sub clients in MB. The value is the hard limit, the soft limit is 1/4 of the hard limit. When setting the limit, be mindful of the available memory in the selected service plan.
-	ValkeyPubsubClientOutputBufferLimit *int64 `json:"valkeyPubsubClientOutputBufferLimit,omitempty" tf:"valkey_pubsub_client_output_buffer_limit,omitempty"`
+	ValkeyPubsubClientOutputBufferLimit *float64 `json:"valkeyPubsubClientOutputBufferLimit,omitempty" tf:"valkey_pubsub_client_output_buffer_limit,omitempty"`
 
 	// (Boolean) Require SSL to access Valkey.
 	// Require SSL to access Valkey.
@@ -648,7 +655,11 @@ type ManagedDatabaseValkeyPropertiesObservation struct {
 
 	// (Number) Valkey idle connection timeout in seconds.
 	// Valkey idle connection timeout in seconds.
-	ValkeyTimeout *int64 `json:"valkeyTimeout,omitempty" tf:"valkey_timeout,omitempty"`
+	ValkeyTimeout *float64 `json:"valkeyTimeout,omitempty" tf:"valkey_timeout,omitempty"`
+
+	// (String) Valkey major version.
+	// Valkey major version.
+	ValkeyVersion *string `json:"valkeyVersion,omitempty" tf:"valkey_version,omitempty"`
 }
 
 type ManagedDatabaseValkeyPropertiesParameters struct {
@@ -661,12 +672,12 @@ type ManagedDatabaseValkeyPropertiesParameters struct {
 	// (Number) The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
 	// +kubebuilder:validation:Optional
-	BackupHour *int64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
+	BackupHour *float64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
 
 	// (Number) The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
 	// +kubebuilder:validation:Optional
-	BackupMinute *int64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
+	BackupMinute *float64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
 
 	// (Boolean) Frequent RDB snapshots. When enabled, Valkey will create frequent local RDB snapshots. When disabled, Valkey will only take RDB snapshots when a backup is created, based on the backup schedule. This setting is ignored when valkey_persistence is set to off.
 	// Frequent RDB snapshots. When enabled, Valkey will create frequent local RDB snapshots. When disabled, Valkey will only take RDB snapshots when a backup is created, based on the backup schedule. This setting is ignored when `valkey_persistence` is set to `off`.
@@ -678,7 +689,7 @@ type ManagedDatabaseValkeyPropertiesParameters struct {
 	// +kubebuilder:validation:Optional
 	IPFilter []*string `json:"ipFilter,omitempty" tf:"ip_filter,omitempty"`
 
-	// (Block List, Max: 1) Migrate data from existing server. (see below for nested schema)
+	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
 	// +kubebuilder:validation:Optional
 	Migration []ManagedDatabaseValkeyPropertiesMigrationParameters `json:"migration,omitempty" tf:"migration,omitempty"`
@@ -687,6 +698,11 @@ type ManagedDatabaseValkeyPropertiesParameters struct {
 	// Public Access. Allow access to the service from the public Internet.
 	// +kubebuilder:validation:Optional
 	PublicAccess *bool `json:"publicAccess,omitempty" tf:"public_access,omitempty"`
+
+	// (Boolean) Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	// Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	// +kubebuilder:validation:Optional
+	PublicAccessPrometheus *bool `json:"publicAccessPrometheus,omitempty" tf:"public_access_prometheus,omitempty"`
 
 	// (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	// Service logging. Store logs for the service so that they are available in the HTTP API and console.
@@ -701,22 +717,27 @@ type ManagedDatabaseValkeyPropertiesParameters struct {
 	// expire-effort setting (default 1, max 10) uses more CPU to reclaim expired keys faster, reducing memory usage but potentially increasing latency.
 	// Active expire effort. Valkey reclaims expired keys both when accessed and in the background. The background process scans for expired keys to free memory. Increasing the active-expire-effort setting (default 1, max 10) uses more CPU to reclaim expired keys faster, reducing memory usage but potentially increasing latency.
 	// +kubebuilder:validation:Optional
-	ValkeyActiveExpireEffort *int64 `json:"valkeyActiveExpireEffort,omitempty" tf:"valkey_active_expire_effort,omitempty"`
+	ValkeyActiveExpireEffort *float64 `json:"valkeyActiveExpireEffort,omitempty" tf:"valkey_active_expire_effort,omitempty"`
+
+	// used memory pages to reduce fragmentation and return memory to the operating system. Defragmentation runs on the main thread and consumes CPU, so it may increase latency under load.
+	// Active memory defragmentation. Enable active memory defragmentation. When enabled, Valkey relocates objects off sparsely-used memory pages to reduce fragmentation and return memory to the operating system. Defragmentation runs on the main thread and consumes CPU, so it may increase latency under load.
+	// +kubebuilder:validation:Optional
+	ValkeyActivedefrag *bool `json:"valkeyActivedefrag,omitempty" tf:"valkey_activedefrag,omitempty"`
 
 	// (Number) Valkey IO thread count. Set Valkey IO thread count. Changing this will cause a restart of the Valkey service.
 	// Valkey IO thread count. Set Valkey IO thread count. Changing this will cause a restart of the Valkey service.
 	// +kubebuilder:validation:Optional
-	ValkeyIoThreads *int64 `json:"valkeyIoThreads,omitempty" tf:"valkey_io_threads,omitempty"`
+	ValkeyIoThreads *float64 `json:"valkeyIoThreads,omitempty" tf:"valkey_io_threads,omitempty"`
 
 	// policy counter decay time in minutes.
 	// LFU maxmemory-policy counter decay time in minutes.
 	// +kubebuilder:validation:Optional
-	ValkeyLfuDecayTime *int64 `json:"valkeyLfuDecayTime,omitempty" tf:"valkey_lfu_decay_time,omitempty"`
+	ValkeyLfuDecayTime *float64 `json:"valkeyLfuDecayTime,omitempty" tf:"valkey_lfu_decay_time,omitempty"`
 
 	// lfu and allkeys-lfu maxmemory-policies.
 	// Counter logarithm factor for volatile-lfu and allkeys-lfu maxmemory-policies.
 	// +kubebuilder:validation:Optional
-	ValkeyLfuLogFactor *int64 `json:"valkeyLfuLogFactor,omitempty" tf:"valkey_lfu_log_factor,omitempty"`
+	ValkeyLfuLogFactor *float64 `json:"valkeyLfuLogFactor,omitempty" tf:"valkey_lfu_log_factor,omitempty"`
 
 	// policy.
 	// Valkey maxmemory-policy.
@@ -731,7 +752,7 @@ type ManagedDatabaseValkeyPropertiesParameters struct {
 	// (Number) Number of Valkey databases. Set number of Valkey databases. Changing this will cause a restart of the Valkey service.
 	// Number of Valkey databases. Set number of Valkey databases. Changing this will cause a restart of the Valkey service.
 	// +kubebuilder:validation:Optional
-	ValkeyNumberOfDatabases *int64 `json:"valkeyNumberOfDatabases,omitempty" tf:"valkey_number_of_databases,omitempty"`
+	ValkeyNumberOfDatabases *float64 `json:"valkeyNumberOfDatabases,omitempty" tf:"valkey_number_of_databases,omitempty"`
 
 	// (String) Valkey persistence. When persistence is 'rdb', Valkey does RDB dumps each 10 minutes if any key is changed. Also RDB dumps are done according to backup schedule for backup purposes. When persistence is 'off', no RDB dumps and backups are done, so data can be lost at any moment if service is restarted for any reason, or if service is powered off. Also service can't be forked.
 	// Valkey persistence. When persistence is 'rdb', Valkey does RDB dumps each 10 minutes if any key is changed. Also RDB dumps are done according to backup schedule for backup purposes. When persistence is 'off', no RDB dumps and backups are done, so data can be lost at any moment if service is restarted for any reason, or if service is powered off. Also service can't be forked.
@@ -741,7 +762,7 @@ type ManagedDatabaseValkeyPropertiesParameters struct {
 	// (Number) Pub/sub client output buffer hard limit in MB. Set output buffer limit for pub / sub clients in MB. The value is the hard limit, the soft limit is 1/4 of the hard limit. When setting the limit, be mindful of the available memory in the selected service plan.
 	// Pub/sub client output buffer hard limit in MB. Set output buffer limit for pub / sub clients in MB. The value is the hard limit, the soft limit is 1/4 of the hard limit. When setting the limit, be mindful of the available memory in the selected service plan.
 	// +kubebuilder:validation:Optional
-	ValkeyPubsubClientOutputBufferLimit *int64 `json:"valkeyPubsubClientOutputBufferLimit,omitempty" tf:"valkey_pubsub_client_output_buffer_limit,omitempty"`
+	ValkeyPubsubClientOutputBufferLimit *float64 `json:"valkeyPubsubClientOutputBufferLimit,omitempty" tf:"valkey_pubsub_client_output_buffer_limit,omitempty"`
 
 	// (Boolean) Require SSL to access Valkey.
 	// Require SSL to access Valkey.
@@ -751,13 +772,18 @@ type ManagedDatabaseValkeyPropertiesParameters struct {
 	// (Number) Valkey idle connection timeout in seconds.
 	// Valkey idle connection timeout in seconds.
 	// +kubebuilder:validation:Optional
-	ValkeyTimeout *int64 `json:"valkeyTimeout,omitempty" tf:"valkey_timeout,omitempty"`
+	ValkeyTimeout *float64 `json:"valkeyTimeout,omitempty" tf:"valkey_timeout,omitempty"`
+
+	// (String) Valkey major version.
+	// Valkey major version.
+	// +kubebuilder:validation:Optional
+	ValkeyVersion *string `json:"valkeyVersion,omitempty" tf:"valkey_version,omitempty"`
 }
 
 // ManagedDatabaseValkeySpec defines the desired state of ManagedDatabaseValkey
 type ManagedDatabaseValkeySpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     ManagedDatabaseValkeyParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   ManagedDatabaseValkeyParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -773,8 +799,8 @@ type ManagedDatabaseValkeySpec struct {
 
 // ManagedDatabaseValkeyStatus defines the observed state of ManagedDatabaseValkey.
 type ManagedDatabaseValkeyStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ManagedDatabaseValkeyObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ManagedDatabaseValkeyObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

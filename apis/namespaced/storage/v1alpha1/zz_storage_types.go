@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type BackupRuleInitParameters struct {
@@ -301,7 +300,7 @@ type StorageParameters struct {
 	// (Number) The size of the storage in gigabytes.
 	// The size of the storage in gigabytes.
 	// +kubebuilder:validation:Optional
-	Size *float64 `json:"size" tf:"size,omitempty"`
+	Size *float64 `json:"size,omitempty" tf:"size,omitempty"`
 
 	// (String) The tier of the storage.
 	// The tier of the storage.
@@ -311,12 +310,12 @@ type StorageParameters struct {
 	// (String) The title of the storage.
 	// The title of the storage.
 	// +kubebuilder:validation:Optional
-	Title *string `json:"title" tf:"title,omitempty"`
+	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 
 	// fra1. You can list available zones with upctl zone list.
 	// The zone the storage is in, e.g. `de-fra1`. You can list available zones with `upctl zone list`.
 	// +kubebuilder:validation:Optional
-	Zone *string `json:"zone" tf:"zone,omitempty"`
+	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
 }
 
 // StorageSpec defines the desired state of Storage
@@ -338,8 +337,8 @@ type StorageSpec struct {
 
 // StorageStatus defines the observed state of Storage.
 type StorageStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        StorageObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               StorageObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

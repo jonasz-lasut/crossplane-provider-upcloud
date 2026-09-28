@@ -5,244 +5,244 @@ Copyright 2022 Upbound Inc.
 
 package v1alpha1
 
-import xpv1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+import xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 
 // GetCondition of this ManagedDatabaseLogicalDatabase.
-func (mg *ManagedDatabaseLogicalDatabase) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *ManagedDatabaseLogicalDatabase) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this ManagedDatabaseLogicalDatabase.
-func (mg *ManagedDatabaseLogicalDatabase) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *ManagedDatabaseLogicalDatabase) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this ManagedDatabaseLogicalDatabase.
-func (mg *ManagedDatabaseLogicalDatabase) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *ManagedDatabaseLogicalDatabase) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this ManagedDatabaseLogicalDatabase.
-func (mg *ManagedDatabaseLogicalDatabase) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *ManagedDatabaseLogicalDatabase) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this ManagedDatabaseLogicalDatabase.
-func (mg *ManagedDatabaseLogicalDatabase) SetConditions(c ...xpv1.Condition) {
+func (mg *ManagedDatabaseLogicalDatabase) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this ManagedDatabaseLogicalDatabase.
-func (mg *ManagedDatabaseLogicalDatabase) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *ManagedDatabaseLogicalDatabase) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this ManagedDatabaseLogicalDatabase.
-func (mg *ManagedDatabaseLogicalDatabase) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *ManagedDatabaseLogicalDatabase) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this ManagedDatabaseLogicalDatabase.
-func (mg *ManagedDatabaseLogicalDatabase) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *ManagedDatabaseLogicalDatabase) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
 // GetCondition of this ManagedDatabaseMysql.
-func (mg *ManagedDatabaseMysql) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *ManagedDatabaseMysql) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this ManagedDatabaseMysql.
-func (mg *ManagedDatabaseMysql) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *ManagedDatabaseMysql) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this ManagedDatabaseMysql.
-func (mg *ManagedDatabaseMysql) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *ManagedDatabaseMysql) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this ManagedDatabaseMysql.
-func (mg *ManagedDatabaseMysql) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *ManagedDatabaseMysql) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this ManagedDatabaseMysql.
-func (mg *ManagedDatabaseMysql) SetConditions(c ...xpv1.Condition) {
+func (mg *ManagedDatabaseMysql) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this ManagedDatabaseMysql.
-func (mg *ManagedDatabaseMysql) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *ManagedDatabaseMysql) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this ManagedDatabaseMysql.
-func (mg *ManagedDatabaseMysql) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *ManagedDatabaseMysql) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this ManagedDatabaseMysql.
-func (mg *ManagedDatabaseMysql) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *ManagedDatabaseMysql) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
 // GetCondition of this ManagedDatabaseOpensearch.
-func (mg *ManagedDatabaseOpensearch) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *ManagedDatabaseOpensearch) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this ManagedDatabaseOpensearch.
-func (mg *ManagedDatabaseOpensearch) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *ManagedDatabaseOpensearch) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this ManagedDatabaseOpensearch.
-func (mg *ManagedDatabaseOpensearch) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *ManagedDatabaseOpensearch) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this ManagedDatabaseOpensearch.
-func (mg *ManagedDatabaseOpensearch) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *ManagedDatabaseOpensearch) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this ManagedDatabaseOpensearch.
-func (mg *ManagedDatabaseOpensearch) SetConditions(c ...xpv1.Condition) {
+func (mg *ManagedDatabaseOpensearch) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this ManagedDatabaseOpensearch.
-func (mg *ManagedDatabaseOpensearch) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *ManagedDatabaseOpensearch) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this ManagedDatabaseOpensearch.
-func (mg *ManagedDatabaseOpensearch) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *ManagedDatabaseOpensearch) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this ManagedDatabaseOpensearch.
-func (mg *ManagedDatabaseOpensearch) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *ManagedDatabaseOpensearch) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
 // GetCondition of this ManagedDatabasePostgresql.
-func (mg *ManagedDatabasePostgresql) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *ManagedDatabasePostgresql) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this ManagedDatabasePostgresql.
-func (mg *ManagedDatabasePostgresql) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *ManagedDatabasePostgresql) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this ManagedDatabasePostgresql.
-func (mg *ManagedDatabasePostgresql) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *ManagedDatabasePostgresql) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this ManagedDatabasePostgresql.
-func (mg *ManagedDatabasePostgresql) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *ManagedDatabasePostgresql) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this ManagedDatabasePostgresql.
-func (mg *ManagedDatabasePostgresql) SetConditions(c ...xpv1.Condition) {
+func (mg *ManagedDatabasePostgresql) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this ManagedDatabasePostgresql.
-func (mg *ManagedDatabasePostgresql) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *ManagedDatabasePostgresql) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this ManagedDatabasePostgresql.
-func (mg *ManagedDatabasePostgresql) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *ManagedDatabasePostgresql) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this ManagedDatabasePostgresql.
-func (mg *ManagedDatabasePostgresql) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *ManagedDatabasePostgresql) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
 // GetCondition of this ManagedDatabaseUser.
-func (mg *ManagedDatabaseUser) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *ManagedDatabaseUser) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this ManagedDatabaseUser.
-func (mg *ManagedDatabaseUser) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *ManagedDatabaseUser) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this ManagedDatabaseUser.
-func (mg *ManagedDatabaseUser) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *ManagedDatabaseUser) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this ManagedDatabaseUser.
-func (mg *ManagedDatabaseUser) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *ManagedDatabaseUser) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this ManagedDatabaseUser.
-func (mg *ManagedDatabaseUser) SetConditions(c ...xpv1.Condition) {
+func (mg *ManagedDatabaseUser) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this ManagedDatabaseUser.
-func (mg *ManagedDatabaseUser) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *ManagedDatabaseUser) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this ManagedDatabaseUser.
-func (mg *ManagedDatabaseUser) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *ManagedDatabaseUser) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this ManagedDatabaseUser.
-func (mg *ManagedDatabaseUser) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *ManagedDatabaseUser) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
 // GetCondition of this ManagedDatabaseValkey.
-func (mg *ManagedDatabaseValkey) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *ManagedDatabaseValkey) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this ManagedDatabaseValkey.
-func (mg *ManagedDatabaseValkey) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *ManagedDatabaseValkey) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this ManagedDatabaseValkey.
-func (mg *ManagedDatabaseValkey) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *ManagedDatabaseValkey) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this ManagedDatabaseValkey.
-func (mg *ManagedDatabaseValkey) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *ManagedDatabaseValkey) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this ManagedDatabaseValkey.
-func (mg *ManagedDatabaseValkey) SetConditions(c ...xpv1.Condition) {
+func (mg *ManagedDatabaseValkey) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this ManagedDatabaseValkey.
-func (mg *ManagedDatabaseValkey) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *ManagedDatabaseValkey) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this ManagedDatabaseValkey.
-func (mg *ManagedDatabaseValkey) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *ManagedDatabaseValkey) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this ManagedDatabaseValkey.
-func (mg *ManagedDatabaseValkey) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *ManagedDatabaseValkey) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }

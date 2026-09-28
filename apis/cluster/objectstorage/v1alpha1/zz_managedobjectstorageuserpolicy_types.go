@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ManagedObjectStorageUserPolicyInitParameters struct {
@@ -22,11 +22,11 @@ type ManagedObjectStorageUserPolicyInitParameters struct {
 
 	// Reference to a ManagedObjectStoragePolicy in objectstorage to populate name.
 	// +kubebuilder:validation:Optional
-	NameRef *v1.Reference `json:"nameRef,omitempty" tf:"-"`
+	NameRef *v2.Reference `json:"nameRef,omitempty" tf:"-"`
 
 	// Selector for a ManagedObjectStoragePolicy in objectstorage to populate name.
 	// +kubebuilder:validation:Optional
-	NameSelector *v1.Selector `json:"nameSelector,omitempty" tf:"-"`
+	NameSelector *v2.Selector `json:"nameSelector,omitempty" tf:"-"`
 
 	// (String) Managed Object Storage service UUID.
 	// Managed Object Storage service UUID.
@@ -35,11 +35,11 @@ type ManagedObjectStorageUserPolicyInitParameters struct {
 
 	// Reference to a ManagedObjectStorage in objectstorage to populate serviceUuid.
 	// +kubebuilder:validation:Optional
-	ServiceUUIDRef *v1.Reference `json:"serviceUuidRef,omitempty" tf:"-"`
+	ServiceUUIDRef *v2.Reference `json:"serviceUuidRef,omitempty" tf:"-"`
 
 	// Selector for a ManagedObjectStorage in objectstorage to populate serviceUuid.
 	// +kubebuilder:validation:Optional
-	ServiceUUIDSelector *v1.Selector `json:"serviceUuidSelector,omitempty" tf:"-"`
+	ServiceUUIDSelector *v2.Selector `json:"serviceUuidSelector,omitempty" tf:"-"`
 
 	// (String) Username.
 	// Username.
@@ -48,11 +48,11 @@ type ManagedObjectStorageUserPolicyInitParameters struct {
 
 	// Reference to a ManagedObjectStorageUser in objectstorage to populate username.
 	// +kubebuilder:validation:Optional
-	UsernameRef *v1.Reference `json:"usernameRef,omitempty" tf:"-"`
+	UsernameRef *v2.Reference `json:"usernameRef,omitempty" tf:"-"`
 
 	// Selector for a ManagedObjectStorageUser in objectstorage to populate username.
 	// +kubebuilder:validation:Optional
-	UsernameSelector *v1.Selector `json:"usernameSelector,omitempty" tf:"-"`
+	UsernameSelector *v2.Selector `json:"usernameSelector,omitempty" tf:"-"`
 }
 
 type ManagedObjectStorageUserPolicyObservation struct {
@@ -79,49 +79,49 @@ type ManagedObjectStorageUserPolicyParameters struct {
 	// Policy name.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/cluster/objectstorage/v1alpha1.ManagedObjectStoragePolicy
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name" tf:"name,omitempty"`
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Reference to a ManagedObjectStoragePolicy in objectstorage to populate name.
 	// +kubebuilder:validation:Optional
-	NameRef *v1.Reference `json:"nameRef,omitempty" tf:"-"`
+	NameRef *v2.Reference `json:"nameRef,omitempty" tf:"-"`
 
 	// Selector for a ManagedObjectStoragePolicy in objectstorage to populate name.
 	// +kubebuilder:validation:Optional
-	NameSelector *v1.Selector `json:"nameSelector,omitempty" tf:"-"`
+	NameSelector *v2.Selector `json:"nameSelector,omitempty" tf:"-"`
 
 	// (String) Managed Object Storage service UUID.
 	// Managed Object Storage service UUID.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/cluster/objectstorage/v1alpha1.ManagedObjectStorage
 	// +kubebuilder:validation:Optional
-	ServiceUUID *string `json:"serviceUuid" tf:"service_uuid,omitempty"`
+	ServiceUUID *string `json:"serviceUuid,omitempty" tf:"service_uuid,omitempty"`
 
 	// Reference to a ManagedObjectStorage in objectstorage to populate serviceUuid.
 	// +kubebuilder:validation:Optional
-	ServiceUUIDRef *v1.Reference `json:"serviceUuidRef,omitempty" tf:"-"`
+	ServiceUUIDRef *v2.Reference `json:"serviceUuidRef,omitempty" tf:"-"`
 
 	// Selector for a ManagedObjectStorage in objectstorage to populate serviceUuid.
 	// +kubebuilder:validation:Optional
-	ServiceUUIDSelector *v1.Selector `json:"serviceUuidSelector,omitempty" tf:"-"`
+	ServiceUUIDSelector *v2.Selector `json:"serviceUuidSelector,omitempty" tf:"-"`
 
 	// (String) Username.
 	// Username.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/cluster/objectstorage/v1alpha1.ManagedObjectStorageUser
 	// +kubebuilder:validation:Optional
-	Username *string `json:"username" tf:"username,omitempty"`
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
 	// Reference to a ManagedObjectStorageUser in objectstorage to populate username.
 	// +kubebuilder:validation:Optional
-	UsernameRef *v1.Reference `json:"usernameRef,omitempty" tf:"-"`
+	UsernameRef *v2.Reference `json:"usernameRef,omitempty" tf:"-"`
 
 	// Selector for a ManagedObjectStorageUser in objectstorage to populate username.
 	// +kubebuilder:validation:Optional
-	UsernameSelector *v1.Selector `json:"usernameSelector,omitempty" tf:"-"`
+	UsernameSelector *v2.Selector `json:"usernameSelector,omitempty" tf:"-"`
 }
 
 // ManagedObjectStorageUserPolicySpec defines the desired state of ManagedObjectStorageUserPolicy
 type ManagedObjectStorageUserPolicySpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     ManagedObjectStorageUserPolicyParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   ManagedObjectStorageUserPolicyParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -137,8 +137,8 @@ type ManagedObjectStorageUserPolicySpec struct {
 
 // ManagedObjectStorageUserPolicyStatus defines the observed state of ManagedObjectStorageUserPolicy.
 type ManagedObjectStorageUserPolicyStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ManagedObjectStorageUserPolicyObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ManagedObjectStorageUserPolicyObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

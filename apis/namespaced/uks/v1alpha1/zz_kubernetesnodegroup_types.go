@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type CloudNativePlanInitParameters struct {
@@ -313,15 +312,15 @@ type KubernetesNodeGroupParameters struct {
 	// UUID of the cluster.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/uks/v1alpha1.KubernetesCluster
 	// +kubebuilder:validation:Optional
-	Cluster *string `json:"cluster" tf:"cluster,omitempty"`
+	Cluster *string `json:"cluster,omitempty" tf:"cluster,omitempty"`
 
 	// Reference to a KubernetesCluster in uks to populate cluster.
 	// +kubebuilder:validation:Optional
-	ClusterRef *v1.NamespacedReference `json:"clusterRef,omitempty" tf:"-"`
+	ClusterRef *v2.NamespacedReference `json:"clusterRef,omitempty" tf:"-"`
 
 	// Selector for a KubernetesCluster in uks to populate cluster.
 	// +kubebuilder:validation:Optional
-	ClusterSelector *v1.NamespacedSelector `json:"clusterSelector,omitempty" tf:"-"`
+	ClusterSelector *v2.NamespacedSelector `json:"clusterSelector,omitempty" tf:"-"`
 
 	// (Block List) Resource properties for custom plan. This block is required for custom plans only. (see below for nested schema)
 	// Resource properties for custom plan. This block is required for `custom` plans only.
@@ -349,12 +348,12 @@ type KubernetesNodeGroupParameters struct {
 	// (Number) Amount of nodes to provision in the node group.
 	// Amount of nodes to provision in the node group.
 	// +kubebuilder:validation:Optional
-	NodeCount *float64 `json:"nodeCount" tf:"node_count,omitempty"`
+	NodeCount *float64 `json:"nodeCount,omitempty" tf:"node_count,omitempty"`
 
 	// (String) The server plan used for the node group. You can list available plans with upctl server plans
 	// The server plan used for the node group. You can list available plans with `upctl server plans`
 	// +kubebuilder:validation:Optional
-	Plan *string `json:"plan" tf:"plan,omitempty"`
+	Plan *string `json:"plan,omitempty" tf:"plan,omitempty"`
 
 	// (Set of String) You can optionally select SSH keys to be added as authorized keys to the nodes in this node group. This allows you to connect to the nodes via SSH once they are running.
 	// You can optionally select SSH keys to be added as authorized keys to the nodes in this node group. This allows you to connect to the nodes via SSH once they are running.
@@ -445,15 +444,15 @@ type KubernetesNodeGroupSpec struct {
 
 // KubernetesNodeGroupStatus defines the observed state of KubernetesNodeGroup.
 type KubernetesNodeGroupStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        KubernetesNodeGroupObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               KubernetesNodeGroupObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// KubernetesNodeGroup is the Schema for the KubernetesNodeGroups API. This resource represents a Managed Kubernetes https://upcloud.com/products/managed-kubernetes cluster.
+// KubernetesNodeGroup is the Schema for the KubernetesNodeGroups API. This resource represents a node group in a Managed Kubernetes https://upcloud.com/products/managed-kubernetes cluster. The node groups are used to define the worker nodes of the cluster.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.1
   name: managedobjectstorages.objectstorage.upcloud.m.crossplane.io
 spec:
   group: objectstorage.upcloud.m.crossplane.io
@@ -96,8 +96,8 @@ spec:
                           type: string
                         type:
                           description: |-
-                            (String) Network type.
-                            Network type.
+                            (String) Network type (private or public).
+                            Network type (`private` or `public`).
                           type: string
                         uuid:
                           description: |-
@@ -161,8 +161,8 @@ spec:
                           type: string
                         type:
                           description: |-
-                            (String) Network type.
-                            Network type.
+                            (String) Network type (private or public).
+                            Network type (`private` or `public`).
                           type: string
                         uuid:
                           description: |-
@@ -286,7 +286,7 @@ spec:
                           type: string
                         type:
                           description: |-
-                            (String) Network type.
+                            (String) Network type (private or public).
                             Type of the endpoint (`private` / `public`).
                           type: string
                       type: object
@@ -325,8 +325,8 @@ spec:
                           type: string
                         type:
                           description: |-
-                            (String) Network type.
-                            Network type.
+                            (String) Network type (private or public).
+                            Network type (`private` or `public`).
                           type: string
                         uuid:
                           description: |-
@@ -397,6 +397,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
               observedGeneration:
                 description: |-
                   ObservedGeneration is the latest metadata.generation

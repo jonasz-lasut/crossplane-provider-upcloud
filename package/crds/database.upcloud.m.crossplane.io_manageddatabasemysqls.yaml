@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.1
   name: manageddatabasemysqls.database.upcloud.m.crossplane.io
 spec:
   group: database.upcloud.m.crossplane.io
@@ -65,14 +65,13 @@ spec:
                     description: |-
                       (Number) Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
                       Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
-                    format: int64
-                    type: integer
+                    type: number
                   labels:
                     additionalProperties:
                       type: string
                     description: |-
-                      value pairs to classify the managed database.
-                      User defined key-value pairs to classify the managed database.
+                      value pairs to classify the database.
+                      User defined key-value pairs to classify the database.
                     type: object
                     x-kubernetes-map-type: granular
                   maintenanceWindowDow:
@@ -92,7 +91,7 @@ spec:
                     type: string
                   network:
                     description: |-
-                      (Block Set, Max: 8) Private networks attached to the managed database (see below for nested schema)
+                      (Block Set) Private networks attached to the managed database (see below for nested schema)
                       Private networks attached to the managed database
                     items:
                       properties:
@@ -108,7 +107,7 @@ spec:
                           type: string
                         type:
                           description: |-
-                            (String) Type of the service
+                            (String) Type of the managed database instance
                             The type of the network. Must be private.
                           type: string
                         uuid:
@@ -201,16 +200,9 @@ spec:
                       type: object
                     type: array
                   nodeStates:
-                    description: |-
-                      (List of Object) Information about nodes providing the managed service (see below for nested schema)
-                      Information about nodes providing the managed service
+                    description: (Attributes List) Information about nodes providing
+                      the managed service (see below for nested schema)
                     items:
-                      properties:
-                        role:
-                          description: |-
-                            (String)
-                            Role of the node
-                          type: string
                       type: object
                     type: array
                   plan:
@@ -225,8 +217,8 @@ spec:
                     type: boolean
                   properties:
                     description: |-
-                      (Block List, Max: 1) Database Engine properties for MySQL (see below for nested schema)
-                      Database Engine properties for MySQL
+                      (Block List) Database engine properties. (see below for nested schema)
+                      Database engine properties.
                     items:
                       properties:
                         adminPasswordSecretRef:
@@ -248,6 +240,11 @@ spec:
                             (String) Custom username for admin user. This must be set only when a new service is being created.
                             Custom username for admin user. This must be set only when a new service is being created.
                           type: string
+                        automaticSpPrivileges:
+                          description: |-
+                            (Boolean) When enabled, the server automatically grants the EXECUTE and ALTER ROUTINE privileges to the creator of a stored routine and drops them when the routine is dropped.
+                            When enabled, the server automatically grants the EXECUTE and ALTER ROUTINE privileges to the creator of a stored routine and drops them when the routine is dropped.
+                          type: boolean
                         automaticUtilityNetworkIpFilter:
                           description: |-
                             (Boolean) Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
@@ -257,84 +254,132 @@ spec:
                           description: |-
                             (Number) The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
                             The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
-                          format: int64
-                          type: integer
+                          type: number
                         backupMinute:
                           description: |-
                             (Number) The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
                             The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
-                          format: int64
-                          type: integer
+                          type: number
                         binlogRetentionPeriod:
                           description: |-
-                            (Number) The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector.
-                            The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector.
-                          format: int64
-                          type: integer
+                            traffic window rather than dropping it drastically in one step.
+                            The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector. Warning: reducing this value can make a large batch of binary logs eligible for purge at once. Depending on the volume, this can sometimes stall the MySQL commit path and block writes until the purge completes. To stay on the safe side, prefer lowering the value gradually in small decrements during a low-traffic window rather than dropping it drastically in one step.
+                          type: number
                         connectTimeout:
                           description: |-
                             (Number) The number of seconds that the mysqld server waits for a connect packet before responding with Bad handshake.
                             The number of seconds that the mysqld server waits for a connect packet before responding with Bad handshake.
-                          format: int64
-                          type: integer
+                          type: number
                         defaultTimeZone:
                           description: |-
                             12:00 to +12:00), a time zone name, or 'SYSTEM' to use the MySQL server default.
                             Default server time zone as an offset from UTC (from -12:00 to +12:00), a time zone name, or 'SYSTEM' to use the MySQL server default.
                           type: string
+                        divPrecisionIncrement:
+                          description: |-
+                            (Number) Number of digits by which to increase the scale of the result of division operations performed with the / operator. Default is 4.
+                            Number of digits by which to increase the scale of the result of division operations performed with the / operator. Default is 4.
+                          type: number
+                        endMarkersInJson:
+                          description: |-
+                            (Boolean) Whether optimizer JSON output such as EXPLAIN FORMAT=JSON adds end markers that repeat a structure's key near its closing bracket, making large JSON structures easier to read.
+                            Whether optimizer JSON output such as EXPLAIN FORMAT=JSON adds end markers that repeat a structure's key near its closing bracket, making large JSON structures easier to read.
+                          type: boolean
+                        eqRangeIndexDiveLimit:
+                          description: |-
+                            (Number) The number of equality ranges in a query at or above which the optimizer switches from index dives to index statistics when estimating the number of qualifying rows. 0 means always use index dives. Default is 200.
+                            The number of equality ranges in a query at or above which the optimizer switches from index dives to index statistics when estimating the number of qualifying rows. 0 means always use index dives. Default is 200.
+                          type: number
                         groupConcatMaxLen:
                           description: |-
                             (Number) The maximum permitted result length in bytes for the GROUP_CONCAT() function.
                             The maximum permitted result length in bytes for the GROUP_CONCAT() function.
-                          format: int64
-                          type: integer
+                          type: number
                         informationSchemaStatsExpiry:
                           description: |-
                             (Number) The time, in seconds, before cached statistics expire.
                             The time, in seconds, before cached statistics expire.
-                          format: int64
-                          type: integer
+                          type: number
+                        innodbAdaptiveHashIndex:
+                          description: |-
+                            dependent: it speeds up lookups for some workloads but its internal latch can become a contention point under high concurrency, in which case disabling it can improve throughput.
+                            Whether InnoDB adaptive hash indexing is enabled. The optimal setting is workload-dependent: it speeds up lookups for some workloads but its internal latch can become a contention point under high concurrency, in which case disabling it can improve throughput.
+                          type: boolean
                         innodbChangeBufferMaxSize:
                           description: |-
                             (Number) Maximum size for the InnoDB change buffer, as a percentage of the total size of the buffer pool. Default is 25.
                             Maximum size for the InnoDB change buffer, as a percentage of the total size of the buffer pool. Default is 25.
-                          format: int64
-                          type: integer
+                          type: number
                         innodbFlushNeighbors:
                           description: |-
                             dirty pages in the same extent are not flushed, 1 - flush contiguous dirty pages in the same extent, 2 - flush dirty pages in the same extent.
                             Specifies whether flushing a page from the InnoDB buffer pool also flushes other dirty pages in the same extent (default is 1): 0 - dirty pages in the same extent are not flushed, 1 - flush contiguous dirty pages in the same extent, 2 - flush dirty pages in the same extent.
-                          format: int64
-                          type: integer
+                          type: number
+                        innodbFtEnableStopword:
+                          description: |-
+                            (Boolean) Whether stopword processing is applied when creating or rebuilding an InnoDB FULLTEXT index. Enabled by default.
+                            Whether stopword processing is applied when creating or rebuilding an InnoDB FULLTEXT index. Enabled by default.
+                          type: boolean
+                        innodbFtMaxTokenSize:
+                          description: |-
+                            (Number) Maximum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
+                            Maximum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
+                          type: number
                         innodbFtMinTokenSize:
                           description: |-
                             (Number) Minimum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
                             Minimum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
-                          format: int64
-                          type: integer
+                          type: number
+                        innodbFtNumWordOptimize:
+                          description: |-
+                            (Number) Number of words processed during each OPTIMIZE TABLE operation on an InnoDB FULLTEXT index. Default is 2000.
+                            Number of words processed during each OPTIMIZE TABLE operation on an InnoDB FULLTEXT index. Default is 2000.
+                          type: number
+                        innodbFtResultCacheLimit:
+                          description: |-
+                            (Number) Maximum memory in bytes used per query for the InnoDB FULLTEXT search query result cache. Aiven sizes this automatically based on the service plan's memory; setting a value overrides the calculated default.
+                            Maximum memory in bytes used per query for the InnoDB FULLTEXT search query result cache. Aiven sizes this automatically based on the service plan's memory; setting a value overrides the calculated default.
+                          type: number
                         innodbFtServerStopwordTable:
                           description: |-
                             (String) This option is used to specify your own InnoDB FULLTEXT index stopword list for all InnoDB tables.
                             This option is used to specify your own InnoDB FULLTEXT index stopword list for all InnoDB tables.
                           type: string
+                        innodbFtUserStopwordTable:
+                          description: |-
+                            (String) This option is used to specify your own InnoDB FULLTEXT index stopword list for specific InnoDB tables.
+                            This option is used to specify your own InnoDB FULLTEXT index stopword list for specific InnoDB tables.
+                          type: string
+                        innodbIoCapacity:
+                          description: |-
+                            (Number) The number of I/O operations per second (IOPS) available to InnoDB background tasks, such as flushing pages from the buffer pool and merging data from the change buffer. Set this to a value appropriate for the underlying storage; it must not exceed innodb_io_capacity_max.
+                            The number of I/O operations per second (IOPS) available to InnoDB background tasks, such as flushing pages from the buffer pool and merging data from the change buffer. Set this to a value appropriate for the underlying storage; it must not exceed innodb_io_capacity_max.
+                          type: number
+                        innodbIoCapacityMax:
+                          description: |-
+                            (Number) The maximum number of I/O operations per second (IOPS) that InnoDB background tasks may perform when flushing falls behind. Defaults to twice innodb_io_capacity (minimum 2000). This must be greater than or equal to innodb_io_capacity.
+                            The maximum number of I/O operations per second (IOPS) that InnoDB background tasks may perform when flushing falls behind. Defaults to twice innodb_io_capacity (minimum 2000). This must be greater than or equal to innodb_io_capacity.
+                          type: number
                         innodbLockWaitTimeout:
                           description: |-
                             (Number) The length of time in seconds an InnoDB transaction waits for a row lock before giving up. Default is 120.
                             The length of time in seconds an InnoDB transaction waits for a row lock before giving up. Default is 120.
-                          format: int64
-                          type: integer
+                          type: number
                         innodbLogBufferSize:
                           description: |-
                             (Number) The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
                             The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
-                          format: int64
-                          type: integer
+                          type: number
                         innodbOnlineAlterLogMaxSize:
                           description: |-
                             (Number) The upper limit in bytes on the size of the temporary log files used during online DDL operations for InnoDB tables.
                             The upper limit in bytes on the size of the temporary log files used during online DDL operations for InnoDB tables.
-                          format: int64
-                          type: integer
+                          type: number
+                        innodbOptimizeFulltextOnly:
+                          description: |-
+                            (Boolean) When enabled, OPTIMIZE TABLE on InnoDB tables only updates the FULLTEXT index instead of rebuilding the table. Intended to be enabled temporarily during FULLTEXT index maintenance and disabled afterwards; while enabled, OPTIMIZE TABLE does not reclaim table space.
+                            When enabled, OPTIMIZE TABLE on InnoDB tables only updates the FULLTEXT index instead of rebuilding the table. Intended to be enabled temporarily during FULLTEXT index maintenance and disabled afterwards; while enabled, OPTIMIZE TABLE does not reclaim table space.
+                          type: boolean
                         innodbPrintAllDeadlocks:
                           description: |-
                             (Boolean) When enabled, information about all deadlocks in InnoDB user transactions is recorded in the error log. Disabled by default.
@@ -344,8 +389,7 @@ spec:
                           description: |-
                             (Number) The number of I/O threads for read operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
                             The number of I/O threads for read operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
-                          format: int64
-                          type: integer
+                          type: number
                         innodbRollbackOnTimeout:
                           description: |-
                             (Boolean) When enabled a transaction timeout causes InnoDB to abort and roll back the entire transaction. Changing this parameter will lead to a restart of the MySQL service.
@@ -355,20 +399,17 @@ spec:
                           description: |-
                             no limit).
                             Defines the maximum number of threads permitted inside of InnoDB. Default is 0 (infinite concurrency - no limit).
-                          format: int64
-                          type: integer
+                          type: number
                         innodbWriteIoThreads:
                           description: |-
                             (Number) The number of I/O threads for write operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
                             The number of I/O threads for write operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
-                          format: int64
-                          type: integer
+                          type: number
                         interactiveTimeout:
                           description: |-
                             (Number) The number of seconds the server waits for activity on an interactive connection before closing it.
                             The number of seconds the server waits for activity on an interactive connection before closing it.
-                          format: int64
-                          type: integer
+                          type: number
                         internalTmpMemStorageEngine:
                           description: |-
                             memory internal temporary tables.
@@ -391,21 +432,44 @@ spec:
                             (Number) The slow_query_logs work as SQL statements that take more than long_query_time seconds to execute.
                             The slow_query_logs work as SQL statements that take more than long_query_time seconds to execute.
                           type: number
+                        lowerCaseTableNames:
+                          description: |-
+                            sensitive (default), 1 = names stored lowercase, comparisons are case-insensitive. This option can only be set when creating the service and cannot be changed later. See https://dev.mysql.com/doc/refman/8.0/en/identifier-case-sensitivity.html for details.
+                            Sets how table and database names are stored and compared. 0 = case-sensitive (default), 1 = names stored lowercase, comparisons are case-insensitive. This option can only be set when creating the service and cannot be changed later. See https://dev.mysql.com/doc/refman/8.0/en/identifier-case-sensitivity.html for details.
+                          type: number
                         maxAllowedPacket:
                           description: |-
                             (Number) Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
                             Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
-                          format: int64
-                          type: integer
+                          type: number
+                        maxConnections:
+                          description: |-
+                            (Number) The maximum permitted number of simultaneous client connections. Lower this to reserve memory for other work. The value cannot exceed the limit provided by your service plan. Upgrading the plan does not raise a value you have set explicitly, so increase it yourself after an upgrade.
+                            The maximum permitted number of simultaneous client connections. Lower this to reserve memory for other work. The value cannot exceed the limit provided by your service plan. Upgrading the plan does not raise a value you have set explicitly, so increase it yourself after an upgrade.
+                          type: number
+                        maxExecutionTime:
+                          description: |-
+                            only top-level SELECT statements. 0 (the default) means no timeout.
+                            Execution timeout in milliseconds for read-only top-level SELECT statements. 0 (the default) means no timeout.
+                          type: number
                         maxHeapTableSize:
                           description: |-
                             memory tables. Also set tmp_table_size. Default is 16777216 (16M).
                             Limits the size of internal in-memory tables. Also set tmp_table_size. Default is 16777216 (16M).
-                          format: int64
-                          type: integer
+                          type: number
+                        maxSeeksForKey:
+                          description: |-
+                            (Number) Limit on the assumed maximum number of index seeks when looking up rows based on a key. Lowering this value causes the optimizer to prefer index lookups over table scans.
+                            Limit on the assumed maximum number of index seeks when looking up rows based on a key. Lowering this value causes the optimizer to prefer index lookups over table scans.
+                          type: number
+                        maxUserConnections:
+                          description: |-
+                            account limit. Any other value must be at least 10 below max_connections, so that monitoring and your own admin sessions can still connect when an application saturates its own limit. Aiven's replication and management connections are unaffected however low you set this.
+                            The maximum number of simultaneous connections permitted to any single user account. 0, the default, means no per-account limit. Any other value must be at least 10 below max_connections, so that monitoring and your own admin sessions can still connect when an application saturates its own limit. Aiven's replication and management connections are unaffected however low you set this.
+                          type: number
                         migration:
                           description: |-
-                            (Block List, Max: 1) Migrate data from existing server. (see below for nested schema)
+                            (Block List) Migrate data from existing server. (see below for nested schema)
                             Migrate data from existing server.
                           items:
                             properties:
@@ -413,6 +477,11 @@ spec:
                                 description: |-
                                   (String) Database name for bootstrapping the initial connection.
                                   Database name for bootstrapping the initial connection.
+                                type: string
+                              dumpTool:
+                                description: |-
+                                  (String) MySQL migration dump tool. Experimental! Tool to use for database dump and restore during migration. Default: mysqldump.
+                                  MySQL migration dump tool. Experimental! Tool to use for database dump and restore during migration. Default: mysqldump.
                                 type: string
                               host:
                                 description: |-
@@ -452,8 +521,12 @@ spec:
                                 description: |-
                                   (Number) Port number of the server where to migrate data from.
                                   Port number of the server where to migrate data from.
-                                format: int64
-                                type: integer
+                                type: number
+                              reestablishReplication:
+                                description: |-
+                                  restore part and start replication.
+                                  Skip dump-restore part and start replication.
+                                type: boolean
                               ssl:
                                 description: |-
                                   (Boolean) The server where to migrate data from is secured with SSL.
@@ -468,7 +541,7 @@ spec:
                           type: array
                         mysqlIncrementalBackup:
                           description: |-
-                            (Block List, Max: 1) MySQL incremental backup configuration. (see below for nested schema)
+                            (Block List) MySQL incremental backup configuration. (see below for nested schema)
                             MySQL incremental backup configuration.
                           items:
                             properties:
@@ -488,25 +561,52 @@ spec:
                           description: |-
                             (Number) Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
                             Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
-                          format: int64
-                          type: integer
+                          type: number
                         netReadTimeout:
                           description: |-
                             (Number) The number of seconds to wait for more data from a connection before aborting the read.
                             The number of seconds to wait for more data from a connection before aborting the read.
-                          format: int64
-                          type: integer
+                          type: number
                         netWriteTimeout:
                           description: |-
                             (Number) The number of seconds to wait for a block to be written to a connection before aborting the write.
                             The number of seconds to wait for a block to be written to a connection before aborting the write.
-                          format: int64
-                          type: integer
+                          type: number
+                        optimizerPruneLevel:
+                          description: |-
+                            promising partial plans from the optimizer search space. 0 disables heuristics (exhaustive search); 1 prunes plans based on the number of rows retrieved.
+                            Controls the heuristics applied during query optimization to prune less-promising partial plans from the optimizer search space. 0 disables heuristics (exhaustive search); 1 prunes plans based on the number of rows retrieved.
+                          type: number
+                        optimizerSearchDepth:
+                          description: |-
+                            (Number) Maximum depth of search performed by the query optimizer when choosing a join order. Larger values produce better plans for joins over many tables but take longer to compile; 0 lets the optimizer choose the depth automatically.
+                            Maximum depth of search performed by the query optimizer when choosing a join order. Larger values produce better plans for joins over many tables but take longer to compile; 0 lets the optimizer choose the depth automatically.
+                          type: number
+                        optimizerSwitch:
+                          description: |-
+                            separated list of optimizer flag assignments in the form flag=on|off|default, or the single value 'default' to reset all flags. Flags not listed keep their current values. Controls query optimizer behaviors such as index merge, hash join and semijoin strategies.
+                            Comma-separated list of optimizer flag assignments in the form flag=on|off|default, or the single value 'default' to reset all flags. Flags not listed keep their current values. Controls query optimizer behaviors such as index merge, hash join and semijoin strategies.
+                          type: string
+                        performanceSchemaEventsStatementsHistorySize:
+                          description: |-
+                            (Number) The number of rows per thread in the events_statements_history table. Changing this parameter will lead to a restart of the MySQL service.
+                            The number of rows per thread in the events_statements_history table. Changing this parameter will lead to a restart of the MySQL service.
+                          type: number
                         publicAccess:
                           description: |-
                             (Boolean) Public Access. Allow access to the service from the public Internet.
                             Public Access. Allow access to the service from the public Internet.
                           type: boolean
+                        publicAccessPrometheus:
+                          description: |-
+                            (Boolean) Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+                            Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+                          type: boolean
+                        relayLogSpaceLimit:
+                          description: |-
+                            log budget; ensure the service disk is sized accordingly. The setting applies only on the node replicating from the external source; standby nodes always use the Aiven-managed default (the smaller of 5 GiB and 30% of the service disk), which is also used when this option is left unset. Changing this parameter will lead to a restart of the MySQL service.
+                            The maximum amount of space in bytes to use for all relay logs while replicating from an external migration source. When the limit is reached, the replication I/O thread stops fetching relay log events until the SQL thread has caught up. Raise this to give a large migration a bigger relay-log budget; ensure the service disk is sized accordingly. The setting applies only on the node replicating from the external source; standby nodes always use the Aiven-managed default (the smaller of 5 GiB and 30% of the service disk), which is also used when this option is left unset. Changing this parameter will lead to a restart of the MySQL service.
+                          type: number
                         serviceLog:
                           description: |-
                             (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
@@ -521,8 +621,7 @@ spec:
                           description: |-
                             (Number) Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
                             Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
-                          format: int64
-                          type: integer
+                          type: number
                         sqlMode:
                           description: |-
                             (String) Global SQL mode. Set to empty to use MySQL server defaults. When creating a new service and not setting this field Aiven default SQL mode (strict, SQL standard compliant) will be assigned.
@@ -537,8 +636,7 @@ spec:
                           description: |-
                             memory tables. Also set max_heap_table_size. Default is 16777216 (16M).
                             Limits the size of internal in-memory tables. Also set max_heap_table_size. Default is 16777216 (16M).
-                          format: int64
-                          type: integer
+                          type: number
                         version:
                           description: |-
                             (String) MySQL major version.
@@ -548,8 +646,12 @@ spec:
                           description: |-
                             (Number) The number of seconds the server waits for activity on a noninteractive connection before closing it.
                             The number of seconds the server waits for activity on a noninteractive connection before closing it.
-                          format: int64
-                          type: integer
+                          type: number
+                        windowingUseHighPrecision:
+                          description: |-
+                            (Boolean) Whether window functions are computed to high precision. Disabling this trades exactness for speed in window function evaluation.
+                            Whether window functions are computed to high precision. Disabling this trades exactness for speed in window function evaluation.
+                          type: boolean
                       type: object
                     type: array
                   terminationProtection:
@@ -559,8 +661,8 @@ spec:
                     type: boolean
                   title:
                     description: |-
-                      (String) Title of a managed database instance
-                      Title of a managed database instance
+                      (String) Title of the managed database instance
+                      Title of the managed database instance
                     type: string
                   zone:
                     description: |-
@@ -585,14 +687,13 @@ spec:
                     description: |-
                       (Number) Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
                       Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
-                    format: int64
-                    type: integer
+                    type: number
                   labels:
                     additionalProperties:
                       type: string
                     description: |-
-                      value pairs to classify the managed database.
-                      User defined key-value pairs to classify the managed database.
+                      value pairs to classify the database.
+                      User defined key-value pairs to classify the database.
                     type: object
                     x-kubernetes-map-type: granular
                   maintenanceWindowDow:
@@ -612,7 +713,7 @@ spec:
                     type: string
                   network:
                     description: |-
-                      (Block Set, Max: 8) Private networks attached to the managed database (see below for nested schema)
+                      (Block Set) Private networks attached to the managed database (see below for nested schema)
                       Private networks attached to the managed database
                     items:
                       properties:
@@ -628,7 +729,7 @@ spec:
                           type: string
                         type:
                           description: |-
-                            (String) Type of the service
+                            (String) Type of the managed database instance
                             The type of the network. Must be private.
                           type: string
                         uuid:
@@ -721,16 +822,9 @@ spec:
                       type: object
                     type: array
                   nodeStates:
-                    description: |-
-                      (List of Object) Information about nodes providing the managed service (see below for nested schema)
-                      Information about nodes providing the managed service
+                    description: (Attributes List) Information about nodes providing
+                      the managed service (see below for nested schema)
                     items:
-                      properties:
-                        role:
-                          description: |-
-                            (String)
-                            Role of the node
-                          type: string
                       type: object
                     type: array
                   plan:
@@ -745,8 +839,8 @@ spec:
                     type: boolean
                   properties:
                     description: |-
-                      (Block List, Max: 1) Database Engine properties for MySQL (see below for nested schema)
-                      Database Engine properties for MySQL
+                      (Block List) Database engine properties. (see below for nested schema)
+                      Database engine properties.
                     items:
                       properties:
                         adminPasswordSecretRef:
@@ -768,6 +862,11 @@ spec:
                             (String) Custom username for admin user. This must be set only when a new service is being created.
                             Custom username for admin user. This must be set only when a new service is being created.
                           type: string
+                        automaticSpPrivileges:
+                          description: |-
+                            (Boolean) When enabled, the server automatically grants the EXECUTE and ALTER ROUTINE privileges to the creator of a stored routine and drops them when the routine is dropped.
+                            When enabled, the server automatically grants the EXECUTE and ALTER ROUTINE privileges to the creator of a stored routine and drops them when the routine is dropped.
+                          type: boolean
                         automaticUtilityNetworkIpFilter:
                           description: |-
                             (Boolean) Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
@@ -777,84 +876,132 @@ spec:
                           description: |-
                             (Number) The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
                             The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
-                          format: int64
-                          type: integer
+                          type: number
                         backupMinute:
                           description: |-
                             (Number) The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
                             The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
-                          format: int64
-                          type: integer
+                          type: number
                         binlogRetentionPeriod:
                           description: |-
-                            (Number) The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector.
-                            The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector.
-                          format: int64
-                          type: integer
+                            traffic window rather than dropping it drastically in one step.
+                            The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector. Warning: reducing this value can make a large batch of binary logs eligible for purge at once. Depending on the volume, this can sometimes stall the MySQL commit path and block writes until the purge completes. To stay on the safe side, prefer lowering the value gradually in small decrements during a low-traffic window rather than dropping it drastically in one step.
+                          type: number
                         connectTimeout:
                           description: |-
                             (Number) The number of seconds that the mysqld server waits for a connect packet before responding with Bad handshake.
                             The number of seconds that the mysqld server waits for a connect packet before responding with Bad handshake.
-                          format: int64
-                          type: integer
+                          type: number
                         defaultTimeZone:
                           description: |-
                             12:00 to +12:00), a time zone name, or 'SYSTEM' to use the MySQL server default.
                             Default server time zone as an offset from UTC (from -12:00 to +12:00), a time zone name, or 'SYSTEM' to use the MySQL server default.
                           type: string
+                        divPrecisionIncrement:
+                          description: |-
+                            (Number) Number of digits by which to increase the scale of the result of division operations performed with the / operator. Default is 4.
+                            Number of digits by which to increase the scale of the result of division operations performed with the / operator. Default is 4.
+                          type: number
+                        endMarkersInJson:
+                          description: |-
+                            (Boolean) Whether optimizer JSON output such as EXPLAIN FORMAT=JSON adds end markers that repeat a structure's key near its closing bracket, making large JSON structures easier to read.
+                            Whether optimizer JSON output such as EXPLAIN FORMAT=JSON adds end markers that repeat a structure's key near its closing bracket, making large JSON structures easier to read.
+                          type: boolean
+                        eqRangeIndexDiveLimit:
+                          description: |-
+                            (Number) The number of equality ranges in a query at or above which the optimizer switches from index dives to index statistics when estimating the number of qualifying rows. 0 means always use index dives. Default is 200.
+                            The number of equality ranges in a query at or above which the optimizer switches from index dives to index statistics when estimating the number of qualifying rows. 0 means always use index dives. Default is 200.
+                          type: number
                         groupConcatMaxLen:
                           description: |-
                             (Number) The maximum permitted result length in bytes for the GROUP_CONCAT() function.
                             The maximum permitted result length in bytes for the GROUP_CONCAT() function.
-                          format: int64
-                          type: integer
+                          type: number
                         informationSchemaStatsExpiry:
                           description: |-
                             (Number) The time, in seconds, before cached statistics expire.
                             The time, in seconds, before cached statistics expire.
-                          format: int64
-                          type: integer
+                          type: number
+                        innodbAdaptiveHashIndex:
+                          description: |-
+                            dependent: it speeds up lookups for some workloads but its internal latch can become a contention point under high concurrency, in which case disabling it can improve throughput.
+                            Whether InnoDB adaptive hash indexing is enabled. The optimal setting is workload-dependent: it speeds up lookups for some workloads but its internal latch can become a contention point under high concurrency, in which case disabling it can improve throughput.
+                          type: boolean
                         innodbChangeBufferMaxSize:
                           description: |-
                             (Number) Maximum size for the InnoDB change buffer, as a percentage of the total size of the buffer pool. Default is 25.
                             Maximum size for the InnoDB change buffer, as a percentage of the total size of the buffer pool. Default is 25.
-                          format: int64
-                          type: integer
+                          type: number
                         innodbFlushNeighbors:
                           description: |-
                             dirty pages in the same extent are not flushed, 1 - flush contiguous dirty pages in the same extent, 2 - flush dirty pages in the same extent.
                             Specifies whether flushing a page from the InnoDB buffer pool also flushes other dirty pages in the same extent (default is 1): 0 - dirty pages in the same extent are not flushed, 1 - flush contiguous dirty pages in the same extent, 2 - flush dirty pages in the same extent.
-                          format: int64
-                          type: integer
+                          type: number
+                        innodbFtEnableStopword:
+                          description: |-
+                            (Boolean) Whether stopword processing is applied when creating or rebuilding an InnoDB FULLTEXT index. Enabled by default.
+                            Whether stopword processing is applied when creating or rebuilding an InnoDB FULLTEXT index. Enabled by default.
+                          type: boolean
+                        innodbFtMaxTokenSize:
+                          description: |-
+                            (Number) Maximum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
+                            Maximum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
+                          type: number
                         innodbFtMinTokenSize:
                           description: |-
                             (Number) Minimum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
                             Minimum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
-                          format: int64
-                          type: integer
+                          type: number
+                        innodbFtNumWordOptimize:
+                          description: |-
+                            (Number) Number of words processed during each OPTIMIZE TABLE operation on an InnoDB FULLTEXT index. Default is 2000.
+                            Number of words processed during each OPTIMIZE TABLE operation on an InnoDB FULLTEXT index. Default is 2000.
+                          type: number
+                        innodbFtResultCacheLimit:
+                          description: |-
+                            (Number) Maximum memory in bytes used per query for the InnoDB FULLTEXT search query result cache. Aiven sizes this automatically based on the service plan's memory; setting a value overrides the calculated default.
+                            Maximum memory in bytes used per query for the InnoDB FULLTEXT search query result cache. Aiven sizes this automatically based on the service plan's memory; setting a value overrides the calculated default.
+                          type: number
                         innodbFtServerStopwordTable:
                           description: |-
                             (String) This option is used to specify your own InnoDB FULLTEXT index stopword list for all InnoDB tables.
                             This option is used to specify your own InnoDB FULLTEXT index stopword list for all InnoDB tables.
                           type: string
+                        innodbFtUserStopwordTable:
+                          description: |-
+                            (String) This option is used to specify your own InnoDB FULLTEXT index stopword list for specific InnoDB tables.
+                            This option is used to specify your own InnoDB FULLTEXT index stopword list for specific InnoDB tables.
+                          type: string
+                        innodbIoCapacity:
+                          description: |-
+                            (Number) The number of I/O operations per second (IOPS) available to InnoDB background tasks, such as flushing pages from the buffer pool and merging data from the change buffer. Set this to a value appropriate for the underlying storage; it must not exceed innodb_io_capacity_max.
+                            The number of I/O operations per second (IOPS) available to InnoDB background tasks, such as flushing pages from the buffer pool and merging data from the change buffer. Set this to a value appropriate for the underlying storage; it must not exceed innodb_io_capacity_max.
+                          type: number
+                        innodbIoCapacityMax:
+                          description: |-
+                            (Number) The maximum number of I/O operations per second (IOPS) that InnoDB background tasks may perform when flushing falls behind. Defaults to twice innodb_io_capacity (minimum 2000). This must be greater than or equal to innodb_io_capacity.
+                            The maximum number of I/O operations per second (IOPS) that InnoDB background tasks may perform when flushing falls behind. Defaults to twice innodb_io_capacity (minimum 2000). This must be greater than or equal to innodb_io_capacity.
+                          type: number
                         innodbLockWaitTimeout:
                           description: |-
                             (Number) The length of time in seconds an InnoDB transaction waits for a row lock before giving up. Default is 120.
                             The length of time in seconds an InnoDB transaction waits for a row lock before giving up. Default is 120.
-                          format: int64
-                          type: integer
+                          type: number
                         innodbLogBufferSize:
                           description: |-
                             (Number) The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
                             The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
-                          format: int64
-                          type: integer
+                          type: number
                         innodbOnlineAlterLogMaxSize:
                           description: |-
                             (Number) The upper limit in bytes on the size of the temporary log files used during online DDL operations for InnoDB tables.
                             The upper limit in bytes on the size of the temporary log files used during online DDL operations for InnoDB tables.
-                          format: int64
-                          type: integer
+                          type: number
+                        innodbOptimizeFulltextOnly:
+                          description: |-
+                            (Boolean) When enabled, OPTIMIZE TABLE on InnoDB tables only updates the FULLTEXT index instead of rebuilding the table. Intended to be enabled temporarily during FULLTEXT index maintenance and disabled afterwards; while enabled, OPTIMIZE TABLE does not reclaim table space.
+                            When enabled, OPTIMIZE TABLE on InnoDB tables only updates the FULLTEXT index instead of rebuilding the table. Intended to be enabled temporarily during FULLTEXT index maintenance and disabled afterwards; while enabled, OPTIMIZE TABLE does not reclaim table space.
+                          type: boolean
                         innodbPrintAllDeadlocks:
                           description: |-
                             (Boolean) When enabled, information about all deadlocks in InnoDB user transactions is recorded in the error log. Disabled by default.
@@ -864,8 +1011,7 @@ spec:
                           description: |-
                             (Number) The number of I/O threads for read operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
                             The number of I/O threads for read operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
-                          format: int64
-                          type: integer
+                          type: number
                         innodbRollbackOnTimeout:
                           description: |-
                             (Boolean) When enabled a transaction timeout causes InnoDB to abort and roll back the entire transaction. Changing this parameter will lead to a restart of the MySQL service.
@@ -875,20 +1021,17 @@ spec:
                           description: |-
                             no limit).
                             Defines the maximum number of threads permitted inside of InnoDB. Default is 0 (infinite concurrency - no limit).
-                          format: int64
-                          type: integer
+                          type: number
                         innodbWriteIoThreads:
                           description: |-
                             (Number) The number of I/O threads for write operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
                             The number of I/O threads for write operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
-                          format: int64
-                          type: integer
+                          type: number
                         interactiveTimeout:
                           description: |-
                             (Number) The number of seconds the server waits for activity on an interactive connection before closing it.
                             The number of seconds the server waits for activity on an interactive connection before closing it.
-                          format: int64
-                          type: integer
+                          type: number
                         internalTmpMemStorageEngine:
                           description: |-
                             memory internal temporary tables.
@@ -911,21 +1054,44 @@ spec:
                             (Number) The slow_query_logs work as SQL statements that take more than long_query_time seconds to execute.
                             The slow_query_logs work as SQL statements that take more than long_query_time seconds to execute.
                           type: number
+                        lowerCaseTableNames:
+                          description: |-
+                            sensitive (default), 1 = names stored lowercase, comparisons are case-insensitive. This option can only be set when creating the service and cannot be changed later. See https://dev.mysql.com/doc/refman/8.0/en/identifier-case-sensitivity.html for details.
+                            Sets how table and database names are stored and compared. 0 = case-sensitive (default), 1 = names stored lowercase, comparisons are case-insensitive. This option can only be set when creating the service and cannot be changed later. See https://dev.mysql.com/doc/refman/8.0/en/identifier-case-sensitivity.html for details.
+                          type: number
                         maxAllowedPacket:
                           description: |-
                             (Number) Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
                             Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
-                          format: int64
-                          type: integer
+                          type: number
+                        maxConnections:
+                          description: |-
+                            (Number) The maximum permitted number of simultaneous client connections. Lower this to reserve memory for other work. The value cannot exceed the limit provided by your service plan. Upgrading the plan does not raise a value you have set explicitly, so increase it yourself after an upgrade.
+                            The maximum permitted number of simultaneous client connections. Lower this to reserve memory for other work. The value cannot exceed the limit provided by your service plan. Upgrading the plan does not raise a value you have set explicitly, so increase it yourself after an upgrade.
+                          type: number
+                        maxExecutionTime:
+                          description: |-
+                            only top-level SELECT statements. 0 (the default) means no timeout.
+                            Execution timeout in milliseconds for read-only top-level SELECT statements. 0 (the default) means no timeout.
+                          type: number
                         maxHeapTableSize:
                           description: |-
                             memory tables. Also set tmp_table_size. Default is 16777216 (16M).
                             Limits the size of internal in-memory tables. Also set tmp_table_size. Default is 16777216 (16M).
-                          format: int64
-                          type: integer
+                          type: number
+                        maxSeeksForKey:
+                          description: |-
+                            (Number) Limit on the assumed maximum number of index seeks when looking up rows based on a key. Lowering this value causes the optimizer to prefer index lookups over table scans.
+                            Limit on the assumed maximum number of index seeks when looking up rows based on a key. Lowering this value causes the optimizer to prefer index lookups over table scans.
+                          type: number
+                        maxUserConnections:
+                          description: |-
+                            account limit. Any other value must be at least 10 below max_connections, so that monitoring and your own admin sessions can still connect when an application saturates its own limit. Aiven's replication and management connections are unaffected however low you set this.
+                            The maximum number of simultaneous connections permitted to any single user account. 0, the default, means no per-account limit. Any other value must be at least 10 below max_connections, so that monitoring and your own admin sessions can still connect when an application saturates its own limit. Aiven's replication and management connections are unaffected however low you set this.
+                          type: number
                         migration:
                           description: |-
-                            (Block List, Max: 1) Migrate data from existing server. (see below for nested schema)
+                            (Block List) Migrate data from existing server. (see below for nested schema)
                             Migrate data from existing server.
                           items:
                             properties:
@@ -933,6 +1099,11 @@ spec:
                                 description: |-
                                   (String) Database name for bootstrapping the initial connection.
                                   Database name for bootstrapping the initial connection.
+                                type: string
+                              dumpTool:
+                                description: |-
+                                  (String) MySQL migration dump tool. Experimental! Tool to use for database dump and restore during migration. Default: mysqldump.
+                                  MySQL migration dump tool. Experimental! Tool to use for database dump and restore during migration. Default: mysqldump.
                                 type: string
                               host:
                                 description: |-
@@ -972,8 +1143,12 @@ spec:
                                 description: |-
                                   (Number) Port number of the server where to migrate data from.
                                   Port number of the server where to migrate data from.
-                                format: int64
-                                type: integer
+                                type: number
+                              reestablishReplication:
+                                description: |-
+                                  restore part and start replication.
+                                  Skip dump-restore part and start replication.
+                                type: boolean
                               ssl:
                                 description: |-
                                   (Boolean) The server where to migrate data from is secured with SSL.
@@ -988,7 +1163,7 @@ spec:
                           type: array
                         mysqlIncrementalBackup:
                           description: |-
-                            (Block List, Max: 1) MySQL incremental backup configuration. (see below for nested schema)
+                            (Block List) MySQL incremental backup configuration. (see below for nested schema)
                             MySQL incremental backup configuration.
                           items:
                             properties:
@@ -1008,25 +1183,52 @@ spec:
                           description: |-
                             (Number) Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
                             Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
-                          format: int64
-                          type: integer
+                          type: number
                         netReadTimeout:
                           description: |-
                             (Number) The number of seconds to wait for more data from a connection before aborting the read.
                             The number of seconds to wait for more data from a connection before aborting the read.
-                          format: int64
-                          type: integer
+                          type: number
                         netWriteTimeout:
                           description: |-
                             (Number) The number of seconds to wait for a block to be written to a connection before aborting the write.
                             The number of seconds to wait for a block to be written to a connection before aborting the write.
-                          format: int64
-                          type: integer
+                          type: number
+                        optimizerPruneLevel:
+                          description: |-
+                            promising partial plans from the optimizer search space. 0 disables heuristics (exhaustive search); 1 prunes plans based on the number of rows retrieved.
+                            Controls the heuristics applied during query optimization to prune less-promising partial plans from the optimizer search space. 0 disables heuristics (exhaustive search); 1 prunes plans based on the number of rows retrieved.
+                          type: number
+                        optimizerSearchDepth:
+                          description: |-
+                            (Number) Maximum depth of search performed by the query optimizer when choosing a join order. Larger values produce better plans for joins over many tables but take longer to compile; 0 lets the optimizer choose the depth automatically.
+                            Maximum depth of search performed by the query optimizer when choosing a join order. Larger values produce better plans for joins over many tables but take longer to compile; 0 lets the optimizer choose the depth automatically.
+                          type: number
+                        optimizerSwitch:
+                          description: |-
+                            separated list of optimizer flag assignments in the form flag=on|off|default, or the single value 'default' to reset all flags. Flags not listed keep their current values. Controls query optimizer behaviors such as index merge, hash join and semijoin strategies.
+                            Comma-separated list of optimizer flag assignments in the form flag=on|off|default, or the single value 'default' to reset all flags. Flags not listed keep their current values. Controls query optimizer behaviors such as index merge, hash join and semijoin strategies.
+                          type: string
+                        performanceSchemaEventsStatementsHistorySize:
+                          description: |-
+                            (Number) The number of rows per thread in the events_statements_history table. Changing this parameter will lead to a restart of the MySQL service.
+                            The number of rows per thread in the events_statements_history table. Changing this parameter will lead to a restart of the MySQL service.
+                          type: number
                         publicAccess:
                           description: |-
                             (Boolean) Public Access. Allow access to the service from the public Internet.
                             Public Access. Allow access to the service from the public Internet.
                           type: boolean
+                        publicAccessPrometheus:
+                          description: |-
+                            (Boolean) Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+                            Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+                          type: boolean
+                        relayLogSpaceLimit:
+                          description: |-
+                            log budget; ensure the service disk is sized accordingly. The setting applies only on the node replicating from the external source; standby nodes always use the Aiven-managed default (the smaller of 5 GiB and 30% of the service disk), which is also used when this option is left unset. Changing this parameter will lead to a restart of the MySQL service.
+                            The maximum amount of space in bytes to use for all relay logs while replicating from an external migration source. When the limit is reached, the replication I/O thread stops fetching relay log events until the SQL thread has caught up. Raise this to give a large migration a bigger relay-log budget; ensure the service disk is sized accordingly. The setting applies only on the node replicating from the external source; standby nodes always use the Aiven-managed default (the smaller of 5 GiB and 30% of the service disk), which is also used when this option is left unset. Changing this parameter will lead to a restart of the MySQL service.
+                          type: number
                         serviceLog:
                           description: |-
                             (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
@@ -1041,8 +1243,7 @@ spec:
                           description: |-
                             (Number) Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
                             Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
-                          format: int64
-                          type: integer
+                          type: number
                         sqlMode:
                           description: |-
                             (String) Global SQL mode. Set to empty to use MySQL server defaults. When creating a new service and not setting this field Aiven default SQL mode (strict, SQL standard compliant) will be assigned.
@@ -1057,8 +1258,7 @@ spec:
                           description: |-
                             memory tables. Also set max_heap_table_size. Default is 16777216 (16M).
                             Limits the size of internal in-memory tables. Also set max_heap_table_size. Default is 16777216 (16M).
-                          format: int64
-                          type: integer
+                          type: number
                         version:
                           description: |-
                             (String) MySQL major version.
@@ -1068,8 +1268,12 @@ spec:
                           description: |-
                             (Number) The number of seconds the server waits for activity on a noninteractive connection before closing it.
                             The number of seconds the server waits for activity on a noninteractive connection before closing it.
-                          format: int64
-                          type: integer
+                          type: number
+                        windowingUseHighPrecision:
+                          description: |-
+                            (Boolean) Whether window functions are computed to high precision. Disabling this trades exactness for speed in window function evaluation.
+                            Whether window functions are computed to high precision. Disabling this trades exactness for speed in window function evaluation.
+                          type: boolean
                       type: object
                     type: array
                   terminationProtection:
@@ -1079,8 +1283,8 @@ spec:
                     type: boolean
                   title:
                     description: |-
-                      (String) Title of a managed database instance
-                      Title of a managed database instance
+                      (String) Title of the managed database instance
+                      Title of the managed database instance
                     type: string
                   zone:
                     description: |-
@@ -1173,18 +1377,16 @@ spec:
                     description: |-
                       (Number) Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
                       Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
-                    format: int64
-                    type: integer
+                    type: number
                   components:
-                    description: |-
-                      (List of Object) Service component information (see below for nested schema)
-                      Service component information
+                    description: (Attributes List) Service component information (see
+                      below for nested schema)
                     items:
                       properties:
                         component:
                           description: |-
-                            (String)
-                            Type of the component
+                            (String) Component name.
+                            Component name.
                           type: string
                         host:
                           description: |-
@@ -1195,29 +1397,28 @@ spec:
                           description: |-
                             (Number) Port number of the server where to migrate data from.
                             Port number of the component
-                          format: int64
-                          type: integer
+                          type: number
                         route:
                           description: |-
-                            (String)
+                            (String) Component network route type
                             Component network route type
                           type: string
                         usage:
                           description: |-
-                            (String)
+                            (String) Usage of the component
                             Usage of the component
                           type: string
                       type: object
                     type: array
                   id:
-                    description: (String) The ID of this resource.
+                    description: (String) UUID of the database.
                     type: string
                   labels:
                     additionalProperties:
                       type: string
                     description: |-
-                      value pairs to classify the managed database.
-                      User defined key-value pairs to classify the managed database.
+                      value pairs to classify the database.
+                      User defined key-value pairs to classify the database.
                     type: object
                     x-kubernetes-map-type: granular
                   maintenanceWindowDow:
@@ -1237,7 +1438,7 @@ spec:
                     type: string
                   network:
                     description: |-
-                      (Block Set, Max: 8) Private networks attached to the managed database (see below for nested schema)
+                      (Block Set) Private networks attached to the managed database (see below for nested schema)
                       Private networks attached to the managed database
                     items:
                       properties:
@@ -1253,7 +1454,7 @@ spec:
                           type: string
                         type:
                           description: |-
-                            (String) Type of the service
+                            (String) Type of the managed database instance
                             The type of the network. Must be private.
                           type: string
                         uuid:
@@ -1264,9 +1465,8 @@ spec:
                       type: object
                     type: array
                   nodeStates:
-                    description: |-
-                      (List of Object) Information about nodes providing the managed service (see below for nested schema)
-                      Information about nodes providing the managed service
+                    description: (Attributes List) Information about nodes providing
+                      the managed service (see below for nested schema)
                     items:
                       properties:
                         name:
@@ -1276,13 +1476,13 @@ spec:
                           type: string
                         role:
                           description: |-
-                            (String)
+                            (String) Role of the node
                             Role of the node
                           type: string
                         state:
                           description: |-
-                            (String) State of the service
-                            State of the node
+                            (String) The current state of the service
+                            Current state of the node
                           type: string
                       type: object
                     type: array
@@ -1303,8 +1503,8 @@ spec:
                     type: string
                   properties:
                     description: |-
-                      (Block List, Max: 1) Database Engine properties for MySQL (see below for nested schema)
-                      Database Engine properties for MySQL
+                      (Block List) Database engine properties. (see below for nested schema)
+                      Database engine properties.
                     items:
                       properties:
                         adminUsername:
@@ -1312,6 +1512,11 @@ spec:
                             (String) Custom username for admin user. This must be set only when a new service is being created.
                             Custom username for admin user. This must be set only when a new service is being created.
                           type: string
+                        automaticSpPrivileges:
+                          description: |-
+                            (Boolean) When enabled, the server automatically grants the EXECUTE and ALTER ROUTINE privileges to the creator of a stored routine and drops them when the routine is dropped.
+                            When enabled, the server automatically grants the EXECUTE and ALTER ROUTINE privileges to the creator of a stored routine and drops them when the routine is dropped.
+                          type: boolean
                         automaticUtilityNetworkIpFilter:
                           description: |-
                             (Boolean) Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
@@ -1321,84 +1526,132 @@ spec:
                           description: |-
                             (Number) The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
                             The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
-                          format: int64
-                          type: integer
+                          type: number
                         backupMinute:
                           description: |-
                             (Number) The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
                             The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
-                          format: int64
-                          type: integer
+                          type: number
                         binlogRetentionPeriod:
                           description: |-
-                            (Number) The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector.
-                            The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector.
-                          format: int64
-                          type: integer
+                            traffic window rather than dropping it drastically in one step.
+                            The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector. Warning: reducing this value can make a large batch of binary logs eligible for purge at once. Depending on the volume, this can sometimes stall the MySQL commit path and block writes until the purge completes. To stay on the safe side, prefer lowering the value gradually in small decrements during a low-traffic window rather than dropping it drastically in one step.
+                          type: number
                         connectTimeout:
                           description: |-
                             (Number) The number of seconds that the mysqld server waits for a connect packet before responding with Bad handshake.
                             The number of seconds that the mysqld server waits for a connect packet before responding with Bad handshake.
-                          format: int64
-                          type: integer
+                          type: number
                         defaultTimeZone:
                           description: |-
                             12:00 to +12:00), a time zone name, or 'SYSTEM' to use the MySQL server default.
                             Default server time zone as an offset from UTC (from -12:00 to +12:00), a time zone name, or 'SYSTEM' to use the MySQL server default.
                           type: string
+                        divPrecisionIncrement:
+                          description: |-
+                            (Number) Number of digits by which to increase the scale of the result of division operations performed with the / operator. Default is 4.
+                            Number of digits by which to increase the scale of the result of division operations performed with the / operator. Default is 4.
+                          type: number
+                        endMarkersInJson:
+                          description: |-
+                            (Boolean) Whether optimizer JSON output such as EXPLAIN FORMAT=JSON adds end markers that repeat a structure's key near its closing bracket, making large JSON structures easier to read.
+                            Whether optimizer JSON output such as EXPLAIN FORMAT=JSON adds end markers that repeat a structure's key near its closing bracket, making large JSON structures easier to read.
+                          type: boolean
+                        eqRangeIndexDiveLimit:
+                          description: |-
+                            (Number) The number of equality ranges in a query at or above which the optimizer switches from index dives to index statistics when estimating the number of qualifying rows. 0 means always use index dives. Default is 200.
+                            The number of equality ranges in a query at or above which the optimizer switches from index dives to index statistics when estimating the number of qualifying rows. 0 means always use index dives. Default is 200.
+                          type: number
                         groupConcatMaxLen:
                           description: |-
                             (Number) The maximum permitted result length in bytes for the GROUP_CONCAT() function.
                             The maximum permitted result length in bytes for the GROUP_CONCAT() function.
-                          format: int64
-                          type: integer
+                          type: number
                         informationSchemaStatsExpiry:
                           description: |-
                             (Number) The time, in seconds, before cached statistics expire.
                             The time, in seconds, before cached statistics expire.
-                          format: int64
-                          type: integer
+                          type: number
+                        innodbAdaptiveHashIndex:
+                          description: |-
+                            dependent: it speeds up lookups for some workloads but its internal latch can become a contention point under high concurrency, in which case disabling it can improve throughput.
+                            Whether InnoDB adaptive hash indexing is enabled. The optimal setting is workload-dependent: it speeds up lookups for some workloads but its internal latch can become a contention point under high concurrency, in which case disabling it can improve throughput.
+                          type: boolean
                         innodbChangeBufferMaxSize:
                           description: |-
                             (Number) Maximum size for the InnoDB change buffer, as a percentage of the total size of the buffer pool. Default is 25.
                             Maximum size for the InnoDB change buffer, as a percentage of the total size of the buffer pool. Default is 25.
-                          format: int64
-                          type: integer
+                          type: number
                         innodbFlushNeighbors:
                           description: |-
                             dirty pages in the same extent are not flushed, 1 - flush contiguous dirty pages in the same extent, 2 - flush dirty pages in the same extent.
                             Specifies whether flushing a page from the InnoDB buffer pool also flushes other dirty pages in the same extent (default is 1): 0 - dirty pages in the same extent are not flushed, 1 - flush contiguous dirty pages in the same extent, 2 - flush dirty pages in the same extent.
-                          format: int64
-                          type: integer
+                          type: number
+                        innodbFtEnableStopword:
+                          description: |-
+                            (Boolean) Whether stopword processing is applied when creating or rebuilding an InnoDB FULLTEXT index. Enabled by default.
+                            Whether stopword processing is applied when creating or rebuilding an InnoDB FULLTEXT index. Enabled by default.
+                          type: boolean
+                        innodbFtMaxTokenSize:
+                          description: |-
+                            (Number) Maximum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
+                            Maximum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
+                          type: number
                         innodbFtMinTokenSize:
                           description: |-
                             (Number) Minimum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
                             Minimum length of words that are stored in an InnoDB FULLTEXT index. Changing this parameter will lead to a restart of the MySQL service.
-                          format: int64
-                          type: integer
+                          type: number
+                        innodbFtNumWordOptimize:
+                          description: |-
+                            (Number) Number of words processed during each OPTIMIZE TABLE operation on an InnoDB FULLTEXT index. Default is 2000.
+                            Number of words processed during each OPTIMIZE TABLE operation on an InnoDB FULLTEXT index. Default is 2000.
+                          type: number
+                        innodbFtResultCacheLimit:
+                          description: |-
+                            (Number) Maximum memory in bytes used per query for the InnoDB FULLTEXT search query result cache. Aiven sizes this automatically based on the service plan's memory; setting a value overrides the calculated default.
+                            Maximum memory in bytes used per query for the InnoDB FULLTEXT search query result cache. Aiven sizes this automatically based on the service plan's memory; setting a value overrides the calculated default.
+                          type: number
                         innodbFtServerStopwordTable:
                           description: |-
                             (String) This option is used to specify your own InnoDB FULLTEXT index stopword list for all InnoDB tables.
                             This option is used to specify your own InnoDB FULLTEXT index stopword list for all InnoDB tables.
                           type: string
+                        innodbFtUserStopwordTable:
+                          description: |-
+                            (String) This option is used to specify your own InnoDB FULLTEXT index stopword list for specific InnoDB tables.
+                            This option is used to specify your own InnoDB FULLTEXT index stopword list for specific InnoDB tables.
+                          type: string
+                        innodbIoCapacity:
+                          description: |-
+                            (Number) The number of I/O operations per second (IOPS) available to InnoDB background tasks, such as flushing pages from the buffer pool and merging data from the change buffer. Set this to a value appropriate for the underlying storage; it must not exceed innodb_io_capacity_max.
+                            The number of I/O operations per second (IOPS) available to InnoDB background tasks, such as flushing pages from the buffer pool and merging data from the change buffer. Set this to a value appropriate for the underlying storage; it must not exceed innodb_io_capacity_max.
+                          type: number
+                        innodbIoCapacityMax:
+                          description: |-
+                            (Number) The maximum number of I/O operations per second (IOPS) that InnoDB background tasks may perform when flushing falls behind. Defaults to twice innodb_io_capacity (minimum 2000). This must be greater than or equal to innodb_io_capacity.
+                            The maximum number of I/O operations per second (IOPS) that InnoDB background tasks may perform when flushing falls behind. Defaults to twice innodb_io_capacity (minimum 2000). This must be greater than or equal to innodb_io_capacity.
+                          type: number
                         innodbLockWaitTimeout:
                           description: |-
                             (Number) The length of time in seconds an InnoDB transaction waits for a row lock before giving up. Default is 120.
                             The length of time in seconds an InnoDB transaction waits for a row lock before giving up. Default is 120.
-                          format: int64
-                          type: integer
+                          type: number
                         innodbLogBufferSize:
                           description: |-
                             (Number) The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
                             The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
-                          format: int64
-                          type: integer
+                          type: number
                         innodbOnlineAlterLogMaxSize:
                           description: |-
                             (Number) The upper limit in bytes on the size of the temporary log files used during online DDL operations for InnoDB tables.
                             The upper limit in bytes on the size of the temporary log files used during online DDL operations for InnoDB tables.
-                          format: int64
-                          type: integer
+                          type: number
+                        innodbOptimizeFulltextOnly:
+                          description: |-
+                            (Boolean) When enabled, OPTIMIZE TABLE on InnoDB tables only updates the FULLTEXT index instead of rebuilding the table. Intended to be enabled temporarily during FULLTEXT index maintenance and disabled afterwards; while enabled, OPTIMIZE TABLE does not reclaim table space.
+                            When enabled, OPTIMIZE TABLE on InnoDB tables only updates the FULLTEXT index instead of rebuilding the table. Intended to be enabled temporarily during FULLTEXT index maintenance and disabled afterwards; while enabled, OPTIMIZE TABLE does not reclaim table space.
+                          type: boolean
                         innodbPrintAllDeadlocks:
                           description: |-
                             (Boolean) When enabled, information about all deadlocks in InnoDB user transactions is recorded in the error log. Disabled by default.
@@ -1408,8 +1661,7 @@ spec:
                           description: |-
                             (Number) The number of I/O threads for read operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
                             The number of I/O threads for read operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
-                          format: int64
-                          type: integer
+                          type: number
                         innodbRollbackOnTimeout:
                           description: |-
                             (Boolean) When enabled a transaction timeout causes InnoDB to abort and roll back the entire transaction. Changing this parameter will lead to a restart of the MySQL service.
@@ -1419,20 +1671,17 @@ spec:
                           description: |-
                             no limit).
                             Defines the maximum number of threads permitted inside of InnoDB. Default is 0 (infinite concurrency - no limit).
-                          format: int64
-                          type: integer
+                          type: number
                         innodbWriteIoThreads:
                           description: |-
                             (Number) The number of I/O threads for write operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
                             The number of I/O threads for write operations in InnoDB. Default is 4. Changing this parameter will lead to a restart of the MySQL service.
-                          format: int64
-                          type: integer
+                          type: number
                         interactiveTimeout:
                           description: |-
                             (Number) The number of seconds the server waits for activity on an interactive connection before closing it.
                             The number of seconds the server waits for activity on an interactive connection before closing it.
-                          format: int64
-                          type: integer
+                          type: number
                         internalTmpMemStorageEngine:
                           description: |-
                             memory internal temporary tables.
@@ -1455,21 +1704,44 @@ spec:
                             (Number) The slow_query_logs work as SQL statements that take more than long_query_time seconds to execute.
                             The slow_query_logs work as SQL statements that take more than long_query_time seconds to execute.
                           type: number
+                        lowerCaseTableNames:
+                          description: |-
+                            sensitive (default), 1 = names stored lowercase, comparisons are case-insensitive. This option can only be set when creating the service and cannot be changed later. See https://dev.mysql.com/doc/refman/8.0/en/identifier-case-sensitivity.html for details.
+                            Sets how table and database names are stored and compared. 0 = case-sensitive (default), 1 = names stored lowercase, comparisons are case-insensitive. This option can only be set when creating the service and cannot be changed later. See https://dev.mysql.com/doc/refman/8.0/en/identifier-case-sensitivity.html for details.
+                          type: number
                         maxAllowedPacket:
                           description: |-
                             (Number) Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
                             Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
-                          format: int64
-                          type: integer
+                          type: number
+                        maxConnections:
+                          description: |-
+                            (Number) The maximum permitted number of simultaneous client connections. Lower this to reserve memory for other work. The value cannot exceed the limit provided by your service plan. Upgrading the plan does not raise a value you have set explicitly, so increase it yourself after an upgrade.
+                            The maximum permitted number of simultaneous client connections. Lower this to reserve memory for other work. The value cannot exceed the limit provided by your service plan. Upgrading the plan does not raise a value you have set explicitly, so increase it yourself after an upgrade.
+                          type: number
+                        maxExecutionTime:
+                          description: |-
+                            only top-level SELECT statements. 0 (the default) means no timeout.
+                            Execution timeout in milliseconds for read-only top-level SELECT statements. 0 (the default) means no timeout.
+                          type: number
                         maxHeapTableSize:
                           description: |-
                             memory tables. Also set tmp_table_size. Default is 16777216 (16M).
                             Limits the size of internal in-memory tables. Also set tmp_table_size. Default is 16777216 (16M).
-                          format: int64
-                          type: integer
+                          type: number
+                        maxSeeksForKey:
+                          description: |-
+                            (Number) Limit on the assumed maximum number of index seeks when looking up rows based on a key. Lowering this value causes the optimizer to prefer index lookups over table scans.
+                            Limit on the assumed maximum number of index seeks when looking up rows based on a key. Lowering this value causes the optimizer to prefer index lookups over table scans.
+                          type: number
+                        maxUserConnections:
+                          description: |-
+                            account limit. Any other value must be at least 10 below max_connections, so that monitoring and your own admin sessions can still connect when an application saturates its own limit. Aiven's replication and management connections are unaffected however low you set this.
+                            The maximum number of simultaneous connections permitted to any single user account. 0, the default, means no per-account limit. Any other value must be at least 10 below max_connections, so that monitoring and your own admin sessions can still connect when an application saturates its own limit. Aiven's replication and management connections are unaffected however low you set this.
+                          type: number
                         migration:
                           description: |-
-                            (Block List, Max: 1) Migrate data from existing server. (see below for nested schema)
+                            (Block List) Migrate data from existing server. (see below for nested schema)
                             Migrate data from existing server.
                           items:
                             properties:
@@ -1477,6 +1749,11 @@ spec:
                                 description: |-
                                   (String) Database name for bootstrapping the initial connection.
                                   Database name for bootstrapping the initial connection.
+                                type: string
+                              dumpTool:
+                                description: |-
+                                  (String) MySQL migration dump tool. Experimental! Tool to use for database dump and restore during migration. Default: mysqldump.
+                                  MySQL migration dump tool. Experimental! Tool to use for database dump and restore during migration. Default: mysqldump.
                                 type: string
                               host:
                                 description: |-
@@ -1502,8 +1779,12 @@ spec:
                                 description: |-
                                   (Number) Port number of the server where to migrate data from.
                                   Port number of the server where to migrate data from.
-                                format: int64
-                                type: integer
+                                type: number
+                              reestablishReplication:
+                                description: |-
+                                  restore part and start replication.
+                                  Skip dump-restore part and start replication.
+                                type: boolean
                               ssl:
                                 description: |-
                                   (Boolean) The server where to migrate data from is secured with SSL.
@@ -1518,7 +1799,7 @@ spec:
                           type: array
                         mysqlIncrementalBackup:
                           description: |-
-                            (Block List, Max: 1) MySQL incremental backup configuration. (see below for nested schema)
+                            (Block List) MySQL incremental backup configuration. (see below for nested schema)
                             MySQL incremental backup configuration.
                           items:
                             properties:
@@ -1538,25 +1819,52 @@ spec:
                           description: |-
                             (Number) Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
                             Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
-                          format: int64
-                          type: integer
+                          type: number
                         netReadTimeout:
                           description: |-
                             (Number) The number of seconds to wait for more data from a connection before aborting the read.
                             The number of seconds to wait for more data from a connection before aborting the read.
-                          format: int64
-                          type: integer
+                          type: number
                         netWriteTimeout:
                           description: |-
                             (Number) The number of seconds to wait for a block to be written to a connection before aborting the write.
                             The number of seconds to wait for a block to be written to a connection before aborting the write.
-                          format: int64
-                          type: integer
+                          type: number
+                        optimizerPruneLevel:
+                          description: |-
+                            promising partial plans from the optimizer search space. 0 disables heuristics (exhaustive search); 1 prunes plans based on the number of rows retrieved.
+                            Controls the heuristics applied during query optimization to prune less-promising partial plans from the optimizer search space. 0 disables heuristics (exhaustive search); 1 prunes plans based on the number of rows retrieved.
+                          type: number
+                        optimizerSearchDepth:
+                          description: |-
+                            (Number) Maximum depth of search performed by the query optimizer when choosing a join order. Larger values produce better plans for joins over many tables but take longer to compile; 0 lets the optimizer choose the depth automatically.
+                            Maximum depth of search performed by the query optimizer when choosing a join order. Larger values produce better plans for joins over many tables but take longer to compile; 0 lets the optimizer choose the depth automatically.
+                          type: number
+                        optimizerSwitch:
+                          description: |-
+                            separated list of optimizer flag assignments in the form flag=on|off|default, or the single value 'default' to reset all flags. Flags not listed keep their current values. Controls query optimizer behaviors such as index merge, hash join and semijoin strategies.
+                            Comma-separated list of optimizer flag assignments in the form flag=on|off|default, or the single value 'default' to reset all flags. Flags not listed keep their current values. Controls query optimizer behaviors such as index merge, hash join and semijoin strategies.
+                          type: string
+                        performanceSchemaEventsStatementsHistorySize:
+                          description: |-
+                            (Number) The number of rows per thread in the events_statements_history table. Changing this parameter will lead to a restart of the MySQL service.
+                            The number of rows per thread in the events_statements_history table. Changing this parameter will lead to a restart of the MySQL service.
+                          type: number
                         publicAccess:
                           description: |-
                             (Boolean) Public Access. Allow access to the service from the public Internet.
                             Public Access. Allow access to the service from the public Internet.
                           type: boolean
+                        publicAccessPrometheus:
+                          description: |-
+                            (Boolean) Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+                            Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+                          type: boolean
+                        relayLogSpaceLimit:
+                          description: |-
+                            log budget; ensure the service disk is sized accordingly. The setting applies only on the node replicating from the external source; standby nodes always use the Aiven-managed default (the smaller of 5 GiB and 30% of the service disk), which is also used when this option is left unset. Changing this parameter will lead to a restart of the MySQL service.
+                            The maximum amount of space in bytes to use for all relay logs while replicating from an external migration source. When the limit is reached, the replication I/O thread stops fetching relay log events until the SQL thread has caught up. Raise this to give a large migration a bigger relay-log budget; ensure the service disk is sized accordingly. The setting applies only on the node replicating from the external source; standby nodes always use the Aiven-managed default (the smaller of 5 GiB and 30% of the service disk), which is also used when this option is left unset. Changing this parameter will lead to a restart of the MySQL service.
+                          type: number
                         serviceLog:
                           description: |-
                             (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
@@ -1571,8 +1879,7 @@ spec:
                           description: |-
                             (Number) Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
                             Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
-                          format: int64
-                          type: integer
+                          type: number
                         sqlMode:
                           description: |-
                             (String) Global SQL mode. Set to empty to use MySQL server defaults. When creating a new service and not setting this field Aiven default SQL mode (strict, SQL standard compliant) will be assigned.
@@ -1587,8 +1894,7 @@ spec:
                           description: |-
                             memory tables. Also set max_heap_table_size. Default is 16777216 (16M).
                             Limits the size of internal in-memory tables. Also set max_heap_table_size. Default is 16777216 (16M).
-                          format: int64
-                          type: integer
+                          type: number
                         version:
                           description: |-
                             (String) MySQL major version.
@@ -1598,8 +1904,12 @@ spec:
                           description: |-
                             (Number) The number of seconds the server waits for activity on a noninteractive connection before closing it.
                             The number of seconds the server waits for activity on a noninteractive connection before closing it.
-                          format: int64
-                          type: integer
+                          type: number
+                        windowingUseHighPrecision:
+                          description: |-
+                            (Boolean) Whether window functions are computed to high precision. Disabling this trades exactness for speed in window function evaluation.
+                            Whether window functions are computed to high precision. Disabling this trades exactness for speed in window function evaluation.
+                          type: boolean
                       type: object
                     type: array
                   serviceHost:
@@ -1619,8 +1929,8 @@ spec:
                     type: string
                   state:
                     description: |-
-                      (String) State of the service
-                      State of the service
+                      (String) The current state of the service
+                      The current state of the service
                     type: string
                   terminationProtection:
                     description: |-
@@ -1629,13 +1939,13 @@ spec:
                     type: boolean
                   title:
                     description: |-
-                      (String) Title of a managed database instance
-                      Title of a managed database instance
+                      (String) Title of the managed database instance
+                      Title of the managed database instance
                     type: string
                   type:
                     description: |-
-                      (String) Type of the service
-                      Type of the service
+                      (String) Type of the managed database instance
+                      Type of the managed database instance
                     type: string
                   zone:
                     description: |-
@@ -1689,6 +1999,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
               observedGeneration:
                 description: |-
                   ObservedGeneration is the latest metadata.generation

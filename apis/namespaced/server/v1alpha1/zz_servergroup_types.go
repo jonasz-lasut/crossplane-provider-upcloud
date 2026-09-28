@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ServerGroupInitParameters struct {
@@ -46,11 +45,11 @@ type ServerGroupInitParameters struct {
 
 	// References to Server in server to populate members.
 	// +kubebuilder:validation:Optional
-	MembersRefs []v1.NamespacedReference `json:"membersRefs,omitempty" tf:"-"`
+	MembersRefs []v2.NamespacedReference `json:"membersRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Server in server to populate members.
 	// +kubebuilder:validation:Optional
-	MembersSelector *v1.NamespacedSelector `json:"membersSelector,omitempty" tf:"-"`
+	MembersSelector *v2.NamespacedSelector `json:"membersSelector,omitempty" tf:"-"`
 
 	// (String) Title of your server group
 	// Title of your server group
@@ -137,16 +136,16 @@ type ServerGroupParameters struct {
 
 	// References to Server in server to populate members.
 	// +kubebuilder:validation:Optional
-	MembersRefs []v1.NamespacedReference `json:"membersRefs,omitempty" tf:"-"`
+	MembersRefs []v2.NamespacedReference `json:"membersRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Server in server to populate members.
 	// +kubebuilder:validation:Optional
-	MembersSelector *v1.NamespacedSelector `json:"membersSelector,omitempty" tf:"-"`
+	MembersSelector *v2.NamespacedSelector `json:"membersSelector,omitempty" tf:"-"`
 
 	// (String) Title of your server group
 	// Title of your server group
 	// +kubebuilder:validation:Optional
-	Title *string `json:"title" tf:"title,omitempty"`
+	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 
 	// (Boolean) Controls if members of the server group are being tracked in this resource. Set to false when using server_group property of upcloud_server to attach servers to the server group to avoid delayed state updates.
 	// Controls if members of the server group are being tracked in this resource. Set to `false` when using `server_group` property of `upcloud_server` to attach servers to the server group to avoid delayed state updates.
@@ -173,8 +172,8 @@ type ServerGroupSpec struct {
 
 // ServerGroupStatus defines the observed state of ServerGroup.
 type ServerGroupStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ServerGroupObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ServerGroupObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

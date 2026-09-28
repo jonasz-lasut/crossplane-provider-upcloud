@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.1
   name: manageddatabaseusers.database.upcloud.crossplane.io
 spec:
   group: database.upcloud.crossplane.io
@@ -35,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: ManagedDatabaseUser is the Schema for the ManagedDatabaseUsers
-          API. This resource represents a user in managed database
+          API. This resource represents a user in managed database.
         properties:
           apiVersion:
             description: |-
@@ -80,13 +80,13 @@ spec:
                     type: string
                   opensearchAccessControl:
                     description: |-
-                      (Block List, Max: 1) OpenSearch access control object. (see below for nested schema)
+                      (Block List) OpenSearch access control object. (see below for nested schema)
                       OpenSearch access control object.
                     items:
                       properties:
                         rules:
                           description: |-
-                            (Block List, Min: 1) Set user access control rules. (see below for nested schema)
+                            (Block List) Set user access control rules. (see below for nested schema)
                             Set user access control rules.
                           items:
                             properties:
@@ -125,7 +125,7 @@ spec:
                     type: object
                   pgAccessControl:
                     description: |-
-                      (Block List, Max: 1) PostgreSQL access control object. (see below for nested schema)
+                      (Block List) PostgreSQL access control object. (see below for nested schema)
                       PostgreSQL access control object.
                     items:
                       properties:
@@ -219,7 +219,7 @@ spec:
                     type: object
                   valkeyAccessControl:
                     description: |-
-                      (Block List, Max: 1) Valkey access control object. (see below for nested schema)
+                      (Block List) Valkey access control object. (see below for nested schema)
                       Valkey access control object.
                     items:
                       properties:
@@ -274,13 +274,13 @@ spec:
                     type: string
                   opensearchAccessControl:
                     description: |-
-                      (Block List, Max: 1) OpenSearch access control object. (see below for nested schema)
+                      (Block List) OpenSearch access control object. (see below for nested schema)
                       OpenSearch access control object.
                     items:
                       properties:
                         rules:
                           description: |-
-                            (Block List, Min: 1) Set user access control rules. (see below for nested schema)
+                            (Block List) Set user access control rules. (see below for nested schema)
                             Set user access control rules.
                           items:
                             properties:
@@ -319,7 +319,7 @@ spec:
                     type: object
                   pgAccessControl:
                     description: |-
-                      (Block List, Max: 1) PostgreSQL access control object. (see below for nested schema)
+                      (Block List) PostgreSQL access control object. (see below for nested schema)
                       PostgreSQL access control object.
                     items:
                       properties:
@@ -332,7 +332,7 @@ spec:
                     type: array
                   valkeyAccessControl:
                     description: |-
-                      (Block List, Max: 1) Valkey access control object. (see below for nested schema)
+                      (Block List) Valkey access control object. (see below for nested schema)
                       Valkey access control object.
                     items:
                       properties:
@@ -464,17 +464,18 @@ spec:
                       MySQL only, authentication type.
                     type: string
                   id:
-                    description: (String) The ID of this resource.
+                    description: (String) ID of the user. ID is in {service UUID}/{username}
+                      format.
                     type: string
                   opensearchAccessControl:
                     description: |-
-                      (Block List, Max: 1) OpenSearch access control object. (see below for nested schema)
+                      (Block List) OpenSearch access control object. (see below for nested schema)
                       OpenSearch access control object.
                     items:
                       properties:
                         rules:
                           description: |-
-                            (Block List, Min: 1) Set user access control rules. (see below for nested schema)
+                            (Block List) Set user access control rules. (see below for nested schema)
                             Set user access control rules.
                           items:
                             properties:
@@ -494,7 +495,7 @@ spec:
                     type: array
                   pgAccessControl:
                     description: |-
-                      (Block List, Max: 1) PostgreSQL access control object. (see below for nested schema)
+                      (Block List) PostgreSQL access control object. (see below for nested schema)
                       PostgreSQL access control object.
                     items:
                       properties:
@@ -517,7 +518,7 @@ spec:
                     type: string
                   valkeyAccessControl:
                     description: |-
-                      (Block List, Max: 1) Valkey access control object. (see below for nested schema)
+                      (Block List) Valkey access control object. (see below for nested schema)
                       Valkey access control object.
                     items:
                       properties:
@@ -598,6 +599,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
               observedGeneration:
                 description: |-
                   ObservedGeneration is the latest metadata.generation

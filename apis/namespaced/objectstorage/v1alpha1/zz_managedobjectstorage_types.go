@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type EndpointInitParameters struct {
@@ -31,7 +30,7 @@ type EndpointObservation struct {
 	// URL for STS.
 	StsURL *string `json:"stsUrl,omitempty" tf:"sts_url,omitempty"`
 
-	// (String) Network type.
+	// (String) Network type (private or public).
 	// Type of the endpoint (`private` / `public`).
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
@@ -110,7 +109,7 @@ type ManagedObjectStorageParameters struct {
 	// (String) Service status managed by the end user.
 	// Service status managed by the end user.
 	// +kubebuilder:validation:Optional
-	ConfiguredStatus *string `json:"configuredStatus" tf:"configured_status,omitempty"`
+	ConfiguredStatus *string `json:"configuredStatus,omitempty" tf:"configured_status,omitempty"`
 
 	// value pairs to classify the managed object storage.
 	// User defined key-value pairs to classify the managed object storage.
@@ -121,7 +120,7 @@ type ManagedObjectStorageParameters struct {
 	// (String) Name of the Managed Object Storage service. Must be unique within account.
 	// Name of the Managed Object Storage service. Must be unique within account.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name" tf:"name,omitempty"`
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// (Block Set) Attached networks from where object storage can be used. Private networks must reside in object storage region. To gain access from multiple private networks that might reside in different zones, create the networks and a corresponding router for each network. (see below for nested schema)
 	// Attached networks from where object storage can be used. Private networks must reside in object storage region. To gain access from multiple private networks that might reside in different zones, create the networks and a corresponding router for each network.
@@ -131,7 +130,7 @@ type ManagedObjectStorageParameters struct {
 	// storage regions to list available regions.
 	// Region in which the service will be hosted, see `upcloud_managed_object_storage_regions` data source or use `upctl object-storage regions` to list available regions.
 	// +kubebuilder:validation:Optional
-	Region *string `json:"region" tf:"region,omitempty"`
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
 type NetworkInitParameters struct {
@@ -144,8 +143,8 @@ type NetworkInitParameters struct {
 	// Network name. Must be unique within the service.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (String) Network type.
-	// Network type.
+	// (String) Network type (private or public).
+	// Network type (`private` or `public`).
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// (String) Private network uuid. For public networks the field should be omitted.
@@ -163,8 +162,8 @@ type NetworkObservation struct {
 	// Network name. Must be unique within the service.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (String) Network type.
-	// Network type.
+	// (String) Network type (private or public).
+	// Network type (`private` or `public`).
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// (String) Private network uuid. For public networks the field should be omitted.
@@ -184,8 +183,8 @@ type NetworkParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
-	// (String) Network type.
-	// Network type.
+	// (String) Network type (private or public).
+	// Network type (`private` or `public`).
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 
@@ -214,8 +213,8 @@ type ManagedObjectStorageSpec struct {
 
 // ManagedObjectStorageStatus defines the observed state of ManagedObjectStorage.
 type ManagedObjectStorageStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ManagedObjectStorageObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ManagedObjectStorageObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

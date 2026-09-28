@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ManagedDatabasePostgresqlComponentsInitParameters struct {
@@ -19,8 +18,8 @@ type ManagedDatabasePostgresqlComponentsInitParameters struct {
 
 type ManagedDatabasePostgresqlComponentsObservation struct {
 
-	// (String)
-	// Type of the component
+	// (String) Component name.
+	// Component name.
 	Component *string `json:"component,omitempty" tf:"component,omitempty"`
 
 	// (String) Hostname or IP address of the server where to migrate data from.
@@ -29,13 +28,13 @@ type ManagedDatabasePostgresqlComponentsObservation struct {
 
 	// (Number) Port number of the server where to migrate data from.
 	// Port number of the component
-	Port *int64 `json:"port,omitempty" tf:"port,omitempty"`
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
-	// (String)
+	// (String) Component network route type
 	// Component network route type
 	Route *string `json:"route,omitempty" tf:"route,omitempty"`
 
-	// (String)
+	// (String) Usage of the component
 	// Usage of the component
 	Usage *string `json:"usage,omitempty" tf:"usage,omitempty"`
 }
@@ -47,10 +46,10 @@ type ManagedDatabasePostgresqlInitParameters struct {
 
 	// (Number) Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
 	// Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
-	AdditionalDiskSpaceGib *int64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
+	AdditionalDiskSpaceGib *float64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
 
-	// value pairs to classify the managed database.
-	// User defined key-value pairs to classify the managed database.
+	// value pairs to classify the database.
+	// User defined key-value pairs to classify the database.
 	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
@@ -66,12 +65,11 @@ type ManagedDatabasePostgresqlInitParameters struct {
 	// Name of the service. The name is used as a prefix for the logical hostname. Must be unique within an account
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (Block Set, Max: 8) Private networks attached to the managed database (see below for nested schema)
+	// (Block Set) Private networks attached to the managed database (see below for nested schema)
 	// Private networks attached to the managed database
 	Network []ManagedDatabasePostgresqlNetworkInitParameters `json:"network,omitempty" tf:"network,omitempty"`
 
-	// (List of Object) Information about nodes providing the managed service (see below for nested schema)
-	// Information about nodes providing the managed service
+	// (Attributes List) Information about nodes providing the managed service (see below for nested schema)
 	NodeStates []ManagedDatabasePostgresqlNodeStatesInitParameters `json:"nodeStates,omitempty" tf:"node_states,omitempty"`
 
 	// (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans pg.
@@ -82,16 +80,16 @@ type ManagedDatabasePostgresqlInitParameters struct {
 	// The administrative power state of the service
 	Powered *bool `json:"powered,omitempty" tf:"powered,omitempty"`
 
-	// (Block List, Max: 1) Database Engine properties for PostgreSQL (see below for nested schema)
-	// Database Engine properties for PostgreSQL
+	// (Block List) Database engine properties. (see below for nested schema)
+	// Database engine properties.
 	Properties []ManagedDatabasePostgresqlPropertiesInitParameters `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (Boolean) If set to true, prevents the managed service from being powered off, or deleted.
 	// If set to true, prevents the managed service from being powered off, or deleted.
 	TerminationProtection *bool `json:"terminationProtection,omitempty" tf:"termination_protection,omitempty"`
 
-	// (String) Title of a managed database instance
-	// Title of a managed database instance
+	// (String) Title of the managed database instance
+	// Title of the managed database instance
 	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 
 	// fra1. You can list available zones with upctl zone list.
@@ -109,7 +107,7 @@ type ManagedDatabasePostgresqlNetworkInitParameters struct {
 	// The name of the network. Must be unique within the service.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (String) Type of the service
+	// (String) Type of the managed database instance
 	// The type of the network. Must be private.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
@@ -120,11 +118,11 @@ type ManagedDatabasePostgresqlNetworkInitParameters struct {
 
 	// Reference to a Network in network to populate uuid.
 	// +kubebuilder:validation:Optional
-	UUIDRef *v1.NamespacedReference `json:"uuidRef,omitempty" tf:"-"`
+	UUIDRef *v2.NamespacedReference `json:"uuidRef,omitempty" tf:"-"`
 
 	// Selector for a Network in network to populate uuid.
 	// +kubebuilder:validation:Optional
-	UUIDSelector *v1.NamespacedSelector `json:"uuidSelector,omitempty" tf:"-"`
+	UUIDSelector *v2.NamespacedSelector `json:"uuidSelector,omitempty" tf:"-"`
 }
 
 type ManagedDatabasePostgresqlNetworkObservation struct {
@@ -137,7 +135,7 @@ type ManagedDatabasePostgresqlNetworkObservation struct {
 	// The name of the network. Must be unique within the service.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (String) Type of the service
+	// (String) Type of the managed database instance
 	// The type of the network. Must be private.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
@@ -158,7 +156,7 @@ type ManagedDatabasePostgresqlNetworkParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
-	// (String) Type of the service
+	// (String) Type of the managed database instance
 	// The type of the network. Must be private.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
@@ -167,22 +165,18 @@ type ManagedDatabasePostgresqlNetworkParameters struct {
 	// Private network UUID. Must reside in the same zone as the database.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/network/v1alpha1.Network
 	// +kubebuilder:validation:Optional
-	UUID *string `json:"uuid" tf:"uuid,omitempty"`
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 
 	// Reference to a Network in network to populate uuid.
 	// +kubebuilder:validation:Optional
-	UUIDRef *v1.NamespacedReference `json:"uuidRef,omitempty" tf:"-"`
+	UUIDRef *v2.NamespacedReference `json:"uuidRef,omitempty" tf:"-"`
 
 	// Selector for a Network in network to populate uuid.
 	// +kubebuilder:validation:Optional
-	UUIDSelector *v1.NamespacedSelector `json:"uuidSelector,omitempty" tf:"-"`
+	UUIDSelector *v2.NamespacedSelector `json:"uuidSelector,omitempty" tf:"-"`
 }
 
 type ManagedDatabasePostgresqlNodeStatesInitParameters struct {
-
-	// (String) Role. Specifies the master role to use for object audit logging.
-	// Role of the node
-	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 }
 
 type ManagedDatabasePostgresqlNodeStatesObservation struct {
@@ -195,34 +189,28 @@ type ManagedDatabasePostgresqlNodeStatesObservation struct {
 	// Role of the node
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
-	// (String) State of the service
-	// State of the node
+	// (String) The current state of the service
+	// Current state of the node
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 }
 
 type ManagedDatabasePostgresqlNodeStatesParameters struct {
-
-	// (String) Role. Specifies the master role to use for object audit logging.
-	// Role of the node
-	// +kubebuilder:validation:Optional
-	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 }
 
 type ManagedDatabasePostgresqlObservation struct {
 
 	// (Number) Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
 	// Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
-	AdditionalDiskSpaceGib *int64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
+	AdditionalDiskSpaceGib *float64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
 
-	// (List of Object) Service component information (see below for nested schema)
-	// Service component information
+	// (Attributes List) Service component information (see below for nested schema)
 	Components []ManagedDatabasePostgresqlComponentsObservation `json:"components,omitempty" tf:"components,omitempty"`
 
-	// (String) The ID of this resource.
+	// (String) UUID of the database.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// value pairs to classify the managed database.
-	// User defined key-value pairs to classify the managed database.
+	// value pairs to classify the database.
+	// User defined key-value pairs to classify the database.
 	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
@@ -238,12 +226,11 @@ type ManagedDatabasePostgresqlObservation struct {
 	// Name of the service. The name is used as a prefix for the logical hostname. Must be unique within an account
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (Block Set, Max: 8) Private networks attached to the managed database (see below for nested schema)
+	// (Block Set) Private networks attached to the managed database (see below for nested schema)
 	// Private networks attached to the managed database
 	Network []ManagedDatabasePostgresqlNetworkObservation `json:"network,omitempty" tf:"network,omitempty"`
 
-	// (List of Object) Information about nodes providing the managed service (see below for nested schema)
-	// Information about nodes providing the managed service
+	// (Attributes List) Information about nodes providing the managed service (see below for nested schema)
 	NodeStates []ManagedDatabasePostgresqlNodeStatesObservation `json:"nodeStates,omitempty" tf:"node_states,omitempty"`
 
 	// (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans pg.
@@ -258,8 +245,8 @@ type ManagedDatabasePostgresqlObservation struct {
 	// Primary database name
 	PrimaryDatabase *string `json:"primaryDatabase,omitempty" tf:"primary_database,omitempty"`
 
-	// (Block List, Max: 1) Database Engine properties for PostgreSQL (see below for nested schema)
-	// Database Engine properties for PostgreSQL
+	// (Block List) Database engine properties. (see below for nested schema)
+	// Database engine properties.
 	Properties []ManagedDatabasePostgresqlPropertiesObservation `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (String) Hostname to the service instance
@@ -278,20 +265,20 @@ type ManagedDatabasePostgresqlObservation struct {
 	// SSL Connection Mode for PostgreSQL
 	Sslmode *string `json:"sslmode,omitempty" tf:"sslmode,omitempty"`
 
-	// (String) State of the service
-	// State of the service
+	// (String) The current state of the service
+	// The current state of the service
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 
 	// (Boolean) If set to true, prevents the managed service from being powered off, or deleted.
 	// If set to true, prevents the managed service from being powered off, or deleted.
 	TerminationProtection *bool `json:"terminationProtection,omitempty" tf:"termination_protection,omitempty"`
 
-	// (String) Title of a managed database instance
-	// Title of a managed database instance
+	// (String) Title of the managed database instance
+	// Title of the managed database instance
 	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 
-	// (String) Type of the service
-	// Type of the service
+	// (String) Type of the managed database instance
+	// Type of the managed database instance
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// fra1. You can list available zones with upctl zone list.
@@ -304,10 +291,10 @@ type ManagedDatabasePostgresqlParameters struct {
 	// (Number) Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
 	// Additional disk space in GiB. Note that changes in additional disk space might require disk maintenance. This pending maintenance blocks some operations, such as version upgrades, until the maintenance is completed.
 	// +kubebuilder:validation:Optional
-	AdditionalDiskSpaceGib *int64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
+	AdditionalDiskSpaceGib *float64 `json:"additionalDiskSpaceGib,omitempty" tf:"additional_disk_space_gib,omitempty"`
 
-	// value pairs to classify the managed database.
-	// User defined key-value pairs to classify the managed database.
+	// value pairs to classify the database.
+	// User defined key-value pairs to classify the database.
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
@@ -325,30 +312,29 @@ type ManagedDatabasePostgresqlParameters struct {
 	// (String) Name of the service. The name is used as a prefix for the logical hostname. Must be unique within an account
 	// Name of the service. The name is used as a prefix for the logical hostname. Must be unique within an account
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name" tf:"name,omitempty"`
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (Block Set, Max: 8) Private networks attached to the managed database (see below for nested schema)
+	// (Block Set) Private networks attached to the managed database (see below for nested schema)
 	// Private networks attached to the managed database
 	// +kubebuilder:validation:Optional
 	Network []ManagedDatabasePostgresqlNetworkParameters `json:"network,omitempty" tf:"network,omitempty"`
 
-	// (List of Object) Information about nodes providing the managed service (see below for nested schema)
-	// Information about nodes providing the managed service
+	// (Attributes List) Information about nodes providing the managed service (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	NodeStates []ManagedDatabasePostgresqlNodeStatesParameters `json:"nodeStates,omitempty" tf:"node_states,omitempty"`
 
 	// (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans pg.
 	// Service plan to use. This determines how much resources the instance will have. You can list available plans with `upctl database plans pg`.
 	// +kubebuilder:validation:Optional
-	Plan *string `json:"plan" tf:"plan,omitempty"`
+	Plan *string `json:"plan,omitempty" tf:"plan,omitempty"`
 
 	// (Boolean) The administrative power state of the service
 	// The administrative power state of the service
 	// +kubebuilder:validation:Optional
 	Powered *bool `json:"powered,omitempty" tf:"powered,omitempty"`
 
-	// (Block List, Max: 1) Database Engine properties for PostgreSQL (see below for nested schema)
-	// Database Engine properties for PostgreSQL
+	// (Block List) Database engine properties. (see below for nested schema)
+	// Database engine properties.
 	// +kubebuilder:validation:Optional
 	Properties []ManagedDatabasePostgresqlPropertiesParameters `json:"properties,omitempty" tf:"properties,omitempty"`
 
@@ -357,22 +343,22 @@ type ManagedDatabasePostgresqlParameters struct {
 	// +kubebuilder:validation:Optional
 	TerminationProtection *bool `json:"terminationProtection,omitempty" tf:"termination_protection,omitempty"`
 
-	// (String) Title of a managed database instance
-	// Title of a managed database instance
+	// (String) Title of the managed database instance
+	// Title of the managed database instance
 	// +kubebuilder:validation:Optional
-	Title *string `json:"title" tf:"title,omitempty"`
+	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 
 	// fra1. You can list available zones with upctl zone list.
 	// Zone where the instance resides, e.g. `de-fra1`. You can list available zones with `upctl zone list`.
 	// +kubebuilder:validation:Optional
-	Zone *string `json:"zone" tf:"zone,omitempty"`
+	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
 }
 
 type ManagedDatabasePostgresqlPropertiesInitParameters struct {
 
 	// (String, Sensitive) Custom password for admin user. Defaults to random string. This must be set only when a new service is being created.
 	// Custom password for admin user. Defaults to random string. This must be set only when a new service is being created.
-	AdminPasswordSecretRef *v1.LocalSecretKeySelector `json:"adminPasswordSecretRef,omitempty" tf:"-"`
+	AdminPasswordSecretRef *v2.LocalSecretKeySelector `json:"adminPasswordSecretRef,omitempty" tf:"-"`
 
 	// (String) Custom username for admin user. This must be set only when a new service is being created.
 	// Custom username for admin user. This must be set only when a new service is being created.
@@ -388,27 +374,27 @@ type ManagedDatabasePostgresqlPropertiesInitParameters struct {
 
 	// (Number) Specifies the minimum number of inserted, updated or deleted tuples needed to trigger an ANALYZE in any one table. The default is 50.
 	// Specifies the minimum number of inserted, updated or deleted tuples needed to trigger an ANALYZE in any one table. The default is `50`.
-	AutovacuumAnalyzeThreshold *int64 `json:"autovacuumAnalyzeThreshold,omitempty" tf:"autovacuum_analyze_threshold,omitempty"`
+	AutovacuumAnalyzeThreshold *float64 `json:"autovacuumAnalyzeThreshold,omitempty" tf:"autovacuum_analyze_threshold,omitempty"`
 
 	// (Number) Specifies the maximum age (in transactions) that a table's pg_class.relfrozenxid field can attain before a VACUUM operation is forced to prevent transaction ID wraparound within the table. The system launches autovacuum processes to prevent wraparound even when autovacuum is otherwise disabled. Changing this parameter causes a service restart.
 	// Specifies the maximum age (in transactions) that a table's pg_class.relfrozenxid field can attain before a VACUUM operation is forced to prevent transaction ID wraparound within the table. The system launches autovacuum processes to prevent wraparound even when autovacuum is otherwise disabled. Changing this parameter causes a service restart.
-	AutovacuumFreezeMaxAge *int64 `json:"autovacuumFreezeMaxAge,omitempty" tf:"autovacuum_freeze_max_age,omitempty"`
+	AutovacuumFreezeMaxAge *float64 `json:"autovacuumFreezeMaxAge,omitempty" tf:"autovacuum_freeze_max_age,omitempty"`
 
 	// (Number) Specifies the maximum number of autovacuum processes (other than the autovacuum launcher) that may be running at any one time. The default is 3. Changing this parameter causes a service restart.
 	// Specifies the maximum number of autovacuum processes (other than the autovacuum launcher) that may be running at any one time. The default is `3`. Changing this parameter causes a service restart.
-	AutovacuumMaxWorkers *int64 `json:"autovacuumMaxWorkers,omitempty" tf:"autovacuum_max_workers,omitempty"`
+	AutovacuumMaxWorkers *float64 `json:"autovacuumMaxWorkers,omitempty" tf:"autovacuum_max_workers,omitempty"`
 
 	// (Number) Specifies the minimum delay between autovacuum runs on any given database. The delay is measured in seconds. The default is 60.
 	// Specifies the minimum delay between autovacuum runs on any given database. The delay is measured in seconds. The default is `60`.
-	AutovacuumNaptime *int64 `json:"autovacuumNaptime,omitempty" tf:"autovacuum_naptime,omitempty"`
+	AutovacuumNaptime *float64 `json:"autovacuumNaptime,omitempty" tf:"autovacuum_naptime,omitempty"`
 
 	// 1 is specified, the regular vacuum_cost_delay value will be used. The default is 2 (upstream default).
 	// Specifies the cost delay value that will be used in automatic VACUUM operations. If `-1` is specified, the regular vacuum_cost_delay value will be used. The default is `2` (upstream default).
-	AutovacuumVacuumCostDelay *int64 `json:"autovacuumVacuumCostDelay,omitempty" tf:"autovacuum_vacuum_cost_delay,omitempty"`
+	AutovacuumVacuumCostDelay *float64 `json:"autovacuumVacuumCostDelay,omitempty" tf:"autovacuum_vacuum_cost_delay,omitempty"`
 
 	// 1 is specified, the regular vacuum_cost_limit value will be used. The default is -1 (upstream default).
 	// Specifies the cost limit value that will be used in automatic VACUUM operations. If `-1` is specified, the regular vacuum_cost_limit value will be used. The default is `-1` (upstream default).
-	AutovacuumVacuumCostLimit *int64 `json:"autovacuumVacuumCostLimit,omitempty" tf:"autovacuum_vacuum_cost_limit,omitempty"`
+	AutovacuumVacuumCostLimit *float64 `json:"autovacuumVacuumCostLimit,omitempty" tf:"autovacuum_vacuum_cost_limit,omitempty"`
 
 	// (Number) Specifies a fraction of the table size to add to autovacuum_vacuum_threshold when deciding whether to trigger a VACUUM (e.g. 0.2 for 20% of the table size). The default is 0.2.
 	// Specifies a fraction of the table size to add to autovacuum_vacuum_threshold when deciding whether to trigger a VACUUM (e.g. `0.2` for 20% of the table size). The default is `0.2`.
@@ -416,27 +402,35 @@ type ManagedDatabasePostgresqlPropertiesInitParameters struct {
 
 	// (Number) Specifies the minimum number of updated or deleted tuples needed to trigger a VACUUM in any one table. The default is 50.
 	// Specifies the minimum number of updated or deleted tuples needed to trigger a VACUUM in any one table. The default is `50`.
-	AutovacuumVacuumThreshold *int64 `json:"autovacuumVacuumThreshold,omitempty" tf:"autovacuum_vacuum_threshold,omitempty"`
+	AutovacuumVacuumThreshold *float64 `json:"autovacuumVacuumThreshold,omitempty" tf:"autovacuum_vacuum_threshold,omitempty"`
 
 	// (Number) The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
-	BackupHour *int64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
+	BackupHour *float64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
+
+	// (Number) Backup interval in hours. Interval in hours between automatic backups. Minimum value is 3 hours. Must be a divisor of 24 (3, 4, 6, 8, 12, 24).  (Applicable to ACU plans only).
+	// Backup interval in hours. Interval in hours between automatic backups. Minimum value is 3 hours. Must be a divisor of 24 (3, 4, 6, 8, 12, 24).  (Applicable to ACU plans only).
+	BackupIntervalHours *float64 `json:"backupIntervalHours,omitempty" tf:"backup_interval_hours,omitempty"`
 
 	// (Number) The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
-	BackupMinute *int64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
+	BackupMinute *float64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
+
+	// (Number) Backup retention in days. Number of days to retain automatic backups. Backups older than this value will be automatically deleted. (Applicable to ACU plans only).
+	// Backup retention in days. Number of days to retain automatic backups. Backups older than this value will be automatically deleted. (Applicable to ACU plans only).
+	BackupRetentionDays *float64 `json:"backupRetentionDays,omitempty" tf:"backup_retention_days,omitempty"`
 
 	// (Number) Specifies the delay between activity rounds for the background writer in milliseconds. The default is 200.
 	// Specifies the delay between activity rounds for the background writer in milliseconds. The default is `200`.
-	BgwriterDelay *int64 `json:"bgwriterDelay,omitempty" tf:"bgwriter_delay,omitempty"`
+	BgwriterDelay *float64 `json:"bgwriterDelay,omitempty" tf:"bgwriter_delay,omitempty"`
 
 	// (Number) Whenever more than bgwriter_flush_after bytes have been written by the background writer, attempt to force the OS to issue these writes to the underlying storage. Specified in kilobytes. Setting of 0 disables forced writeback. The default is 512.
 	// Whenever more than bgwriter_flush_after bytes have been written by the background writer, attempt to force the OS to issue these writes to the underlying storage. Specified in kilobytes. Setting of 0 disables forced writeback. The default is `512`.
-	BgwriterFlushAfter *int64 `json:"bgwriterFlushAfter,omitempty" tf:"bgwriter_flush_after,omitempty"`
+	BgwriterFlushAfter *float64 `json:"bgwriterFlushAfter,omitempty" tf:"bgwriter_flush_after,omitempty"`
 
 	// (Number) In each round, no more than this many buffers will be written by the background writer. Setting this to zero disables background writing. The default is 100.
 	// In each round, no more than this many buffers will be written by the background writer. Setting this to zero disables background writing. The default is `100`.
-	BgwriterLruMaxpages *int64 `json:"bgwriterLruMaxpages,omitempty" tf:"bgwriter_lru_maxpages,omitempty"`
+	BgwriterLruMaxpages *float64 `json:"bgwriterLruMaxpages,omitempty" tf:"bgwriter_lru_maxpages,omitempty"`
 
 	// (Number) The average recent need for new buffers is multiplied by bgwriter_lru_multiplier to arrive at an estimate of the number that will be needed during the next round, (up to bgwriter_lru_maxpages). 1.0 represents a “just in time” policy of writing exactly the number of buffers predicted to be needed. Larger values provide some cushion against spikes in demand, while smaller values intentionally leave writes to be done by server processes. The default is 2.0.
 	// The average recent need for new buffers is multiplied by bgwriter_lru_multiplier to arrive at an estimate of the number that will be needed during the next round, (up to bgwriter_lru_maxpages). 1.0 represents a “just in time” policy of writing exactly the number of buffers predicted to be needed. Larger values provide some cushion against spikes in demand, while smaller values intentionally leave writes to be done by server processes. The default is `2.0`.
@@ -444,11 +438,15 @@ type ManagedDatabasePostgresqlPropertiesInitParameters struct {
 
 	// (Number) This is the amount of time, in milliseconds, to wait on a lock before checking to see if there is a deadlock condition. The default is 1000 (upstream default).
 	// This is the amount of time, in milliseconds, to wait on a lock before checking to see if there is a deadlock condition. The default is `1000` (upstream default).
-	DeadlockTimeout *int64 `json:"deadlockTimeout,omitempty" tf:"deadlock_timeout,omitempty"`
+	DeadlockTimeout *float64 `json:"deadlockTimeout,omitempty" tf:"deadlock_timeout,omitempty"`
 
 	// (String) Specifies the default TOAST compression method for values of compressible columns. The default is lz4. Only available for PostgreSQL 14+.
 	// Specifies the default TOAST compression method for values of compressible columns. The default is `lz4`. Only available for PostgreSQL 14+.
 	DefaultToastCompression *string `json:"defaultToastCompression,omitempty" tf:"default_toast_compression,omitempty"`
+
+	// only DNS that automatically falls back to the primary if standby nodes are unavailable. It switches back when a standby recovers.
+	// Enable HA replica DNS. Creates a dedicated read-only DNS that automatically falls back to the primary if standby nodes are unavailable. It switches back when a standby recovers.
+	EnableHaReplicaDNS *bool `json:"enableHaReplicaDns,omitempty" tf:"enable_ha_replica_dns,omitempty"`
 
 	// (List of String) IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
 	// IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
@@ -456,27 +454,27 @@ type ManagedDatabasePostgresqlPropertiesInitParameters struct {
 
 	// (Number) Time out sessions with open transactions after this number of milliseconds.
 	// Time out sessions with open transactions after this number of milliseconds.
-	IdleInTransactionSessionTimeout *int64 `json:"idleInTransactionSessionTimeout,omitempty" tf:"idle_in_transaction_session_timeout,omitempty"`
+	IdleInTransactionSessionTimeout *float64 `json:"idleInTransactionSessionTimeout,omitempty" tf:"idle_in_transaction_session_timeout,omitempty"`
 
 	// (Number) EXPERIMENTAL: Controls the largest I/O size in operations that combine I/O in 8kB units. Version 17 and up only.
 	// EXPERIMENTAL: Controls the largest I/O size in operations that combine I/O in 8kB units. Version 17 and up only.
-	IoCombineLimit *int64 `json:"ioCombineLimit,omitempty" tf:"io_combine_limit,omitempty"`
+	IoCombineLimit *float64 `json:"ioCombineLimit,omitempty" tf:"io_combine_limit,omitempty"`
 
 	// settable parameter io_combine_limit. Version 18 and up only. Changing this parameter causes a service restart.
 	// EXPERIMENTAL: Controls the largest I/O size in operations that combine I/O in 8kB units, and silently limits the user-settable parameter io_combine_limit. Version 18 and up only. Changing this parameter causes a service restart.
-	IoMaxCombineLimit *int64 `json:"ioMaxCombineLimit,omitempty" tf:"io_max_combine_limit,omitempty"`
+	IoMaxCombineLimit *float64 `json:"ioMaxCombineLimit,omitempty" tf:"io_max_combine_limit,omitempty"`
 
 	// (Number) EXPERIMENTAL: Controls the maximum number of I/O operations that one process can execute simultaneously. Version 18 and up only. Changing this parameter causes a service restart.
 	// EXPERIMENTAL: Controls the maximum number of I/O operations that one process can execute simultaneously. Version 18 and up only. Changing this parameter causes a service restart.
-	IoMaxConcurrency *int64 `json:"ioMaxConcurrency,omitempty" tf:"io_max_concurrency,omitempty"`
+	IoMaxConcurrency *float64 `json:"ioMaxConcurrency,omitempty" tf:"io_max_concurrency,omitempty"`
 
 	// (String) EXPERIMENTAL: Controls the maximum number of I/O operations that one process can execute simultaneously. Version 18 and up only. Changing this parameter causes a service restart.
 	// EXPERIMENTAL: Controls the maximum number of I/O operations that one process can execute simultaneously. Version 18 and up only. Changing this parameter causes a service restart.
 	IoMethod *string `json:"ioMethod,omitempty" tf:"io_method,omitempty"`
 
-	// (Number) io_max_concurrency. EXPERIMENTAL: Number of IO worker processes, for io_method=worker. Version 18 and up only. Changing this parameter causes a service restart.
-	// io_max_concurrency. EXPERIMENTAL: Number of IO worker processes, for io_method=worker. Version 18 and up only. Changing this parameter causes a service restart.
-	IoWorkers *int64 `json:"ioWorkers,omitempty" tf:"io_workers,omitempty"`
+	// (Number) EXPERIMENTAL: Number of IO worker processes, for io_method=worker. Version 18 and up only.
+	// EXPERIMENTAL: Number of IO worker processes, for io_method=worker. Version 18 and up only.
+	IoWorkers *float64 `json:"ioWorkers,omitempty" tf:"io_workers,omitempty"`
 
 	// wide use of Just-in-Time Compilation (JIT).
 	// Controls system-wide use of Just-in-Time Compilation (JIT).
@@ -484,7 +482,7 @@ type ManagedDatabasePostgresqlPropertiesInitParameters struct {
 
 	// one disables logging autovacuum actions. The default is 1000.
 	// Causes each action executed by autovacuum to be logged if it ran for at least the specified number of milliseconds. Setting this to zero logs all autovacuum actions. Minus-one disables logging autovacuum actions. The default is `1000`.
-	LogAutovacuumMinDuration *int64 `json:"logAutovacuumMinDuration,omitempty" tf:"log_autovacuum_min_duration,omitempty"`
+	LogAutovacuumMinDuration *float64 `json:"logAutovacuumMinDuration,omitempty" tf:"log_autovacuum_min_duration,omitempty"`
 
 	// (String) Controls the amount of detail written in the server log for each message that is logged.
 	// Controls the amount of detail written in the server log for each message that is logged.
@@ -496,91 +494,91 @@ type ManagedDatabasePostgresqlPropertiesInitParameters struct {
 
 	// 1 disables.
 	// Log statements that take more than this number of milliseconds to run, -1 disables.
-	LogMinDurationStatement *int64 `json:"logMinDurationStatement,omitempty" tf:"log_min_duration_statement,omitempty"`
+	LogMinDurationStatement *float64 `json:"logMinDurationStatement,omitempty" tf:"log_min_duration_statement,omitempty"`
 
 	// 1 disables.
 	// Log statements for each temporary file created larger than this number of kilobytes, -1 disables.
-	LogTempFiles *int64 `json:"logTempFiles,omitempty" tf:"log_temp_files,omitempty"`
+	LogTempFiles *float64 `json:"logTempFiles,omitempty" tf:"log_temp_files,omitempty"`
 
-	// release parameter. Contact your account team to confirm your eligibility. You cannot decrease this parameter value when set. For services with a read replica, first increase the read replica's value. After the change is applied to the replica, you can increase the primary service's value. Changing this parameter causes a service restart.
-	// Sets the PostgreSQL maximum number of concurrent connections to the database server. This is a limited-release parameter. Contact your account team to confirm your eligibility. You cannot decrease this parameter value when set. For services with a read replica, first increase the read replica's value. After the change is applied to the replica, you can increase the primary service's value. Changing this parameter causes a service restart.
-	MaxConnections *int64 `json:"maxConnections,omitempty" tf:"max_connections,omitempty"`
+	// (Number) Sets the PostgreSQL maximum number of concurrent connections to the database server. For services with a read replica, first increase the read replica's value. After the change is applied to the replica, you can increase the primary service's value. Changing this parameter causes a service restart.
+	// Sets the PostgreSQL maximum number of concurrent connections to the database server. For services with a read replica, first increase the read replica's value. After the change is applied to the replica, you can increase the primary service's value. Changing this parameter causes a service restart.
+	MaxConnections *float64 `json:"maxConnections,omitempty" tf:"max_connections,omitempty"`
 
 	// (Number) PostgreSQL maximum number of files that can be open per process. The default is 1000 (upstream default). Changing this parameter causes a service restart.
 	// PostgreSQL maximum number of files that can be open per process. The default is `1000` (upstream default). Changing this parameter causes a service restart.
-	MaxFilesPerProcess *int64 `json:"maxFilesPerProcess,omitempty" tf:"max_files_per_process,omitempty"`
+	MaxFilesPerProcess *float64 `json:"maxFilesPerProcess,omitempty" tf:"max_files_per_process,omitempty"`
 
 	// (Number) PostgreSQL maximum locks per transaction. Changing this parameter causes a service restart.
 	// PostgreSQL maximum locks per transaction. Changing this parameter causes a service restart.
-	MaxLocksPerTransaction *int64 `json:"maxLocksPerTransaction,omitempty" tf:"max_locks_per_transaction,omitempty"`
+	MaxLocksPerTransaction *float64 `json:"maxLocksPerTransaction,omitempty" tf:"max_locks_per_transaction,omitempty"`
 
-	// (Number) PostgreSQL maximum logical replication workers (taken from the pool of max_parallel_workers). The default is 4 (upstream default). Changing this parameter causes a service restart.
-	// PostgreSQL maximum logical replication workers (taken from the pool of max_parallel_workers). The default is `4` (upstream default). Changing this parameter causes a service restart.
-	MaxLogicalReplicationWorkers *int64 `json:"maxLogicalReplicationWorkers,omitempty" tf:"max_logical_replication_workers,omitempty"`
+	// (Number) PostgreSQL maximum logical replication workers (taken from the pool defined by max_worker_processes). The default is 4 (upstream default). Changing this parameter causes a service restart.
+	// PostgreSQL maximum logical replication workers (taken from the pool defined by max_worker_processes). The default is `4` (upstream default). Changing this parameter causes a service restart.
+	MaxLogicalReplicationWorkers *float64 `json:"maxLogicalReplicationWorkers,omitempty" tf:"max_logical_replication_workers,omitempty"`
 
 	// (Number) Sets the maximum number of workers that the system can support for parallel queries. The default is 8 (upstream default).
 	// Sets the maximum number of workers that the system can support for parallel queries. The default is `8` (upstream default).
-	MaxParallelWorkers *int64 `json:"maxParallelWorkers,omitempty" tf:"max_parallel_workers,omitempty"`
+	MaxParallelWorkers *float64 `json:"maxParallelWorkers,omitempty" tf:"max_parallel_workers,omitempty"`
 
 	// (Number) Sets the maximum number of workers that can be started by a single Gather or Gather Merge node. The default is 2 (upstream default).
 	// Sets the maximum number of workers that can be started by a single Gather or Gather Merge node. The default is `2` (upstream default).
-	MaxParallelWorkersPerGather *int64 `json:"maxParallelWorkersPerGather,omitempty" tf:"max_parallel_workers_per_gather,omitempty"`
+	MaxParallelWorkersPerGather *float64 `json:"maxParallelWorkersPerGather,omitempty" tf:"max_parallel_workers_per_gather,omitempty"`
 
 	// (Number) PostgreSQL maximum predicate locks per transaction. The default is 64 (upstream default). Changing this parameter causes a service restart.
 	// PostgreSQL maximum predicate locks per transaction. The default is `64` (upstream default). Changing this parameter causes a service restart.
-	MaxPredLocksPerTransaction *int64 `json:"maxPredLocksPerTransaction,omitempty" tf:"max_pred_locks_per_transaction,omitempty"`
+	MaxPredLocksPerTransaction *float64 `json:"maxPredLocksPerTransaction,omitempty" tf:"max_pred_locks_per_transaction,omitempty"`
 
 	// (Number) PostgreSQL maximum prepared transactions. The default is 0. Changing this parameter causes a service restart.
 	// PostgreSQL maximum prepared transactions. The default is `0`. Changing this parameter causes a service restart.
-	MaxPreparedTransactions *int64 `json:"maxPreparedTransactions,omitempty" tf:"max_prepared_transactions,omitempty"`
+	MaxPreparedTransactions *float64 `json:"maxPreparedTransactions,omitempty" tf:"max_prepared_transactions,omitempty"`
 
 	// (Number) PostgreSQL maximum replication slots. The default is 20. Changing this parameter causes a service restart.
 	// PostgreSQL maximum replication slots. The default is `20`. Changing this parameter causes a service restart.
-	MaxReplicationSlots *int64 `json:"maxReplicationSlots,omitempty" tf:"max_replication_slots,omitempty"`
+	MaxReplicationSlots *float64 `json:"maxReplicationSlots,omitempty" tf:"max_replication_slots,omitempty"`
 
 	// 1 is specified, replication slots may retain an unlimited amount of WAL files. The default is -1 (upstream default). wal_keep_size minimum WAL size setting takes precedence over this.
 	// PostgreSQL maximum WAL size (MB) reserved for replication slots. If `-1` is specified, replication slots may retain an unlimited amount of WAL files. The default is `-1` (upstream default). wal_keep_size minimum WAL size setting takes precedence over this.
-	MaxSlotWalKeepSize *int64 `json:"maxSlotWalKeepSize,omitempty" tf:"max_slot_wal_keep_size,omitempty"`
+	MaxSlotWalKeepSize *float64 `json:"maxSlotWalKeepSize,omitempty" tf:"max_slot_wal_keep_size,omitempty"`
 
 	// (Number) Maximum depth of the stack in bytes. The default is 2097152 (upstream default).
 	// Maximum depth of the stack in bytes. The default is `2097152` (upstream default).
-	MaxStackDepth *int64 `json:"maxStackDepth,omitempty" tf:"max_stack_depth,omitempty"`
+	MaxStackDepth *float64 `json:"maxStackDepth,omitempty" tf:"max_stack_depth,omitempty"`
 
 	// (Number) Max standby archive delay in milliseconds. The default is 30000 (upstream default).
 	// Max standby archive delay in milliseconds. The default is `30000` (upstream default).
-	MaxStandbyArchiveDelay *int64 `json:"maxStandbyArchiveDelay,omitempty" tf:"max_standby_archive_delay,omitempty"`
+	MaxStandbyArchiveDelay *float64 `json:"maxStandbyArchiveDelay,omitempty" tf:"max_standby_archive_delay,omitempty"`
 
 	// (Number) Max standby streaming delay in milliseconds. The default is 30000 (upstream default).
 	// Max standby streaming delay in milliseconds. The default is `30000` (upstream default).
-	MaxStandbyStreamingDelay *int64 `json:"maxStandbyStreamingDelay,omitempty" tf:"max_standby_streaming_delay,omitempty"`
+	MaxStandbyStreamingDelay *float64 `json:"maxStandbyStreamingDelay,omitempty" tf:"max_standby_streaming_delay,omitempty"`
 
 	// (Number) Maximum number of synchronization workers per subscription. The default is 2.
 	// Maximum number of synchronization workers per subscription. The default is `2`.
-	MaxSyncWorkersPerSubscription *int64 `json:"maxSyncWorkersPerSubscription,omitempty" tf:"max_sync_workers_per_subscription,omitempty"`
+	MaxSyncWorkersPerSubscription *float64 `json:"maxSyncWorkersPerSubscription,omitempty" tf:"max_sync_workers_per_subscription,omitempty"`
 
 	// (Number) PostgreSQL maximum WAL senders. The default is 20. Changing this parameter causes a service restart.
 	// PostgreSQL maximum WAL senders. The default is `20`. Changing this parameter causes a service restart.
-	MaxWalSenders *int64 `json:"maxWalSenders,omitempty" tf:"max_wal_senders,omitempty"`
+	MaxWalSenders *float64 `json:"maxWalSenders,omitempty" tf:"max_wal_senders,omitempty"`
 
 	// (Number) Sets the maximum number of background processes that the system can support. The default is 8. Changing this parameter causes a service restart.
 	// Sets the maximum number of background processes that the system can support. The default is `8`. Changing this parameter causes a service restart.
-	MaxWorkerProcesses *int64 `json:"maxWorkerProcesses,omitempty" tf:"max_worker_processes,omitempty"`
+	MaxWorkerProcesses *float64 `json:"maxWorkerProcesses,omitempty" tf:"max_worker_processes,omitempty"`
 
-	// (Block List, Max: 1) Migrate data from existing server. (see below for nested schema)
+	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
 	Migration []PropertiesMigrationInitParameters `json:"migration,omitempty" tf:"migration,omitempty"`
 
 	// (Number) Number of nodes for the service.
 	// Number of nodes for the service.
-	NodeCount *int64 `json:"nodeCount,omitempty" tf:"node_count,omitempty"`
+	NodeCount *float64 `json:"nodeCount,omitempty" tf:"node_count,omitempty"`
 
 	// (String, Sensitive) Chooses the algorithm for encrypting passwords.
 	// Chooses the algorithm for encrypting passwords.
-	PasswordEncryptionSecretRef *v1.LocalSecretKeySelector `json:"passwordEncryptionSecretRef,omitempty" tf:"-"`
+	PasswordEncryptionSecretRef *v2.LocalSecretKeySelector `json:"passwordEncryptionSecretRef,omitempty" tf:"-"`
 
 	// (Number) Sets the time interval in seconds to run pg_partman's scheduled tasks. The default is 3600.
 	// Sets the time interval in seconds to run pg_partman's scheduled tasks. The default is `3600`.
-	PgPartmanBgwInterval *int64 `json:"pgPartmanBgwInterval,omitempty" tf:"pg_partman_bgw_interval,omitempty"`
+	PgPartmanBgwInterval *float64 `json:"pgPartmanBgwInterval,omitempty" tf:"pg_partman_bgw_interval,omitempty"`
 
 	// (String) Controls which role to use for pg_partman's scheduled background tasks.
 	// Controls which role to use for pg_partman's scheduled background tasks.
@@ -590,13 +588,21 @@ type ManagedDatabasePostgresqlPropertiesInitParameters struct {
 	// Enable pg_stat_monitor extension if available for the current cluster. Enable the pg_stat_monitor extension. Changing this parameter causes a service restart. When this extension is enabled, pg_stat_statements results for utility commands are unreliable.
 	PgStatMonitorEnable *bool `json:"pgStatMonitorEnable,omitempty" tf:"pg_stat_monitor_enable,omitempty"`
 
-	// (Boolean) Enables or disables query plan monitoring. Changing this parameter causes a service restart. Only available for PostgreSQL 13+.
-	// Enables or disables query plan monitoring. Changing this parameter causes a service restart. Only available for PostgreSQL 13+.
+	// (Boolean) Enables or disables query plan monitoring. Only available for PostgreSQL 13+.
+	// Enables or disables query plan monitoring. Only available for PostgreSQL 13+.
 	PgStatMonitorPgsmEnableQueryPlan *bool `json:"pgStatMonitorPgsmEnableQueryPlan,omitempty" tf:"pg_stat_monitor_pgsm_enable_query_plan,omitempty"`
 
 	// (Number) Sets the maximum number of buckets. Changing this parameter causes a service restart. Only available for PostgreSQL 13+.
 	// Sets the maximum number of buckets. Changing this parameter causes a service restart. Only available for PostgreSQL 13+.
-	PgStatMonitorPgsmMaxBuckets *int64 `json:"pgStatMonitorPgsmMaxBuckets,omitempty" tf:"pg_stat_monitor_pgsm_max_buckets,omitempty"`
+	PgStatMonitorPgsmMaxBuckets *float64 `json:"pgStatMonitorPgsmMaxBuckets,omitempty" tf:"pg_stat_monitor_pgsm_max_buckets,omitempty"`
+
+	// (Boolean) Enable pg_stat_plans extension if available for the current cluster. Enable the pg_stat_plans extension. Changing this parameter causes a service restart. Tracks execution plans for SQL queries.
+	// Enable pg_stat_plans extension if available for the current cluster. Enable the pg_stat_plans extension. Changing this parameter causes a service restart. Tracks execution plans for SQL queries.
+	PgStatPlansEnable *bool `json:"pgStatPlansEnable,omitempty" tf:"pg_stat_plans_enable,omitempty"`
+
+	// level statements (those issued directly by clients), all to also track nested statements (such as statements invoked within functions), or none to disable plan tracking. The default is top.
+	// Controls which statements' plans are tracked. Specify top to track top-level statements (those issued directly by clients), all to also track nested statements (such as statements invoked within functions), or none to disable plan tracking. The default is `top`.
+	PgStatPlansTrack *string `json:"pgStatPlansTrack,omitempty" tf:"pg_stat_plans_track,omitempty"`
 
 	// level statements (those issued directly by clients), all to also track nested statements (such as statements invoked within functions), or none to disable statement statistics collection. The default is top.
 	// Controls which statements are counted. Specify top to track top-level statements (those issued directly by clients), all to also track nested statements (such as statements invoked within functions), or none to disable statement statistics collection. The default is `top`.
@@ -618,6 +624,10 @@ type ManagedDatabasePostgresqlPropertiesInitParameters struct {
 	// Public Access. Allow access to the service from the public Internet.
 	PublicAccess *bool `json:"publicAccess,omitempty" tf:"public_access,omitempty"`
 
+	// (Boolean) Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	// Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	PublicAccessPrometheus *bool `json:"publicAccessPrometheus,omitempty" tf:"public_access_prometheus,omitempty"`
+
 	// (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	// Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	ServiceLog *bool `json:"serviceLog,omitempty" tf:"service_log,omitempty"`
@@ -626,13 +636,17 @@ type ManagedDatabasePostgresqlPropertiesInitParameters struct {
 	// Percentage of total RAM that the database server uses for shared memory buffers. Valid range is 20-60 (float), which corresponds to 20% - 60%. This setting adjusts the shared_buffers configuration value. Changing this parameter causes a service restart.
 	SharedBuffersPercentage *float64 `json:"sharedBuffersPercentage,omitempty" tf:"shared_buffers_percentage,omitempty"`
 
-	// (String) Synchronous replication type. Note that the service plan also needs to support synchronous replication.
-	// Synchronous replication type. Note that the service plan also needs to support synchronous replication.
+	// (String) Sets the current transaction's synchronization level. The default is off. This setting takes precedence over synchronous_replication.
+	// Sets the current transaction's synchronization level. The default is `off`. This setting takes precedence over `synchronous_replication`.
+	SynchronousCommit *string `json:"synchronousCommit,omitempty" tf:"synchronous_commit,omitempty"`
+
+	// (String) Synchronous replication type. (deprecated, use synchronous_commit instead). Note that the service plan also needs to support synchronous replication. This setting is deprecated. Use synchronous_commit instead. Any change to this setting will automatically update synchronous_commit. Setting the value to quorum changes synchronous_commit to remote_write, while setting it to off changes synchronous_commit to off.
+	// Synchronous replication type. (deprecated, use synchronous_commit instead). Note that the service plan also needs to support synchronous replication. This setting is deprecated. Use synchronous_commit instead. Any change to this setting will automatically update synchronous_commit. Setting the value to quorum changes synchronous_commit to remote_write, while setting it to off changes synchronous_commit to off.
 	SynchronousReplication *string `json:"synchronousReplication,omitempty" tf:"synchronous_replication,omitempty"`
 
 	// 1 for unlimited.
 	// PostgreSQL temporary file limit in KiB, -1 for unlimited.
-	TempFileLimit *int64 `json:"tempFileLimit,omitempty" tf:"temp_file_limit,omitempty"`
+	TempFileLimit *float64 `json:"tempFileLimit,omitempty" tf:"temp_file_limit,omitempty"`
 
 	// wide settings for the timescaledb extension. (see below for nested schema)
 	// TimescaleDB extension configuration values. System-wide settings for the timescaledb extension.
@@ -644,7 +658,7 @@ type ManagedDatabasePostgresqlPropertiesInitParameters struct {
 
 	// (Number) Specifies the number of bytes reserved to track the currently executing command for each active session. Changing this parameter causes a service restart.
 	// Specifies the number of bytes reserved to track the currently executing command for each active session. Changing this parameter causes a service restart.
-	TrackActivityQuerySize *int64 `json:"trackActivityQuerySize,omitempty" tf:"track_activity_query_size,omitempty"`
+	TrackActivityQuerySize *float64 `json:"trackActivityQuerySize,omitempty" tf:"track_activity_query_size,omitempty"`
 
 	// (String) Record commit time of transactions. Changing this parameter causes a service restart.
 	// Record commit time of transactions. Changing this parameter causes a service restart.
@@ -668,15 +682,15 @@ type ManagedDatabasePostgresqlPropertiesInitParameters struct {
 
 	// (Number) Terminate replication connections that are inactive for longer than this amount of time, in milliseconds. Setting this value to zero disables the timeout.
 	// Terminate replication connections that are inactive for longer than this amount of time, in milliseconds. Setting this value to zero disables the timeout.
-	WalSenderTimeout *int64 `json:"walSenderTimeout,omitempty" tf:"wal_sender_timeout,omitempty"`
+	WalSenderTimeout *float64 `json:"walSenderTimeout,omitempty" tf:"wal_sender_timeout,omitempty"`
 
 	// (Number) WAL flush interval in milliseconds. The default is 200. Setting this parameter to a lower value may negatively impact performance.
 	// WAL flush interval in milliseconds. The default is `200`. Setting this parameter to a lower value may negatively impact performance.
-	WalWriterDelay *int64 `json:"walWriterDelay,omitempty" tf:"wal_writer_delay,omitempty"`
+	WalWriterDelay *float64 `json:"walWriterDelay,omitempty" tf:"wal_writer_delay,omitempty"`
 
 	// (Number) Sets the maximum amount of memory to be used by a query operation (such as a sort or hash table) before writing to temporary disk files, in MB. The default is 1MB + 0.075% of total RAM (up to 32MB).
 	// Sets the maximum amount of memory to be used by a query operation (such as a sort or hash table) before writing to temporary disk files, in MB. The default is 1MB + 0.075% of total RAM (up to 32MB).
-	WorkMem *int64 `json:"workMem,omitempty" tf:"work_mem,omitempty"`
+	WorkMem *float64 `json:"workMem,omitempty" tf:"work_mem,omitempty"`
 }
 
 type ManagedDatabasePostgresqlPropertiesObservation struct {
@@ -695,27 +709,27 @@ type ManagedDatabasePostgresqlPropertiesObservation struct {
 
 	// (Number) Specifies the minimum number of inserted, updated or deleted tuples needed to trigger an ANALYZE in any one table. The default is 50.
 	// Specifies the minimum number of inserted, updated or deleted tuples needed to trigger an ANALYZE in any one table. The default is `50`.
-	AutovacuumAnalyzeThreshold *int64 `json:"autovacuumAnalyzeThreshold,omitempty" tf:"autovacuum_analyze_threshold,omitempty"`
+	AutovacuumAnalyzeThreshold *float64 `json:"autovacuumAnalyzeThreshold,omitempty" tf:"autovacuum_analyze_threshold,omitempty"`
 
 	// (Number) Specifies the maximum age (in transactions) that a table's pg_class.relfrozenxid field can attain before a VACUUM operation is forced to prevent transaction ID wraparound within the table. The system launches autovacuum processes to prevent wraparound even when autovacuum is otherwise disabled. Changing this parameter causes a service restart.
 	// Specifies the maximum age (in transactions) that a table's pg_class.relfrozenxid field can attain before a VACUUM operation is forced to prevent transaction ID wraparound within the table. The system launches autovacuum processes to prevent wraparound even when autovacuum is otherwise disabled. Changing this parameter causes a service restart.
-	AutovacuumFreezeMaxAge *int64 `json:"autovacuumFreezeMaxAge,omitempty" tf:"autovacuum_freeze_max_age,omitempty"`
+	AutovacuumFreezeMaxAge *float64 `json:"autovacuumFreezeMaxAge,omitempty" tf:"autovacuum_freeze_max_age,omitempty"`
 
 	// (Number) Specifies the maximum number of autovacuum processes (other than the autovacuum launcher) that may be running at any one time. The default is 3. Changing this parameter causes a service restart.
 	// Specifies the maximum number of autovacuum processes (other than the autovacuum launcher) that may be running at any one time. The default is `3`. Changing this parameter causes a service restart.
-	AutovacuumMaxWorkers *int64 `json:"autovacuumMaxWorkers,omitempty" tf:"autovacuum_max_workers,omitempty"`
+	AutovacuumMaxWorkers *float64 `json:"autovacuumMaxWorkers,omitempty" tf:"autovacuum_max_workers,omitempty"`
 
 	// (Number) Specifies the minimum delay between autovacuum runs on any given database. The delay is measured in seconds. The default is 60.
 	// Specifies the minimum delay between autovacuum runs on any given database. The delay is measured in seconds. The default is `60`.
-	AutovacuumNaptime *int64 `json:"autovacuumNaptime,omitempty" tf:"autovacuum_naptime,omitempty"`
+	AutovacuumNaptime *float64 `json:"autovacuumNaptime,omitempty" tf:"autovacuum_naptime,omitempty"`
 
 	// 1 is specified, the regular vacuum_cost_delay value will be used. The default is 2 (upstream default).
 	// Specifies the cost delay value that will be used in automatic VACUUM operations. If `-1` is specified, the regular vacuum_cost_delay value will be used. The default is `2` (upstream default).
-	AutovacuumVacuumCostDelay *int64 `json:"autovacuumVacuumCostDelay,omitempty" tf:"autovacuum_vacuum_cost_delay,omitempty"`
+	AutovacuumVacuumCostDelay *float64 `json:"autovacuumVacuumCostDelay,omitempty" tf:"autovacuum_vacuum_cost_delay,omitempty"`
 
 	// 1 is specified, the regular vacuum_cost_limit value will be used. The default is -1 (upstream default).
 	// Specifies the cost limit value that will be used in automatic VACUUM operations. If `-1` is specified, the regular vacuum_cost_limit value will be used. The default is `-1` (upstream default).
-	AutovacuumVacuumCostLimit *int64 `json:"autovacuumVacuumCostLimit,omitempty" tf:"autovacuum_vacuum_cost_limit,omitempty"`
+	AutovacuumVacuumCostLimit *float64 `json:"autovacuumVacuumCostLimit,omitempty" tf:"autovacuum_vacuum_cost_limit,omitempty"`
 
 	// (Number) Specifies a fraction of the table size to add to autovacuum_vacuum_threshold when deciding whether to trigger a VACUUM (e.g. 0.2 for 20% of the table size). The default is 0.2.
 	// Specifies a fraction of the table size to add to autovacuum_vacuum_threshold when deciding whether to trigger a VACUUM (e.g. `0.2` for 20% of the table size). The default is `0.2`.
@@ -723,27 +737,35 @@ type ManagedDatabasePostgresqlPropertiesObservation struct {
 
 	// (Number) Specifies the minimum number of updated or deleted tuples needed to trigger a VACUUM in any one table. The default is 50.
 	// Specifies the minimum number of updated or deleted tuples needed to trigger a VACUUM in any one table. The default is `50`.
-	AutovacuumVacuumThreshold *int64 `json:"autovacuumVacuumThreshold,omitempty" tf:"autovacuum_vacuum_threshold,omitempty"`
+	AutovacuumVacuumThreshold *float64 `json:"autovacuumVacuumThreshold,omitempty" tf:"autovacuum_vacuum_threshold,omitempty"`
 
 	// (Number) The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
-	BackupHour *int64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
+	BackupHour *float64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
+
+	// (Number) Backup interval in hours. Interval in hours between automatic backups. Minimum value is 3 hours. Must be a divisor of 24 (3, 4, 6, 8, 12, 24).  (Applicable to ACU plans only).
+	// Backup interval in hours. Interval in hours between automatic backups. Minimum value is 3 hours. Must be a divisor of 24 (3, 4, 6, 8, 12, 24).  (Applicable to ACU plans only).
+	BackupIntervalHours *float64 `json:"backupIntervalHours,omitempty" tf:"backup_interval_hours,omitempty"`
 
 	// (Number) The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
-	BackupMinute *int64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
+	BackupMinute *float64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
+
+	// (Number) Backup retention in days. Number of days to retain automatic backups. Backups older than this value will be automatically deleted. (Applicable to ACU plans only).
+	// Backup retention in days. Number of days to retain automatic backups. Backups older than this value will be automatically deleted. (Applicable to ACU plans only).
+	BackupRetentionDays *float64 `json:"backupRetentionDays,omitempty" tf:"backup_retention_days,omitempty"`
 
 	// (Number) Specifies the delay between activity rounds for the background writer in milliseconds. The default is 200.
 	// Specifies the delay between activity rounds for the background writer in milliseconds. The default is `200`.
-	BgwriterDelay *int64 `json:"bgwriterDelay,omitempty" tf:"bgwriter_delay,omitempty"`
+	BgwriterDelay *float64 `json:"bgwriterDelay,omitempty" tf:"bgwriter_delay,omitempty"`
 
 	// (Number) Whenever more than bgwriter_flush_after bytes have been written by the background writer, attempt to force the OS to issue these writes to the underlying storage. Specified in kilobytes. Setting of 0 disables forced writeback. The default is 512.
 	// Whenever more than bgwriter_flush_after bytes have been written by the background writer, attempt to force the OS to issue these writes to the underlying storage. Specified in kilobytes. Setting of 0 disables forced writeback. The default is `512`.
-	BgwriterFlushAfter *int64 `json:"bgwriterFlushAfter,omitempty" tf:"bgwriter_flush_after,omitempty"`
+	BgwriterFlushAfter *float64 `json:"bgwriterFlushAfter,omitempty" tf:"bgwriter_flush_after,omitempty"`
 
 	// (Number) In each round, no more than this many buffers will be written by the background writer. Setting this to zero disables background writing. The default is 100.
 	// In each round, no more than this many buffers will be written by the background writer. Setting this to zero disables background writing. The default is `100`.
-	BgwriterLruMaxpages *int64 `json:"bgwriterLruMaxpages,omitempty" tf:"bgwriter_lru_maxpages,omitempty"`
+	BgwriterLruMaxpages *float64 `json:"bgwriterLruMaxpages,omitempty" tf:"bgwriter_lru_maxpages,omitempty"`
 
 	// (Number) The average recent need for new buffers is multiplied by bgwriter_lru_multiplier to arrive at an estimate of the number that will be needed during the next round, (up to bgwriter_lru_maxpages). 1.0 represents a “just in time” policy of writing exactly the number of buffers predicted to be needed. Larger values provide some cushion against spikes in demand, while smaller values intentionally leave writes to be done by server processes. The default is 2.0.
 	// The average recent need for new buffers is multiplied by bgwriter_lru_multiplier to arrive at an estimate of the number that will be needed during the next round, (up to bgwriter_lru_maxpages). 1.0 represents a “just in time” policy of writing exactly the number of buffers predicted to be needed. Larger values provide some cushion against spikes in demand, while smaller values intentionally leave writes to be done by server processes. The default is `2.0`.
@@ -751,11 +773,15 @@ type ManagedDatabasePostgresqlPropertiesObservation struct {
 
 	// (Number) This is the amount of time, in milliseconds, to wait on a lock before checking to see if there is a deadlock condition. The default is 1000 (upstream default).
 	// This is the amount of time, in milliseconds, to wait on a lock before checking to see if there is a deadlock condition. The default is `1000` (upstream default).
-	DeadlockTimeout *int64 `json:"deadlockTimeout,omitempty" tf:"deadlock_timeout,omitempty"`
+	DeadlockTimeout *float64 `json:"deadlockTimeout,omitempty" tf:"deadlock_timeout,omitempty"`
 
 	// (String) Specifies the default TOAST compression method for values of compressible columns. The default is lz4. Only available for PostgreSQL 14+.
 	// Specifies the default TOAST compression method for values of compressible columns. The default is `lz4`. Only available for PostgreSQL 14+.
 	DefaultToastCompression *string `json:"defaultToastCompression,omitempty" tf:"default_toast_compression,omitempty"`
+
+	// only DNS that automatically falls back to the primary if standby nodes are unavailable. It switches back when a standby recovers.
+	// Enable HA replica DNS. Creates a dedicated read-only DNS that automatically falls back to the primary if standby nodes are unavailable. It switches back when a standby recovers.
+	EnableHaReplicaDNS *bool `json:"enableHaReplicaDns,omitempty" tf:"enable_ha_replica_dns,omitempty"`
 
 	// (List of String) IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
 	// IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
@@ -763,27 +789,27 @@ type ManagedDatabasePostgresqlPropertiesObservation struct {
 
 	// (Number) Time out sessions with open transactions after this number of milliseconds.
 	// Time out sessions with open transactions after this number of milliseconds.
-	IdleInTransactionSessionTimeout *int64 `json:"idleInTransactionSessionTimeout,omitempty" tf:"idle_in_transaction_session_timeout,omitempty"`
+	IdleInTransactionSessionTimeout *float64 `json:"idleInTransactionSessionTimeout,omitempty" tf:"idle_in_transaction_session_timeout,omitempty"`
 
 	// (Number) EXPERIMENTAL: Controls the largest I/O size in operations that combine I/O in 8kB units. Version 17 and up only.
 	// EXPERIMENTAL: Controls the largest I/O size in operations that combine I/O in 8kB units. Version 17 and up only.
-	IoCombineLimit *int64 `json:"ioCombineLimit,omitempty" tf:"io_combine_limit,omitempty"`
+	IoCombineLimit *float64 `json:"ioCombineLimit,omitempty" tf:"io_combine_limit,omitempty"`
 
 	// settable parameter io_combine_limit. Version 18 and up only. Changing this parameter causes a service restart.
 	// EXPERIMENTAL: Controls the largest I/O size in operations that combine I/O in 8kB units, and silently limits the user-settable parameter io_combine_limit. Version 18 and up only. Changing this parameter causes a service restart.
-	IoMaxCombineLimit *int64 `json:"ioMaxCombineLimit,omitempty" tf:"io_max_combine_limit,omitempty"`
+	IoMaxCombineLimit *float64 `json:"ioMaxCombineLimit,omitempty" tf:"io_max_combine_limit,omitempty"`
 
 	// (Number) EXPERIMENTAL: Controls the maximum number of I/O operations that one process can execute simultaneously. Version 18 and up only. Changing this parameter causes a service restart.
 	// EXPERIMENTAL: Controls the maximum number of I/O operations that one process can execute simultaneously. Version 18 and up only. Changing this parameter causes a service restart.
-	IoMaxConcurrency *int64 `json:"ioMaxConcurrency,omitempty" tf:"io_max_concurrency,omitempty"`
+	IoMaxConcurrency *float64 `json:"ioMaxConcurrency,omitempty" tf:"io_max_concurrency,omitempty"`
 
 	// (String) EXPERIMENTAL: Controls the maximum number of I/O operations that one process can execute simultaneously. Version 18 and up only. Changing this parameter causes a service restart.
 	// EXPERIMENTAL: Controls the maximum number of I/O operations that one process can execute simultaneously. Version 18 and up only. Changing this parameter causes a service restart.
 	IoMethod *string `json:"ioMethod,omitempty" tf:"io_method,omitempty"`
 
-	// (Number) io_max_concurrency. EXPERIMENTAL: Number of IO worker processes, for io_method=worker. Version 18 and up only. Changing this parameter causes a service restart.
-	// io_max_concurrency. EXPERIMENTAL: Number of IO worker processes, for io_method=worker. Version 18 and up only. Changing this parameter causes a service restart.
-	IoWorkers *int64 `json:"ioWorkers,omitempty" tf:"io_workers,omitempty"`
+	// (Number) EXPERIMENTAL: Number of IO worker processes, for io_method=worker. Version 18 and up only.
+	// EXPERIMENTAL: Number of IO worker processes, for io_method=worker. Version 18 and up only.
+	IoWorkers *float64 `json:"ioWorkers,omitempty" tf:"io_workers,omitempty"`
 
 	// wide use of Just-in-Time Compilation (JIT).
 	// Controls system-wide use of Just-in-Time Compilation (JIT).
@@ -791,7 +817,7 @@ type ManagedDatabasePostgresqlPropertiesObservation struct {
 
 	// one disables logging autovacuum actions. The default is 1000.
 	// Causes each action executed by autovacuum to be logged if it ran for at least the specified number of milliseconds. Setting this to zero logs all autovacuum actions. Minus-one disables logging autovacuum actions. The default is `1000`.
-	LogAutovacuumMinDuration *int64 `json:"logAutovacuumMinDuration,omitempty" tf:"log_autovacuum_min_duration,omitempty"`
+	LogAutovacuumMinDuration *float64 `json:"logAutovacuumMinDuration,omitempty" tf:"log_autovacuum_min_duration,omitempty"`
 
 	// (String) Controls the amount of detail written in the server log for each message that is logged.
 	// Controls the amount of detail written in the server log for each message that is logged.
@@ -803,87 +829,87 @@ type ManagedDatabasePostgresqlPropertiesObservation struct {
 
 	// 1 disables.
 	// Log statements that take more than this number of milliseconds to run, -1 disables.
-	LogMinDurationStatement *int64 `json:"logMinDurationStatement,omitempty" tf:"log_min_duration_statement,omitempty"`
+	LogMinDurationStatement *float64 `json:"logMinDurationStatement,omitempty" tf:"log_min_duration_statement,omitempty"`
 
 	// 1 disables.
 	// Log statements for each temporary file created larger than this number of kilobytes, -1 disables.
-	LogTempFiles *int64 `json:"logTempFiles,omitempty" tf:"log_temp_files,omitempty"`
+	LogTempFiles *float64 `json:"logTempFiles,omitempty" tf:"log_temp_files,omitempty"`
 
-	// release parameter. Contact your account team to confirm your eligibility. You cannot decrease this parameter value when set. For services with a read replica, first increase the read replica's value. After the change is applied to the replica, you can increase the primary service's value. Changing this parameter causes a service restart.
-	// Sets the PostgreSQL maximum number of concurrent connections to the database server. This is a limited-release parameter. Contact your account team to confirm your eligibility. You cannot decrease this parameter value when set. For services with a read replica, first increase the read replica's value. After the change is applied to the replica, you can increase the primary service's value. Changing this parameter causes a service restart.
-	MaxConnections *int64 `json:"maxConnections,omitempty" tf:"max_connections,omitempty"`
+	// (Number) Sets the PostgreSQL maximum number of concurrent connections to the database server. For services with a read replica, first increase the read replica's value. After the change is applied to the replica, you can increase the primary service's value. Changing this parameter causes a service restart.
+	// Sets the PostgreSQL maximum number of concurrent connections to the database server. For services with a read replica, first increase the read replica's value. After the change is applied to the replica, you can increase the primary service's value. Changing this parameter causes a service restart.
+	MaxConnections *float64 `json:"maxConnections,omitempty" tf:"max_connections,omitempty"`
 
 	// (Number) PostgreSQL maximum number of files that can be open per process. The default is 1000 (upstream default). Changing this parameter causes a service restart.
 	// PostgreSQL maximum number of files that can be open per process. The default is `1000` (upstream default). Changing this parameter causes a service restart.
-	MaxFilesPerProcess *int64 `json:"maxFilesPerProcess,omitempty" tf:"max_files_per_process,omitempty"`
+	MaxFilesPerProcess *float64 `json:"maxFilesPerProcess,omitempty" tf:"max_files_per_process,omitempty"`
 
 	// (Number) PostgreSQL maximum locks per transaction. Changing this parameter causes a service restart.
 	// PostgreSQL maximum locks per transaction. Changing this parameter causes a service restart.
-	MaxLocksPerTransaction *int64 `json:"maxLocksPerTransaction,omitempty" tf:"max_locks_per_transaction,omitempty"`
+	MaxLocksPerTransaction *float64 `json:"maxLocksPerTransaction,omitempty" tf:"max_locks_per_transaction,omitempty"`
 
-	// (Number) PostgreSQL maximum logical replication workers (taken from the pool of max_parallel_workers). The default is 4 (upstream default). Changing this parameter causes a service restart.
-	// PostgreSQL maximum logical replication workers (taken from the pool of max_parallel_workers). The default is `4` (upstream default). Changing this parameter causes a service restart.
-	MaxLogicalReplicationWorkers *int64 `json:"maxLogicalReplicationWorkers,omitempty" tf:"max_logical_replication_workers,omitempty"`
+	// (Number) PostgreSQL maximum logical replication workers (taken from the pool defined by max_worker_processes). The default is 4 (upstream default). Changing this parameter causes a service restart.
+	// PostgreSQL maximum logical replication workers (taken from the pool defined by max_worker_processes). The default is `4` (upstream default). Changing this parameter causes a service restart.
+	MaxLogicalReplicationWorkers *float64 `json:"maxLogicalReplicationWorkers,omitempty" tf:"max_logical_replication_workers,omitempty"`
 
 	// (Number) Sets the maximum number of workers that the system can support for parallel queries. The default is 8 (upstream default).
 	// Sets the maximum number of workers that the system can support for parallel queries. The default is `8` (upstream default).
-	MaxParallelWorkers *int64 `json:"maxParallelWorkers,omitempty" tf:"max_parallel_workers,omitempty"`
+	MaxParallelWorkers *float64 `json:"maxParallelWorkers,omitempty" tf:"max_parallel_workers,omitempty"`
 
 	// (Number) Sets the maximum number of workers that can be started by a single Gather or Gather Merge node. The default is 2 (upstream default).
 	// Sets the maximum number of workers that can be started by a single Gather or Gather Merge node. The default is `2` (upstream default).
-	MaxParallelWorkersPerGather *int64 `json:"maxParallelWorkersPerGather,omitempty" tf:"max_parallel_workers_per_gather,omitempty"`
+	MaxParallelWorkersPerGather *float64 `json:"maxParallelWorkersPerGather,omitempty" tf:"max_parallel_workers_per_gather,omitempty"`
 
 	// (Number) PostgreSQL maximum predicate locks per transaction. The default is 64 (upstream default). Changing this parameter causes a service restart.
 	// PostgreSQL maximum predicate locks per transaction. The default is `64` (upstream default). Changing this parameter causes a service restart.
-	MaxPredLocksPerTransaction *int64 `json:"maxPredLocksPerTransaction,omitempty" tf:"max_pred_locks_per_transaction,omitempty"`
+	MaxPredLocksPerTransaction *float64 `json:"maxPredLocksPerTransaction,omitempty" tf:"max_pred_locks_per_transaction,omitempty"`
 
 	// (Number) PostgreSQL maximum prepared transactions. The default is 0. Changing this parameter causes a service restart.
 	// PostgreSQL maximum prepared transactions. The default is `0`. Changing this parameter causes a service restart.
-	MaxPreparedTransactions *int64 `json:"maxPreparedTransactions,omitempty" tf:"max_prepared_transactions,omitempty"`
+	MaxPreparedTransactions *float64 `json:"maxPreparedTransactions,omitempty" tf:"max_prepared_transactions,omitempty"`
 
 	// (Number) PostgreSQL maximum replication slots. The default is 20. Changing this parameter causes a service restart.
 	// PostgreSQL maximum replication slots. The default is `20`. Changing this parameter causes a service restart.
-	MaxReplicationSlots *int64 `json:"maxReplicationSlots,omitempty" tf:"max_replication_slots,omitempty"`
+	MaxReplicationSlots *float64 `json:"maxReplicationSlots,omitempty" tf:"max_replication_slots,omitempty"`
 
 	// 1 is specified, replication slots may retain an unlimited amount of WAL files. The default is -1 (upstream default). wal_keep_size minimum WAL size setting takes precedence over this.
 	// PostgreSQL maximum WAL size (MB) reserved for replication slots. If `-1` is specified, replication slots may retain an unlimited amount of WAL files. The default is `-1` (upstream default). wal_keep_size minimum WAL size setting takes precedence over this.
-	MaxSlotWalKeepSize *int64 `json:"maxSlotWalKeepSize,omitempty" tf:"max_slot_wal_keep_size,omitempty"`
+	MaxSlotWalKeepSize *float64 `json:"maxSlotWalKeepSize,omitempty" tf:"max_slot_wal_keep_size,omitempty"`
 
 	// (Number) Maximum depth of the stack in bytes. The default is 2097152 (upstream default).
 	// Maximum depth of the stack in bytes. The default is `2097152` (upstream default).
-	MaxStackDepth *int64 `json:"maxStackDepth,omitempty" tf:"max_stack_depth,omitempty"`
+	MaxStackDepth *float64 `json:"maxStackDepth,omitempty" tf:"max_stack_depth,omitempty"`
 
 	// (Number) Max standby archive delay in milliseconds. The default is 30000 (upstream default).
 	// Max standby archive delay in milliseconds. The default is `30000` (upstream default).
-	MaxStandbyArchiveDelay *int64 `json:"maxStandbyArchiveDelay,omitempty" tf:"max_standby_archive_delay,omitempty"`
+	MaxStandbyArchiveDelay *float64 `json:"maxStandbyArchiveDelay,omitempty" tf:"max_standby_archive_delay,omitempty"`
 
 	// (Number) Max standby streaming delay in milliseconds. The default is 30000 (upstream default).
 	// Max standby streaming delay in milliseconds. The default is `30000` (upstream default).
-	MaxStandbyStreamingDelay *int64 `json:"maxStandbyStreamingDelay,omitempty" tf:"max_standby_streaming_delay,omitempty"`
+	MaxStandbyStreamingDelay *float64 `json:"maxStandbyStreamingDelay,omitempty" tf:"max_standby_streaming_delay,omitempty"`
 
 	// (Number) Maximum number of synchronization workers per subscription. The default is 2.
 	// Maximum number of synchronization workers per subscription. The default is `2`.
-	MaxSyncWorkersPerSubscription *int64 `json:"maxSyncWorkersPerSubscription,omitempty" tf:"max_sync_workers_per_subscription,omitempty"`
+	MaxSyncWorkersPerSubscription *float64 `json:"maxSyncWorkersPerSubscription,omitempty" tf:"max_sync_workers_per_subscription,omitempty"`
 
 	// (Number) PostgreSQL maximum WAL senders. The default is 20. Changing this parameter causes a service restart.
 	// PostgreSQL maximum WAL senders. The default is `20`. Changing this parameter causes a service restart.
-	MaxWalSenders *int64 `json:"maxWalSenders,omitempty" tf:"max_wal_senders,omitempty"`
+	MaxWalSenders *float64 `json:"maxWalSenders,omitempty" tf:"max_wal_senders,omitempty"`
 
 	// (Number) Sets the maximum number of background processes that the system can support. The default is 8. Changing this parameter causes a service restart.
 	// Sets the maximum number of background processes that the system can support. The default is `8`. Changing this parameter causes a service restart.
-	MaxWorkerProcesses *int64 `json:"maxWorkerProcesses,omitempty" tf:"max_worker_processes,omitempty"`
+	MaxWorkerProcesses *float64 `json:"maxWorkerProcesses,omitempty" tf:"max_worker_processes,omitempty"`
 
-	// (Block List, Max: 1) Migrate data from existing server. (see below for nested schema)
+	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
 	Migration []PropertiesMigrationObservation `json:"migration,omitempty" tf:"migration,omitempty"`
 
 	// (Number) Number of nodes for the service.
 	// Number of nodes for the service.
-	NodeCount *int64 `json:"nodeCount,omitempty" tf:"node_count,omitempty"`
+	NodeCount *float64 `json:"nodeCount,omitempty" tf:"node_count,omitempty"`
 
 	// (Number) Sets the time interval in seconds to run pg_partman's scheduled tasks. The default is 3600.
 	// Sets the time interval in seconds to run pg_partman's scheduled tasks. The default is `3600`.
-	PgPartmanBgwInterval *int64 `json:"pgPartmanBgwInterval,omitempty" tf:"pg_partman_bgw_interval,omitempty"`
+	PgPartmanBgwInterval *float64 `json:"pgPartmanBgwInterval,omitempty" tf:"pg_partman_bgw_interval,omitempty"`
 
 	// (String) Controls which role to use for pg_partman's scheduled background tasks.
 	// Controls which role to use for pg_partman's scheduled background tasks.
@@ -893,13 +919,21 @@ type ManagedDatabasePostgresqlPropertiesObservation struct {
 	// Enable pg_stat_monitor extension if available for the current cluster. Enable the pg_stat_monitor extension. Changing this parameter causes a service restart. When this extension is enabled, pg_stat_statements results for utility commands are unreliable.
 	PgStatMonitorEnable *bool `json:"pgStatMonitorEnable,omitempty" tf:"pg_stat_monitor_enable,omitempty"`
 
-	// (Boolean) Enables or disables query plan monitoring. Changing this parameter causes a service restart. Only available for PostgreSQL 13+.
-	// Enables or disables query plan monitoring. Changing this parameter causes a service restart. Only available for PostgreSQL 13+.
+	// (Boolean) Enables or disables query plan monitoring. Only available for PostgreSQL 13+.
+	// Enables or disables query plan monitoring. Only available for PostgreSQL 13+.
 	PgStatMonitorPgsmEnableQueryPlan *bool `json:"pgStatMonitorPgsmEnableQueryPlan,omitempty" tf:"pg_stat_monitor_pgsm_enable_query_plan,omitempty"`
 
 	// (Number) Sets the maximum number of buckets. Changing this parameter causes a service restart. Only available for PostgreSQL 13+.
 	// Sets the maximum number of buckets. Changing this parameter causes a service restart. Only available for PostgreSQL 13+.
-	PgStatMonitorPgsmMaxBuckets *int64 `json:"pgStatMonitorPgsmMaxBuckets,omitempty" tf:"pg_stat_monitor_pgsm_max_buckets,omitempty"`
+	PgStatMonitorPgsmMaxBuckets *float64 `json:"pgStatMonitorPgsmMaxBuckets,omitempty" tf:"pg_stat_monitor_pgsm_max_buckets,omitempty"`
+
+	// (Boolean) Enable pg_stat_plans extension if available for the current cluster. Enable the pg_stat_plans extension. Changing this parameter causes a service restart. Tracks execution plans for SQL queries.
+	// Enable pg_stat_plans extension if available for the current cluster. Enable the pg_stat_plans extension. Changing this parameter causes a service restart. Tracks execution plans for SQL queries.
+	PgStatPlansEnable *bool `json:"pgStatPlansEnable,omitempty" tf:"pg_stat_plans_enable,omitempty"`
+
+	// level statements (those issued directly by clients), all to also track nested statements (such as statements invoked within functions), or none to disable plan tracking. The default is top.
+	// Controls which statements' plans are tracked. Specify top to track top-level statements (those issued directly by clients), all to also track nested statements (such as statements invoked within functions), or none to disable plan tracking. The default is `top`.
+	PgStatPlansTrack *string `json:"pgStatPlansTrack,omitempty" tf:"pg_stat_plans_track,omitempty"`
 
 	// level statements (those issued directly by clients), all to also track nested statements (such as statements invoked within functions), or none to disable statement statistics collection. The default is top.
 	// Controls which statements are counted. Specify top to track top-level statements (those issued directly by clients), all to also track nested statements (such as statements invoked within functions), or none to disable statement statistics collection. The default is `top`.
@@ -921,6 +955,10 @@ type ManagedDatabasePostgresqlPropertiesObservation struct {
 	// Public Access. Allow access to the service from the public Internet.
 	PublicAccess *bool `json:"publicAccess,omitempty" tf:"public_access,omitempty"`
 
+	// (Boolean) Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	// Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	PublicAccessPrometheus *bool `json:"publicAccessPrometheus,omitempty" tf:"public_access_prometheus,omitempty"`
+
 	// (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	// Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	ServiceLog *bool `json:"serviceLog,omitempty" tf:"service_log,omitempty"`
@@ -929,13 +967,17 @@ type ManagedDatabasePostgresqlPropertiesObservation struct {
 	// Percentage of total RAM that the database server uses for shared memory buffers. Valid range is 20-60 (float), which corresponds to 20% - 60%. This setting adjusts the shared_buffers configuration value. Changing this parameter causes a service restart.
 	SharedBuffersPercentage *float64 `json:"sharedBuffersPercentage,omitempty" tf:"shared_buffers_percentage,omitempty"`
 
-	// (String) Synchronous replication type. Note that the service plan also needs to support synchronous replication.
-	// Synchronous replication type. Note that the service plan also needs to support synchronous replication.
+	// (String) Sets the current transaction's synchronization level. The default is off. This setting takes precedence over synchronous_replication.
+	// Sets the current transaction's synchronization level. The default is `off`. This setting takes precedence over `synchronous_replication`.
+	SynchronousCommit *string `json:"synchronousCommit,omitempty" tf:"synchronous_commit,omitempty"`
+
+	// (String) Synchronous replication type. (deprecated, use synchronous_commit instead). Note that the service plan also needs to support synchronous replication. This setting is deprecated. Use synchronous_commit instead. Any change to this setting will automatically update synchronous_commit. Setting the value to quorum changes synchronous_commit to remote_write, while setting it to off changes synchronous_commit to off.
+	// Synchronous replication type. (deprecated, use synchronous_commit instead). Note that the service plan also needs to support synchronous replication. This setting is deprecated. Use synchronous_commit instead. Any change to this setting will automatically update synchronous_commit. Setting the value to quorum changes synchronous_commit to remote_write, while setting it to off changes synchronous_commit to off.
 	SynchronousReplication *string `json:"synchronousReplication,omitempty" tf:"synchronous_replication,omitempty"`
 
 	// 1 for unlimited.
 	// PostgreSQL temporary file limit in KiB, -1 for unlimited.
-	TempFileLimit *int64 `json:"tempFileLimit,omitempty" tf:"temp_file_limit,omitempty"`
+	TempFileLimit *float64 `json:"tempFileLimit,omitempty" tf:"temp_file_limit,omitempty"`
 
 	// wide settings for the timescaledb extension. (see below for nested schema)
 	// TimescaleDB extension configuration values. System-wide settings for the timescaledb extension.
@@ -947,7 +989,7 @@ type ManagedDatabasePostgresqlPropertiesObservation struct {
 
 	// (Number) Specifies the number of bytes reserved to track the currently executing command for each active session. Changing this parameter causes a service restart.
 	// Specifies the number of bytes reserved to track the currently executing command for each active session. Changing this parameter causes a service restart.
-	TrackActivityQuerySize *int64 `json:"trackActivityQuerySize,omitempty" tf:"track_activity_query_size,omitempty"`
+	TrackActivityQuerySize *float64 `json:"trackActivityQuerySize,omitempty" tf:"track_activity_query_size,omitempty"`
 
 	// (String) Record commit time of transactions. Changing this parameter causes a service restart.
 	// Record commit time of transactions. Changing this parameter causes a service restart.
@@ -971,15 +1013,15 @@ type ManagedDatabasePostgresqlPropertiesObservation struct {
 
 	// (Number) Terminate replication connections that are inactive for longer than this amount of time, in milliseconds. Setting this value to zero disables the timeout.
 	// Terminate replication connections that are inactive for longer than this amount of time, in milliseconds. Setting this value to zero disables the timeout.
-	WalSenderTimeout *int64 `json:"walSenderTimeout,omitempty" tf:"wal_sender_timeout,omitempty"`
+	WalSenderTimeout *float64 `json:"walSenderTimeout,omitempty" tf:"wal_sender_timeout,omitempty"`
 
 	// (Number) WAL flush interval in milliseconds. The default is 200. Setting this parameter to a lower value may negatively impact performance.
 	// WAL flush interval in milliseconds. The default is `200`. Setting this parameter to a lower value may negatively impact performance.
-	WalWriterDelay *int64 `json:"walWriterDelay,omitempty" tf:"wal_writer_delay,omitempty"`
+	WalWriterDelay *float64 `json:"walWriterDelay,omitempty" tf:"wal_writer_delay,omitempty"`
 
 	// (Number) Sets the maximum amount of memory to be used by a query operation (such as a sort or hash table) before writing to temporary disk files, in MB. The default is 1MB + 0.075% of total RAM (up to 32MB).
 	// Sets the maximum amount of memory to be used by a query operation (such as a sort or hash table) before writing to temporary disk files, in MB. The default is 1MB + 0.075% of total RAM (up to 32MB).
-	WorkMem *int64 `json:"workMem,omitempty" tf:"work_mem,omitempty"`
+	WorkMem *float64 `json:"workMem,omitempty" tf:"work_mem,omitempty"`
 }
 
 type ManagedDatabasePostgresqlPropertiesParameters struct {
@@ -987,7 +1029,7 @@ type ManagedDatabasePostgresqlPropertiesParameters struct {
 	// (String, Sensitive) Custom password for admin user. Defaults to random string. This must be set only when a new service is being created.
 	// Custom password for admin user. Defaults to random string. This must be set only when a new service is being created.
 	// +kubebuilder:validation:Optional
-	AdminPasswordSecretRef *v1.LocalSecretKeySelector `json:"adminPasswordSecretRef,omitempty" tf:"-"`
+	AdminPasswordSecretRef *v2.LocalSecretKeySelector `json:"adminPasswordSecretRef,omitempty" tf:"-"`
 
 	// (String) Custom username for admin user. This must be set only when a new service is being created.
 	// Custom username for admin user. This must be set only when a new service is being created.
@@ -1007,32 +1049,32 @@ type ManagedDatabasePostgresqlPropertiesParameters struct {
 	// (Number) Specifies the minimum number of inserted, updated or deleted tuples needed to trigger an ANALYZE in any one table. The default is 50.
 	// Specifies the minimum number of inserted, updated or deleted tuples needed to trigger an ANALYZE in any one table. The default is `50`.
 	// +kubebuilder:validation:Optional
-	AutovacuumAnalyzeThreshold *int64 `json:"autovacuumAnalyzeThreshold,omitempty" tf:"autovacuum_analyze_threshold,omitempty"`
+	AutovacuumAnalyzeThreshold *float64 `json:"autovacuumAnalyzeThreshold,omitempty" tf:"autovacuum_analyze_threshold,omitempty"`
 
 	// (Number) Specifies the maximum age (in transactions) that a table's pg_class.relfrozenxid field can attain before a VACUUM operation is forced to prevent transaction ID wraparound within the table. The system launches autovacuum processes to prevent wraparound even when autovacuum is otherwise disabled. Changing this parameter causes a service restart.
 	// Specifies the maximum age (in transactions) that a table's pg_class.relfrozenxid field can attain before a VACUUM operation is forced to prevent transaction ID wraparound within the table. The system launches autovacuum processes to prevent wraparound even when autovacuum is otherwise disabled. Changing this parameter causes a service restart.
 	// +kubebuilder:validation:Optional
-	AutovacuumFreezeMaxAge *int64 `json:"autovacuumFreezeMaxAge,omitempty" tf:"autovacuum_freeze_max_age,omitempty"`
+	AutovacuumFreezeMaxAge *float64 `json:"autovacuumFreezeMaxAge,omitempty" tf:"autovacuum_freeze_max_age,omitempty"`
 
 	// (Number) Specifies the maximum number of autovacuum processes (other than the autovacuum launcher) that may be running at any one time. The default is 3. Changing this parameter causes a service restart.
 	// Specifies the maximum number of autovacuum processes (other than the autovacuum launcher) that may be running at any one time. The default is `3`. Changing this parameter causes a service restart.
 	// +kubebuilder:validation:Optional
-	AutovacuumMaxWorkers *int64 `json:"autovacuumMaxWorkers,omitempty" tf:"autovacuum_max_workers,omitempty"`
+	AutovacuumMaxWorkers *float64 `json:"autovacuumMaxWorkers,omitempty" tf:"autovacuum_max_workers,omitempty"`
 
 	// (Number) Specifies the minimum delay between autovacuum runs on any given database. The delay is measured in seconds. The default is 60.
 	// Specifies the minimum delay between autovacuum runs on any given database. The delay is measured in seconds. The default is `60`.
 	// +kubebuilder:validation:Optional
-	AutovacuumNaptime *int64 `json:"autovacuumNaptime,omitempty" tf:"autovacuum_naptime,omitempty"`
+	AutovacuumNaptime *float64 `json:"autovacuumNaptime,omitempty" tf:"autovacuum_naptime,omitempty"`
 
 	// 1 is specified, the regular vacuum_cost_delay value will be used. The default is 2 (upstream default).
 	// Specifies the cost delay value that will be used in automatic VACUUM operations. If `-1` is specified, the regular vacuum_cost_delay value will be used. The default is `2` (upstream default).
 	// +kubebuilder:validation:Optional
-	AutovacuumVacuumCostDelay *int64 `json:"autovacuumVacuumCostDelay,omitempty" tf:"autovacuum_vacuum_cost_delay,omitempty"`
+	AutovacuumVacuumCostDelay *float64 `json:"autovacuumVacuumCostDelay,omitempty" tf:"autovacuum_vacuum_cost_delay,omitempty"`
 
 	// 1 is specified, the regular vacuum_cost_limit value will be used. The default is -1 (upstream default).
 	// Specifies the cost limit value that will be used in automatic VACUUM operations. If `-1` is specified, the regular vacuum_cost_limit value will be used. The default is `-1` (upstream default).
 	// +kubebuilder:validation:Optional
-	AutovacuumVacuumCostLimit *int64 `json:"autovacuumVacuumCostLimit,omitempty" tf:"autovacuum_vacuum_cost_limit,omitempty"`
+	AutovacuumVacuumCostLimit *float64 `json:"autovacuumVacuumCostLimit,omitempty" tf:"autovacuum_vacuum_cost_limit,omitempty"`
 
 	// (Number) Specifies a fraction of the table size to add to autovacuum_vacuum_threshold when deciding whether to trigger a VACUUM (e.g. 0.2 for 20% of the table size). The default is 0.2.
 	// Specifies a fraction of the table size to add to autovacuum_vacuum_threshold when deciding whether to trigger a VACUUM (e.g. `0.2` for 20% of the table size). The default is `0.2`.
@@ -1042,32 +1084,42 @@ type ManagedDatabasePostgresqlPropertiesParameters struct {
 	// (Number) Specifies the minimum number of updated or deleted tuples needed to trigger a VACUUM in any one table. The default is 50.
 	// Specifies the minimum number of updated or deleted tuples needed to trigger a VACUUM in any one table. The default is `50`.
 	// +kubebuilder:validation:Optional
-	AutovacuumVacuumThreshold *int64 `json:"autovacuumVacuumThreshold,omitempty" tf:"autovacuum_vacuum_threshold,omitempty"`
+	AutovacuumVacuumThreshold *float64 `json:"autovacuumVacuumThreshold,omitempty" tf:"autovacuum_vacuum_threshold,omitempty"`
 
 	// (Number) The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.
 	// +kubebuilder:validation:Optional
-	BackupHour *int64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
+	BackupHour *float64 `json:"backupHour,omitempty" tf:"backup_hour,omitempty"`
+
+	// (Number) Backup interval in hours. Interval in hours between automatic backups. Minimum value is 3 hours. Must be a divisor of 24 (3, 4, 6, 8, 12, 24).  (Applicable to ACU plans only).
+	// Backup interval in hours. Interval in hours between automatic backups. Minimum value is 3 hours. Must be a divisor of 24 (3, 4, 6, 8, 12, 24).  (Applicable to ACU plans only).
+	// +kubebuilder:validation:Optional
+	BackupIntervalHours *float64 `json:"backupIntervalHours,omitempty" tf:"backup_interval_hours,omitempty"`
 
 	// (Number) The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
 	// The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.
 	// +kubebuilder:validation:Optional
-	BackupMinute *int64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
+	BackupMinute *float64 `json:"backupMinute,omitempty" tf:"backup_minute,omitempty"`
+
+	// (Number) Backup retention in days. Number of days to retain automatic backups. Backups older than this value will be automatically deleted. (Applicable to ACU plans only).
+	// Backup retention in days. Number of days to retain automatic backups. Backups older than this value will be automatically deleted. (Applicable to ACU plans only).
+	// +kubebuilder:validation:Optional
+	BackupRetentionDays *float64 `json:"backupRetentionDays,omitempty" tf:"backup_retention_days,omitempty"`
 
 	// (Number) Specifies the delay between activity rounds for the background writer in milliseconds. The default is 200.
 	// Specifies the delay between activity rounds for the background writer in milliseconds. The default is `200`.
 	// +kubebuilder:validation:Optional
-	BgwriterDelay *int64 `json:"bgwriterDelay,omitempty" tf:"bgwriter_delay,omitempty"`
+	BgwriterDelay *float64 `json:"bgwriterDelay,omitempty" tf:"bgwriter_delay,omitempty"`
 
 	// (Number) Whenever more than bgwriter_flush_after bytes have been written by the background writer, attempt to force the OS to issue these writes to the underlying storage. Specified in kilobytes. Setting of 0 disables forced writeback. The default is 512.
 	// Whenever more than bgwriter_flush_after bytes have been written by the background writer, attempt to force the OS to issue these writes to the underlying storage. Specified in kilobytes. Setting of 0 disables forced writeback. The default is `512`.
 	// +kubebuilder:validation:Optional
-	BgwriterFlushAfter *int64 `json:"bgwriterFlushAfter,omitempty" tf:"bgwriter_flush_after,omitempty"`
+	BgwriterFlushAfter *float64 `json:"bgwriterFlushAfter,omitempty" tf:"bgwriter_flush_after,omitempty"`
 
 	// (Number) In each round, no more than this many buffers will be written by the background writer. Setting this to zero disables background writing. The default is 100.
 	// In each round, no more than this many buffers will be written by the background writer. Setting this to zero disables background writing. The default is `100`.
 	// +kubebuilder:validation:Optional
-	BgwriterLruMaxpages *int64 `json:"bgwriterLruMaxpages,omitempty" tf:"bgwriter_lru_maxpages,omitempty"`
+	BgwriterLruMaxpages *float64 `json:"bgwriterLruMaxpages,omitempty" tf:"bgwriter_lru_maxpages,omitempty"`
 
 	// (Number) The average recent need for new buffers is multiplied by bgwriter_lru_multiplier to arrive at an estimate of the number that will be needed during the next round, (up to bgwriter_lru_maxpages). 1.0 represents a “just in time” policy of writing exactly the number of buffers predicted to be needed. Larger values provide some cushion against spikes in demand, while smaller values intentionally leave writes to be done by server processes. The default is 2.0.
 	// The average recent need for new buffers is multiplied by bgwriter_lru_multiplier to arrive at an estimate of the number that will be needed during the next round, (up to bgwriter_lru_maxpages). 1.0 represents a “just in time” policy of writing exactly the number of buffers predicted to be needed. Larger values provide some cushion against spikes in demand, while smaller values intentionally leave writes to be done by server processes. The default is `2.0`.
@@ -1077,12 +1129,17 @@ type ManagedDatabasePostgresqlPropertiesParameters struct {
 	// (Number) This is the amount of time, in milliseconds, to wait on a lock before checking to see if there is a deadlock condition. The default is 1000 (upstream default).
 	// This is the amount of time, in milliseconds, to wait on a lock before checking to see if there is a deadlock condition. The default is `1000` (upstream default).
 	// +kubebuilder:validation:Optional
-	DeadlockTimeout *int64 `json:"deadlockTimeout,omitempty" tf:"deadlock_timeout,omitempty"`
+	DeadlockTimeout *float64 `json:"deadlockTimeout,omitempty" tf:"deadlock_timeout,omitempty"`
 
 	// (String) Specifies the default TOAST compression method for values of compressible columns. The default is lz4. Only available for PostgreSQL 14+.
 	// Specifies the default TOAST compression method for values of compressible columns. The default is `lz4`. Only available for PostgreSQL 14+.
 	// +kubebuilder:validation:Optional
 	DefaultToastCompression *string `json:"defaultToastCompression,omitempty" tf:"default_toast_compression,omitempty"`
+
+	// only DNS that automatically falls back to the primary if standby nodes are unavailable. It switches back when a standby recovers.
+	// Enable HA replica DNS. Creates a dedicated read-only DNS that automatically falls back to the primary if standby nodes are unavailable. It switches back when a standby recovers.
+	// +kubebuilder:validation:Optional
+	EnableHaReplicaDNS *bool `json:"enableHaReplicaDns,omitempty" tf:"enable_ha_replica_dns,omitempty"`
 
 	// (List of String) IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
 	// IP filter. Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.
@@ -1092,32 +1149,32 @@ type ManagedDatabasePostgresqlPropertiesParameters struct {
 	// (Number) Time out sessions with open transactions after this number of milliseconds.
 	// Time out sessions with open transactions after this number of milliseconds.
 	// +kubebuilder:validation:Optional
-	IdleInTransactionSessionTimeout *int64 `json:"idleInTransactionSessionTimeout,omitempty" tf:"idle_in_transaction_session_timeout,omitempty"`
+	IdleInTransactionSessionTimeout *float64 `json:"idleInTransactionSessionTimeout,omitempty" tf:"idle_in_transaction_session_timeout,omitempty"`
 
 	// (Number) EXPERIMENTAL: Controls the largest I/O size in operations that combine I/O in 8kB units. Version 17 and up only.
 	// EXPERIMENTAL: Controls the largest I/O size in operations that combine I/O in 8kB units. Version 17 and up only.
 	// +kubebuilder:validation:Optional
-	IoCombineLimit *int64 `json:"ioCombineLimit,omitempty" tf:"io_combine_limit,omitempty"`
+	IoCombineLimit *float64 `json:"ioCombineLimit,omitempty" tf:"io_combine_limit,omitempty"`
 
 	// settable parameter io_combine_limit. Version 18 and up only. Changing this parameter causes a service restart.
 	// EXPERIMENTAL: Controls the largest I/O size in operations that combine I/O in 8kB units, and silently limits the user-settable parameter io_combine_limit. Version 18 and up only. Changing this parameter causes a service restart.
 	// +kubebuilder:validation:Optional
-	IoMaxCombineLimit *int64 `json:"ioMaxCombineLimit,omitempty" tf:"io_max_combine_limit,omitempty"`
+	IoMaxCombineLimit *float64 `json:"ioMaxCombineLimit,omitempty" tf:"io_max_combine_limit,omitempty"`
 
 	// (Number) EXPERIMENTAL: Controls the maximum number of I/O operations that one process can execute simultaneously. Version 18 and up only. Changing this parameter causes a service restart.
 	// EXPERIMENTAL: Controls the maximum number of I/O operations that one process can execute simultaneously. Version 18 and up only. Changing this parameter causes a service restart.
 	// +kubebuilder:validation:Optional
-	IoMaxConcurrency *int64 `json:"ioMaxConcurrency,omitempty" tf:"io_max_concurrency,omitempty"`
+	IoMaxConcurrency *float64 `json:"ioMaxConcurrency,omitempty" tf:"io_max_concurrency,omitempty"`
 
 	// (String) EXPERIMENTAL: Controls the maximum number of I/O operations that one process can execute simultaneously. Version 18 and up only. Changing this parameter causes a service restart.
 	// EXPERIMENTAL: Controls the maximum number of I/O operations that one process can execute simultaneously. Version 18 and up only. Changing this parameter causes a service restart.
 	// +kubebuilder:validation:Optional
 	IoMethod *string `json:"ioMethod,omitempty" tf:"io_method,omitempty"`
 
-	// (Number) io_max_concurrency. EXPERIMENTAL: Number of IO worker processes, for io_method=worker. Version 18 and up only. Changing this parameter causes a service restart.
-	// io_max_concurrency. EXPERIMENTAL: Number of IO worker processes, for io_method=worker. Version 18 and up only. Changing this parameter causes a service restart.
+	// (Number) EXPERIMENTAL: Number of IO worker processes, for io_method=worker. Version 18 and up only.
+	// EXPERIMENTAL: Number of IO worker processes, for io_method=worker. Version 18 and up only.
 	// +kubebuilder:validation:Optional
-	IoWorkers *int64 `json:"ioWorkers,omitempty" tf:"io_workers,omitempty"`
+	IoWorkers *float64 `json:"ioWorkers,omitempty" tf:"io_workers,omitempty"`
 
 	// wide use of Just-in-Time Compilation (JIT).
 	// Controls system-wide use of Just-in-Time Compilation (JIT).
@@ -1127,7 +1184,7 @@ type ManagedDatabasePostgresqlPropertiesParameters struct {
 	// one disables logging autovacuum actions. The default is 1000.
 	// Causes each action executed by autovacuum to be logged if it ran for at least the specified number of milliseconds. Setting this to zero logs all autovacuum actions. Minus-one disables logging autovacuum actions. The default is `1000`.
 	// +kubebuilder:validation:Optional
-	LogAutovacuumMinDuration *int64 `json:"logAutovacuumMinDuration,omitempty" tf:"log_autovacuum_min_duration,omitempty"`
+	LogAutovacuumMinDuration *float64 `json:"logAutovacuumMinDuration,omitempty" tf:"log_autovacuum_min_duration,omitempty"`
 
 	// (String) Controls the amount of detail written in the server log for each message that is logged.
 	// Controls the amount of detail written in the server log for each message that is logged.
@@ -1142,94 +1199,94 @@ type ManagedDatabasePostgresqlPropertiesParameters struct {
 	// 1 disables.
 	// Log statements that take more than this number of milliseconds to run, -1 disables.
 	// +kubebuilder:validation:Optional
-	LogMinDurationStatement *int64 `json:"logMinDurationStatement,omitempty" tf:"log_min_duration_statement,omitempty"`
+	LogMinDurationStatement *float64 `json:"logMinDurationStatement,omitempty" tf:"log_min_duration_statement,omitempty"`
 
 	// 1 disables.
 	// Log statements for each temporary file created larger than this number of kilobytes, -1 disables.
 	// +kubebuilder:validation:Optional
-	LogTempFiles *int64 `json:"logTempFiles,omitempty" tf:"log_temp_files,omitempty"`
+	LogTempFiles *float64 `json:"logTempFiles,omitempty" tf:"log_temp_files,omitempty"`
 
-	// release parameter. Contact your account team to confirm your eligibility. You cannot decrease this parameter value when set. For services with a read replica, first increase the read replica's value. After the change is applied to the replica, you can increase the primary service's value. Changing this parameter causes a service restart.
-	// Sets the PostgreSQL maximum number of concurrent connections to the database server. This is a limited-release parameter. Contact your account team to confirm your eligibility. You cannot decrease this parameter value when set. For services with a read replica, first increase the read replica's value. After the change is applied to the replica, you can increase the primary service's value. Changing this parameter causes a service restart.
+	// (Number) Sets the PostgreSQL maximum number of concurrent connections to the database server. For services with a read replica, first increase the read replica's value. After the change is applied to the replica, you can increase the primary service's value. Changing this parameter causes a service restart.
+	// Sets the PostgreSQL maximum number of concurrent connections to the database server. For services with a read replica, first increase the read replica's value. After the change is applied to the replica, you can increase the primary service's value. Changing this parameter causes a service restart.
 	// +kubebuilder:validation:Optional
-	MaxConnections *int64 `json:"maxConnections,omitempty" tf:"max_connections,omitempty"`
+	MaxConnections *float64 `json:"maxConnections,omitempty" tf:"max_connections,omitempty"`
 
 	// (Number) PostgreSQL maximum number of files that can be open per process. The default is 1000 (upstream default). Changing this parameter causes a service restart.
 	// PostgreSQL maximum number of files that can be open per process. The default is `1000` (upstream default). Changing this parameter causes a service restart.
 	// +kubebuilder:validation:Optional
-	MaxFilesPerProcess *int64 `json:"maxFilesPerProcess,omitempty" tf:"max_files_per_process,omitempty"`
+	MaxFilesPerProcess *float64 `json:"maxFilesPerProcess,omitempty" tf:"max_files_per_process,omitempty"`
 
 	// (Number) PostgreSQL maximum locks per transaction. Changing this parameter causes a service restart.
 	// PostgreSQL maximum locks per transaction. Changing this parameter causes a service restart.
 	// +kubebuilder:validation:Optional
-	MaxLocksPerTransaction *int64 `json:"maxLocksPerTransaction,omitempty" tf:"max_locks_per_transaction,omitempty"`
+	MaxLocksPerTransaction *float64 `json:"maxLocksPerTransaction,omitempty" tf:"max_locks_per_transaction,omitempty"`
 
-	// (Number) PostgreSQL maximum logical replication workers (taken from the pool of max_parallel_workers). The default is 4 (upstream default). Changing this parameter causes a service restart.
-	// PostgreSQL maximum logical replication workers (taken from the pool of max_parallel_workers). The default is `4` (upstream default). Changing this parameter causes a service restart.
+	// (Number) PostgreSQL maximum logical replication workers (taken from the pool defined by max_worker_processes). The default is 4 (upstream default). Changing this parameter causes a service restart.
+	// PostgreSQL maximum logical replication workers (taken from the pool defined by max_worker_processes). The default is `4` (upstream default). Changing this parameter causes a service restart.
 	// +kubebuilder:validation:Optional
-	MaxLogicalReplicationWorkers *int64 `json:"maxLogicalReplicationWorkers,omitempty" tf:"max_logical_replication_workers,omitempty"`
+	MaxLogicalReplicationWorkers *float64 `json:"maxLogicalReplicationWorkers,omitempty" tf:"max_logical_replication_workers,omitempty"`
 
 	// (Number) Sets the maximum number of workers that the system can support for parallel queries. The default is 8 (upstream default).
 	// Sets the maximum number of workers that the system can support for parallel queries. The default is `8` (upstream default).
 	// +kubebuilder:validation:Optional
-	MaxParallelWorkers *int64 `json:"maxParallelWorkers,omitempty" tf:"max_parallel_workers,omitempty"`
+	MaxParallelWorkers *float64 `json:"maxParallelWorkers,omitempty" tf:"max_parallel_workers,omitempty"`
 
 	// (Number) Sets the maximum number of workers that can be started by a single Gather or Gather Merge node. The default is 2 (upstream default).
 	// Sets the maximum number of workers that can be started by a single Gather or Gather Merge node. The default is `2` (upstream default).
 	// +kubebuilder:validation:Optional
-	MaxParallelWorkersPerGather *int64 `json:"maxParallelWorkersPerGather,omitempty" tf:"max_parallel_workers_per_gather,omitempty"`
+	MaxParallelWorkersPerGather *float64 `json:"maxParallelWorkersPerGather,omitempty" tf:"max_parallel_workers_per_gather,omitempty"`
 
 	// (Number) PostgreSQL maximum predicate locks per transaction. The default is 64 (upstream default). Changing this parameter causes a service restart.
 	// PostgreSQL maximum predicate locks per transaction. The default is `64` (upstream default). Changing this parameter causes a service restart.
 	// +kubebuilder:validation:Optional
-	MaxPredLocksPerTransaction *int64 `json:"maxPredLocksPerTransaction,omitempty" tf:"max_pred_locks_per_transaction,omitempty"`
+	MaxPredLocksPerTransaction *float64 `json:"maxPredLocksPerTransaction,omitempty" tf:"max_pred_locks_per_transaction,omitempty"`
 
 	// (Number) PostgreSQL maximum prepared transactions. The default is 0. Changing this parameter causes a service restart.
 	// PostgreSQL maximum prepared transactions. The default is `0`. Changing this parameter causes a service restart.
 	// +kubebuilder:validation:Optional
-	MaxPreparedTransactions *int64 `json:"maxPreparedTransactions,omitempty" tf:"max_prepared_transactions,omitempty"`
+	MaxPreparedTransactions *float64 `json:"maxPreparedTransactions,omitempty" tf:"max_prepared_transactions,omitempty"`
 
 	// (Number) PostgreSQL maximum replication slots. The default is 20. Changing this parameter causes a service restart.
 	// PostgreSQL maximum replication slots. The default is `20`. Changing this parameter causes a service restart.
 	// +kubebuilder:validation:Optional
-	MaxReplicationSlots *int64 `json:"maxReplicationSlots,omitempty" tf:"max_replication_slots,omitempty"`
+	MaxReplicationSlots *float64 `json:"maxReplicationSlots,omitempty" tf:"max_replication_slots,omitempty"`
 
 	// 1 is specified, replication slots may retain an unlimited amount of WAL files. The default is -1 (upstream default). wal_keep_size minimum WAL size setting takes precedence over this.
 	// PostgreSQL maximum WAL size (MB) reserved for replication slots. If `-1` is specified, replication slots may retain an unlimited amount of WAL files. The default is `-1` (upstream default). wal_keep_size minimum WAL size setting takes precedence over this.
 	// +kubebuilder:validation:Optional
-	MaxSlotWalKeepSize *int64 `json:"maxSlotWalKeepSize,omitempty" tf:"max_slot_wal_keep_size,omitempty"`
+	MaxSlotWalKeepSize *float64 `json:"maxSlotWalKeepSize,omitempty" tf:"max_slot_wal_keep_size,omitempty"`
 
 	// (Number) Maximum depth of the stack in bytes. The default is 2097152 (upstream default).
 	// Maximum depth of the stack in bytes. The default is `2097152` (upstream default).
 	// +kubebuilder:validation:Optional
-	MaxStackDepth *int64 `json:"maxStackDepth,omitempty" tf:"max_stack_depth,omitempty"`
+	MaxStackDepth *float64 `json:"maxStackDepth,omitempty" tf:"max_stack_depth,omitempty"`
 
 	// (Number) Max standby archive delay in milliseconds. The default is 30000 (upstream default).
 	// Max standby archive delay in milliseconds. The default is `30000` (upstream default).
 	// +kubebuilder:validation:Optional
-	MaxStandbyArchiveDelay *int64 `json:"maxStandbyArchiveDelay,omitempty" tf:"max_standby_archive_delay,omitempty"`
+	MaxStandbyArchiveDelay *float64 `json:"maxStandbyArchiveDelay,omitempty" tf:"max_standby_archive_delay,omitempty"`
 
 	// (Number) Max standby streaming delay in milliseconds. The default is 30000 (upstream default).
 	// Max standby streaming delay in milliseconds. The default is `30000` (upstream default).
 	// +kubebuilder:validation:Optional
-	MaxStandbyStreamingDelay *int64 `json:"maxStandbyStreamingDelay,omitempty" tf:"max_standby_streaming_delay,omitempty"`
+	MaxStandbyStreamingDelay *float64 `json:"maxStandbyStreamingDelay,omitempty" tf:"max_standby_streaming_delay,omitempty"`
 
 	// (Number) Maximum number of synchronization workers per subscription. The default is 2.
 	// Maximum number of synchronization workers per subscription. The default is `2`.
 	// +kubebuilder:validation:Optional
-	MaxSyncWorkersPerSubscription *int64 `json:"maxSyncWorkersPerSubscription,omitempty" tf:"max_sync_workers_per_subscription,omitempty"`
+	MaxSyncWorkersPerSubscription *float64 `json:"maxSyncWorkersPerSubscription,omitempty" tf:"max_sync_workers_per_subscription,omitempty"`
 
 	// (Number) PostgreSQL maximum WAL senders. The default is 20. Changing this parameter causes a service restart.
 	// PostgreSQL maximum WAL senders. The default is `20`. Changing this parameter causes a service restart.
 	// +kubebuilder:validation:Optional
-	MaxWalSenders *int64 `json:"maxWalSenders,omitempty" tf:"max_wal_senders,omitempty"`
+	MaxWalSenders *float64 `json:"maxWalSenders,omitempty" tf:"max_wal_senders,omitempty"`
 
 	// (Number) Sets the maximum number of background processes that the system can support. The default is 8. Changing this parameter causes a service restart.
 	// Sets the maximum number of background processes that the system can support. The default is `8`. Changing this parameter causes a service restart.
 	// +kubebuilder:validation:Optional
-	MaxWorkerProcesses *int64 `json:"maxWorkerProcesses,omitempty" tf:"max_worker_processes,omitempty"`
+	MaxWorkerProcesses *float64 `json:"maxWorkerProcesses,omitempty" tf:"max_worker_processes,omitempty"`
 
-	// (Block List, Max: 1) Migrate data from existing server. (see below for nested schema)
+	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
 	// +kubebuilder:validation:Optional
 	Migration []PropertiesMigrationParameters `json:"migration,omitempty" tf:"migration,omitempty"`
@@ -1237,17 +1294,17 @@ type ManagedDatabasePostgresqlPropertiesParameters struct {
 	// (Number) Number of nodes for the service.
 	// Number of nodes for the service.
 	// +kubebuilder:validation:Optional
-	NodeCount *int64 `json:"nodeCount,omitempty" tf:"node_count,omitempty"`
+	NodeCount *float64 `json:"nodeCount,omitempty" tf:"node_count,omitempty"`
 
 	// (String, Sensitive) Chooses the algorithm for encrypting passwords.
 	// Chooses the algorithm for encrypting passwords.
 	// +kubebuilder:validation:Optional
-	PasswordEncryptionSecretRef *v1.LocalSecretKeySelector `json:"passwordEncryptionSecretRef,omitempty" tf:"-"`
+	PasswordEncryptionSecretRef *v2.LocalSecretKeySelector `json:"passwordEncryptionSecretRef,omitempty" tf:"-"`
 
 	// (Number) Sets the time interval in seconds to run pg_partman's scheduled tasks. The default is 3600.
 	// Sets the time interval in seconds to run pg_partman's scheduled tasks. The default is `3600`.
 	// +kubebuilder:validation:Optional
-	PgPartmanBgwInterval *int64 `json:"pgPartmanBgwInterval,omitempty" tf:"pg_partman_bgw_interval,omitempty"`
+	PgPartmanBgwInterval *float64 `json:"pgPartmanBgwInterval,omitempty" tf:"pg_partman_bgw_interval,omitempty"`
 
 	// (String) Controls which role to use for pg_partman's scheduled background tasks.
 	// Controls which role to use for pg_partman's scheduled background tasks.
@@ -1259,15 +1316,25 @@ type ManagedDatabasePostgresqlPropertiesParameters struct {
 	// +kubebuilder:validation:Optional
 	PgStatMonitorEnable *bool `json:"pgStatMonitorEnable,omitempty" tf:"pg_stat_monitor_enable,omitempty"`
 
-	// (Boolean) Enables or disables query plan monitoring. Changing this parameter causes a service restart. Only available for PostgreSQL 13+.
-	// Enables or disables query plan monitoring. Changing this parameter causes a service restart. Only available for PostgreSQL 13+.
+	// (Boolean) Enables or disables query plan monitoring. Only available for PostgreSQL 13+.
+	// Enables or disables query plan monitoring. Only available for PostgreSQL 13+.
 	// +kubebuilder:validation:Optional
 	PgStatMonitorPgsmEnableQueryPlan *bool `json:"pgStatMonitorPgsmEnableQueryPlan,omitempty" tf:"pg_stat_monitor_pgsm_enable_query_plan,omitempty"`
 
 	// (Number) Sets the maximum number of buckets. Changing this parameter causes a service restart. Only available for PostgreSQL 13+.
 	// Sets the maximum number of buckets. Changing this parameter causes a service restart. Only available for PostgreSQL 13+.
 	// +kubebuilder:validation:Optional
-	PgStatMonitorPgsmMaxBuckets *int64 `json:"pgStatMonitorPgsmMaxBuckets,omitempty" tf:"pg_stat_monitor_pgsm_max_buckets,omitempty"`
+	PgStatMonitorPgsmMaxBuckets *float64 `json:"pgStatMonitorPgsmMaxBuckets,omitempty" tf:"pg_stat_monitor_pgsm_max_buckets,omitempty"`
+
+	// (Boolean) Enable pg_stat_plans extension if available for the current cluster. Enable the pg_stat_plans extension. Changing this parameter causes a service restart. Tracks execution plans for SQL queries.
+	// Enable pg_stat_plans extension if available for the current cluster. Enable the pg_stat_plans extension. Changing this parameter causes a service restart. Tracks execution plans for SQL queries.
+	// +kubebuilder:validation:Optional
+	PgStatPlansEnable *bool `json:"pgStatPlansEnable,omitempty" tf:"pg_stat_plans_enable,omitempty"`
+
+	// level statements (those issued directly by clients), all to also track nested statements (such as statements invoked within functions), or none to disable plan tracking. The default is top.
+	// Controls which statements' plans are tracked. Specify top to track top-level statements (those issued directly by clients), all to also track nested statements (such as statements invoked within functions), or none to disable plan tracking. The default is `top`.
+	// +kubebuilder:validation:Optional
+	PgStatPlansTrack *string `json:"pgStatPlansTrack,omitempty" tf:"pg_stat_plans_track,omitempty"`
 
 	// level statements (those issued directly by clients), all to also track nested statements (such as statements invoked within functions), or none to disable statement statistics collection. The default is top.
 	// Controls which statements are counted. Specify top to track top-level statements (those issued directly by clients), all to also track nested statements (such as statements invoked within functions), or none to disable statement statistics collection. The default is `top`.
@@ -1294,6 +1361,11 @@ type ManagedDatabasePostgresqlPropertiesParameters struct {
 	// +kubebuilder:validation:Optional
 	PublicAccess *bool `json:"publicAccess,omitempty" tf:"public_access,omitempty"`
 
+	// (Boolean) Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	// Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
+	// +kubebuilder:validation:Optional
+	PublicAccessPrometheus *bool `json:"publicAccessPrometheus,omitempty" tf:"public_access_prometheus,omitempty"`
+
 	// (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	// Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	// +kubebuilder:validation:Optional
@@ -1304,15 +1376,20 @@ type ManagedDatabasePostgresqlPropertiesParameters struct {
 	// +kubebuilder:validation:Optional
 	SharedBuffersPercentage *float64 `json:"sharedBuffersPercentage,omitempty" tf:"shared_buffers_percentage,omitempty"`
 
-	// (String) Synchronous replication type. Note that the service plan also needs to support synchronous replication.
-	// Synchronous replication type. Note that the service plan also needs to support synchronous replication.
+	// (String) Sets the current transaction's synchronization level. The default is off. This setting takes precedence over synchronous_replication.
+	// Sets the current transaction's synchronization level. The default is `off`. This setting takes precedence over `synchronous_replication`.
+	// +kubebuilder:validation:Optional
+	SynchronousCommit *string `json:"synchronousCommit,omitempty" tf:"synchronous_commit,omitempty"`
+
+	// (String) Synchronous replication type. (deprecated, use synchronous_commit instead). Note that the service plan also needs to support synchronous replication. This setting is deprecated. Use synchronous_commit instead. Any change to this setting will automatically update synchronous_commit. Setting the value to quorum changes synchronous_commit to remote_write, while setting it to off changes synchronous_commit to off.
+	// Synchronous replication type. (deprecated, use synchronous_commit instead). Note that the service plan also needs to support synchronous replication. This setting is deprecated. Use synchronous_commit instead. Any change to this setting will automatically update synchronous_commit. Setting the value to quorum changes synchronous_commit to remote_write, while setting it to off changes synchronous_commit to off.
 	// +kubebuilder:validation:Optional
 	SynchronousReplication *string `json:"synchronousReplication,omitempty" tf:"synchronous_replication,omitempty"`
 
 	// 1 for unlimited.
 	// PostgreSQL temporary file limit in KiB, -1 for unlimited.
 	// +kubebuilder:validation:Optional
-	TempFileLimit *int64 `json:"tempFileLimit,omitempty" tf:"temp_file_limit,omitempty"`
+	TempFileLimit *float64 `json:"tempFileLimit,omitempty" tf:"temp_file_limit,omitempty"`
 
 	// wide settings for the timescaledb extension. (see below for nested schema)
 	// TimescaleDB extension configuration values. System-wide settings for the timescaledb extension.
@@ -1327,7 +1404,7 @@ type ManagedDatabasePostgresqlPropertiesParameters struct {
 	// (Number) Specifies the number of bytes reserved to track the currently executing command for each active session. Changing this parameter causes a service restart.
 	// Specifies the number of bytes reserved to track the currently executing command for each active session. Changing this parameter causes a service restart.
 	// +kubebuilder:validation:Optional
-	TrackActivityQuerySize *int64 `json:"trackActivityQuerySize,omitempty" tf:"track_activity_query_size,omitempty"`
+	TrackActivityQuerySize *float64 `json:"trackActivityQuerySize,omitempty" tf:"track_activity_query_size,omitempty"`
 
 	// (String) Record commit time of transactions. Changing this parameter causes a service restart.
 	// Record commit time of transactions. Changing this parameter causes a service restart.
@@ -1357,17 +1434,17 @@ type ManagedDatabasePostgresqlPropertiesParameters struct {
 	// (Number) Terminate replication connections that are inactive for longer than this amount of time, in milliseconds. Setting this value to zero disables the timeout.
 	// Terminate replication connections that are inactive for longer than this amount of time, in milliseconds. Setting this value to zero disables the timeout.
 	// +kubebuilder:validation:Optional
-	WalSenderTimeout *int64 `json:"walSenderTimeout,omitempty" tf:"wal_sender_timeout,omitempty"`
+	WalSenderTimeout *float64 `json:"walSenderTimeout,omitempty" tf:"wal_sender_timeout,omitempty"`
 
 	// (Number) WAL flush interval in milliseconds. The default is 200. Setting this parameter to a lower value may negatively impact performance.
 	// WAL flush interval in milliseconds. The default is `200`. Setting this parameter to a lower value may negatively impact performance.
 	// +kubebuilder:validation:Optional
-	WalWriterDelay *int64 `json:"walWriterDelay,omitempty" tf:"wal_writer_delay,omitempty"`
+	WalWriterDelay *float64 `json:"walWriterDelay,omitempty" tf:"wal_writer_delay,omitempty"`
 
 	// (Number) Sets the maximum amount of memory to be used by a query operation (such as a sort or hash table) before writing to temporary disk files, in MB. The default is 1MB + 0.075% of total RAM (up to 32MB).
 	// Sets the maximum amount of memory to be used by a query operation (such as a sort or hash table) before writing to temporary disk files, in MB. The default is 1MB + 0.075% of total RAM (up to 32MB).
 	// +kubebuilder:validation:Optional
-	WorkMem *int64 `json:"workMem,omitempty" tf:"work_mem,omitempty"`
+	WorkMem *float64 `json:"workMem,omitempty" tf:"work_mem,omitempty"`
 }
 
 type PgauditInitParameters struct {
@@ -1397,7 +1474,7 @@ type PgauditInitParameters struct {
 	// 1 disable the truncation.
 	// Log Max String Length. Crop parameters representation and whole statements if they exceed this threshold.
 	// A (default) value of -1 disable the truncation.
-	LogMaxStringLength *int64 `json:"logMaxStringLength,omitempty" tf:"log_max_string_length,omitempty"`
+	LogMaxStringLength *float64 `json:"logMaxStringLength,omitempty" tf:"log_max_string_length,omitempty"`
 
 	// (Boolean) Log Nested Statements. This GUC allows to turn off logging nested statements, that is, statements that are
 	// executed as part of another ExecutorRun.
@@ -1413,7 +1490,7 @@ type PgauditInitParameters struct {
 	// but replaced with .
 	// Log Parameter Max Size. Specifies that parameter values longer than this setting (in bytes) should not be logged,
 	// but replaced with <long param suppressed>.
-	LogParameterMaxSize *int64 `json:"logParameterMaxSize,omitempty" tf:"log_parameter_max_size,omitempty"`
+	LogParameterMaxSize *float64 `json:"logParameterMaxSize,omitempty" tf:"log_parameter_max_size,omitempty"`
 
 	// (Boolean) Log Relation. Specifies whether session audit logging should create a separate log entry
 	// for each relation (TABLE, VIEW, etc.) referenced in a SELECT or DML statement.
@@ -1467,7 +1544,7 @@ type PgauditObservation struct {
 	// 1 disable the truncation.
 	// Log Max String Length. Crop parameters representation and whole statements if they exceed this threshold.
 	// A (default) value of -1 disable the truncation.
-	LogMaxStringLength *int64 `json:"logMaxStringLength,omitempty" tf:"log_max_string_length,omitempty"`
+	LogMaxStringLength *float64 `json:"logMaxStringLength,omitempty" tf:"log_max_string_length,omitempty"`
 
 	// (Boolean) Log Nested Statements. This GUC allows to turn off logging nested statements, that is, statements that are
 	// executed as part of another ExecutorRun.
@@ -1483,7 +1560,7 @@ type PgauditObservation struct {
 	// but replaced with .
 	// Log Parameter Max Size. Specifies that parameter values longer than this setting (in bytes) should not be logged,
 	// but replaced with <long param suppressed>.
-	LogParameterMaxSize *int64 `json:"logParameterMaxSize,omitempty" tf:"log_parameter_max_size,omitempty"`
+	LogParameterMaxSize *float64 `json:"logParameterMaxSize,omitempty" tf:"log_parameter_max_size,omitempty"`
 
 	// (Boolean) Log Relation. Specifies whether session audit logging should create a separate log entry
 	// for each relation (TABLE, VIEW, etc.) referenced in a SELECT or DML statement.
@@ -1543,7 +1620,7 @@ type PgauditParameters struct {
 	// Log Max String Length. Crop parameters representation and whole statements if they exceed this threshold.
 	// A (default) value of -1 disable the truncation.
 	// +kubebuilder:validation:Optional
-	LogMaxStringLength *int64 `json:"logMaxStringLength,omitempty" tf:"log_max_string_length,omitempty"`
+	LogMaxStringLength *float64 `json:"logMaxStringLength,omitempty" tf:"log_max_string_length,omitempty"`
 
 	// (Boolean) Log Nested Statements. This GUC allows to turn off logging nested statements, that is, statements that are
 	// executed as part of another ExecutorRun.
@@ -1562,7 +1639,7 @@ type PgauditParameters struct {
 	// Log Parameter Max Size. Specifies that parameter values longer than this setting (in bytes) should not be logged,
 	// but replaced with <long param suppressed>.
 	// +kubebuilder:validation:Optional
-	LogParameterMaxSize *int64 `json:"logParameterMaxSize,omitempty" tf:"log_parameter_max_size,omitempty"`
+	LogParameterMaxSize *float64 `json:"logParameterMaxSize,omitempty" tf:"log_parameter_max_size,omitempty"`
 
 	// (Boolean) Log Relation. Specifies whether session audit logging should create a separate log entry
 	// for each relation (TABLE, VIEW, etc.) referenced in a SELECT or DML statement.
@@ -1598,11 +1675,11 @@ type PgbouncerInitParameters struct {
 
 	// (Number) If the automatically created database pools have been unused this many seconds, they are freed. If 0 then timeout is disabled. [seconds].
 	// If the automatically created database pools have been unused this many seconds, they are freed. If 0 then timeout is disabled. [seconds].
-	AutodbIdleTimeout *int64 `json:"autodbIdleTimeout,omitempty" tf:"autodb_idle_timeout,omitempty"`
+	AutodbIdleTimeout *float64 `json:"autodbIdleTimeout,omitempty" tf:"autodb_idle_timeout,omitempty"`
 
 	// (Number) Do not allow more than this many server connections per database (regardless of user). Setting it to 0 means unlimited.
 	// Do not allow more than this many server connections per database (regardless of user). Setting it to 0 means unlimited.
-	AutodbMaxDBConnections *int64 `json:"autodbMaxDbConnections,omitempty" tf:"autodb_max_db_connections,omitempty"`
+	AutodbMaxDBConnections *float64 `json:"autodbMaxDbConnections,omitempty" tf:"autodb_max_db_connections,omitempty"`
 
 	// (String) PGBouncer pool mode.
 	// PGBouncer pool mode.
@@ -1610,7 +1687,7 @@ type PgbouncerInitParameters struct {
 
 	// zero then create automatically a pool of that size per user when a pool doesn't exist.
 	// If non-zero then create automatically a pool of that size per user when a pool doesn't exist.
-	AutodbPoolSize *int64 `json:"autodbPoolSize,omitempty" tf:"autodb_pool_size,omitempty"`
+	AutodbPoolSize *float64 `json:"autodbPoolSize,omitempty" tf:"autodb_pool_size,omitempty"`
 
 	// (List of String) List of parameters to ignore when given in startup packet.
 	// List of parameters to ignore when given in startup packet.
@@ -1618,19 +1695,27 @@ type PgbouncerInitParameters struct {
 
 	// level named prepared statements related commands sent by the client in transaction and statement pooling modes when max_prepared_statements is set to a non-zero value. Setting it to 0 disables prepared statements. max_prepared_statements defaults to 100, and its maximum is 3000.
 	// PgBouncer tracks protocol-level named prepared statements related commands sent by the client in transaction and statement pooling modes when max_prepared_statements is set to a non-zero value. Setting it to 0 disables prepared statements. max_prepared_statements defaults to 100, and its maximum is 3000.
-	MaxPreparedStatements *int64 `json:"maxPreparedStatements,omitempty" tf:"max_prepared_statements,omitempty"`
+	MaxPreparedStatements *float64 `json:"maxPreparedStatements,omitempty" tf:"max_prepared_statements,omitempty"`
 
 	// (Number) Add more server connections to pool if below this number. Improves behavior when usual load comes suddenly back after period of total inactivity. The value is effectively capped at the pool size.
 	// Add more server connections to pool if below this number. Improves behavior when usual load comes suddenly back after period of total inactivity. The value is effectively capped at the pool size.
-	MinPoolSize *int64 `json:"minPoolSize,omitempty" tf:"min_pool_size,omitempty"`
+	MinPoolSize *float64 `json:"minPoolSize,omitempty" tf:"min_pool_size,omitempty"`
+
+	// (Number) If connection and login don’t finish in this amount of time, the connection will be closed. [seconds].
+	// If connection and login don’t finish in this amount of time, the connection will be closed. [seconds].
+	ServerConnectTimeout *float64 `json:"serverConnectTimeout,omitempty" tf:"server_connect_timeout,omitempty"`
 
 	// (Number) If a server connection has been idle more than this many seconds it will be dropped. If 0 then timeout is disabled. [seconds].
 	// If a server connection has been idle more than this many seconds it will be dropped. If 0 then timeout is disabled. [seconds].
-	ServerIdleTimeout *int64 `json:"serverIdleTimeout,omitempty" tf:"server_idle_timeout,omitempty"`
+	ServerIdleTimeout *float64 `json:"serverIdleTimeout,omitempty" tf:"server_idle_timeout,omitempty"`
 
 	// (Number) The pooler will close an unused server connection that has been connected longer than this. [seconds].
 	// The pooler will close an unused server connection that has been connected longer than this. [seconds].
-	ServerLifetime *int64 `json:"serverLifetime,omitempty" tf:"server_lifetime,omitempty"`
+	ServerLifetime *float64 `json:"serverLifetime,omitempty" tf:"server_lifetime,omitempty"`
+
+	// (Number) If login to the server failed, because of failure to connect or from authentication, the pooler waits this much before retrying to connect. During the waiting interval, new clients trying to connect to the failing server will get an error immediately without another connection attempt. [seconds].
+	// If login to the server failed, because of failure to connect or from authentication, the pooler waits this much before retrying to connect. During the waiting interval, new clients trying to connect to the failing server will get an error immediately without another connection attempt. [seconds].
+	ServerLoginRetry *float64 `json:"serverLoginRetry,omitempty" tf:"server_login_retry,omitempty"`
 
 	// (Boolean) Run server_reset_query (DISCARD ALL) in all pooling modes.
 	// Run server_reset_query (DISCARD ALL) in all pooling modes.
@@ -1641,11 +1726,11 @@ type PgbouncerObservation struct {
 
 	// (Number) If the automatically created database pools have been unused this many seconds, they are freed. If 0 then timeout is disabled. [seconds].
 	// If the automatically created database pools have been unused this many seconds, they are freed. If 0 then timeout is disabled. [seconds].
-	AutodbIdleTimeout *int64 `json:"autodbIdleTimeout,omitempty" tf:"autodb_idle_timeout,omitempty"`
+	AutodbIdleTimeout *float64 `json:"autodbIdleTimeout,omitempty" tf:"autodb_idle_timeout,omitempty"`
 
 	// (Number) Do not allow more than this many server connections per database (regardless of user). Setting it to 0 means unlimited.
 	// Do not allow more than this many server connections per database (regardless of user). Setting it to 0 means unlimited.
-	AutodbMaxDBConnections *int64 `json:"autodbMaxDbConnections,omitempty" tf:"autodb_max_db_connections,omitempty"`
+	AutodbMaxDBConnections *float64 `json:"autodbMaxDbConnections,omitempty" tf:"autodb_max_db_connections,omitempty"`
 
 	// (String) PGBouncer pool mode.
 	// PGBouncer pool mode.
@@ -1653,7 +1738,7 @@ type PgbouncerObservation struct {
 
 	// zero then create automatically a pool of that size per user when a pool doesn't exist.
 	// If non-zero then create automatically a pool of that size per user when a pool doesn't exist.
-	AutodbPoolSize *int64 `json:"autodbPoolSize,omitempty" tf:"autodb_pool_size,omitempty"`
+	AutodbPoolSize *float64 `json:"autodbPoolSize,omitempty" tf:"autodb_pool_size,omitempty"`
 
 	// (List of String) List of parameters to ignore when given in startup packet.
 	// List of parameters to ignore when given in startup packet.
@@ -1661,19 +1746,27 @@ type PgbouncerObservation struct {
 
 	// level named prepared statements related commands sent by the client in transaction and statement pooling modes when max_prepared_statements is set to a non-zero value. Setting it to 0 disables prepared statements. max_prepared_statements defaults to 100, and its maximum is 3000.
 	// PgBouncer tracks protocol-level named prepared statements related commands sent by the client in transaction and statement pooling modes when max_prepared_statements is set to a non-zero value. Setting it to 0 disables prepared statements. max_prepared_statements defaults to 100, and its maximum is 3000.
-	MaxPreparedStatements *int64 `json:"maxPreparedStatements,omitempty" tf:"max_prepared_statements,omitempty"`
+	MaxPreparedStatements *float64 `json:"maxPreparedStatements,omitempty" tf:"max_prepared_statements,omitempty"`
 
 	// (Number) Add more server connections to pool if below this number. Improves behavior when usual load comes suddenly back after period of total inactivity. The value is effectively capped at the pool size.
 	// Add more server connections to pool if below this number. Improves behavior when usual load comes suddenly back after period of total inactivity. The value is effectively capped at the pool size.
-	MinPoolSize *int64 `json:"minPoolSize,omitempty" tf:"min_pool_size,omitempty"`
+	MinPoolSize *float64 `json:"minPoolSize,omitempty" tf:"min_pool_size,omitempty"`
+
+	// (Number) If connection and login don’t finish in this amount of time, the connection will be closed. [seconds].
+	// If connection and login don’t finish in this amount of time, the connection will be closed. [seconds].
+	ServerConnectTimeout *float64 `json:"serverConnectTimeout,omitempty" tf:"server_connect_timeout,omitempty"`
 
 	// (Number) If a server connection has been idle more than this many seconds it will be dropped. If 0 then timeout is disabled. [seconds].
 	// If a server connection has been idle more than this many seconds it will be dropped. If 0 then timeout is disabled. [seconds].
-	ServerIdleTimeout *int64 `json:"serverIdleTimeout,omitempty" tf:"server_idle_timeout,omitempty"`
+	ServerIdleTimeout *float64 `json:"serverIdleTimeout,omitempty" tf:"server_idle_timeout,omitempty"`
 
 	// (Number) The pooler will close an unused server connection that has been connected longer than this. [seconds].
 	// The pooler will close an unused server connection that has been connected longer than this. [seconds].
-	ServerLifetime *int64 `json:"serverLifetime,omitempty" tf:"server_lifetime,omitempty"`
+	ServerLifetime *float64 `json:"serverLifetime,omitempty" tf:"server_lifetime,omitempty"`
+
+	// (Number) If login to the server failed, because of failure to connect or from authentication, the pooler waits this much before retrying to connect. During the waiting interval, new clients trying to connect to the failing server will get an error immediately without another connection attempt. [seconds].
+	// If login to the server failed, because of failure to connect or from authentication, the pooler waits this much before retrying to connect. During the waiting interval, new clients trying to connect to the failing server will get an error immediately without another connection attempt. [seconds].
+	ServerLoginRetry *float64 `json:"serverLoginRetry,omitempty" tf:"server_login_retry,omitempty"`
 
 	// (Boolean) Run server_reset_query (DISCARD ALL) in all pooling modes.
 	// Run server_reset_query (DISCARD ALL) in all pooling modes.
@@ -1685,12 +1778,12 @@ type PgbouncerParameters struct {
 	// (Number) If the automatically created database pools have been unused this many seconds, they are freed. If 0 then timeout is disabled. [seconds].
 	// If the automatically created database pools have been unused this many seconds, they are freed. If 0 then timeout is disabled. [seconds].
 	// +kubebuilder:validation:Optional
-	AutodbIdleTimeout *int64 `json:"autodbIdleTimeout,omitempty" tf:"autodb_idle_timeout,omitempty"`
+	AutodbIdleTimeout *float64 `json:"autodbIdleTimeout,omitempty" tf:"autodb_idle_timeout,omitempty"`
 
 	// (Number) Do not allow more than this many server connections per database (regardless of user). Setting it to 0 means unlimited.
 	// Do not allow more than this many server connections per database (regardless of user). Setting it to 0 means unlimited.
 	// +kubebuilder:validation:Optional
-	AutodbMaxDBConnections *int64 `json:"autodbMaxDbConnections,omitempty" tf:"autodb_max_db_connections,omitempty"`
+	AutodbMaxDBConnections *float64 `json:"autodbMaxDbConnections,omitempty" tf:"autodb_max_db_connections,omitempty"`
 
 	// (String) PGBouncer pool mode.
 	// PGBouncer pool mode.
@@ -1700,7 +1793,7 @@ type PgbouncerParameters struct {
 	// zero then create automatically a pool of that size per user when a pool doesn't exist.
 	// If non-zero then create automatically a pool of that size per user when a pool doesn't exist.
 	// +kubebuilder:validation:Optional
-	AutodbPoolSize *int64 `json:"autodbPoolSize,omitempty" tf:"autodb_pool_size,omitempty"`
+	AutodbPoolSize *float64 `json:"autodbPoolSize,omitempty" tf:"autodb_pool_size,omitempty"`
 
 	// (List of String) List of parameters to ignore when given in startup packet.
 	// List of parameters to ignore when given in startup packet.
@@ -1710,22 +1803,32 @@ type PgbouncerParameters struct {
 	// level named prepared statements related commands sent by the client in transaction and statement pooling modes when max_prepared_statements is set to a non-zero value. Setting it to 0 disables prepared statements. max_prepared_statements defaults to 100, and its maximum is 3000.
 	// PgBouncer tracks protocol-level named prepared statements related commands sent by the client in transaction and statement pooling modes when max_prepared_statements is set to a non-zero value. Setting it to 0 disables prepared statements. max_prepared_statements defaults to 100, and its maximum is 3000.
 	// +kubebuilder:validation:Optional
-	MaxPreparedStatements *int64 `json:"maxPreparedStatements,omitempty" tf:"max_prepared_statements,omitempty"`
+	MaxPreparedStatements *float64 `json:"maxPreparedStatements,omitempty" tf:"max_prepared_statements,omitempty"`
 
 	// (Number) Add more server connections to pool if below this number. Improves behavior when usual load comes suddenly back after period of total inactivity. The value is effectively capped at the pool size.
 	// Add more server connections to pool if below this number. Improves behavior when usual load comes suddenly back after period of total inactivity. The value is effectively capped at the pool size.
 	// +kubebuilder:validation:Optional
-	MinPoolSize *int64 `json:"minPoolSize,omitempty" tf:"min_pool_size,omitempty"`
+	MinPoolSize *float64 `json:"minPoolSize,omitempty" tf:"min_pool_size,omitempty"`
+
+	// (Number) If connection and login don’t finish in this amount of time, the connection will be closed. [seconds].
+	// If connection and login don’t finish in this amount of time, the connection will be closed. [seconds].
+	// +kubebuilder:validation:Optional
+	ServerConnectTimeout *float64 `json:"serverConnectTimeout,omitempty" tf:"server_connect_timeout,omitempty"`
 
 	// (Number) If a server connection has been idle more than this many seconds it will be dropped. If 0 then timeout is disabled. [seconds].
 	// If a server connection has been idle more than this many seconds it will be dropped. If 0 then timeout is disabled. [seconds].
 	// +kubebuilder:validation:Optional
-	ServerIdleTimeout *int64 `json:"serverIdleTimeout,omitempty" tf:"server_idle_timeout,omitempty"`
+	ServerIdleTimeout *float64 `json:"serverIdleTimeout,omitempty" tf:"server_idle_timeout,omitempty"`
 
 	// (Number) The pooler will close an unused server connection that has been connected longer than this. [seconds].
 	// The pooler will close an unused server connection that has been connected longer than this. [seconds].
 	// +kubebuilder:validation:Optional
-	ServerLifetime *int64 `json:"serverLifetime,omitempty" tf:"server_lifetime,omitempty"`
+	ServerLifetime *float64 `json:"serverLifetime,omitempty" tf:"server_lifetime,omitempty"`
+
+	// (Number) If login to the server failed, because of failure to connect or from authentication, the pooler waits this much before retrying to connect. During the waiting interval, new clients trying to connect to the failing server will get an error immediately without another connection attempt. [seconds].
+	// If login to the server failed, because of failure to connect or from authentication, the pooler waits this much before retrying to connect. During the waiting interval, new clients trying to connect to the failing server will get an error immediately without another connection attempt. [seconds].
+	// +kubebuilder:validation:Optional
+	ServerLoginRetry *float64 `json:"serverLoginRetry,omitempty" tf:"server_login_retry,omitempty"`
 
 	// (Boolean) Run server_reset_query (DISCARD ALL) in all pooling modes.
 	// Run server_reset_query (DISCARD ALL) in all pooling modes.
@@ -1737,14 +1840,14 @@ type PglookoutInitParameters struct {
 
 	// (Number) Max Failover Replication Time Lag. Number of seconds of master unavailability before triggering database failover to standby.
 	// Max Failover Replication Time Lag. Number of seconds of master unavailability before triggering database failover to standby.
-	MaxFailoverReplicationTimeLag *int64 `json:"maxFailoverReplicationTimeLag,omitempty" tf:"max_failover_replication_time_lag,omitempty"`
+	MaxFailoverReplicationTimeLag *float64 `json:"maxFailoverReplicationTimeLag,omitempty" tf:"max_failover_replication_time_lag,omitempty"`
 }
 
 type PglookoutObservation struct {
 
 	// (Number) Max Failover Replication Time Lag. Number of seconds of master unavailability before triggering database failover to standby.
 	// Max Failover Replication Time Lag. Number of seconds of master unavailability before triggering database failover to standby.
-	MaxFailoverReplicationTimeLag *int64 `json:"maxFailoverReplicationTimeLag,omitempty" tf:"max_failover_replication_time_lag,omitempty"`
+	MaxFailoverReplicationTimeLag *float64 `json:"maxFailoverReplicationTimeLag,omitempty" tf:"max_failover_replication_time_lag,omitempty"`
 }
 
 type PglookoutParameters struct {
@@ -1752,7 +1855,7 @@ type PglookoutParameters struct {
 	// (Number) Max Failover Replication Time Lag. Number of seconds of master unavailability before triggering database failover to standby.
 	// Max Failover Replication Time Lag. Number of seconds of master unavailability before triggering database failover to standby.
 	// +kubebuilder:validation:Optional
-	MaxFailoverReplicationTimeLag *int64 `json:"maxFailoverReplicationTimeLag,omitempty" tf:"max_failover_replication_time_lag,omitempty"`
+	MaxFailoverReplicationTimeLag *float64 `json:"maxFailoverReplicationTimeLag,omitempty" tf:"max_failover_replication_time_lag,omitempty"`
 }
 
 type PropertiesMigrationInitParameters struct {
@@ -1779,11 +1882,11 @@ type PropertiesMigrationInitParameters struct {
 
 	// (String, Sensitive) Password for authentication with the server where to migrate data from.
 	// Password for authentication with the server where to migrate data from.
-	PasswordSecretRef *v1.LocalSecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+	PasswordSecretRef *v2.LocalSecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// (Number) Port number of the server where to migrate data from.
 	// Port number of the server where to migrate data from.
-	Port *int64 `json:"port,omitempty" tf:"port,omitempty"`
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
 	// (Boolean) The server where to migrate data from is secured with SSL.
 	// The server where to migrate data from is secured with SSL.
@@ -1818,7 +1921,7 @@ type PropertiesMigrationObservation struct {
 
 	// (Number) Port number of the server where to migrate data from.
 	// Port number of the server where to migrate data from.
-	Port *int64 `json:"port,omitempty" tf:"port,omitempty"`
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
 	// (Boolean) The server where to migrate data from is secured with SSL.
 	// The server where to migrate data from is secured with SSL.
@@ -1859,12 +1962,12 @@ type PropertiesMigrationParameters struct {
 	// (String, Sensitive) Password for authentication with the server where to migrate data from.
 	// Password for authentication with the server where to migrate data from.
 	// +kubebuilder:validation:Optional
-	PasswordSecretRef *v1.LocalSecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+	PasswordSecretRef *v2.LocalSecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// (Number) Port number of the server where to migrate data from.
 	// Port number of the server where to migrate data from.
 	// +kubebuilder:validation:Optional
-	Port *int64 `json:"port,omitempty" tf:"port,omitempty"`
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
 	// (Boolean) The server where to migrate data from is secured with SSL.
 	// The server where to migrate data from is secured with SSL.
@@ -1881,14 +1984,14 @@ type TimescaledbInitParameters struct {
 
 	// (Number) The number of background workers for timescaledb operations. You should configure this setting to the sum of your number of databases and the total number of concurrent background workers you want running at any given point in time. Changing this parameter causes a service restart.
 	// The number of background workers for timescaledb operations. You should configure this setting to the sum of your number of databases and the total number of concurrent background workers you want running at any given point in time. Changing this parameter causes a service restart.
-	MaxBackgroundWorkers *int64 `json:"maxBackgroundWorkers,omitempty" tf:"max_background_workers,omitempty"`
+	MaxBackgroundWorkers *float64 `json:"maxBackgroundWorkers,omitempty" tf:"max_background_workers,omitempty"`
 }
 
 type TimescaledbObservation struct {
 
 	// (Number) The number of background workers for timescaledb operations. You should configure this setting to the sum of your number of databases and the total number of concurrent background workers you want running at any given point in time. Changing this parameter causes a service restart.
 	// The number of background workers for timescaledb operations. You should configure this setting to the sum of your number of databases and the total number of concurrent background workers you want running at any given point in time. Changing this parameter causes a service restart.
-	MaxBackgroundWorkers *int64 `json:"maxBackgroundWorkers,omitempty" tf:"max_background_workers,omitempty"`
+	MaxBackgroundWorkers *float64 `json:"maxBackgroundWorkers,omitempty" tf:"max_background_workers,omitempty"`
 }
 
 type TimescaledbParameters struct {
@@ -1896,7 +1999,7 @@ type TimescaledbParameters struct {
 	// (Number) The number of background workers for timescaledb operations. You should configure this setting to the sum of your number of databases and the total number of concurrent background workers you want running at any given point in time. Changing this parameter causes a service restart.
 	// The number of background workers for timescaledb operations. You should configure this setting to the sum of your number of databases and the total number of concurrent background workers you want running at any given point in time. Changing this parameter causes a service restart.
 	// +kubebuilder:validation:Optional
-	MaxBackgroundWorkers *int64 `json:"maxBackgroundWorkers,omitempty" tf:"max_background_workers,omitempty"`
+	MaxBackgroundWorkers *float64 `json:"maxBackgroundWorkers,omitempty" tf:"max_background_workers,omitempty"`
 }
 
 // ManagedDatabasePostgresqlSpec defines the desired state of ManagedDatabasePostgresql
@@ -1918,8 +2021,8 @@ type ManagedDatabasePostgresqlSpec struct {
 
 // ManagedDatabasePostgresqlStatus defines the observed state of ManagedDatabasePostgresql.
 type ManagedDatabasePostgresqlStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ManagedDatabasePostgresqlObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ManagedDatabasePostgresqlObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
