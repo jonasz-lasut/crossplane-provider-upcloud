@@ -1,4 +1,4 @@
-apiVersion: provider.upcloud.com/v1beta1
+apiVersion: upcloud.crossplane.io/v1beta1
 kind: ProviderConfig
 metadata:
   name: default
@@ -10,7 +10,7 @@ spec:
       namespace: upcloud-crossplane-example
       key: credentials
 ---
-apiVersion: provider.m.upcloud.com/v1beta1
+apiVersion: upcloud.m.crossplane.io/v1beta1
 kind: ProviderConfig
 metadata:
   name: upcloud-crossplane-example-providerconfig

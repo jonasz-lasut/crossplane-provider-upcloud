@@ -1,4 +1,4 @@
-apiVersion: database.m.upcloud.com/v1alpha1
+apiVersion: database.upcloud.m.crossplane.io/v1alpha1
 kind: ManagedDatabaseLogicalDatabase
 metadata:
   annotations:
@@ -15,7 +15,7 @@ spec:
 
 ---
 
-apiVersion: database.m.upcloud.com/v1alpha1
+apiVersion: database.upcloud.m.crossplane.io/v1alpha1
 kind: ManagedDatabaseMysql
 metadata:
   annotations:
@@ -33,7 +33,7 @@ spec:
 
 ---
 
-apiVersion: database.m.upcloud.com/v1alpha1
+apiVersion: database.upcloud.m.crossplane.io/v1alpha1
 kind: ManagedDatabasePostgresql
 metadata:
   annotations:

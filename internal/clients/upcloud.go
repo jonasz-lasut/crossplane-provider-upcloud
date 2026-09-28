@@ -9,8 +9,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	clusterv1beta1 "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/cluster/v1beta1"
-	namespacedv1beta1 "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/namespaced/v1beta1"
+	clusterv1beta1 "github.com/crossplane-contrib/provider-upcloud/apis/cluster/v1beta1"
+	namespacedv1beta1 "github.com/crossplane-contrib/provider-upcloud/apis/namespaced/v1beta1"
 
 	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
 	"github.com/crossplane/upjet/v2/pkg/config"

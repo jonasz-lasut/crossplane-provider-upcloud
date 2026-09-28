@@ -2,7 +2,7 @@
 # Setup Project
 
 PROJECT_NAME ?= provider-upcloud
-PROJECT_REPO ?= github.com/UpCloudLtd/crossplane-provider-upcloud
+PROJECT_REPO ?= github.com/crossplane-contrib/provider-upcloud
 VERSION_STRIPPED=$(subst v,,$(VERSION))
 
 export TERRAFORM_VERSION ?= 1.5.7

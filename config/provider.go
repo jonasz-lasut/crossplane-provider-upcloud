@@ -9,12 +9,12 @@ import (
 	_ "embed"
 	"fmt"
 
-	"github.com/UpCloudLtd/crossplane-provider-upcloud/config/database"
-	"github.com/UpCloudLtd/crossplane-provider-upcloud/config/kubernetes"
-	"github.com/UpCloudLtd/crossplane-provider-upcloud/config/network"
-	"github.com/UpCloudLtd/crossplane-provider-upcloud/config/objectstorage"
-	"github.com/UpCloudLtd/crossplane-provider-upcloud/config/server"
-	"github.com/UpCloudLtd/crossplane-provider-upcloud/config/storage"
+	"github.com/crossplane-contrib/provider-upcloud/config/database"
+	"github.com/crossplane-contrib/provider-upcloud/config/kubernetes"
+	"github.com/crossplane-contrib/provider-upcloud/config/network"
+	"github.com/crossplane-contrib/provider-upcloud/config/objectstorage"
+	"github.com/crossplane-contrib/provider-upcloud/config/server"
+	"github.com/crossplane-contrib/provider-upcloud/config/storage"
 
 	"github.com/UpCloudLtd/terraform-provider-upcloud/upcloud"
 	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
@@ -25,7 +25,7 @@ import (
 
 const (
 	resourcePrefix = "upcloud"
-	modulePath     = "github.com/UpCloudLtd/crossplane-provider-upcloud"
+	modulePath     = "github.com/crossplane-contrib/provider-upcloud"
 )
 
 //go:embed schema.json
@@ -37,7 +37,7 @@ var providerMetadata string
 // GetProvider returns provider configuration
 func GetProvider() *ujconfig.Provider {
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
-		ujconfig.WithRootGroup("upcloud.com"),
+		ujconfig.WithRootGroup("upcloud.crossplane.io"),
 		ujconfig.WithIncludeList(ExternalNameConfigured()),
 		ujconfig.WithTerraformPluginSDKIncludeList(sdkResourcesList()),
 		ujconfig.WithTerraformProvider(terraformProvider()),
@@ -68,7 +68,7 @@ func GetProvider() *ujconfig.Provider {
 // GetProviderNamespaced returns the namespaced provider configuration
 func GetProviderNamespaced() *ujconfig.Provider {
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
-		ujconfig.WithRootGroup("m.upcloud.com"),
+		ujconfig.WithRootGroup("upcloud.m.crossplane.io"),
 		ujconfig.WithIncludeList(ExternalNameConfigured()),
 		ujconfig.WithTerraformPluginSDKIncludeList(sdkResourcesList()),
 		ujconfig.WithTerraformProvider(terraformProvider()),

@@ -186,7 +186,7 @@ type NetworkInterfaceInitParameters struct {
 
 	// (String) The UUID of the network to attach this interface to. Required for private network interfaces.
 	// The UUID of the network to attach this interface to. Required for private network interfaces.
-	// +crossplane:generate:reference:type=github.com/UpCloudLtd/crossplane-provider-upcloud/apis/namespaced/network/v1alpha1.Network
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/network/v1alpha1.Network
 	Network *string `json:"network,omitempty" tf:"network,omitempty"`
 
 	// Reference to a Network in network to populate network.
@@ -278,7 +278,7 @@ type NetworkInterfaceParameters struct {
 
 	// (String) The UUID of the network to attach this interface to. Required for private network interfaces.
 	// The UUID of the network to attach this interface to. Required for private network interfaces.
-	// +crossplane:generate:reference:type=github.com/UpCloudLtd/crossplane-provider-upcloud/apis/namespaced/network/v1alpha1.Network
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/network/v1alpha1.Network
 	// +kubebuilder:validation:Optional
 	Network *string `json:"network,omitempty" tf:"network,omitempty"`
 
@@ -683,7 +683,7 @@ type StorageDevicesInitParameters struct {
 
 	// (String) The UUID of the storage to attach to the server.
 	// The UUID of the storage to attach to the server.
-	// +crossplane:generate:reference:type=github.com/UpCloudLtd/crossplane-provider-upcloud/apis/namespaced/storage/v1alpha1.Storage
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/storage/v1alpha1.Storage
 	Storage *string `json:"storage,omitempty" tf:"storage,omitempty"`
 
 	// Reference to a Storage in storage to populate storage.
@@ -732,7 +732,7 @@ type StorageDevicesParameters struct {
 
 	// (String) The UUID of the storage to attach to the server.
 	// The UUID of the storage to attach to the server.
-	// +crossplane:generate:reference:type=github.com/UpCloudLtd/crossplane-provider-upcloud/apis/namespaced/storage/v1alpha1.Storage
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/storage/v1alpha1.Storage
 	// +kubebuilder:validation:Optional
 	Storage *string `json:"storage,omitempty" tf:"storage,omitempty"`
 

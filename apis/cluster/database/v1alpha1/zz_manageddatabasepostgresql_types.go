@@ -114,7 +114,7 @@ type ManagedDatabasePostgresqlNetworkInitParameters struct {
 
 	// (String) Private network UUID. Must reside in the same zone as the database.
 	// Private network UUID. Must reside in the same zone as the database.
-	// +crossplane:generate:reference:type=github.com/UpCloudLtd/crossplane-provider-upcloud/apis/cluster/network/v1alpha1.Network
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/cluster/network/v1alpha1.Network
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 
 	// Reference to a Network in network to populate uuid.
@@ -164,7 +164,7 @@ type ManagedDatabasePostgresqlNetworkParameters struct {
 
 	// (String) Private network UUID. Must reside in the same zone as the database.
 	// Private network UUID. Must reside in the same zone as the database.
-	// +crossplane:generate:reference:type=github.com/UpCloudLtd/crossplane-provider-upcloud/apis/cluster/network/v1alpha1.Network
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/cluster/network/v1alpha1.Network
 	// +kubebuilder:validation:Optional
 	UUID *string `json:"uuid" tf:"uuid,omitempty"`
 

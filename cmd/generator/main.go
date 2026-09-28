@@ -11,7 +11,7 @@ import (
 
 	"github.com/crossplane/upjet/v2/pkg/pipeline"
 
-	"github.com/UpCloudLtd/crossplane-provider-upcloud/config"
+	"github.com/crossplane-contrib/provider-upcloud/config"
 )
 
 func main() {

@@ -55,7 +55,7 @@ type ManagedObjectStorageUserAccessKeyParameters struct {
 
 	// (String) Managed Object Storage service UUID.
 	// Managed Object Storage service UUID.
-	// +crossplane:generate:reference:type=github.com/UpCloudLtd/crossplane-provider-upcloud/apis/namespaced/objectstorage/v1alpha1.ManagedObjectStorage
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/objectstorage/v1alpha1.ManagedObjectStorage
 	// +kubebuilder:validation:Optional
 	ServiceUUID *string `json:"serviceUuid" tf:"service_uuid,omitempty"`
 
@@ -74,7 +74,7 @@ type ManagedObjectStorageUserAccessKeyParameters struct {
 
 	// (String) Username.
 	// Username.
-	// +crossplane:generate:reference:type=github.com/UpCloudLtd/crossplane-provider-upcloud/apis/namespaced/objectstorage/v1alpha1.ManagedObjectStorageUser
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/objectstorage/v1alpha1.ManagedObjectStorageUser
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username" tf:"username,omitempty"`
 

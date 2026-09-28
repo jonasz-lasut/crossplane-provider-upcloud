@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/UpCloudLtd/crossplane-provider-upcloud/config/groupversion"
+	"github.com/crossplane-contrib/provider-upcloud/config/groupversion"
 
 	"github.com/crossplane/upjet/v2/pkg/config"
 )

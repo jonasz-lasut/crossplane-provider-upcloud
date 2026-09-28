@@ -10,14 +10,14 @@ package namespaced
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/namespaced/database/v1alpha1"
-	v1alpha1network "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/namespaced/network/v1alpha1"
-	v1alpha1objectstorage "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/namespaced/objectstorage/v1alpha1"
-	v1alpha1server "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/namespaced/server/v1alpha1"
-	v1alpha1storage "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/namespaced/storage/v1alpha1"
-	v1alpha1uks "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/namespaced/uks/v1alpha1"
-	v1alpha1namespaced "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/namespaced/v1alpha1"
-	v1beta1 "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/namespaced/v1beta1"
+	v1alpha1 "github.com/crossplane-contrib/provider-upcloud/apis/namespaced/database/v1alpha1"
+	v1alpha1network "github.com/crossplane-contrib/provider-upcloud/apis/namespaced/network/v1alpha1"
+	v1alpha1objectstorage "github.com/crossplane-contrib/provider-upcloud/apis/namespaced/objectstorage/v1alpha1"
+	v1alpha1server "github.com/crossplane-contrib/provider-upcloud/apis/namespaced/server/v1alpha1"
+	v1alpha1storage "github.com/crossplane-contrib/provider-upcloud/apis/namespaced/storage/v1alpha1"
+	v1alpha1uks "github.com/crossplane-contrib/provider-upcloud/apis/namespaced/uks/v1alpha1"
+	v1alpha1namespaced "github.com/crossplane-contrib/provider-upcloud/apis/namespaced/v1alpha1"
+	v1beta1 "github.com/crossplane-contrib/provider-upcloud/apis/namespaced/v1beta1"
 )
 
 func init() {

@@ -21,8 +21,8 @@ import (
 	"github.com/pkg/errors"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	v1alpha1 "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/cluster/database/v1alpha1"
-	features "github.com/UpCloudLtd/crossplane-provider-upcloud/internal/features"
+	v1alpha1 "github.com/crossplane-contrib/provider-upcloud/apis/cluster/database/v1alpha1"
+	features "github.com/crossplane-contrib/provider-upcloud/internal/features"
 )
 
 // SetupGated adds a controller that reconciles ManagedDatabaseLogicalDatabase managed resources.

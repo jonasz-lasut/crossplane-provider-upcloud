@@ -10,14 +10,14 @@ package cluster
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/cluster/database/v1alpha1"
-	v1alpha1network "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/cluster/network/v1alpha1"
-	v1alpha1objectstorage "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/cluster/objectstorage/v1alpha1"
-	v1alpha1server "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/cluster/server/v1alpha1"
-	v1alpha1storage "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/cluster/storage/v1alpha1"
-	v1alpha1uks "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/cluster/uks/v1alpha1"
-	v1alpha1cluster "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/cluster/v1alpha1"
-	v1beta1 "github.com/UpCloudLtd/crossplane-provider-upcloud/apis/cluster/v1beta1"
+	v1alpha1 "github.com/crossplane-contrib/provider-upcloud/apis/cluster/database/v1alpha1"
+	v1alpha1network "github.com/crossplane-contrib/provider-upcloud/apis/cluster/network/v1alpha1"
+	v1alpha1objectstorage "github.com/crossplane-contrib/provider-upcloud/apis/cluster/objectstorage/v1alpha1"
+	v1alpha1server "github.com/crossplane-contrib/provider-upcloud/apis/cluster/server/v1alpha1"
+	v1alpha1storage "github.com/crossplane-contrib/provider-upcloud/apis/cluster/storage/v1alpha1"
+	v1alpha1uks "github.com/crossplane-contrib/provider-upcloud/apis/cluster/uks/v1alpha1"
+	v1alpha1cluster "github.com/crossplane-contrib/provider-upcloud/apis/cluster/v1alpha1"
+	v1beta1 "github.com/crossplane-contrib/provider-upcloud/apis/cluster/v1beta1"
 )
 
 func init() {

@@ -311,7 +311,7 @@ type KubernetesNodeGroupParameters struct {
 
 	// (String) UUID of the cluster.
 	// UUID of the cluster.
-	// +crossplane:generate:reference:type=github.com/UpCloudLtd/crossplane-provider-upcloud/apis/namespaced/uks/v1alpha1.KubernetesCluster
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/uks/v1alpha1.KubernetesCluster
 	// +kubebuilder:validation:Optional
 	Cluster *string `json:"cluster" tf:"cluster,omitempty"`
 

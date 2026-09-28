@@ -1,4 +1,4 @@
-apiVersion: server.m.upcloud.com/v1alpha1
+apiVersion: server.upcloud.m.crossplane.io/v1alpha1
 kind: Server
 metadata:
   name: upcloud-crossplane-example-namespaced-server
@@ -31,7 +31,7 @@ spec:
     name: upcloud-crossplane-example-providerconfig
     kind: ProviderConfig
 ---
-apiVersion: server.m.upcloud.com/v1alpha1
+apiVersion: server.upcloud.m.crossplane.io/v1alpha1
 kind: ServerGroup
 metadata:
   name: upcloud-crossplane-example-namespaced-server-group
@@ -45,7 +45,7 @@ spec:
     name: upcloud-crossplane-example-providerconfig
     kind: ProviderConfig
 ---
-apiVersion: server.m.upcloud.com/v1alpha1
+apiVersion: server.upcloud.m.crossplane.io/v1alpha1
 kind: FirewallRules
 metadata:
   name: upcloud-crossplane-example-namespaced-firewall-rules

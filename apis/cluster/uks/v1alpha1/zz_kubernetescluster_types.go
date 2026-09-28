@@ -31,7 +31,7 @@ type KubernetesClusterInitParameters struct {
 
 	// (String) Network ID for the cluster to run in.
 	// Network ID for the cluster to run in.
-	// +crossplane:generate:reference:type=github.com/UpCloudLtd/crossplane-provider-upcloud/apis/cluster/network/v1alpha1.Network
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/cluster/network/v1alpha1.Network
 	Network *string `json:"network,omitempty" tf:"network,omitempty"`
 
 	// Reference to a Network in network to populate network.
@@ -152,7 +152,7 @@ type KubernetesClusterParameters struct {
 
 	// (String) Network ID for the cluster to run in.
 	// Network ID for the cluster to run in.
-	// +crossplane:generate:reference:type=github.com/UpCloudLtd/crossplane-provider-upcloud/apis/cluster/network/v1alpha1.Network
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/cluster/network/v1alpha1.Network
 	// +kubebuilder:validation:Optional
 	Network *string `json:"network" tf:"network,omitempty"`
 

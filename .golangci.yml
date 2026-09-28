@@ -123,7 +123,7 @@ formatters:
       simplify: true
     goimports:
       local-prefixes:
-        - https://github.com/UpCloudLtd/crossplane-provider-upcloud
+        - github.com/crossplane-contrib/provider-upcloud
   exclusions:
     generated: lax
     paths:

@@ -1,4 +1,4 @@
-apiVersion: objectstorage.m.upcloud.com/v1alpha1
+apiVersion: objectstorage.upcloud.m.crossplane.io/v1alpha1
 kind: ManagedObjectStorage
 metadata:
   annotations:
@@ -22,7 +22,7 @@ spec:
 
 ---
 
-apiVersion: network.m.upcloud.com/v1alpha1
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
 kind: Network
 metadata:
   annotations:
@@ -45,7 +45,7 @@ spec:
 
 ---
 
-apiVersion: network.m.upcloud.com/v1alpha1
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
 kind: Router
 metadata:
   annotations:

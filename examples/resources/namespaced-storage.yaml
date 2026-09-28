@@ -1,4 +1,4 @@
-apiVersion: storage.m.upcloud.com/v1alpha1
+apiVersion: storage.upcloud.m.crossplane.io/v1alpha1
 kind: Storage
 metadata:
   name: upcloud-crossplane-example-namespaced-storage

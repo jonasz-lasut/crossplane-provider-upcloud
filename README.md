@@ -42,7 +42,7 @@ Please note that this project is currently in early alpha version, we do not rec
           "token": "ucat_TOKEN"
         }
     ---
-    apiVersion: provider.upcloud.com/v1beta1
+    apiVersion: upcloud.crossplane.io/v1beta1
     kind: ProviderConfig
     metadata:
       name: default

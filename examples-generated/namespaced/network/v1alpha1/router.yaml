@@ -1,4 +1,4 @@
-apiVersion: network.m.upcloud.com/v1alpha1
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
 kind: Router
 metadata:
   annotations:
