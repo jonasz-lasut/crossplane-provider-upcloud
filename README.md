@@ -40,6 +40,20 @@ or, for a username and password pair:
 }
 ```
 
+The same JSON may carry the optional client settings of the upstream
+Terraform provider, as numbers or numeric strings. They bound how long a
+reconcile can wait on the UpCloud API; the defaults are the upstream ones.
+
+```json
+{
+  "token": "ucat_...",
+  "request_timeout_sec": 30,
+  "retry_max": 2,
+  "retry_wait_min_sec": 1,
+  "retry_wait_max_sec": 30
+}
+```
+
 ## Getting Started
 
 ### 1. Install the provider

@@ -99,7 +99,7 @@ func TestResolveNamespacedSpec(t *testing.T) {
 
 func TestBuildConfiguration(t *testing.T) {
 	type args struct {
-		creds map[string]string
+		creds map[string]any
 	}
 
 	cases := map[string]struct {
@@ -108,32 +108,56 @@ func TestBuildConfiguration(t *testing.T) {
 		wantErrContains string
 	}{
 		"TokenOnly": {
-			args: args{creds: map[string]string{"token": "ucat_token"}},
+			args: args{creds: map[string]any{"token": "ucat_token"}},
 			want: map[string]any{"token": "ucat_token"},
 		},
 		"TokenWinsOverUsernameAndPassword": {
-			args: args{creds: map[string]string{"token": "ucat_token", "username": "user", "password": "pass"}},
+			args: args{creds: map[string]any{"token": "ucat_token", "username": "user", "password": "pass"}},
 			want: map[string]any{"token": "ucat_token"},
 		},
 		"UsernameAndPassword": {
-			args: args{creds: map[string]string{"username": "user", "password": "pass"}},
+			args: args{creds: map[string]any{"username": "user", "password": "pass"}},
 			want: map[string]any{"username": "user", "password": "pass"},
 		},
 		"ExtraKeysIgnored": {
-			args: args{creds: map[string]string{"token": "ucat_token", "unrelated": "x"}},
+			args: args{creds: map[string]any{"token": "ucat_token", "unrelated": "x"}},
 			want: map[string]any{"token": "ucat_token"},
 		},
 		"EmptyTokenFallsBackToUsernameAndPassword": {
-			args: args{creds: map[string]string{"token": "", "username": "user", "password": "pass"}},
+			args: args{creds: map[string]any{"token": "", "username": "user", "password": "pass"}},
 			want: map[string]any{"username": "user", "password": "pass"},
 		},
 		"UsernameWithoutPassword": {
-			args:            args{creds: map[string]string{"username": "user"}},
+			args:            args{creds: map[string]any{"username": "user"}},
 			wantErrContains: `needs a "token" key or both "username" and "password" keys`,
 		},
 		"NoCredentials": {
-			args:            args{creds: map[string]string{}},
+			args:            args{creds: map[string]any{}},
 			wantErrContains: `needs a "token" key or both "username" and "password" keys`,
+		},
+		"TokenNotAString": {
+			args:            args{creds: map[string]any{"token": 42.0}},
+			wantErrContains: `credentials key "token" must be a string`,
+		},
+		"ClientSettingsAsNumbers": {
+			args: args{creds: map[string]any{"token": "ucat_token", "request_timeout_sec": 30.0, "retry_max": 2.0, "retry_wait_min_sec": 1.0, "retry_wait_max_sec": 10.0}},
+			want: map[string]any{"token": "ucat_token", "request_timeout_sec": int64(30), "retry_max": int64(2), "retry_wait_min_sec": int64(1), "retry_wait_max_sec": int64(10)},
+		},
+		"ClientSettingsAsNumericStrings": {
+			args: args{creds: map[string]any{"username": "user", "password": "pass", "request_timeout_sec": "30", "retry_max": "2"}},
+			want: map[string]any{"username": "user", "password": "pass", "request_timeout_sec": int64(30), "retry_max": int64(2)},
+		},
+		"ClientSettingNotAnInteger": {
+			args:            args{creds: map[string]any{"token": "ucat_token", "request_timeout_sec": 2.5}},
+			wantErrContains: `credentials key "request_timeout_sec" must be an integer`,
+		},
+		"ClientSettingNotNumeric": {
+			args:            args{creds: map[string]any{"token": "ucat_token", "retry_max": "many"}},
+			wantErrContains: `credentials key "retry_max" must be an integer`,
+		},
+		"ClientSettingWrongType": {
+			args:            args{creds: map[string]any{"token": "ucat_token", "retry_max": true}},
+			wantErrContains: `credentials key "retry_max" must be an integer, got bool`,
 		},
 	}
 

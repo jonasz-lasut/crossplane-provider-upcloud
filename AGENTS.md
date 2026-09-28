@@ -184,7 +184,7 @@ Any Terraform attribute marked `Sensitive: true` becomes `<field>SecretRef` in t
 ## E2E setup
 
 `cluster/test/setup.sh` runs during `make e2e`. It:
-1. Creates a `provider-secret` Secret in `crossplane-system` from `$UPTEST_CLOUD_CREDENTIALS` (JSON with a `token` key holding an UpCloud API token, or `username` and `password` keys).
+1. Creates a `provider-secret` Secret in `crossplane-system` from `$UPTEST_CLOUD_CREDENTIALS` (JSON with a `token` key holding an UpCloud API token, or `username` and `password` keys; the optional `request_timeout_sec`, `retry_max`, `retry_wait_min_sec` and `retry_wait_max_sec` keys are passed through to the upstream provider as integers).
 2. Applies a `ProviderConfig` (cluster scope) and a `ClusterProviderConfig` (namespaced scope).
 
 Examples pin their zone (`fi-hel2`) and object storage region (`europe-1`, primary zone `fi-hel2`) directly; no uptest datasource is needed.

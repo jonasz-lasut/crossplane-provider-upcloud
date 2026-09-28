@@ -7,6 +7,8 @@ package clients
 import (
 	"context"
 	"encoding/json"
+	"math"
+	"strconv"
 
 	"github.com/UpCloudLtd/terraform-provider-upcloud/upcloud"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/errors"
@@ -38,7 +40,18 @@ const (
 	keyToken    = "token"
 	keyUsername = "username"
 	keyPassword = "password"
+
+	// Optional client settings, named after the upstream provider attributes
+	// they are passed through to.
+	keyRequestTimeoutSec = "request_timeout_sec"
+	keyRetryMax          = "retry_max"
+	keyRetryWaitMinSec   = "retry_wait_min_sec"
+	keyRetryWaitMaxSec   = "retry_wait_max_sec"
 )
+
+// clientSettingKeys lists the optional integer settings of the upstream
+// provider that the credentials JSON may carry next to the credentials.
+var clientSettingKeys = []string{keyRequestTimeoutSec, keyRetryMax, keyRetryWaitMinSec, keyRetryWaitMaxSec}
 
 // TerraformSetupBuilder builds a terraform.SetupFn that configures the
 // in-process UpCloud Terraform provider (no-fork, no terraform CLI). The setup
@@ -60,7 +73,7 @@ func TerraformSetupBuilder(p *ujconfig.Provider) terraform.SetupFn {
 			return terraform.Setup{}, errors.Wrap(err, errExtractCredentials)
 		}
 
-		creds := map[string]string{}
+		creds := map[string]any{}
 		if err := json.Unmarshal(data, &creds); err != nil {
 			return terraform.Setup{}, errors.Wrap(err, errUnmarshalCredentials)
 		}
@@ -119,17 +132,80 @@ func configureProviderMeta(ctx context.Context, ps *terraform.Setup) error {
 
 // buildConfiguration maps the credentials secret onto the UpCloud provider
 // configuration block. An API token takes precedence; otherwise the
-// username and password pair is used. Only the keys that are set are passed
-// through, so the upstream provider applies its own defaults for the rest.
-func buildConfiguration(creds map[string]string) (map[string]any, error) {
-	if token := creds[keyToken]; token != "" {
-		return map[string]any{keyToken: token}, nil
+// username and password pair is used. The optional client settings
+// (request_timeout_sec, retry_max, retry_wait_min_sec, retry_wait_max_sec)
+// are passed through when present, as JSON numbers or numeric strings. Only
+// the keys that are set are passed through, so the upstream provider applies
+// its own defaults for the rest.
+func buildConfiguration(creds map[string]any) (map[string]any, error) {
+	cfg := map[string]any{}
+	token, err := stringValue(creds, keyToken)
+	if err != nil {
+		return nil, err
 	}
-	username, password := creds[keyUsername], creds[keyPassword]
-	if username == "" || password == "" {
+	username, err := stringValue(creds, keyUsername)
+	if err != nil {
+		return nil, err
+	}
+	password, err := stringValue(creds, keyPassword)
+	if err != nil {
+		return nil, err
+	}
+	switch {
+	case token != "":
+		cfg[keyToken] = token
+	case username != "" && password != "":
+		cfg[keyUsername] = username
+		cfg[keyPassword] = password
+	default:
 		return nil, errors.New(`credentials secret needs a "token" key or both "username" and "password" keys`)
 	}
-	return map[string]any{keyUsername: username, keyPassword: password}, nil
+	for _, key := range clientSettingKeys {
+		v, ok := creds[key]
+		if !ok {
+			continue
+		}
+		n, err := integerValue(key, v)
+		if err != nil {
+			return nil, err
+		}
+		cfg[key] = n
+	}
+	return cfg, nil
+}
+
+// stringValue returns the string under key, "" when the key is absent, and
+// an error when the value is not a string.
+func stringValue(creds map[string]any, key string) (string, error) {
+	v, ok := creds[key]
+	if !ok || v == nil {
+		return "", nil
+	}
+	s, ok := v.(string)
+	if !ok {
+		return "", errors.Errorf("credentials key %q must be a string, got %T", key, v)
+	}
+	return s, nil
+}
+
+// integerValue converts a JSON number or a numeric string into the int64 the
+// upstream provider attributes expect.
+func integerValue(key string, v any) (int64, error) {
+	switch v := v.(type) {
+	case float64:
+		if v != math.Trunc(v) {
+			return 0, errors.Errorf("credentials key %q must be an integer, got %v", key, v)
+		}
+		return int64(v), nil
+	case string:
+		n, err := strconv.ParseInt(v, 10, 64)
+		if err != nil {
+			return 0, errors.Wrapf(err, "credentials key %q must be an integer", key)
+		}
+		return n, nil
+	default:
+		return 0, errors.Errorf("credentials key %q must be an integer, got %T", key, v)
+	}
 }
 
 func toSharedPCSpec(pc *clusterv1beta1.ProviderConfig) (*namespacedv1beta1.ProviderConfigSpec, error) {
