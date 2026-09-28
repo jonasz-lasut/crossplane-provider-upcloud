@@ -1,0 +1,46 @@
+apiVersion: database.upcloud.crossplane.io/v1alpha1
+kind: ManagedDatabaseUser
+metadata:
+  annotations:
+    meta.upbound.io/example-id: database/v1alpha1/manageddatabaseuser
+  labels:
+    testing.upbound.io/example-name: dbuser-example
+  name: dbuser-example
+spec:
+  forProvider:
+    serviceRef:
+      name: dbuser-example-postgresql
+    passwordSecretRef:
+      name: dbuser-example-secret
+      key: password
+      namespace: crossplane-system
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: database.upcloud.crossplane.io/v1alpha1
+kind: ManagedDatabasePostgresql
+metadata:
+  annotations:
+    meta.upbound.io/example-id: database/v1alpha1/manageddatabaseuser
+  labels:
+    testing.upbound.io/example-name: dbuser-example-postgresql
+  name: dbuser-example-postgresql
+spec:
+  forProvider:
+    name: dbuser-example-postgresql
+    title: dbuser-example-postgresql
+    plan: 1x1xCPU-2GB-25GB
+    zone: de-fra1
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dbuser-example-secret
+  namespace: crossplane-system
+type: Opaque
+stringData:
+  password: ExamplePassw0rd!

@@ -1,0 +1,37 @@
+apiVersion: objectstorage.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedObjectStoragePolicy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: objectstorage/v1alpha1/managedobjectstoragepolicy
+  labels:
+    testing.upbound.io/example-name: policy-example
+  name: policy-example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    description: example policy
+    document: '%7B%22Version%22%3A%222012-10-17%22%2C%22Statement%22%3A%5B%7B%22Action%22%3A%5B%22iam%3AGetUser%22%5D%2C%22Resource%22%3A%22*%22%2C%22Effect%22%3A%22Allow%22%2C%22Sid%22%3A%22editor%22%7D%5D%7D'
+    serviceUuidRef:
+      name: policy-example-service
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: objectstorage.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedObjectStorage
+metadata:
+  annotations:
+    meta.upbound.io/example-id: objectstorage/v1alpha1/managedobjectstoragepolicy
+  labels:
+    testing.upbound.io/example-name: policy-example-service
+  name: policy-example-service
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: policy-example-service
+    region: europe-1
+    configuredStatus: started
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

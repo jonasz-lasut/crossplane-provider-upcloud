@@ -1,0 +1,35 @@
+apiVersion: objectstorage.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedObjectStorageUser
+metadata:
+  annotations:
+    meta.upbound.io/example-id: objectstorage/v1alpha1/managedobjectstorageuser
+  labels:
+    testing.upbound.io/example-name: user-example
+  name: user-example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    serviceUuidRef:
+      name: user-example-service
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: objectstorage.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedObjectStorage
+metadata:
+  annotations:
+    meta.upbound.io/example-id: objectstorage/v1alpha1/managedobjectstorageuser
+  labels:
+    testing.upbound.io/example-name: user-example-service
+  name: user-example-service
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: user-example-service
+    region: europe-1
+    configuredStatus: started
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

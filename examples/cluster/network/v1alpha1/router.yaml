@@ -1,0 +1,15 @@
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Router
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/router
+  labels:
+    testing.upbound.io/example-name: router-example
+  name: router-example
+spec:
+  forProvider:
+    name: router-example
+    labels: {}
+    staticRoute: []
+  providerConfigRef:
+    name: default

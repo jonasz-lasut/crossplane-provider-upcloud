@@ -1,0 +1,39 @@
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/network
+  labels:
+    testing.upbound.io/example-name: network-example
+  name: network-example
+spec:
+  forProvider:
+    name: network-example
+    zone: de-fra1
+    ipNetwork:
+      - address: 10.11.0.0/24
+        dhcp: true
+        dhcpDefaultRoute: false
+        family: IPv4
+        gateway: 10.11.0.1
+    routerRef:
+      name: network-example-router
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Router
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/network
+  labels:
+    testing.upbound.io/example-name: network-example-router
+  name: network-example-router
+spec:
+  forProvider:
+    name: network-example-router
+    labels: {}
+    staticRoute: []
+  providerConfigRef:
+    name: default

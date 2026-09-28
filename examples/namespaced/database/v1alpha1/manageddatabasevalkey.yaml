@@ -1,0 +1,18 @@
+apiVersion: database.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedDatabaseValkey
+metadata:
+  annotations:
+    meta.upbound.io/example-id: database/v1alpha1/manageddatabasevalkey
+  labels:
+    testing.upbound.io/example-name: valkey-example
+  name: valkey-example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: valkey-example
+    title: valkey-example
+    plan: 1x1xCPU-2GB
+    zone: fi-hel2
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

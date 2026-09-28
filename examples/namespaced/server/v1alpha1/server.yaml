@@ -1,0 +1,78 @@
+apiVersion: server.upcloud.m.crossplane.io/v1alpha1
+kind: Server
+metadata:
+  annotations:
+    meta.upbound.io/example-id: server/v1alpha1/server
+  labels:
+    testing.upbound.io/example-name: server-example
+  name: server-example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    hostname: server-example
+    title: server-example
+    plan: 1xCPU-1GB
+    zone: de-fra1
+    metadata: true
+    firewall: true
+    labels:
+      env: dev
+      production: 'false'
+    login:
+      - user: example
+    networkInterface:
+      - type: public
+      - type: private
+        networkRef:
+          name: server-example-network
+    template:
+      - size: 25
+        storage: Ubuntu Server 24.04 LTS (Noble Numbat)
+    storageDevices:
+      - storageRef:
+          name: server-example-storage
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: server/v1alpha1/server
+  labels:
+    testing.upbound.io/example-name: server-example-network
+  name: server-example-network
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: server-example-network
+    zone: de-fra1
+    ipNetwork:
+      - address: 10.12.0.0/24
+        dhcp: true
+        family: IPv4
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: storage.upcloud.m.crossplane.io/v1alpha1
+kind: Storage
+metadata:
+  annotations:
+    meta.upbound.io/example-id: server/v1alpha1/server
+  labels:
+    testing.upbound.io/example-name: server-example-storage
+  name: server-example-storage
+  namespace: crossplane-system
+spec:
+  forProvider:
+    size: 10
+    tier: standard
+    title: server-example-storage
+    zone: de-fra1
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

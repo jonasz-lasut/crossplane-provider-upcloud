@@ -1,0 +1,63 @@
+apiVersion: uks.upcloud.m.crossplane.io/v1alpha1
+kind: KubernetesNodeGroup
+metadata:
+  annotations:
+    meta.upbound.io/example-id: uks/v1alpha1/kubernetesnodegroup
+  labels:
+    testing.upbound.io/example-name: nodegroup-example
+  name: nodegroup-example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    nodeCount: 1
+    plan: 2xCPU-4GB
+    clusterRef:
+      name: nodegroup-example-cluster
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: uks.upcloud.m.crossplane.io/v1alpha1
+kind: KubernetesCluster
+metadata:
+  annotations:
+    meta.upbound.io/example-id: uks/v1alpha1/kubernetesnodegroup
+  labels:
+    testing.upbound.io/example-name: nodegroup-example-cluster
+  name: nodegroup-example-cluster
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: nodegroup-example-cluster
+    zone: de-fra1
+    controlPlaneIpFilter:
+      - 0.0.0.0/0
+    labels: {}
+    networkRef:
+      name: nodegroup-example-network
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: uks/v1alpha1/kubernetesnodegroup
+  labels:
+    testing.upbound.io/example-name: nodegroup-example-network
+  name: nodegroup-example-network
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: nodegroup-example-network
+    zone: de-fra1
+    ipNetwork:
+      - address: 172.16.1.0/24
+        dhcp: true
+        family: IPv4
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

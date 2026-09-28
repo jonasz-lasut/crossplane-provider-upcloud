@@ -1,0 +1,18 @@
+apiVersion: storage.upcloud.m.crossplane.io/v1alpha1
+kind: Storage
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/storage
+  labels:
+    testing.upbound.io/example-name: storage-example
+  name: storage-example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    size: 10
+    tier: standard
+    title: storage-example
+    zone: de-fra1
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

@@ -1,0 +1,56 @@
+apiVersion: objectstorage.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedObjectStorageUserAccessKey
+metadata:
+  annotations:
+    meta.upbound.io/example-id: objectstorage/v1alpha1/managedobjectstorageuseraccesskey
+  labels:
+    testing.upbound.io/example-name: accesskey-example
+  name: accesskey-example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    status: Active
+    serviceUuidRef:
+      name: accesskey-example-service
+    usernameRef:
+      name: accesskey-example-user
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: objectstorage.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedObjectStorageUser
+metadata:
+  annotations:
+    meta.upbound.io/example-id: objectstorage/v1alpha1/managedobjectstorageuseraccesskey
+  labels:
+    testing.upbound.io/example-name: accesskey-example-user
+  name: accesskey-example-user
+  namespace: crossplane-system
+spec:
+  forProvider:
+    serviceUuidRef:
+      name: accesskey-example-service
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: objectstorage.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedObjectStorage
+metadata:
+  annotations:
+    meta.upbound.io/example-id: objectstorage/v1alpha1/managedobjectstorageuseraccesskey
+  labels:
+    testing.upbound.io/example-name: accesskey-example-service
+  name: accesskey-example-service
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: accesskey-example-service
+    region: europe-1
+    configuredStatus: started
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

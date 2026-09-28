@@ -1,0 +1,18 @@
+apiVersion: database.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedDatabaseOpensearch
+metadata:
+  annotations:
+    meta.upbound.io/example-id: database/v1alpha1/manageddatabaseopensearch
+  labels:
+    testing.upbound.io/example-name: opensearch-example
+  name: opensearch-example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: opensearch-example
+    title: opensearch-example
+    plan: 1x2xCPU-4GB-80GB-1D
+    zone: fi-hel2
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

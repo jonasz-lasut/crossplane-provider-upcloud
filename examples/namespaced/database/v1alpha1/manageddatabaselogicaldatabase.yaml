@@ -1,0 +1,36 @@
+apiVersion: database.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedDatabaseLogicalDatabase
+metadata:
+  annotations:
+    meta.upbound.io/example-id: database/v1alpha1/manageddatabaselogicaldatabase
+  labels:
+    testing.upbound.io/example-name: logicaldb-example
+  name: logicaldb-example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    serviceRef:
+      name: logicaldb-example-postgresql
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: database.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedDatabasePostgresql
+metadata:
+  annotations:
+    meta.upbound.io/example-id: database/v1alpha1/manageddatabaselogicaldatabase
+  labels:
+    testing.upbound.io/example-name: logicaldb-example-postgresql
+  name: logicaldb-example-postgresql
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: logicaldb-example-postgresql
+    title: logicaldb-example-postgresql
+    plan: 1x1xCPU-2GB-25GB
+    zone: de-fra1
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
