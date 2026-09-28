@@ -62,13 +62,14 @@ YQ_VERSION = v4.40.5
 CROSSPLANE_CLI_VERSION = v2.3.4
 CRDDIFF_VERSION = v0.12.1
 CROSSPLANE_VERSION = 2.3.4
+KUBECTL_VALIDATE_VERSION ?= v0.0.4
 
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
 # Setup Images
 
-REGISTRY_ORGS ?= ghcr.io/crossplane-contrib
+REGISTRY_ORGS ?= xpkg.upbound.io/crossplane-contrib ghcr.io/crossplane-contrib
 IMAGES = $(PROJECT_NAME)
 BATCH_PLATFORMS ?= linux_amd64,linux_arm64
 export BATCH_PLATFORMS := $(BATCH_PLATFORMS)
@@ -78,10 +79,10 @@ export BATCH_PLATFORMS := $(BATCH_PLATFORMS)
 # ====================================================================================
 # Setup XPKG
 
-XPKG_REG_ORGS ?= ghcr.io/crossplane-contrib
-# NOTE(hasheddan): skip promoting on xpkg.crossplane.io as channel tags are
-# inferred.
-XPKG_REG_ORGS_NO_PROMOTE ?= ghcr.io/crossplane-contrib
+XPKG_REG_ORGS ?= xpkg.upbound.io/crossplane-contrib ghcr.io/crossplane-contrib
+# NOTE(hasheddan): skip promoting on xpkg.upbound.io and ghcr.io as channel
+# tags are inferred.
+XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/crossplane-contrib ghcr.io/crossplane-contrib
 XPKGS = $(PROJECT_NAME)
 
 export XPKG_REG_ORGS := $(XPKG_REG_ORGS)
@@ -237,7 +238,49 @@ schema-version-diff:
 	./scripts/version_diff.py config/generated.lst "$(WORK_DIR)/schema.json.$${PREV_PROVIDER_VERSION}" config/schema.json
 	@$(OK) Checking for native state schema version changes
 
-.PHONY: cobertura submodules fallthrough run crds.clean schema-version-diff
+
+	@echo $(SUBPACKAGES)
+
+KUBECTL_VALIDATE := $(TOOLS_HOST_DIR)/kubectl-validate-$(KUBECTL_VALIDATE_VERSION)
+
+$(KUBECTL_VALIDATE):
+	@$(INFO) installing kubectl-validate $(KUBECTL_VALIDATE_VERSION)
+	@mkdir -p $(TOOLS_HOST_DIR)
+	@GOBIN=$(abspath $(TOOLS_HOST_DIR)) go install sigs.k8s.io/kubectl-validate@$(KUBECTL_VALIDATE_VERSION)
+	@mv $(TOOLS_HOST_DIR)/kubectl-validate $@
+	@$(OK) installed kubectl-validate $(KUBECTL_VALIDATE_VERSION)
+
+# example-lint validates example manifests against CRD schemas using kubectl-validate.
+# Key implementation details:
+#   - Operates on a tmpdir copy so source files are never mutated.
+#   - Replaces uptest template variables (e.g. ${Rand.RFC1123Subdomain}) with a valid
+#     placeholder; kubectl-validate rejects those tokens as malformed field values.
+#   - Filters out non-UpCloud YAML files by matching only the apiVersion: line against
+#     upcloud.*crossplane.io, which covers both the cluster-scoped (upcloud.crossplane.io)
+#     and namespaced (upcloud.m.crossplane.io) variants. Anchoring prevents false
+#     positives from description fields or comments that mention other providers.
+#   - Captures absolute paths for the binary and CRDs before cd-ing into tmpdir, and runs
+#     kubectl-validate from there so error output shows short relative paths.
+#   - Iterates one scope/API group directory at a time so failures are reported per group.
+example-lint: $(KUBECTL_VALIDATE)
+	@$(INFO) linting example manifests; \
+	failed=0; \
+	tmpdir=$$(mktemp -d); \
+	crdsdir=$$(pwd)/package/crds; \
+	kv=$$(realpath "$(KUBECTL_VALIDATE)"); \
+	cp -r examples/. "$$tmpdir/"; \
+	find "$$tmpdir" -name "*.yaml" | xargs perl -pi -e 's/\$$\{Rand\.[^}]*\}/uptest/g'; \
+	find "$$tmpdir" -name "*.yaml" | while read f; do grep -q '^apiVersion:.*upcloud.*crossplane\.io' "$$f" || rm -f "$$f"; done; \
+	for dir in examples/cluster/*/ examples/namespaced/*/; do \
+		group=$${dir#examples/}; group=$${group%/}; \
+		[ -d "$$tmpdir/$$group" ] || continue; \
+		$(INFO) linting $$dir; \
+		(cd "$$tmpdir" && "$$kv" "$$group" --local-crds "$$crdsdir") && $(OK) linted $$dir || { $(WARN) failed to lint $$dir; failed=1; }; \
+	done; \
+	rm -rf "$$tmpdir"; \
+	[ "$$failed" -eq 0 ] && $(OK) linted example manifests || $(FAIL)
+
+.PHONY: cobertura submodules fallthrough run crds.clean schema-version-diff example-lint
 
 # ====================================================================================
 # Special Targets
