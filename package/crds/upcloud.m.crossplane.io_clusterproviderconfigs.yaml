@@ -8,6 +8,10 @@ metadata:
 spec:
   group: upcloud.m.crossplane.io
   names:
+    categories:
+    - crossplane
+    - provider
+    - upcloud
     kind: ClusterProviderConfig
     listKind: ClusterProviderConfigList
     plural: clusterproviderconfigs
@@ -25,7 +29,7 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
-        description: A ClusterProviderConfig configures the Template provider.
+        description: A ClusterProviderConfig configures an UpCloud provider.
         properties:
           apiVersion:
             description: |-
@@ -45,7 +49,12 @@ spec:
           metadata:
             type: object
           spec:
-            description: A ProviderConfigSpec defines the desired state of a ProviderConfig.
+            description: |-
+              A ProviderConfigSpec defines the desired state of a cluster-scoped
+              ClusterProviderConfig. Its credential secret references carry an explicit
+              namespace, because a cluster-scoped config can reference secrets in any
+              namespace. The namespaced ProviderConfig uses NamespacedProviderConfigSpec
+              instead, which omits the namespace.
             properties:
               credentials:
                 description: Credentials required to authenticate to this provider.
@@ -103,6 +112,42 @@ spec:
                 required:
                 - source
                 type: object
+              reconciliationPolicy:
+                description: |-
+                  ReconciliationPolicy configures how a managed resource is reconciled.
+                  It currently allows overriding the controller's failure rate limiter
+                  parameters on a per-resource basis via ExponentialFailureRateLimiter.
+                properties:
+                  exponentialFailureRateLimiter:
+                    description: |-
+                      ExponentialFailureRateLimiter, when set, overrides the parameters of the
+                      exponential failure rate limiter used to schedule retries for the
+                      managed resource that this policy applies to.
+                    properties:
+                      baseDelay:
+                        description: BaseDelay is the initial delay between retries.
+                        type: string
+                        x-kubernetes-validations:
+                        - message: baseDelay must be at least 1s
+                          rule: duration(self) >= duration('1s')
+                      maxDelay:
+                        description: MaxDelay is the maximum delay between retries.
+                        type: string
+                        x-kubernetes-validations:
+                        - message: maxDelay must be at least 60s
+                          rule: duration(self) >= duration('60s')
+                    type: object
+                    x-kubernetes-validations:
+                    - message: maxDelay must be greater than or equal to baseDelay
+                      rule: '!has(self.maxDelay) || !has(self.baseDelay) || duration(self.maxDelay)
+                        >= duration(self.baseDelay)'
+                type: object
+                x-kubernetes-validations:
+                - message: when maxDelay is omitted it defaults to 60s; baseDelay
+                    must be <= 60s
+                  rule: '!has(self.exponentialFailureRateLimiter) || !has(self.exponentialFailureRateLimiter.baseDelay)
+                    || has(self.exponentialFailureRateLimiter.maxDelay) || duration(self.exponentialFailureRateLimiter.baseDelay)
+                    <= duration(''60s'')'
             required:
             - credentials
             type: object

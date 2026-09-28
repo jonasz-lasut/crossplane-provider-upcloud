@@ -10,6 +10,7 @@ import (
 	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
 
 	"github.com/crossplane-contrib/provider-upcloud/config/namespaced"
+	"github.com/crossplane-contrib/provider-upcloud/config/templates"
 )
 
 // GetProviderNamespaced returns the namespaced provider configuration
@@ -22,6 +23,7 @@ func GetProviderNamespaced(_ context.Context) (*ujconfig.Provider, error) {
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
 		ujconfig.WithRootGroup("upcloud.m.crossplane.io"),
 		ujconfig.WithIncludeList([]string{}),
+		ujconfig.WithControllerTemplate(templates.ControllerTemplate),
 		ujconfig.WithTerraformPluginSDKIncludeList(terraformPluginSDKResourceList()),
 		ujconfig.WithTerraformPluginFrameworkIncludeList(terraformPluginFrameworkResourceList()),
 		ujconfig.WithFeaturesPackage("internal/features"),

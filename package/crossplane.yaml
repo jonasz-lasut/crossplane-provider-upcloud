@@ -3,14 +3,20 @@ kind: Provider
 metadata:
   name: provider-upcloud
   annotations:
-    meta.crossplane.io/maintainer: UpCloud
-    meta.crossplane.io/source: "github.com/crossplane-contrib/provider-upcloud"
-    meta.crossplane.io/description: "Crossplane provider to manage UpCloud services in Kubernetes"
+    meta.crossplane.io/maintainer: UpCloud and Upbound
+    meta.crossplane.io/source: github.com/crossplane-contrib/provider-upcloud
     meta.crossplane.io/license: Apache-2.0
+    meta.crossplane.io/description: |
+      Crossplane provider to manage UpCloud services in Kubernetes.
     meta.crossplane.io/readme: |
-      This is an official Crossplane provider for [UpCloud](https://upcloud.com).
-      Detailed instructions on how to install and use the provider can be found in the [GitHub repository](https://github.com/crossplane-contrib/provider-upcloud).
-      If you have any questions or need help, please [create a new issue in GitHub](https://github.com/crossplane-contrib/provider-upcloud/issues/new).
+      Provider UpCloud is a Crossplane provider for [UpCloud](https://upcloud.com)
+      built with Upjet and maintained by UpCloud and Upbound in the
+      crossplane-contrib organization. Installation and usage instructions live in
+      the [GitHub repository](https://github.com/crossplane-contrib/provider-upcloud);
+      questions and bug reports go to its
+      [issue tracker](https://github.com/crossplane-contrib/provider-upcloud/issues).
 spec:
+  crossplane:
+    version: ">=v2.0.0-0"
   capabilities:
   - SafeStart

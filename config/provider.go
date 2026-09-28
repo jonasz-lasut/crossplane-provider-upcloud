@@ -8,7 +8,6 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	"context"
 	_ "embed"
-	"fmt"
 
 	"github.com/UpCloudLtd/terraform-provider-upcloud/upcloud"
 	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
@@ -17,6 +16,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
 	"github.com/crossplane-contrib/provider-upcloud/config/cluster"
+	"github.com/crossplane-contrib/provider-upcloud/config/templates"
+	"github.com/crossplane-contrib/provider-upcloud/internal/version"
 )
 
 const (
@@ -44,6 +45,7 @@ func GetProvider(_ context.Context) (*ujconfig.Provider, error) {
 		[]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
 		ujconfig.WithRootGroup("upcloud.crossplane.io"),
 		ujconfig.WithIncludeList([]string{}),
+		ujconfig.WithControllerTemplate(templates.ControllerTemplate),
 		ujconfig.WithTerraformPluginSDKIncludeList(terraformPluginSDKResourceList()),
 		ujconfig.WithTerraformPluginFrameworkIncludeList(terraformPluginFrameworkResourceList()),
 		ujconfig.WithFeaturesPackage("internal/features"),
@@ -70,7 +72,7 @@ func GetProvider(_ context.Context) (*ujconfig.Provider, error) {
 func terraformProvider() *schema.Provider {
 	p := upcloud.Provider()
 	p.ConfigureContextFunc = func(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
-		return upcloud.ProviderConfigure(ctx, d, defaultUserAgent())
+		return upcloud.ProviderConfigure(ctx, d, version.UserAgent())
 	}
 	return p
 }
@@ -79,9 +81,5 @@ func terraformProvider() *schema.Provider {
 // terraform-plugin-framework flavor of the UpCloud provider, configured to
 // report this provider's User-Agent.
 func terraformPluginFrameworkProvider() fwprovider.Provider {
-	return upcloud.NewWithUserAgent(defaultUserAgent())
-}
-
-func defaultUserAgent() string {
-	return fmt.Sprintf("crossplane-provider-upcloud/%s", version)
+	return upcloud.NewWithUserAgent(version.UserAgent())
 }

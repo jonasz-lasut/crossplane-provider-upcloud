@@ -1,29 +1,33 @@
-/*
-Copyright 2021 Upbound Inc.
-*/
+// SPDX-FileCopyrightText: 2026 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
 
 package main
 
 import (
 	"context"
+	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"time"
 
-	authv1 "k8s.io/api/authorization/v1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	"k8s.io/apimachinery/pkg/runtime/schema"
-
-	apisCluster "github.com/crossplane-contrib/provider-upcloud/apis/cluster"
-	apisNamespaced "github.com/crossplane-contrib/provider-upcloud/apis/namespaced"
-	"github.com/crossplane-contrib/provider-upcloud/config"
-	resolverapis "github.com/crossplane-contrib/provider-upcloud/internal/apis"
-	"github.com/crossplane-contrib/provider-upcloud/internal/clients"
-	controllerCluster "github.com/crossplane-contrib/provider-upcloud/internal/controller/cluster"
-	controllerNamespaced "github.com/crossplane-contrib/provider-upcloud/internal/controller/namespaced"
-	"github.com/crossplane-contrib/provider-upcloud/internal/features"
-
 	"github.com/alecthomas/kingpin/v2"
+	authv1 "k8s.io/api/authorization/v1"
+	corev1 "k8s.io/api/core/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
+	"k8s.io/client-go/tools/leaderelection/resourcelock"
+	ctrl "sigs.k8s.io/controller-runtime"
+	"sigs.k8s.io/controller-runtime/pkg/cache"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/log/zap"
+	"sigs.k8s.io/controller-runtime/pkg/manager"
+	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
+	"sigs.k8s.io/controller-runtime/pkg/webhook"
+
 	xpcontroller "github.com/crossplane/crossplane-runtime/v2/pkg/controller"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/errors"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/feature"
@@ -32,33 +36,55 @@ import (
 	"github.com/crossplane/crossplane-runtime/v2/pkg/ratelimiter"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/reconciler/customresourcesgate"
 	tjcontroller "github.com/crossplane/upjet/v2/pkg/controller"
-	"github.com/crossplane/upjet/v2/pkg/terraform"
-	"k8s.io/client-go/tools/leaderelection/resourcelock"
-	ctrl "sigs.k8s.io/controller-runtime"
-	"sigs.k8s.io/controller-runtime/pkg/cache"
-	"sigs.k8s.io/controller-runtime/pkg/log/zap"
-	"sigs.k8s.io/controller-runtime/pkg/manager"
+
+	clusterapis "github.com/crossplane-contrib/provider-upcloud/apis/cluster"
+	namespacedapis "github.com/crossplane-contrib/provider-upcloud/apis/namespaced"
+	"github.com/crossplane-contrib/provider-upcloud/config"
+	resolverapis "github.com/crossplane-contrib/provider-upcloud/internal/apis"
+	"github.com/crossplane-contrib/provider-upcloud/internal/clients"
+	clustercontroller "github.com/crossplane-contrib/provider-upcloud/internal/controller/cluster"
+	namespacedcontroller "github.com/crossplane-contrib/provider-upcloud/internal/controller/namespaced"
+	"github.com/crossplane-contrib/provider-upcloud/internal/features"
 )
 
+const (
+	webhookTLSCertDirEnvVar = "WEBHOOK_TLS_CERT_DIR"
+	tlsServerCertDirEnvVar  = "TLS_SERVER_CERTS_DIR"
+	certsDirEnvVar          = "CERTS_DIR"
+	tlsServerCertDir        = "/tls/server"
+)
+
+//nolint:gocyclo // main wires up flags, scheme, manager, and controllers in one place; the crossplane-runtime v2.4.0 secret-cache flag pushed this over the default threshold.
 func main() {
 	var (
 		app              = kingpin.New(filepath.Base(os.Args[0]), "Terraform based Crossplane provider for UpCloud").DefaultEnvars()
 		debug            = app.Flag("debug", "Run with debug logging.").Short('d').Bool()
-		syncPeriod       = app.Flag("sync", "Controller manager sync period such as 300ms, 1.5h, or 2h45m").Short('s').Default("1h").Duration()
+		syncInterval     = app.Flag("sync", "Sync interval controls how often all resources will be double checked for drift.").Short('s').Default("1h").Duration()
 		pollInterval     = app.Flag("poll", "Poll interval controls how often an individual resource should be checked for drift.").Default("10m").Duration()
 		leaderElection   = app.Flag("leader-election", "Use leader election for the controller manager.").Short('l').Default("false").OverrideDefaultFromEnvar("LEADER_ELECTION").Bool()
 		maxReconcileRate = app.Flag("max-reconcile-rate", "The global maximum rate per second at which resources may be checked for drift from the desired state.").Default("10").Int()
 
-		terraformVersion = app.Flag("terraform-version", "Terraform version.").Required().Envar("TERRAFORM_VERSION").String()
-		providerSource   = app.Flag("terraform-provider-source", "Terraform provider source.").Required().Envar("TERRAFORM_PROVIDER_SOURCE").String()
-		providerVersion  = app.Flag("terraform-provider-version", "Terraform provider version.").Required().Envar("TERRAFORM_PROVIDER_VERSION").String()
+		webhookPort            = app.Flag("webhook-port", "The port the webhook listens on").Default("9443").Envar("WEBHOOK_PORT").Int()
+		metricsBindAddress     = app.Flag("metrics-bind-address", "The address the metrics server listens on").Default(":8080").Envar("METRICS_BIND_ADDRESS").String()
+		healthProbeBindAddress = app.Flag("health-probe-bind-addr", "The address the health/readiness probe server listens on").Default(":8081").Envar("HEALTH_PROBE_BIND_ADDRESS").String()
 
 		enableManagementPolicies = app.Flag("enable-management-policies", "Enable support for Management Policies.").Default("true").Envar("ENABLE_MANAGEMENT_POLICIES").Bool()
+		enableSecretCache        = app.Flag("enable-secret-cache", "Enable caching of Secret objects. When true, Secrets are served from the informer cache instead of direct API calls. This reduces API server load but increases memory usage.").Default("true").Envar("ENABLE_SECRET_CACHE").Bool()
+
+		certsDirSet = false
+		// we record whether the command-line option "--certs-dir" was supplied
+		// in the registered PreAction for the flag.
+		certsDir = app.Flag("certs-dir", "The directory that contains the server key and certificate.").Default(tlsServerCertDir).Envar(certsDirEnvVar).PreAction(func(_ *kingpin.ParseContext) error {
+			certsDirSet = true
+			return nil
+		}).String()
 	)
 
 	kingpin.MustParse(app.Parse(os.Args[1:]))
-	kingpin.FatalIfError(resolverapis.BuildScheme(apisCluster.AddToSchemes), "Cannot register the cluster-scoped UpCloud APIs with the API resolver's runtime scheme")
-	kingpin.FatalIfError(resolverapis.BuildScheme(apisNamespaced.AddToSchemes), "Cannot register the namespaced UpCloud APIs with the API resolver's runtime scheme")
+	kingpin.FatalIfError(resolverapis.BuildScheme(clusterapis.AddToSchemes), "Cannot register the cluster-scoped UpCloud APIs with the API resolver's runtime scheme")
+	kingpin.FatalIfError(resolverapis.BuildScheme(namespacedapis.AddToSchemes), "Cannot register the namespaced UpCloud APIs with the API resolver's runtime scheme")
+	log.Default().SetOutput(io.Discard)
+	ctrl.SetLogger(zap.New(zap.WriteTo(io.Discard)))
 
 	zl := zap.New(zap.UseDevMode(*debug))
 	log := logging.NewLogrLogger(zl.WithName("provider-upcloud"))
@@ -69,27 +95,79 @@ func main() {
 		ctrl.SetLogger(zl)
 	}
 
-	log.Debug("Starting", "sync-period", syncPeriod.String(), "poll-interval", pollInterval.String(), "max-reconcile-rate", *maxReconcileRate)
+	// currently, we configure the jitter to be the 5% of the poll interval
+	pollJitter := time.Duration(float64(*pollInterval) * 0.05)
+	log.Debug("Starting", "sync-interval", syncInterval.String(),
+		"poll-interval", pollInterval.String(), "poll-jitter", pollJitter, "max-reconcile-rate", *maxReconcileRate)
 
 	cfg, err := ctrl.GetConfig()
 	kingpin.FatalIfError(err, "Cannot get API server rest config")
 
+	// Get the TLS certs directory from the environment variables set by
+	// Crossplane if they're available. In older XP versions we used
+	// WEBHOOK_TLS_CERT_DIR, in newer versions we use TLS_SERVER_CERTS_DIR. If an
+	// explicit certs dir is not supplied via the command-line options, then these
+	// environment variables are used instead.
+	if !certsDirSet {
+		xpCertsDir := os.Getenv(certsDirEnvVar)
+		if xpCertsDir == "" {
+			xpCertsDir = os.Getenv(tlsServerCertDirEnvVar)
+		}
+		if xpCertsDir == "" {
+			xpCertsDir = os.Getenv(webhookTLSCertDirEnvVar)
+		}
+		if xpCertsDir != "" {
+			*certsDir = xpCertsDir
+		}
+	}
+
+	var clientOpts client.Options
+	if !*enableSecretCache {
+		clientOpts = client.Options{
+			Cache: &client.CacheOptions{
+				DisableFor: []client.Object{&corev1.Secret{}},
+			},
+		}
+	}
+
+	scheme := runtime.NewScheme()
+	kingpin.FatalIfError(clientgoscheme.AddToScheme(scheme), "Cannot add client-go APIs to scheme")
+	kingpin.FatalIfError(clusterapis.AddToScheme(scheme), "Cannot add cluster-scoped UpCloud APIs to scheme")
+	kingpin.FatalIfError(namespacedapis.AddToScheme(scheme), "Cannot add namespaced UpCloud APIs to scheme")
+	kingpin.FatalIfError(apiextensionsv1.AddToScheme(scheme), "Cannot register k8s apiextensions APIs to scheme")
+
 	mgr, err := ctrl.NewManager(cfg, ctrl.Options{
+		Scheme:           scheme,
 		LeaderElection:   *leaderElection,
 		LeaderElectionID: "crossplane-leader-election-provider-upcloud",
 		Cache: cache.Options{
-			SyncPeriod: syncPeriod,
+			SyncPeriod: syncInterval,
+			ByObject: map[client.Object]cache.ByObject{
+				&apiextensionsv1.CustomResourceDefinition{}: {
+					Transform: customresourcesgate.TransformStripCRDSchema,
+				},
+			},
 		},
+		Client: clientOpts,
+		Metrics: metricsserver.Options{
+			BindAddress: *metricsBindAddress,
+		},
+		WebhookServer: webhook.NewServer(
+			webhook.Options{
+				CertDir: *certsDir,
+				Port:    *webhookPort,
+			}),
+		HealthProbeBindAddress:     *healthProbeBindAddress,
 		LeaderElectionResourceLock: resourcelock.LeasesResourceLock,
 		LeaseDuration:              func() *time.Duration { d := 60 * time.Second; return &d }(),
 		RenewDeadline:              func() *time.Duration { d := 50 * time.Second; return &d }(),
 	})
 	kingpin.FatalIfError(err, "Cannot create controller manager")
-	kingpin.FatalIfError(apisCluster.AddToScheme(mgr.GetScheme()), "Cannot add UpCloud APIs to scheme")
-	kingpin.FatalIfError(apisNamespaced.AddToScheme(mgr.GetScheme()), "Cannot add UpCloud APIs to scheme")
-	kingpin.FatalIfError(apiextensionsv1.AddToScheme(mgr.GetScheme()), "Cannot add api-extensions APIs to scheme")
-	kingpin.FatalIfError(authv1.AddToScheme(mgr.GetScheme()), "Cannot add k8s authorization APIs to scheme")
+	if len(*certsDir) > 0 {
+		kingpin.FatalIfError(mgr.AddReadyzCheck("webhook", mgr.GetWebhookServer().StartedChecker()), "Cannot add webhook server readyz checker to controller manager")
+	}
 
+	ctx := context.Background()
 	clusterProvider, err := config.GetProvider(context.Background())
 	kingpin.FatalIfError(err, "Cannot initialize the cluster-scoped provider configuration")
 	namespacedProvider, err := config.GetProviderNamespaced(context.Background())
@@ -103,12 +181,9 @@ func main() {
 			MaxConcurrentReconciles: *maxReconcileRate,
 			Features:                &feature.Flags{},
 		},
-		Provider: clusterProvider,
-
-		// use the following WorkspaceStoreOption to enable the shared gRPC mode
-		// terraform.WithProviderRunner(terraform.NewSharedProvider(log, os.Getenv("TERRAFORM_NATIVE_PROVIDER_PATH"), terraform.WithNativeProviderArgs("-debuggable")))
-		WorkspaceStore:        terraform.NewWorkspaceStore(log),
-		SetupFn:               clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion, clusterProvider),
+		Provider:              clusterProvider,
+		SetupFn:               clients.TerraformSetupBuilder(clusterProvider.TerraformPluginFrameworkProvider),
+		PollJitter:            pollJitter,
 		OperationTrackerStore: tjcontroller.NewOperationStore(log),
 	}
 
@@ -120,12 +195,9 @@ func main() {
 			MaxConcurrentReconciles: *maxReconcileRate,
 			Features:                &feature.Flags{},
 		},
-		Provider: namespacedProvider,
-
-		// use the following WorkspaceStoreOption to enable the shared gRPC mode
-		// terraform.WithProviderRunner(terraform.NewSharedProvider(log, os.Getenv("TERRAFORM_NATIVE_PROVIDER_PATH"), terraform.WithNativeProviderArgs("-debuggable")))
-		WorkspaceStore:        terraform.NewWorkspaceStore(log),
-		SetupFn:               clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion, namespacedProvider),
+		Provider:              namespacedProvider,
+		SetupFn:               clients.TerraformSetupBuilder(namespacedProvider.TerraformPluginFrameworkProvider),
+		PollJitter:            pollJitter,
 		OperationTrackerStore: tjcontroller.NewOperationStore(log),
 	}
 
@@ -135,27 +207,28 @@ func main() {
 		log.Info("Beta feature enabled", "flag", features.EnableBetaManagementPolicies)
 	}
 
-	canSafeStart, err := canWatchCRD(context.TODO(), mgr)
+	// Webhooks are registered eagerly on all pods before mgr.Start() so that
+	// every replica (leader and followers alike) can serve conversion requests.
+	// Reconciler setup is deferred to the gate and only runs on the leader.
+	if *certsDir != "" {
+		kingpin.FatalIfError(clustercontroller.SetupWebhookWithManager(mgr), "Cannot setup cluster-scoped webhooks")
+		kingpin.FatalIfError(namespacedcontroller.SetupWebhookWithManager(mgr), "Cannot setup namespaced webhooks")
+	}
+
+	canSafeStart, err := canWatchCRD(ctx, mgr)
 	kingpin.FatalIfError(err, "SafeStart precheck failed")
 	if canSafeStart {
 		crdGate := new(gate.Gate[schema.GroupVersionKind])
 		clusterOpts.Gate = crdGate
 		namespacedOpts.Gate = crdGate
-		kingpin.FatalIfError(customresourcesgate.Setup(mgr, xpcontroller.Options{
-			Logger:                  log,
-			Gate:                    crdGate,
-			MaxConcurrentReconciles: 1,
-		}), "Cannot setup CRD gate")
-		kingpin.FatalIfError(controllerCluster.SetupGated(mgr, clusterOpts), "Cannot setup cluster-scoped Template controllers")
-		kingpin.FatalIfError(controllerNamespaced.SetupGated(mgr, namespacedOpts), "Cannot setup namespaced Template controllers")
+		kingpin.FatalIfError(customresourcesgate.Setup(mgr, namespacedOpts.Options), "Cannot setup CRD gate")
+		kingpin.FatalIfError(clustercontroller.SetupGated(mgr, clusterOpts), "Cannot setup cluster-scoped UpCloud controllers")
+		kingpin.FatalIfError(namespacedcontroller.SetupGated(mgr, namespacedOpts), "Cannot setup namespaced UpCloud controllers")
 	} else {
 		log.Info("Provider has missing RBAC permissions for watching CRDs, controller SafeStart capability will be disabled")
-		kingpin.FatalIfError(controllerCluster.Setup(mgr, clusterOpts), "Cannot setup cluster-scoped Template controllers")
-		kingpin.FatalIfError(controllerNamespaced.Setup(mgr, namespacedOpts), "Cannot setup namespaced Template controllers")
+		kingpin.FatalIfError(clustercontroller.Setup(mgr, clusterOpts), "Cannot setup cluster-scoped UpCloud controllers")
+		kingpin.FatalIfError(namespacedcontroller.Setup(mgr, namespacedOpts), "Cannot setup namespaced UpCloud controllers")
 	}
-
-	kingpin.FatalIfError(controllerCluster.Setup(mgr, clusterOpts), "Cannot setup UpCloud cluster controllers")
-	kingpin.FatalIfError(controllerNamespaced.Setup(mgr, namespacedOpts), "Cannot setup UpCloud namespaced controllers")
 	kingpin.FatalIfError(mgr.Start(ctrl.SetupSignalHandler()), "Cannot start controller manager")
 }
 

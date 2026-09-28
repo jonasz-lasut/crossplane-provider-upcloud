@@ -4,7 +4,6 @@
 PROVIDER_NAME := upcloud
 PROJECT_NAME ?= provider-$(PROVIDER_NAME)
 PROJECT_REPO ?= github.com/crossplane-contrib/$(PROJECT_NAME)
-VERSION_STRIPPED=$(subst v,,$(VERSION))
 
 export TERRAFORM_VERSION ?= 1.5.7
 
@@ -15,9 +14,6 @@ TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAF
 export TERRAFORM_PROVIDER_SOURCE ?= UpCloudLtd/upcloud
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/UpCloudLtd/terraform-provider-upcloud
 export TERRAFORM_PROVIDER_VERSION ?= 5.44.1
-export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-upcloud
-export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://github.com/UpCloudLtd/terraform-provider-upcloud/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-upcloud_v$(TERRAFORM_PROVIDER_VERSION)
 export TERRAFORM_DOCS_PATH ?= docs/resources
 export PROVIDER_NAME
 
@@ -51,7 +47,7 @@ GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 GO_REQUIRED_VERSION ?= 1.26
 GOLANGCILINT_VERSION ?= 2.13.1
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
-GO_LDFLAGS += -X $(GO_PROJECT)/config.version=$(VERSION_STRIPPED)
+GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
 GO_SUBDIRS += cmd internal apis config
 
 -include build/makelib/golang.mk
