@@ -17,6 +17,7 @@ import (
 	apisCluster "github.com/crossplane-contrib/provider-upcloud/apis/cluster"
 	apisNamespaced "github.com/crossplane-contrib/provider-upcloud/apis/namespaced"
 	"github.com/crossplane-contrib/provider-upcloud/config"
+	resolverapis "github.com/crossplane-contrib/provider-upcloud/internal/apis"
 	"github.com/crossplane-contrib/provider-upcloud/internal/clients"
 	controllerCluster "github.com/crossplane-contrib/provider-upcloud/internal/controller/cluster"
 	controllerNamespaced "github.com/crossplane-contrib/provider-upcloud/internal/controller/namespaced"
@@ -56,6 +57,8 @@ func main() {
 	)
 
 	kingpin.MustParse(app.Parse(os.Args[1:]))
+	kingpin.FatalIfError(resolverapis.BuildScheme(apisCluster.AddToSchemes), "Cannot register the cluster-scoped UpCloud APIs with the API resolver's runtime scheme")
+	kingpin.FatalIfError(resolverapis.BuildScheme(apisNamespaced.AddToSchemes), "Cannot register the namespaced UpCloud APIs with the API resolver's runtime scheme")
 
 	zl := zap.New(zap.UseDevMode(*debug))
 	log := logging.NewLogrLogger(zl.WithName("provider-upcloud"))
@@ -87,7 +90,10 @@ func main() {
 	kingpin.FatalIfError(apiextensionsv1.AddToScheme(mgr.GetScheme()), "Cannot add api-extensions APIs to scheme")
 	kingpin.FatalIfError(authv1.AddToScheme(mgr.GetScheme()), "Cannot add k8s authorization APIs to scheme")
 
-	provider := config.GetProvider()
+	clusterProvider, err := config.GetProvider(context.Background())
+	kingpin.FatalIfError(err, "Cannot initialize the cluster-scoped provider configuration")
+	namespacedProvider, err := config.GetProviderNamespaced(context.Background())
+	kingpin.FatalIfError(err, "Cannot initialize the namespaced provider configuration")
 
 	clusterOpts := tjcontroller.Options{
 		Options: xpcontroller.Options{
@@ -97,12 +103,12 @@ func main() {
 			MaxConcurrentReconciles: *maxReconcileRate,
 			Features:                &feature.Flags{},
 		},
-		Provider: provider,
+		Provider: clusterProvider,
 
 		// use the following WorkspaceStoreOption to enable the shared gRPC mode
 		// terraform.WithProviderRunner(terraform.NewSharedProvider(log, os.Getenv("TERRAFORM_NATIVE_PROVIDER_PATH"), terraform.WithNativeProviderArgs("-debuggable")))
 		WorkspaceStore:        terraform.NewWorkspaceStore(log),
-		SetupFn:               clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion, provider),
+		SetupFn:               clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion, clusterProvider),
 		OperationTrackerStore: tjcontroller.NewOperationStore(log),
 	}
 
@@ -114,12 +120,12 @@ func main() {
 			MaxConcurrentReconciles: *maxReconcileRate,
 			Features:                &feature.Flags{},
 		},
-		Provider: config.GetProviderNamespaced(),
+		Provider: namespacedProvider,
 
 		// use the following WorkspaceStoreOption to enable the shared gRPC mode
 		// terraform.WithProviderRunner(terraform.NewSharedProvider(log, os.Getenv("TERRAFORM_NATIVE_PROVIDER_PATH"), terraform.WithNativeProviderArgs("-debuggable")))
 		WorkspaceStore:        terraform.NewWorkspaceStore(log),
-		SetupFn:               clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion, config.GetProviderNamespaced()),
+		SetupFn:               clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion, namespacedProvider),
 		OperationTrackerStore: tjcontroller.NewOperationStore(log),
 	}
 

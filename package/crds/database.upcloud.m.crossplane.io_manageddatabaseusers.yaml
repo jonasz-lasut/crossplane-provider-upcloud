@@ -120,7 +120,7 @@ spec:
                   service:
                     description: |-
                       (String) Service's UUID for which this user belongs to
-                      The service to which the logical database belongs. Please note that reference fields (`serviceRef` and `serviceSelector`) only work for PostgreSQL databases. For other databases you need to leverage compositions and patches to pass database service ID to database user `service` field. See https://docs.crossplane.io/latest/concepts/patch-and-transform/#patching-between-resources for more info.
+                      The service to which the resource belongs. Please note that reference fields (`serviceRef` and `serviceSelector`) only work for PostgreSQL databases. For other databases you need to leverage compositions and patches to pass the database service ID to the `service` field. See https://docs.crossplane.io/latest/concepts/patch-and-transform/#patching-between-resources for more info.
                     type: string
                   serviceRef:
                     description: Reference to a ManagedDatabasePostgresql in database
@@ -463,7 +463,7 @@ spec:
                   service:
                     description: |-
                       (String) Service's UUID for which this user belongs to
-                      The service to which the logical database belongs. Please note that reference fields (`serviceRef` and `serviceSelector`) only work for PostgreSQL databases. For other databases you need to leverage compositions and patches to pass database service ID to database user `service` field. See https://docs.crossplane.io/latest/concepts/patch-and-transform/#patching-between-resources for more info.
+                      The service to which the resource belongs. Please note that reference fields (`serviceRef` and `serviceSelector`) only work for PostgreSQL databases. For other databases you need to leverage compositions and patches to pass the database service ID to the `service` field. See https://docs.crossplane.io/latest/concepts/patch-and-transform/#patching-between-resources for more info.
                     type: string
                   type:
                     description: |-

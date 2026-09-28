@@ -1,31 +1,30 @@
-/*
-Copyright 2021 Upbound Inc.
-*/
+// SPDX-FileCopyrightText: 2026 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: CC0-1.0
 
 package config
 
 import (
+	// Note(turkenh): we are importing this to embed provider schema document
 	"context"
 	_ "embed"
 	"fmt"
 
-	"github.com/crossplane-contrib/provider-upcloud/config/database"
-	"github.com/crossplane-contrib/provider-upcloud/config/kubernetes"
-	"github.com/crossplane-contrib/provider-upcloud/config/network"
-	"github.com/crossplane-contrib/provider-upcloud/config/objectstorage"
-	"github.com/crossplane-contrib/provider-upcloud/config/server"
-	"github.com/crossplane-contrib/provider-upcloud/config/storage"
-
 	"github.com/UpCloudLtd/terraform-provider-upcloud/upcloud"
 	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
-	"github.com/hashicorp/terraform-plugin-framework/provider"
+	fwprovider "github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/crossplane-contrib/provider-upcloud/config/cluster"
 )
 
 const (
 	resourcePrefix = "upcloud"
 	modulePath     = "github.com/crossplane-contrib/provider-upcloud"
+	// versionV1Alpha1 is the API version every generated resource is served
+	// at. Promote a resource to v1beta1 once its example is covered by uptest.
+	versionV1Alpha1 = "v1alpha1"
 )
 
 //go:embed schema.json
@@ -35,113 +34,52 @@ var providerSchema string
 var providerMetadata string
 
 // GetProvider returns provider configuration
-func GetProvider() *ujconfig.Provider {
-	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
+func GetProvider(_ context.Context) (*ujconfig.Provider, error) {
+	defaultResourceOptions := []ujconfig.ResourceOption{
+		GroupKindOverrides(),
+		ExternalNameConfigurations(),
+	}
+
+	pc := ujconfig.NewProvider(
+		[]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
 		ujconfig.WithRootGroup("upcloud.crossplane.io"),
-		ujconfig.WithIncludeList(ExternalNameConfigured()),
-		ujconfig.WithTerraformPluginSDKIncludeList(sdkResourcesList()),
-		ujconfig.WithTerraformProvider(terraformProvider()),
-		ujconfig.WithTerraformPluginFrameworkIncludeList(pluginFrameworkResourcesList()),
-		ujconfig.WithTerraformPluginFrameworkProvider(terraformPluginFrameworkProvider()),
+		ujconfig.WithIncludeList([]string{}),
+		ujconfig.WithTerraformPluginSDKIncludeList(terraformPluginSDKResourceList()),
+		ujconfig.WithTerraformPluginFrameworkIncludeList(terraformPluginFrameworkResourceList()),
 		ujconfig.WithFeaturesPackage("internal/features"),
-		ujconfig.WithDefaultResourceOptions(
-			ExternalNameConfigurations(),
-		),
+		ujconfig.WithTerraformProvider(terraformProvider()),
+		ujconfig.WithTerraformPluginFrameworkProvider(terraformPluginFrameworkProvider()),
+		ujconfig.WithSchemaTraversers(&ujconfig.SingletonListEmbedder{}),
+		ujconfig.WithDefaultResourceOptions(defaultResourceOptions...),
 	)
 
-	for _, configure := range []func(provider *ujconfig.Provider){
-		// add custom config functions
-		database.Configure,
-		kubernetes.Configure,
-		network.Configure,
-		objectstorage.Configure,
-		server.Configure,
-		storage.Configure,
-	} {
+	// add custom config functions
+	for _, configure := range cluster.ProviderConfiguration {
 		configure(pc)
 	}
 
 	pc.ConfigureResources()
-	return pc
+
+	registerTFConversions(pc)
+
+	return pc, nil
 }
 
-// GetProviderNamespaced returns the namespaced provider configuration
-func GetProviderNamespaced() *ujconfig.Provider {
-	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
-		ujconfig.WithRootGroup("upcloud.m.crossplane.io"),
-		ujconfig.WithIncludeList(ExternalNameConfigured()),
-		ujconfig.WithTerraformPluginSDKIncludeList(sdkResourcesList()),
-		ujconfig.WithTerraformProvider(terraformProvider()),
-		ujconfig.WithTerraformPluginFrameworkIncludeList(pluginFrameworkResourcesList()),
-		ujconfig.WithTerraformPluginFrameworkProvider(terraformPluginFrameworkProvider()),
-		ujconfig.WithFeaturesPackage("internal/features"),
-		ujconfig.WithDefaultResourceOptions(
-			ExternalNameConfigurations(),
-		))
-
-	for _, configure := range []func(provider *ujconfig.Provider){
-		// add custom config functions
-		database.Configure,
-		kubernetes.Configure,
-		network.Configure,
-		objectstorage.Configure,
-		server.Configure,
-		storage.Configure,
-	} {
-		configure(pc)
-	}
-
-	pc.ConfigureResources()
-	return pc
-}
-
-func pluginFrameworkResourcesList() []string {
-	return formatResourceNames([][]string{
-		database.PluginFrameworkResources,
-		kubernetes.PluginFrameworkResources,
-		network.PluginFrameworkResources,
-		objectstorage.PluginFrameworkResources,
-		server.PluginFrameworkResources,
-		storage.PluginFrameworkResources,
-	})
-}
-
-func sdkResourcesList() []string {
-	return formatResourceNames([][]string{
-		database.SDKResources,
-		kubernetes.SDKResources,
-		network.SDKResources,
-		objectstorage.SDKResources,
-		server.SDKResources,
-		storage.SDKResources,
-	})
-}
-
-func formatResourceNames(resources [][]string) []string {
-	var formatted []string
-	for _, r := range resources {
-		for _, name := range r {
-			// $ is added to match the exact string since the format is regex.
-			formatted = append(formatted, name+"$")
-		}
-	}
-
-	return formatted
-}
-
+// terraformProvider returns the in-process terraform-plugin-sdk/v2 flavor of
+// the UpCloud provider, configured to report this provider's User-Agent.
 func terraformProvider() *schema.Provider {
 	p := upcloud.Provider()
 	p.ConfigureContextFunc = func(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
 		return upcloud.ProviderConfigure(ctx, d, defaultUserAgent())
 	}
-
 	return p
 }
 
-func terraformPluginFrameworkProvider() provider.Provider {
-	p := upcloud.NewWithUserAgent(defaultUserAgent())
-
-	return p
+// terraformPluginFrameworkProvider returns the in-process
+// terraform-plugin-framework flavor of the UpCloud provider, configured to
+// report this provider's User-Agent.
+func terraformPluginFrameworkProvider() fwprovider.Provider {
+	return upcloud.NewWithUserAgent(defaultUserAgent())
 }
 
 func defaultUserAgent() string {
