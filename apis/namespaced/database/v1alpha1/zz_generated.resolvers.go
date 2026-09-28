@@ -9,6 +9,7 @@ package v1alpha1
 
 import (
 	"context"
+	common "github.com/crossplane-contrib/provider-upcloud/config/common"
 	apisresolver "github.com/crossplane-contrib/provider-upcloud/internal/apis"
 	reference "github.com/crossplane/crossplane-runtime/v2/pkg/reference"
 	xpresource "github.com/crossplane/crossplane-runtime/v2/pkg/resource"
@@ -16,8 +17,120 @@ import (
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func (mg *ManagedDatabaseLogicalDatabase) ResolveReferences( // ResolveReferences of this ManagedDatabaseLogicalDatabase.
+func (mg *ManagedDatabaseConnectionPool) ResolveReferences( // ResolveReferences of this ManagedDatabaseConnectionPool.
 	ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+	{
+		m, l, err = apisresolver.GetManagedResource("database.upcloud.m.crossplane.io", "v1alpha1", "ManagedDatabaseLogicalDatabase", "ManagedDatabaseLogicalDatabaseList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Database),
+			Extract:      common.ObservedExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.DatabaseRef,
+			Selector:     mg.Spec.ForProvider.DatabaseSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Database")
+	}
+	mg.Spec.ForProvider.Database = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.DatabaseRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("database.upcloud.m.crossplane.io", "v1alpha1", "ManagedDatabasePostgresql", "ManagedDatabasePostgresqlList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Service),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.ServiceRef,
+			Selector:     mg.Spec.ForProvider.ServiceSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Service")
+	}
+	mg.Spec.ForProvider.Service = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ServiceRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("database.upcloud.m.crossplane.io", "v1alpha1", "ManagedDatabaseUser", "ManagedDatabaseUserList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Username),
+			Extract:      common.ObservedExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.UsernameRef,
+			Selector:     mg.Spec.ForProvider.UsernameSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Username")
+	}
+	mg.Spec.ForProvider.Username = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.UsernameRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("database.upcloud.m.crossplane.io", "v1alpha1", "ManagedDatabaseLogicalDatabase", "ManagedDatabaseLogicalDatabaseList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Database),
+			Extract:      common.ObservedExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.InitProvider.DatabaseRef,
+			Selector:     mg.Spec.InitProvider.DatabaseSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Database")
+	}
+	mg.Spec.InitProvider.Database = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.DatabaseRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("database.upcloud.m.crossplane.io", "v1alpha1", "ManagedDatabaseUser", "ManagedDatabaseUserList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Username),
+			Extract:      common.ObservedExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.InitProvider.UsernameRef,
+			Selector:     mg.Spec.InitProvider.UsernameSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Username")
+	}
+	mg.Spec.InitProvider.Username = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.UsernameRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this ManagedDatabaseLogicalDatabase.
+func (mg *ManagedDatabaseLogicalDatabase) ResolveReferences(ctx context.Context, c client.Reader) error {
 	var m xpresource.Managed
 	var l xpresource.ManagedList
 	r := reference.NewAPINamespacedResolver(c, mg)

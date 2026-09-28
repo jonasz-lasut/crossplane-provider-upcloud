@@ -74,6 +74,7 @@ type ManagedObjectStorageUserAccessKeyParameters struct {
 	// (String) Username.
 	// Username.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/objectstorage/v1alpha1.ManagedObjectStorageUser
+	// +crossplane:generate:reference:extractor=github.com/crossplane-contrib/provider-upcloud/config/common.ObservedExternalName()
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 

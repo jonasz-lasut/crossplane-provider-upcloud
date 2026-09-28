@@ -1,0 +1,36 @@
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: FloatingIPAddress
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/floatingipaddress
+  labels:
+    testing.upbound.io/example-name: my_floating_address
+  name: my-floating-address
+  namespace: upbound-system
+spec:
+  forProvider:
+    zone: de-fra1
+
+---
+
+apiVersion: server.upcloud.m.crossplane.io/v1alpha1
+kind: Server
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/floatingipaddress
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    hostname: terraform.example.tld
+    login:
+    - passwordDelivery: none
+    metadata: true
+    networkInterface:
+    - type: public
+    plan: 1xCPU-1GB
+    template:
+    - storage: Ubuntu Server 24.04 LTS (Noble Numbat)
+    zone: de-fra1

@@ -1,0 +1,17 @@
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: FirewallRuleset
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/firewallruleset
+  labels:
+    testing.upbound.io/example-name: firewallruleset-example
+  name: firewallruleset-example
+spec:
+  forProvider:
+    name: firewallruleset-example
+    description: example ruleset
+    defaultDnsRulesEnabled: true
+    labels:
+      environment: example
+  providerConfigRef:
+    name: default

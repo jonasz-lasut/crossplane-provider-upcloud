@@ -1,0 +1,56 @@
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: NetworkPeering
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/networkpeering
+  labels:
+    testing.upbound.io/example-name: this
+  name: this
+spec:
+  forProvider:
+    count: 1
+    name: network-peering-example-peering
+    network:
+    - uuidSelector:
+        matchLabels:
+          testing.upbound.io/example-name: example
+    peerNetwork:
+    - uuidSelector:
+        matchLabels:
+          testing.upbound.io/example-name: example
+
+---
+
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/networkpeering
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    ipNetwork:
+    - address: 10.0.0.0/24
+      dhcp: true
+      family: IPv4
+    name: network-peering-example-net
+    routerSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    zone: nl-ams1
+
+---
+
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Router
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/networkpeering
+  labels:
+    testing.upbound.io/example-name: this
+  name: this
+spec:
+  forProvider:
+    name: network-peering-example-router

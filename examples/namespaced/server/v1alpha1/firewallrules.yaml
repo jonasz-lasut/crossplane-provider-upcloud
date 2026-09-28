@@ -40,22 +40,22 @@ spec:
     hostname: firewallrules-example-server
     title: firewallrules-example-server
     plan: 1xCPU-1GB
-    zone: de-fra1
+    zone: fi-hel2
     metadata: true
     firewall: true
     labels:
       env: dev
       production: 'false'
     login:
-      - user: example
+      user: example
     networkInterface:
       - type: public
       - type: private
         networkRef:
           name: firewallrules-example-network
     template:
-      - size: 25
-        storage: Ubuntu Server 24.04 LTS (Noble Numbat)
+      size: 25
+      storage: Ubuntu Server 24.04 LTS (Noble Numbat)
     storageDevices:
       - storageRef:
           name: firewallrules-example-storage
@@ -76,11 +76,11 @@ metadata:
 spec:
   forProvider:
     name: firewallrules-example-network
-    zone: de-fra1
+    zone: fi-hel2
     ipNetwork:
-      - address: 10.12.0.0/24
-        dhcp: true
-        family: IPv4
+      address: 10.14.0.0/24
+      dhcp: true
+      family: IPv4
   providerConfigRef:
     kind: ClusterProviderConfig
     name: default
@@ -100,7 +100,7 @@ spec:
     size: 10
     tier: standard
     title: firewallrules-example-storage
-    zone: de-fra1
+    zone: fi-hel2
   providerConfigRef:
     kind: ClusterProviderConfig
     name: default

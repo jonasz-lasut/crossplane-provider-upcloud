@@ -9,6 +9,7 @@ package v1alpha1
 
 import (
 	"context"
+	common "github.com/crossplane-contrib/provider-upcloud/config/common"
 	apisresolver "github.com/crossplane-contrib/provider-upcloud/internal/apis"
 	reference "github.com/crossplane/crossplane-runtime/v2/pkg/reference"
 	xpresource "github.com/crossplane/crossplane-runtime/v2/pkg/resource"
@@ -16,7 +17,7 @@ import (
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func (mg *ManagedObjectStoragePolicy) ResolveReferences( // ResolveReferences of this ManagedObjectStoragePolicy.
+func (mg *ManagedObjectStorageBucket) ResolveReferences( // ResolveReferences of this ManagedObjectStorageBucket.
 	ctx context.Context, c client.Reader) error {
 	var m xpresource.Managed
 	var l xpresource.ManagedList
@@ -44,6 +45,162 @@ func (mg *ManagedObjectStoragePolicy) ResolveReferences( // ResolveReferences of
 	}
 	mg.Spec.ForProvider.ServiceUUID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.ServiceUUIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this ManagedObjectStorageCustomDomain.
+func (mg *ManagedObjectStorageCustomDomain) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+	{
+		m, l, err = apisresolver.GetManagedResource("objectstorage.upcloud.crossplane.io", "v1alpha1", "ManagedObjectStorage", "ManagedObjectStorageList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ServiceUUID),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.ServiceUUIDRef,
+			Selector:     mg.Spec.ForProvider.ServiceUUIDSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ServiceUUID")
+	}
+	mg.Spec.ForProvider.ServiceUUID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ServiceUUIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this ManagedObjectStoragePolicy.
+func (mg *ManagedObjectStoragePolicy) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+	{
+		m, l, err = apisresolver.GetManagedResource("objectstorage.upcloud.crossplane.io", "v1alpha1", "ManagedObjectStorage", "ManagedObjectStorageList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ServiceUUID),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.ServiceUUIDRef,
+			Selector:     mg.Spec.ForProvider.ServiceUUIDSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ServiceUUID")
+	}
+	mg.Spec.ForProvider.ServiceUUID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ServiceUUIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this ManagedObjectStorageStaticSite.
+func (mg *ManagedObjectStorageStaticSite) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+	{
+		m, l, err = apisresolver.GetManagedResource("objectstorage.upcloud.crossplane.io", "v1alpha1", "ManagedObjectStorageBucket", "ManagedObjectStorageBucketList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.BucketName),
+			Extract:      common.ObservedExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.BucketNameRef,
+			Selector:     mg.Spec.ForProvider.BucketNameSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.BucketName")
+	}
+	mg.Spec.ForProvider.BucketName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.BucketNameRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("objectstorage.upcloud.crossplane.io", "v1alpha1", "ManagedObjectStorage", "ManagedObjectStorageList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ServiceUUID),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.ServiceUUIDRef,
+			Selector:     mg.Spec.ForProvider.ServiceUUIDSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ServiceUUID")
+	}
+	mg.Spec.ForProvider.ServiceUUID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ServiceUUIDRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("objectstorage.upcloud.crossplane.io", "v1alpha1", "ManagedObjectStorageBucket", "ManagedObjectStorageBucketList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.BucketName),
+			Extract:      common.ObservedExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.InitProvider.BucketNameRef,
+			Selector:     mg.Spec.InitProvider.BucketNameSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.BucketName")
+	}
+	mg.Spec.InitProvider.BucketName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.BucketNameRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("objectstorage.upcloud.crossplane.io", "v1alpha1", "ManagedObjectStorage", "ManagedObjectStorageList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.ServiceUUID),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.InitProvider.ServiceUUIDRef,
+			Selector:     mg.Spec.InitProvider.ServiceUUIDSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.ServiceUUID")
+	}
+	mg.Spec.InitProvider.ServiceUUID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.ServiceUUIDRef = rsp.ResolvedReference
 
 	return nil
 }
@@ -116,7 +273,7 @@ func (mg *ManagedObjectStorageUserAccessKey) ResolveReferences(ctx context.Conte
 
 		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Username),
-			Extract:      reference.ExternalName(),
+			Extract:      common.ObservedExternalName(),
 			Namespace:    mg.GetNamespace(),
 			Reference:    mg.Spec.ForProvider.UsernameRef,
 			Selector:     mg.Spec.ForProvider.UsernameSelector,
@@ -148,7 +305,7 @@ func (mg *ManagedObjectStorageUserPolicy) ResolveReferences(ctx context.Context,
 
 		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Name),
-			Extract:      reference.ExternalName(),
+			Extract:      common.ObservedExternalName(),
 			Namespace:    mg.GetNamespace(),
 			Reference:    mg.Spec.ForProvider.NameRef,
 			Selector:     mg.Spec.ForProvider.NameSelector,
@@ -188,7 +345,7 @@ func (mg *ManagedObjectStorageUserPolicy) ResolveReferences(ctx context.Context,
 
 		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Username),
-			Extract:      reference.ExternalName(),
+			Extract:      common.ObservedExternalName(),
 			Namespace:    mg.GetNamespace(),
 			Reference:    mg.Spec.ForProvider.UsernameRef,
 			Selector:     mg.Spec.ForProvider.UsernameSelector,
@@ -208,7 +365,7 @@ func (mg *ManagedObjectStorageUserPolicy) ResolveReferences(ctx context.Context,
 
 		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Name),
-			Extract:      reference.ExternalName(),
+			Extract:      common.ObservedExternalName(),
 			Namespace:    mg.GetNamespace(),
 			Reference:    mg.Spec.InitProvider.NameRef,
 			Selector:     mg.Spec.InitProvider.NameSelector,
@@ -248,7 +405,7 @@ func (mg *ManagedObjectStorageUserPolicy) ResolveReferences(ctx context.Context,
 
 		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Username),
-			Extract:      reference.ExternalName(),
+			Extract:      common.ObservedExternalName(),
 			Namespace:    mg.GetNamespace(),
 			Reference:    mg.Spec.InitProvider.UsernameRef,
 			Selector:     mg.Spec.InitProvider.UsernameSelector,

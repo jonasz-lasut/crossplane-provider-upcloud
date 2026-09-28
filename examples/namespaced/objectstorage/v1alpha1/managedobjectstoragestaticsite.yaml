@@ -1,0 +1,57 @@
+apiVersion: objectstorage.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedObjectStorageStaticSite
+metadata:
+  annotations:
+    meta.upbound.io/example-id: objectstorage/v1alpha1/managedobjectstoragestaticsite
+  labels:
+    testing.upbound.io/example-name: staticsite-example
+  name: staticsite-example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    serviceUuidRef:
+      name: staticsite-example-service
+    bucketNameRef:
+      name: staticsite-example-bucket
+    bucketPrefix: public/
+    indexDocument: index.html
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: objectstorage.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedObjectStorageBucket
+metadata:
+  annotations:
+    meta.upbound.io/example-id: objectstorage/v1alpha1/managedobjectstoragestaticsite
+  labels:
+    testing.upbound.io/example-name: staticsite-example-bucket
+  name: staticsite-example-bucket
+  namespace: crossplane-system
+spec:
+  forProvider:
+    serviceUuidRef:
+      name: staticsite-example-service
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: objectstorage.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedObjectStorage
+metadata:
+  annotations:
+    meta.upbound.io/example-id: objectstorage/v1alpha1/managedobjectstoragestaticsite
+  labels:
+    testing.upbound.io/example-name: staticsite-example-service
+  name: staticsite-example-service
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: staticsite-example-service
+    region: europe-1
+    configuredStatus: started
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

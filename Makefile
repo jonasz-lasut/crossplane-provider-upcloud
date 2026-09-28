@@ -13,7 +13,7 @@ TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAF
 
 export TERRAFORM_PROVIDER_SOURCE ?= UpCloudLtd/upcloud
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/UpCloudLtd/terraform-provider-upcloud
-export TERRAFORM_PROVIDER_VERSION ?= 5.44.1
+export TERRAFORM_PROVIDER_VERSION ?= 5.45.0
 export TERRAFORM_DOCS_PATH ?= docs/resources
 export PROVIDER_NAME
 

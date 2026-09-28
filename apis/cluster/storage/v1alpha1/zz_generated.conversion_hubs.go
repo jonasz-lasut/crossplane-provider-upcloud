@@ -7,4 +7,19 @@
 package v1alpha1
 
 // Hub marks this type as a conversion hub.
+func (tr *FileStorage) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *FileStorageShare) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *FileStorageShareACL) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *Storage) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *StorageBackup) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *StorageTemplate) Hub() {}

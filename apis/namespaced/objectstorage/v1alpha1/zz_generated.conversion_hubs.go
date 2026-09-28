@@ -10,7 +10,16 @@ package v1alpha1
 func (tr *ManagedObjectStorage) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *ManagedObjectStorageBucket) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *ManagedObjectStorageCustomDomain) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *ManagedObjectStoragePolicy) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *ManagedObjectStorageStaticSite) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *ManagedObjectStorageUser) Hub() {}

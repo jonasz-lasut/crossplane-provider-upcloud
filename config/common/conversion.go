@@ -2,49 +2,45 @@
 //
 // SPDX-License-Identifier: CC0-1.0
 
-// Package common holds configuration helpers shared by the cluster-scoped
-// and namespaced resource configurations.
 package common
 
 import (
-	"maps"
-	"slices"
-
 	"github.com/crossplane/upjet/v2/pkg/config"
 )
 
-// emptyValueConversion sends an explicit empty value for the given Terraform
-// arguments when the managed resource omits them. Upjet keeps omitempty on
-// top-level required parameters, so an empty map or list set in the spec is
-// dropped from the Terraform configuration; the UpCloud plugin-framework
-// resources treat the resulting null as unknown and never converge. The
-// upstream provider used a forked upjet to strip omitempty for these fields;
-// this conversion has the same effect without the fork.
-type emptyValueConversion struct {
-	defaults map[string]func() any
+// emptyListConversion sends an explicit empty list for the given Terraform
+// arguments whenever the managed resource omits them.
+//
+// Upjet keeps omitempty on every generated field, so an empty set never
+// survives the round trip through status.atProvider: after a provider restart
+// the prior state is rebuilt with the argument as null while a plugin-framework
+// resource plans its empty default, and upjet's replacement filter compares the
+// two raw values and refuses every update as a replacement
+// (upcloud_kubernetes_node_group ssh_keys). Upjet runs the conversion on the
+// configuration and on the rebuilt prior state, so both sides carry the same
+// empty list.
+//
+// Use it only for attributes whose upstream Read tolerates an empty non-null
+// value, and never for singleton-list blocks: the singleton conversion runs
+// afterwards and would wrap the empty list into a one-element list.
+type emptyListConversion struct {
+	names []string
 }
 
-// EmptyValueDefaults returns a TerraformConversion that adds the given
-// arguments with an empty value of their kind whenever they are absent from
-// the parameters handed to Terraform.
-func EmptyValueDefaults(emptyMaps []string, emptyLists []string) config.TerraformConversion {
-	defaults := make(map[string]func() any, len(emptyMaps)+len(emptyLists))
-	for _, name := range emptyMaps {
-		defaults[name] = func() any { return map[string]any{} }
-	}
-	for _, name := range emptyLists {
-		defaults[name] = func() any { return []any{} }
-	}
-	return emptyValueConversion{defaults: defaults}
+// EmptyListDefaults returns a TerraformConversion that adds the given
+// arguments as empty lists whenever they are absent from the values handed to
+// Terraform.
+func EmptyListDefaults(names ...string) config.TerraformConversion {
+	return emptyListConversion{names: names}
 }
 
-func (c emptyValueConversion) Convert(params map[string]any, _ *config.Resource, mode config.Mode) (map[string]any, error) {
+func (c emptyListConversion) Convert(params map[string]any, _ *config.Resource, mode config.Mode) (map[string]any, error) {
 	if mode != config.ToTerraform {
 		return params, nil
 	}
-	for _, name := range slices.Sorted(maps.Keys(c.defaults)) {
+	for _, name := range c.names {
 		if _, set := params[name]; !set {
-			params[name] = c.defaults[name]()
+			params[name] = []any{}
 		}
 	}
 	return params, nil

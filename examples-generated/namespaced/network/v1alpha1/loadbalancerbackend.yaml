@@ -1,0 +1,55 @@
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: LoadBalancerBackend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerbackend
+  labels:
+    testing.upbound.io/example-name: lb_be_1
+  name: lb-be-1
+  namespace: upbound-system
+spec:
+  forProvider:
+    loadbalancerSelector:
+      matchLabels:
+        testing.upbound.io/example-name: upcloud_loadbalancer
+
+---
+
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: LoadBalancer
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerbackend
+  labels:
+    testing.upbound.io/example-name: lb
+  name: lb
+  namespace: upbound-system
+spec:
+  forProvider:
+    configuredStatus: started
+    name: lb-test
+    networkSelector:
+      matchLabels:
+        testing.upbound.io/example-name: upcloud_network
+    plan: development
+    zone: ${var.lb_zone}
+
+---
+
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerbackend
+  labels:
+    testing.upbound.io/example-name: lb_network
+  name: lb-network
+  namespace: upbound-system
+spec:
+  forProvider:
+    ipNetwork:
+    - address: 10.0.0.0/24
+      dhcp: true
+      family: IPv4
+    name: lb-test-net
+    zone: ${var.lb_zone}

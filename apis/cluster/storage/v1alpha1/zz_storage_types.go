@@ -149,7 +149,7 @@ type StorageInitParameters struct {
 
 	// (Block Set) Block defining another storage/template to clone to storage. (see below for nested schema)
 	// Block defining another storage/template to clone to storage.
-	Clone []CloneInitParameters `json:"clone,omitempty" tf:"clone,omitempty"`
+	Clone *CloneInitParameters `json:"clone,omitempty" tf:"clone,omitempty"`
 
 	// (Boolean) If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
 	// If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
@@ -167,7 +167,7 @@ type StorageInitParameters struct {
 
 	// (Block Set) Block defining external data to import to storage (see below for nested schema)
 	// Block defining external data to import to storage
-	Import []ImportInitParameters `json:"import,omitempty" tf:"import,omitempty"`
+	Import *ImportInitParameters `json:"import,omitempty" tf:"import,omitempty"`
 
 	// value pairs to classify the storage.
 	// User defined key-value pairs to classify the storage.
@@ -201,7 +201,7 @@ type StorageObservation struct {
 
 	// (Block Set) Block defining another storage/template to clone to storage. (see below for nested schema)
 	// Block defining another storage/template to clone to storage.
-	Clone []CloneObservation `json:"clone,omitempty" tf:"clone,omitempty"`
+	Clone *CloneObservation `json:"clone,omitempty" tf:"clone,omitempty"`
 
 	// (Boolean) If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
 	// If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
@@ -222,7 +222,7 @@ type StorageObservation struct {
 
 	// (Block Set) Block defining external data to import to storage (see below for nested schema)
 	// Block defining external data to import to storage
-	Import []ImportObservation `json:"import,omitempty" tf:"import,omitempty"`
+	Import *ImportObservation `json:"import,omitempty" tf:"import,omitempty"`
 
 	// value pairs to classify the storage.
 	// User defined key-value pairs to classify the storage.
@@ -267,7 +267,7 @@ type StorageParameters struct {
 	// (Block Set) Block defining another storage/template to clone to storage. (see below for nested schema)
 	// Block defining another storage/template to clone to storage.
 	// +kubebuilder:validation:Optional
-	Clone []CloneParameters `json:"clone,omitempty" tf:"clone,omitempty"`
+	Clone *CloneParameters `json:"clone,omitempty" tf:"clone,omitempty"`
 
 	// (Boolean) If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
 	// If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
@@ -289,7 +289,7 @@ type StorageParameters struct {
 	// (Block Set) Block defining external data to import to storage (see below for nested schema)
 	// Block defining external data to import to storage
 	// +kubebuilder:validation:Optional
-	Import []ImportParameters `json:"import,omitempty" tf:"import,omitempty"`
+	Import *ImportParameters `json:"import,omitempty" tf:"import,omitempty"`
 
 	// value pairs to classify the storage.
 	// User defined key-value pairs to classify the storage.

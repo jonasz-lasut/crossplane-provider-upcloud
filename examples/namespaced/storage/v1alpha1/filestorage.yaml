@@ -1,0 +1,48 @@
+apiVersion: storage.upcloud.m.crossplane.io/v1alpha1
+kind: FileStorage
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/filestorage
+  labels:
+    testing.upbound.io/example-name: filestorage-example-filestorage
+  name: filestorage-example-filestorage
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: filestorage-example-filestorage
+    zone: fi-hel2
+    size: 250
+    configuredStatus: started
+    labels:
+      environment: example
+    network:
+      name: private
+      family: IPv4
+      ipAddress: 172.16.81.11
+      uuidRef:
+        name: filestorage-example-network
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/filestorage
+  labels:
+    testing.upbound.io/example-name: filestorage-example-network
+  name: filestorage-example-network
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: filestorage-example-network
+    zone: fi-hel2
+    ipNetwork:
+      address: 172.16.81.0/24
+      dhcp: true
+      family: IPv4
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

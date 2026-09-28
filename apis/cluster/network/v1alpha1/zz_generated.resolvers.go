@@ -9,15 +9,792 @@ package v1alpha1
 
 import (
 	"context"
+	common "github.com/crossplane-contrib/provider-upcloud/config/common"
 	apisresolver "github.com/crossplane-contrib/provider-upcloud/internal/apis"
 	reference "github.com/crossplane/crossplane-runtime/v2/pkg/reference"
 	xpresource "github.com/crossplane/crossplane-runtime/v2/pkg/resource"
+	resource "github.com/crossplane/upjet/v2/pkg/resource"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func (mg *Network) ResolveReferences( // ResolveReferences of this Network.
+func (mg *FloatingIPAddress) ResolveReferences( // ResolveReferences of this FloatingIPAddress.
 	ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+	{
+		m, l, err = apisresolver.GetManagedResource("server.upcloud.crossplane.io", "v1alpha1", "Server", "ServerList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.MacAddress),
+			Extract:      resource.ExtractParamPath("network_interface[0].mac_address", true),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.MacAddressRef,
+			Selector:     mg.Spec.ForProvider.MacAddressSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.MacAddress")
+	}
+	mg.Spec.ForProvider.MacAddress = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.MacAddressRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("server.upcloud.crossplane.io", "v1alpha1", "Server", "ServerList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.MacAddress),
+			Extract:      resource.ExtractParamPath("network_interface[0].mac_address", true),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.InitProvider.MacAddressRef,
+			Selector:     mg.Spec.InitProvider.MacAddressSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.MacAddress")
+	}
+	mg.Spec.InitProvider.MacAddress = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.MacAddressRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this Gateway.
+func (mg *Gateway) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	if mg.Spec.ForProvider.Router != nil {
+		{
+			m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "Router", "RouterList")
+			if err != nil {
+				return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+			}
+			rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+				CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Router.ID),
+				Extract:      reference.ExternalName(),
+				Namespace:    mg.GetNamespace(),
+				Reference:    mg.Spec.ForProvider.Router.IDRef,
+				Selector:     mg.Spec.ForProvider.Router.IDSelector,
+				To:           reference.To{List: l, Managed: m},
+			})
+		}
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.ForProvider.Router.ID")
+		}
+		mg.Spec.ForProvider.Router.ID = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.ForProvider.Router.IDRef = rsp.ResolvedReference
+
+	}
+	if mg.Spec.InitProvider.Router != nil {
+		{
+			m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "Router", "RouterList")
+			if err != nil {
+				return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+			}
+			rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+				CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Router.ID),
+				Extract:      reference.ExternalName(),
+				Namespace:    mg.GetNamespace(),
+				Reference:    mg.Spec.InitProvider.Router.IDRef,
+				Selector:     mg.Spec.InitProvider.Router.IDSelector,
+				To:           reference.To{List: l, Managed: m},
+			})
+		}
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.InitProvider.Router.ID")
+		}
+		mg.Spec.InitProvider.Router.ID = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.InitProvider.Router.IDRef = rsp.ResolvedReference
+
+	}
+
+	return nil
+}
+
+// ResolveReferences of this GatewayConnection.
+func (mg *GatewayConnection) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "Gateway", "GatewayList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Gateway),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.GatewayRef,
+			Selector:     mg.Spec.ForProvider.GatewaySelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Gateway")
+	}
+	mg.Spec.ForProvider.Gateway = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.GatewayRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "Gateway", "GatewayList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Gateway),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.InitProvider.GatewayRef,
+			Selector:     mg.Spec.InitProvider.GatewaySelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Gateway")
+	}
+	mg.Spec.InitProvider.Gateway = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.GatewayRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this GatewayConnectionTunnel.
+func (mg *GatewayConnectionTunnel) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "GatewayConnection", "GatewayConnectionList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ConnectionID),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.ConnectionIDRef,
+			Selector:     mg.Spec.ForProvider.ConnectionIDSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ConnectionID")
+	}
+	mg.Spec.ForProvider.ConnectionID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ConnectionIDRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "GatewayConnection", "GatewayConnectionList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.ConnectionID),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.InitProvider.ConnectionIDRef,
+			Selector:     mg.Spec.InitProvider.ConnectionIDSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.ConnectionID")
+	}
+	mg.Spec.InitProvider.ConnectionID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.ConnectionIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this LoadBalancer.
+func (mg *LoadBalancer) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "Network", "NetworkList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Network),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.NetworkRef,
+			Selector:     mg.Spec.ForProvider.NetworkSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Network")
+	}
+	mg.Spec.ForProvider.Network = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.NetworkRef = rsp.ResolvedReference
+
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.Networks); i3++ {
+		{
+			m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "Network", "NetworkList")
+			if err != nil {
+				return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+			}
+			rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+				CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Networks[i3].Network),
+				Extract:      reference.ExternalName(),
+				Namespace:    mg.GetNamespace(),
+				Reference:    mg.Spec.ForProvider.Networks[i3].NetworkRef,
+				Selector:     mg.Spec.ForProvider.Networks[i3].NetworkSelector,
+				To:           reference.To{List: l, Managed: m},
+			})
+		}
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.ForProvider.Networks[i3].Network")
+		}
+		mg.Spec.ForProvider.Networks[i3].Network = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.ForProvider.Networks[i3].NetworkRef = rsp.ResolvedReference
+
+	}
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "Network", "NetworkList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Network),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.InitProvider.NetworkRef,
+			Selector:     mg.Spec.InitProvider.NetworkSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Network")
+	}
+	mg.Spec.InitProvider.Network = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.NetworkRef = rsp.ResolvedReference
+
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.Networks); i3++ {
+		{
+			m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "Network", "NetworkList")
+			if err != nil {
+				return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+			}
+			rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+				CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Networks[i3].Network),
+				Extract:      reference.ExternalName(),
+				Namespace:    mg.GetNamespace(),
+				Reference:    mg.Spec.InitProvider.Networks[i3].NetworkRef,
+				Selector:     mg.Spec.InitProvider.Networks[i3].NetworkSelector,
+				To:           reference.To{List: l, Managed: m},
+			})
+		}
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.InitProvider.Networks[i3].Network")
+		}
+		mg.Spec.InitProvider.Networks[i3].Network = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.InitProvider.Networks[i3].NetworkRef = rsp.ResolvedReference
+
+	}
+
+	return nil
+}
+
+// ResolveReferences of this LoadBalancerBackend.
+func (mg *LoadBalancerBackend) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancer", "LoadBalancerList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Loadbalancer),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.LoadbalancerRef,
+			Selector:     mg.Spec.ForProvider.LoadbalancerSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Loadbalancer")
+	}
+	mg.Spec.ForProvider.Loadbalancer = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.LoadbalancerRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancerResolver", "LoadBalancerResolverList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ResolverName),
+			Extract:      common.ObservedExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.ResolverNameRef,
+			Selector:     mg.Spec.ForProvider.ResolverNameSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ResolverName")
+	}
+	mg.Spec.ForProvider.ResolverName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ResolverNameRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancerResolver", "LoadBalancerResolverList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.ResolverName),
+			Extract:      common.ObservedExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.InitProvider.ResolverNameRef,
+			Selector:     mg.Spec.InitProvider.ResolverNameSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.ResolverName")
+	}
+	mg.Spec.InitProvider.ResolverName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.ResolverNameRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this LoadBalancerBackendTLSConfig.
+func (mg *LoadBalancerBackendTLSConfig) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancerBackend", "LoadBalancerBackendList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+			Extract:      resource.ExtractParamPath("id", true),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.BackendRef,
+			Selector:     mg.Spec.ForProvider.BackendSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
+	}
+	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancerManualCertificateBundle", "LoadBalancerManualCertificateBundleList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.CertificateBundle),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.CertificateBundleRef,
+			Selector:     mg.Spec.ForProvider.CertificateBundleSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.CertificateBundle")
+	}
+	mg.Spec.ForProvider.CertificateBundle = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.CertificateBundleRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancerManualCertificateBundle", "LoadBalancerManualCertificateBundleList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.CertificateBundle),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.InitProvider.CertificateBundleRef,
+			Selector:     mg.Spec.InitProvider.CertificateBundleSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.CertificateBundle")
+	}
+	mg.Spec.InitProvider.CertificateBundle = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.CertificateBundleRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this LoadBalancerDynamicBackendMember.
+func (mg *LoadBalancerDynamicBackendMember) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancerBackend", "LoadBalancerBackendList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+			Extract:      resource.ExtractParamPath("id", true),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.BackendRef,
+			Selector:     mg.Spec.ForProvider.BackendSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
+	}
+	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this LoadBalancerFrontend.
+func (mg *LoadBalancerFrontend) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancerBackend", "LoadBalancerBackendList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.DefaultBackendName),
+			Extract:      common.ObservedExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.DefaultBackendNameRef,
+			Selector:     mg.Spec.ForProvider.DefaultBackendNameSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.DefaultBackendName")
+	}
+	mg.Spec.ForProvider.DefaultBackendName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.DefaultBackendNameRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancer", "LoadBalancerList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Loadbalancer),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.LoadbalancerRef,
+			Selector:     mg.Spec.ForProvider.LoadbalancerSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Loadbalancer")
+	}
+	mg.Spec.ForProvider.Loadbalancer = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.LoadbalancerRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancerBackend", "LoadBalancerBackendList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.DefaultBackendName),
+			Extract:      common.ObservedExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.InitProvider.DefaultBackendNameRef,
+			Selector:     mg.Spec.InitProvider.DefaultBackendNameSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.DefaultBackendName")
+	}
+	mg.Spec.InitProvider.DefaultBackendName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.DefaultBackendNameRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this LoadBalancerFrontendRule.
+func (mg *LoadBalancerFrontendRule) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	if mg.Spec.ForProvider.Actions != nil {
+		for i4 := 0; i4 < len(mg.Spec.ForProvider.Actions.UseBackend); i4++ {
+			{
+				m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancerBackend", "LoadBalancerBackendList")
+				if err != nil {
+					return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+				}
+				rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+					CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Actions.UseBackend[i4].BackendName),
+					Extract:      common.ObservedExternalName(),
+					Namespace:    mg.GetNamespace(),
+					Reference:    mg.Spec.ForProvider.Actions.UseBackend[i4].BackendNameRef,
+					Selector:     mg.Spec.ForProvider.Actions.UseBackend[i4].BackendNameSelector,
+					To:           reference.To{List: l, Managed: m},
+				})
+			}
+			if err != nil {
+				return errors.Wrap(err, "mg.Spec.ForProvider.Actions.UseBackend[i4].BackendName")
+			}
+			mg.Spec.ForProvider.Actions.UseBackend[i4].BackendName = reference.ToPtrValue(rsp.ResolvedValue)
+			mg.Spec.ForProvider.Actions.UseBackend[i4].BackendNameRef = rsp.ResolvedReference
+
+		}
+	}
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancerFrontend", "LoadBalancerFrontendList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Frontend),
+			Extract:      resource.ExtractParamPath("id", true),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.FrontendRef,
+			Selector:     mg.Spec.ForProvider.FrontendSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Frontend")
+	}
+	mg.Spec.ForProvider.Frontend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.FrontendRef = rsp.ResolvedReference
+
+	if mg.Spec.InitProvider.Actions != nil {
+		for i4 := 0; i4 < len(mg.Spec.InitProvider.Actions.UseBackend); i4++ {
+			{
+				m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancerBackend", "LoadBalancerBackendList")
+				if err != nil {
+					return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+				}
+				rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+					CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Actions.UseBackend[i4].BackendName),
+					Extract:      common.ObservedExternalName(),
+					Namespace:    mg.GetNamespace(),
+					Reference:    mg.Spec.InitProvider.Actions.UseBackend[i4].BackendNameRef,
+					Selector:     mg.Spec.InitProvider.Actions.UseBackend[i4].BackendNameSelector,
+					To:           reference.To{List: l, Managed: m},
+				})
+			}
+			if err != nil {
+				return errors.Wrap(err, "mg.Spec.InitProvider.Actions.UseBackend[i4].BackendName")
+			}
+			mg.Spec.InitProvider.Actions.UseBackend[i4].BackendName = reference.ToPtrValue(rsp.ResolvedValue)
+			mg.Spec.InitProvider.Actions.UseBackend[i4].BackendNameRef = rsp.ResolvedReference
+
+		}
+	}
+
+	return nil
+}
+
+// ResolveReferences of this LoadBalancerFrontendTLSConfig.
+func (mg *LoadBalancerFrontendTLSConfig) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancerManualCertificateBundle", "LoadBalancerManualCertificateBundleList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.CertificateBundle),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.CertificateBundleRef,
+			Selector:     mg.Spec.ForProvider.CertificateBundleSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.CertificateBundle")
+	}
+	mg.Spec.ForProvider.CertificateBundle = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.CertificateBundleRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancerFrontend", "LoadBalancerFrontendList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Frontend),
+			Extract:      resource.ExtractParamPath("id", true),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.FrontendRef,
+			Selector:     mg.Spec.ForProvider.FrontendSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Frontend")
+	}
+	mg.Spec.ForProvider.Frontend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.FrontendRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancerManualCertificateBundle", "LoadBalancerManualCertificateBundleList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.CertificateBundle),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.InitProvider.CertificateBundleRef,
+			Selector:     mg.Spec.InitProvider.CertificateBundleSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.CertificateBundle")
+	}
+	mg.Spec.InitProvider.CertificateBundle = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.CertificateBundleRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this LoadBalancerResolver.
+func (mg *LoadBalancerResolver) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancer", "LoadBalancerList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Loadbalancer),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.LoadbalancerRef,
+			Selector:     mg.Spec.ForProvider.LoadbalancerSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Loadbalancer")
+	}
+	mg.Spec.ForProvider.Loadbalancer = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.LoadbalancerRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this LoadBalancerStaticBackendMember.
+func (mg *LoadBalancerStaticBackendMember) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "LoadBalancerBackend", "LoadBalancerBackendList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+			Extract:      resource.ExtractParamPath("id", true),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.BackendRef,
+			Selector:     mg.Spec.ForProvider.BackendSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
+	}
+	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this Network.
+func (mg *Network) ResolveReferences(ctx context.Context, c client.Reader) error {
 	var m xpresource.Managed
 	var l xpresource.ManagedList
 	r := reference.NewAPIResolver(c, mg)
@@ -64,6 +841,107 @@ func (mg *Network) ResolveReferences( // ResolveReferences of this Network.
 	}
 	mg.Spec.InitProvider.Router = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.InitProvider.RouterRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this NetworkPeering.
+func (mg *NetworkPeering) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.Network); i3++ {
+		{
+			m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "Network", "NetworkList")
+			if err != nil {
+				return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+			}
+			rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+				CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Network[i3].UUID),
+				Extract:      reference.ExternalName(),
+				Namespace:    mg.GetNamespace(),
+				Reference:    mg.Spec.ForProvider.Network[i3].UUIDRef,
+				Selector:     mg.Spec.ForProvider.Network[i3].UUIDSelector,
+				To:           reference.To{List: l, Managed: m},
+			})
+		}
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.ForProvider.Network[i3].UUID")
+		}
+		mg.Spec.ForProvider.Network[i3].UUID = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.ForProvider.Network[i3].UUIDRef = rsp.ResolvedReference
+
+	}
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.PeerNetwork); i3++ {
+		{
+			m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "Network", "NetworkList")
+			if err != nil {
+				return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+			}
+			rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+				CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.PeerNetwork[i3].UUID),
+				Extract:      reference.ExternalName(),
+				Namespace:    mg.GetNamespace(),
+				Reference:    mg.Spec.ForProvider.PeerNetwork[i3].UUIDRef,
+				Selector:     mg.Spec.ForProvider.PeerNetwork[i3].UUIDSelector,
+				To:           reference.To{List: l, Managed: m},
+			})
+		}
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.ForProvider.PeerNetwork[i3].UUID")
+		}
+		mg.Spec.ForProvider.PeerNetwork[i3].UUID = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.ForProvider.PeerNetwork[i3].UUIDRef = rsp.ResolvedReference
+
+	}
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.Network); i3++ {
+		{
+			m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "Network", "NetworkList")
+			if err != nil {
+				return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+			}
+			rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+				CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Network[i3].UUID),
+				Extract:      reference.ExternalName(),
+				Namespace:    mg.GetNamespace(),
+				Reference:    mg.Spec.InitProvider.Network[i3].UUIDRef,
+				Selector:     mg.Spec.InitProvider.Network[i3].UUIDSelector,
+				To:           reference.To{List: l, Managed: m},
+			})
+		}
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.InitProvider.Network[i3].UUID")
+		}
+		mg.Spec.InitProvider.Network[i3].UUID = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.InitProvider.Network[i3].UUIDRef = rsp.ResolvedReference
+
+	}
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.PeerNetwork); i3++ {
+		{
+			m, l, err = apisresolver.GetManagedResource("network.upcloud.crossplane.io", "v1alpha1", "Network", "NetworkList")
+			if err != nil {
+				return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+			}
+			rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+				CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.PeerNetwork[i3].UUID),
+				Extract:      reference.ExternalName(),
+				Namespace:    mg.GetNamespace(),
+				Reference:    mg.Spec.InitProvider.PeerNetwork[i3].UUIDRef,
+				Selector:     mg.Spec.InitProvider.PeerNetwork[i3].UUIDSelector,
+				To:           reference.To{List: l, Managed: m},
+			})
+		}
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.InitProvider.PeerNetwork[i3].UUID")
+		}
+		mg.Spec.InitProvider.PeerNetwork[i3].UUID = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.InitProvider.PeerNetwork[i3].UUIDRef = rsp.ResolvedReference
+
+	}
 
 	return nil
 }

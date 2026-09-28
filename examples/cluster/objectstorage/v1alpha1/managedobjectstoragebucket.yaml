@@ -1,0 +1,31 @@
+apiVersion: objectstorage.upcloud.crossplane.io/v1alpha1
+kind: ManagedObjectStorageBucket
+metadata:
+  annotations:
+    meta.upbound.io/example-id: objectstorage/v1alpha1/managedobjectstoragebucket
+  labels:
+    testing.upbound.io/example-name: bucket-example
+  name: bucket-example
+spec:
+  forProvider:
+    serviceUuidRef:
+      name: bucket-example-service
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: objectstorage.upcloud.crossplane.io/v1alpha1
+kind: ManagedObjectStorage
+metadata:
+  annotations:
+    meta.upbound.io/example-id: objectstorage/v1alpha1/managedobjectstoragebucket
+  labels:
+    testing.upbound.io/example-name: bucket-example-service
+  name: bucket-example-service
+spec:
+  forProvider:
+    name: bucket-example-service
+    region: europe-1
+    configuredStatus: started
+  providerConfigRef:
+    name: default

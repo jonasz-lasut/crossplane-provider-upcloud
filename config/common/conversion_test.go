@@ -11,7 +11,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestEmptyValueDefaults(t *testing.T) {
+func TestEmptyListDefaults(t *testing.T) {
 	type args struct {
 		params map[string]any
 		mode   config.Mode
@@ -21,30 +21,27 @@ func TestEmptyValueDefaults(t *testing.T) {
 		args args
 		want map[string]any
 	}{
-		"AbsentArgumentsGetEmptyValues": {
-			args: args{params: map[string]any{"name": "router"}, mode: config.ToTerraform},
-			want: map[string]any{"name": "router", "labels": map[string]any{}, "static_route": []any{}},
+		"AbsentArgumentGetsEmptyList": {
+			args: args{params: map[string]any{"plan": "2xCPU-4GB"}, mode: config.ToTerraform},
+			want: map[string]any{"plan": "2xCPU-4GB", "ssh_keys": []any{}},
 		},
-		"PresentArgumentsAreKept": {
-			args: args{
-				params: map[string]any{"labels": map[string]any{"env": "dev"}, "static_route": []any{map[string]any{"name": "r"}}},
-				mode:   config.ToTerraform,
-			},
-			want: map[string]any{"labels": map[string]any{"env": "dev"}, "static_route": []any{map[string]any{"name": "r"}}},
+		"PresentArgumentIsKept": {
+			args: args{params: map[string]any{"ssh_keys": []any{"ssh-ed25519 AAAA"}}, mode: config.ToTerraform},
+			want: map[string]any{"ssh_keys": []any{"ssh-ed25519 AAAA"}},
 		},
 		"ExplicitNilIsKept": {
-			args: args{params: map[string]any{"labels": nil}, mode: config.ToTerraform},
-			want: map[string]any{"labels": nil, "static_route": []any{}},
+			args: args{params: map[string]any{"ssh_keys": nil}, mode: config.ToTerraform},
+			want: map[string]any{"ssh_keys": nil},
 		},
 		"FromTerraformIsUntouched": {
-			args: args{params: map[string]any{"name": "router"}, mode: config.FromTerraform},
-			want: map[string]any{"name": "router"},
+			args: args{params: map[string]any{"plan": "2xCPU-4GB"}, mode: config.FromTerraform},
+			want: map[string]any{"plan": "2xCPU-4GB"},
 		},
 	}
 
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
-			got, err := EmptyValueDefaults([]string{"labels"}, []string{"static_route"}).Convert(tc.args.params, nil, tc.args.mode)
+			got, err := EmptyListDefaults("ssh_keys").Convert(tc.args.params, nil, tc.args.mode)
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}

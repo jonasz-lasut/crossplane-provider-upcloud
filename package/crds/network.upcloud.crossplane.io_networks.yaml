@@ -78,90 +78,88 @@ spec:
                     description: |-
                       (Block List) IP subnet within the network. Network must have exactly one IP subnet. (see below for nested schema)
                       IP subnet within the network. Network must have exactly one IP subnet.
-                    items:
-                      properties:
-                        address:
-                          description: |-
-                            (String) The CIDR range of the subnet
-                            The CIDR range of the subnet
+                    properties:
+                      address:
+                        description: |-
+                          (String) The CIDR range of the subnet
+                          The CIDR range of the subnet
+                        type: string
+                      dhcp:
+                        description: |-
+                          (Boolean) Is DHCP enabled?
+                          Is DHCP enabled?
+                        type: boolean
+                      dhcpDefaultRoute:
+                        description: |-
+                          (Boolean) Is the gateway the DHCP default route?
+                          Is the gateway the DHCP default route?
+                        type: boolean
+                      dhcpDns:
+                        description: |-
+                          (Set of String) The DNS servers given by DHCP
+                          The DNS servers given by DHCP
+                        items:
                           type: string
-                        dhcp:
-                          description: |-
-                            (Boolean) Is DHCP enabled?
-                            Is DHCP enabled?
-                          type: boolean
-                        dhcpDefaultRoute:
-                          description: |-
-                            (Boolean) Is the gateway the DHCP default route?
-                            Is the gateway the DHCP default route?
-                          type: boolean
-                        dhcpDns:
-                          description: |-
-                            (Set of String) The DNS servers given by DHCP
-                            The DNS servers given by DHCP
-                          items:
-                            type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        dhcpRoutes:
-                          description: |-
-                            (Set of String) The additional DHCP classless static routes given by DHCP
-                            The additional DHCP classless static routes given by DHCP
-                          items:
-                            type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        dhcpRoutesConfiguration:
-                          description: population configuration. (see below for nested
-                            schema)
-                          properties:
-                            effectiveRoutesAutoPopulation:
-                              description: (Attributes) Automatically populate effective
-                                routes. (see below for nested schema)
-                              properties:
-                                enabled:
-                                  description: |-
-                                    population.
-                                    Enable or disable route auto-population.
-                                  type: boolean
-                                excludeBySource:
-                                  description: |-
-                                    connected-networks, static-route).
-                                    Exclude routes coming from specific sources (router-connected-networks, static-route).
-                                  items:
-                                    type: string
-                                  type: array
-                                  x-kubernetes-list-type: set
-                                filterByDestination:
-                                  description: |-
-                                    populating routes.
-                                    CIDR destinations to include when auto-populating routes.
-                                  items:
-                                    type: string
-                                  type: array
-                                  x-kubernetes-list-type: set
-                                filterByRouteType:
-                                  description: |-
-                                    (Set of String) Include only routes of given types (service, user).
-                                    Include only routes of given types (service, user).
-                                  items:
-                                    type: string
-                                  type: array
-                                  x-kubernetes-list-type: set
-                              type: object
-                          type: object
-                        family:
-                          description: |-
-                            (String) IP address family
-                            IP address family
+                        type: array
+                        x-kubernetes-list-type: set
+                      dhcpRoutes:
+                        description: |-
+                          (Set of String) The additional DHCP classless static routes given by DHCP
+                          The additional DHCP classless static routes given by DHCP
+                        items:
                           type: string
-                        gateway:
-                          description: |-
-                            (String) Gateway address given by DHCP
-                            Gateway address given by DHCP
-                          type: string
-                      type: object
-                    type: array
+                        type: array
+                        x-kubernetes-list-type: set
+                      dhcpRoutesConfiguration:
+                        description: population configuration. (see below for nested
+                          schema)
+                        properties:
+                          effectiveRoutesAutoPopulation:
+                            description: (Attributes) Automatically populate effective
+                              routes. (see below for nested schema)
+                            properties:
+                              enabled:
+                                description: |-
+                                  population.
+                                  Enable or disable route auto-population.
+                                type: boolean
+                              excludeBySource:
+                                description: |-
+                                  connected-networks, static-route).
+                                  Exclude routes coming from specific sources (router-connected-networks, static-route).
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                              filterByDestination:
+                                description: |-
+                                  populating routes.
+                                  CIDR destinations to include when auto-populating routes.
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                              filterByRouteType:
+                                description: |-
+                                  (Set of String) Include only routes of given types (service, user).
+                                  Include only routes of given types (service, user).
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                            type: object
+                        type: object
+                      family:
+                        description: |-
+                          (String) IP address family
+                          IP address family
+                        type: string
+                      gateway:
+                        description: |-
+                          (String) Gateway address given by DHCP
+                          Gateway address given by DHCP
+                        type: string
+                    type: object
                   labels:
                     additionalProperties:
                       type: string
@@ -277,90 +275,88 @@ spec:
                     description: |-
                       (Block List) IP subnet within the network. Network must have exactly one IP subnet. (see below for nested schema)
                       IP subnet within the network. Network must have exactly one IP subnet.
-                    items:
-                      properties:
-                        address:
-                          description: |-
-                            (String) The CIDR range of the subnet
-                            The CIDR range of the subnet
+                    properties:
+                      address:
+                        description: |-
+                          (String) The CIDR range of the subnet
+                          The CIDR range of the subnet
+                        type: string
+                      dhcp:
+                        description: |-
+                          (Boolean) Is DHCP enabled?
+                          Is DHCP enabled?
+                        type: boolean
+                      dhcpDefaultRoute:
+                        description: |-
+                          (Boolean) Is the gateway the DHCP default route?
+                          Is the gateway the DHCP default route?
+                        type: boolean
+                      dhcpDns:
+                        description: |-
+                          (Set of String) The DNS servers given by DHCP
+                          The DNS servers given by DHCP
+                        items:
                           type: string
-                        dhcp:
-                          description: |-
-                            (Boolean) Is DHCP enabled?
-                            Is DHCP enabled?
-                          type: boolean
-                        dhcpDefaultRoute:
-                          description: |-
-                            (Boolean) Is the gateway the DHCP default route?
-                            Is the gateway the DHCP default route?
-                          type: boolean
-                        dhcpDns:
-                          description: |-
-                            (Set of String) The DNS servers given by DHCP
-                            The DNS servers given by DHCP
-                          items:
-                            type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        dhcpRoutes:
-                          description: |-
-                            (Set of String) The additional DHCP classless static routes given by DHCP
-                            The additional DHCP classless static routes given by DHCP
-                          items:
-                            type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        dhcpRoutesConfiguration:
-                          description: population configuration. (see below for nested
-                            schema)
-                          properties:
-                            effectiveRoutesAutoPopulation:
-                              description: (Attributes) Automatically populate effective
-                                routes. (see below for nested schema)
-                              properties:
-                                enabled:
-                                  description: |-
-                                    population.
-                                    Enable or disable route auto-population.
-                                  type: boolean
-                                excludeBySource:
-                                  description: |-
-                                    connected-networks, static-route).
-                                    Exclude routes coming from specific sources (router-connected-networks, static-route).
-                                  items:
-                                    type: string
-                                  type: array
-                                  x-kubernetes-list-type: set
-                                filterByDestination:
-                                  description: |-
-                                    populating routes.
-                                    CIDR destinations to include when auto-populating routes.
-                                  items:
-                                    type: string
-                                  type: array
-                                  x-kubernetes-list-type: set
-                                filterByRouteType:
-                                  description: |-
-                                    (Set of String) Include only routes of given types (service, user).
-                                    Include only routes of given types (service, user).
-                                  items:
-                                    type: string
-                                  type: array
-                                  x-kubernetes-list-type: set
-                              type: object
-                          type: object
-                        family:
-                          description: |-
-                            (String) IP address family
-                            IP address family
+                        type: array
+                        x-kubernetes-list-type: set
+                      dhcpRoutes:
+                        description: |-
+                          (Set of String) The additional DHCP classless static routes given by DHCP
+                          The additional DHCP classless static routes given by DHCP
+                        items:
                           type: string
-                        gateway:
-                          description: |-
-                            (String) Gateway address given by DHCP
-                            Gateway address given by DHCP
-                          type: string
-                      type: object
-                    type: array
+                        type: array
+                        x-kubernetes-list-type: set
+                      dhcpRoutesConfiguration:
+                        description: population configuration. (see below for nested
+                          schema)
+                        properties:
+                          effectiveRoutesAutoPopulation:
+                            description: (Attributes) Automatically populate effective
+                              routes. (see below for nested schema)
+                            properties:
+                              enabled:
+                                description: |-
+                                  population.
+                                  Enable or disable route auto-population.
+                                type: boolean
+                              excludeBySource:
+                                description: |-
+                                  connected-networks, static-route).
+                                  Exclude routes coming from specific sources (router-connected-networks, static-route).
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                              filterByDestination:
+                                description: |-
+                                  populating routes.
+                                  CIDR destinations to include when auto-populating routes.
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                              filterByRouteType:
+                                description: |-
+                                  (Set of String) Include only routes of given types (service, user).
+                                  Include only routes of given types (service, user).
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                            type: object
+                        type: object
+                      family:
+                        description: |-
+                          (String) IP address family
+                          IP address family
+                        type: string
+                      gateway:
+                        description: |-
+                          (String) Gateway address given by DHCP
+                          Gateway address given by DHCP
+                        type: string
+                    type: object
                   labels:
                     additionalProperties:
                       type: string
@@ -546,6 +542,10 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
+            - message: spec.forProvider.ipNetwork is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.ipNetwork)
+                || (has(self.initProvider) && has(self.initProvider.ipNetwork))'
             - message: spec.forProvider.name is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
@@ -597,111 +597,109 @@ spec:
                     description: |-
                       (Block List) IP subnet within the network. Network must have exactly one IP subnet. (see below for nested schema)
                       IP subnet within the network. Network must have exactly one IP subnet.
-                    items:
-                      properties:
-                        address:
-                          description: |-
-                            (String) The CIDR range of the subnet
-                            The CIDR range of the subnet
+                    properties:
+                      address:
+                        description: |-
+                          (String) The CIDR range of the subnet
+                          The CIDR range of the subnet
+                        type: string
+                      dhcp:
+                        description: |-
+                          (Boolean) Is DHCP enabled?
+                          Is DHCP enabled?
+                        type: boolean
+                      dhcpDefaultRoute:
+                        description: |-
+                          (Boolean) Is the gateway the DHCP default route?
+                          Is the gateway the DHCP default route?
+                        type: boolean
+                      dhcpDns:
+                        description: |-
+                          (Set of String) The DNS servers given by DHCP
+                          The DNS servers given by DHCP
+                        items:
                           type: string
-                        dhcp:
-                          description: |-
-                            (Boolean) Is DHCP enabled?
-                            Is DHCP enabled?
-                          type: boolean
-                        dhcpDefaultRoute:
-                          description: |-
-                            (Boolean) Is the gateway the DHCP default route?
-                            Is the gateway the DHCP default route?
-                          type: boolean
-                        dhcpDns:
-                          description: |-
-                            (Set of String) The DNS servers given by DHCP
-                            The DNS servers given by DHCP
-                          items:
-                            type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        dhcpEffectiveRoutes:
-                          description: only). (see below for nested schema)
-                          items:
-                            properties:
-                              autoPopulated:
-                                description: |-
-                                  populated by DHCP.
-                                  Whether the route was auto-populated by DHCP.
-                                type: boolean
-                              nexthop:
-                                description: |-
-                                  (String) Next hop address for this DHCP route.
-                                  Next hop address for this DHCP route.
-                                type: string
-                              route:
-                                description: |-
-                                  (String) Destination prefix (CIDR) of the DHCP route.
-                                  Destination prefix (CIDR) of the DHCP route.
-                                type: string
-                            type: object
-                          type: array
-                        dhcpRoutes:
-                          description: |-
-                            (Set of String) The additional DHCP classless static routes given by DHCP
-                            The additional DHCP classless static routes given by DHCP
-                          items:
-                            type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        dhcpRoutesConfiguration:
-                          description: population configuration. (see below for nested
-                            schema)
+                        type: array
+                        x-kubernetes-list-type: set
+                      dhcpEffectiveRoutes:
+                        description: only). (see below for nested schema)
+                        items:
                           properties:
-                            effectiveRoutesAutoPopulation:
-                              description: (Attributes) Automatically populate effective
-                                routes. (see below for nested schema)
-                              properties:
-                                enabled:
-                                  description: |-
-                                    population.
-                                    Enable or disable route auto-population.
-                                  type: boolean
-                                excludeBySource:
-                                  description: |-
-                                    connected-networks, static-route).
-                                    Exclude routes coming from specific sources (router-connected-networks, static-route).
-                                  items:
-                                    type: string
-                                  type: array
-                                  x-kubernetes-list-type: set
-                                filterByDestination:
-                                  description: |-
-                                    populating routes.
-                                    CIDR destinations to include when auto-populating routes.
-                                  items:
-                                    type: string
-                                  type: array
-                                  x-kubernetes-list-type: set
-                                filterByRouteType:
-                                  description: |-
-                                    (Set of String) Include only routes of given types (service, user).
-                                    Include only routes of given types (service, user).
-                                  items:
-                                    type: string
-                                  type: array
-                                  x-kubernetes-list-type: set
-                              type: object
+                            autoPopulated:
+                              description: |-
+                                populated by DHCP.
+                                Whether the route was auto-populated by DHCP.
+                              type: boolean
+                            nexthop:
+                              description: |-
+                                (String) Next hop address for this DHCP route.
+                                Next hop address for this DHCP route.
+                              type: string
+                            route:
+                              description: |-
+                                (String) Destination prefix (CIDR) of the DHCP route.
+                                Destination prefix (CIDR) of the DHCP route.
+                              type: string
                           type: object
-                        family:
-                          description: |-
-                            (String) IP address family
-                            IP address family
+                        type: array
+                      dhcpRoutes:
+                        description: |-
+                          (Set of String) The additional DHCP classless static routes given by DHCP
+                          The additional DHCP classless static routes given by DHCP
+                        items:
                           type: string
-                        gateway:
-                          description: |-
-                            (String) Gateway address given by DHCP
-                            Gateway address given by DHCP
-                          type: string
-                      type: object
-                    type: array
+                        type: array
+                        x-kubernetes-list-type: set
+                      dhcpRoutesConfiguration:
+                        description: population configuration. (see below for nested
+                          schema)
+                        properties:
+                          effectiveRoutesAutoPopulation:
+                            description: (Attributes) Automatically populate effective
+                              routes. (see below for nested schema)
+                            properties:
+                              enabled:
+                                description: |-
+                                  population.
+                                  Enable or disable route auto-population.
+                                type: boolean
+                              excludeBySource:
+                                description: |-
+                                  connected-networks, static-route).
+                                  Exclude routes coming from specific sources (router-connected-networks, static-route).
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                              filterByDestination:
+                                description: |-
+                                  populating routes.
+                                  CIDR destinations to include when auto-populating routes.
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                              filterByRouteType:
+                                description: |-
+                                  (Set of String) Include only routes of given types (service, user).
+                                  Include only routes of given types (service, user).
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                            type: object
+                        type: object
+                      family:
+                        description: |-
+                          (String) IP address family
+                          IP address family
+                        type: string
+                      gateway:
+                        description: |-
+                          (String) Gateway address given by DHCP
+                          Gateway address given by DHCP
+                        type: string
+                    type: object
                   labels:
                     additionalProperties:
                       type: string

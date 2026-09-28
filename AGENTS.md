@@ -161,9 +161,19 @@ A resource absent from both tables in `config/external_name.go` is **never gener
 
 Cross-resource references (`r.References["field"] = config.Reference{...}`) go in both `config/cluster/<group>/config.go` AND `config/namespaced/<group>/config.go`. These files must stay in sync.
 
+Pick the extractor by what the Terraform argument takes and how the target gets its external name:
+- a UUID of an `IdentifierFromProvider` parent: no `Extractor` (the default external name is set only once the parent has been created);
+- the bare name of a `TemplatedStringAsIdentifier` child (for example `default_backend_name`, `share_name`): `common.ExtractObservedExternalName`, which waits for the child to be observed. The plain external name is stamped by the name initializer before the child exists in UpCloud and produces 404s on create;
+- a composite id such as `<lb uuid>/<backend name>` (for example a backend member's `backend`): `common.ExtractObservedPath("id")`;
+- any other observed attribute: `common.ExtractObservedPath("<tf path>")`.
+
 ### Singleton lists
 
-`SingletonListEmbedder` turns Terraform blocks with at most one item (for example `template` on a server or `ip_network` on a network) into embedded objects in the CRD. Write them as objects, not single-item lists, in examples.
+Terraform blocks limited to one item (for example `template` on a server, `ip_network` on a network, or the managed database `properties` block and everything nested in it) are embedded as objects in the CRD through explicit `r.AddSingletonListConversion("<tf_path>", "<crdPath>")` calls in the group configurators. The plugin-framework schema dump does not carry the `MaxItems=1` constraint (upstream uses `SizeAtMost(1)` validators), so `SingletonListEmbedder` cannot detect them: when adding a resource, look up its single-item blocks in the upstream source and list them. Write them as objects, not single-item lists, in examples.
+
+### Empty collection defaults
+
+A plugin-framework set attribute that defaults to an empty set and carries `RequiresReplace` (the node group's `ssh_keys`) becomes un-updatable after a provider restart or the uptest import step: the rebuilt prior state has it as null (omitempty drops the empty set from `status.atProvider`), the plan carries the empty default, and upjet's replacement filter compares the raw values. `r.TerraformConversions = append(r.TerraformConversions, common.EmptyListDefaults("<tf_name>"))` sends the empty list on both sides. Only for attributes whose upstream Read tolerates an empty non-null value; never for singleton-list blocks (Storage `import` is such a block and upstream's Read treats a non-null set as a configured import).
 
 ### Sensitive fields
 
@@ -177,7 +187,9 @@ Any Terraform attribute marked `Sensitive: true` becomes `<field>SecretRef` in t
 1. Creates a `provider-secret` Secret in `crossplane-system` from `$UPTEST_CLOUD_CREDENTIALS` (JSON with a `token` key holding an UpCloud API token, or `username` and `password` keys).
 2. Applies a `ProviderConfig` (cluster scope) and a `ClusterProviderConfig` (namespaced scope).
 
-Examples pin their zones (`de-fra1`, `fi-hel1`) and object storage region (`europe-1`) directly; no uptest datasource is needed.
+Examples pin their zone (`fi-hel2`) and object storage region (`europe-1`, primary zone `fi-hel2`) directly; no uptest datasource is needed.
+Every example that creates a `Network` owns a distinct `/24` within its scope (`10.<n>.0.0/24` for network, server and load balancer examples, `172.16.<n>.0/24` for UKS, gateway and file storage examples) so a batch can run concurrently; pick an unused block for a new example and keep the IPs inside it (`ipAddress`, backend member `ip`, ACL `target`) in the same block.
+When a teardown has to be ordered (the Gateway examples: the `Gateway` chain must be gone before its `Router` and `Network` are deleted), the parent docs carry `uptest.upbound.io/pre-delete-hook: ../testhooks/<script>.sh`. uptest runs the script right before that doc's own non-blocking delete, so the script deletes the dependent kinds with `${KUBECTL} delete <kind> --all`, which waits for each to be gone (every resource of a batch is being torn down at that point anyway). Scripts live in `examples/<scope>/<group>/testhooks/`, one copy per scope (group suffix and namespace differ), executable, with a shebang.
 
 ---
 

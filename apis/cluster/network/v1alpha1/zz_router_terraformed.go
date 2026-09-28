@@ -113,7 +113,7 @@ func (tr *Router) GetMergedParameters(shouldMergeInitProvider bool) (map[string]
 // LateInitialize this Router using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *Router) LateInitialize(attrs []byte) (bool, error) {
-	params := &RouterParameters{}
+	params := &RouterParameters_2{}
 	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
 		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
 	}

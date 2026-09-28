@@ -21,7 +21,7 @@ func (mg *Server) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this Server
 func (tr *Server) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"login[*].password": "status.atProvider.login[*].password"}
+	return map[string]string{"login[*].password": "status.atProvider.login.password"}
 }
 
 // GetObservation of this Server

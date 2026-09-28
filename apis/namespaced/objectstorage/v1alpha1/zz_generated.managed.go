@@ -48,6 +48,86 @@ func (mg *ManagedObjectStorage) SetWriteConnectionSecretToReference(r *xpv2.Loca
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
+// GetCondition of this ManagedObjectStorageBucket.
+func (mg *ManagedObjectStorageBucket) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetManagementPolicies of this ManagedObjectStorageBucket.
+func (mg *ManagedObjectStorageBucket) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this ManagedObjectStorageBucket.
+func (mg *ManagedObjectStorageBucket) GetProviderConfigReference() *xpv2.ProviderConfigReference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this ManagedObjectStorageBucket.
+func (mg *ManagedObjectStorageBucket) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this ManagedObjectStorageBucket.
+func (mg *ManagedObjectStorageBucket) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetManagementPolicies of this ManagedObjectStorageBucket.
+func (mg *ManagedObjectStorageBucket) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this ManagedObjectStorageBucket.
+func (mg *ManagedObjectStorageBucket) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this ManagedObjectStorageBucket.
+func (mg *ManagedObjectStorageBucket) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this ManagedObjectStorageCustomDomain.
+func (mg *ManagedObjectStorageCustomDomain) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetManagementPolicies of this ManagedObjectStorageCustomDomain.
+func (mg *ManagedObjectStorageCustomDomain) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this ManagedObjectStorageCustomDomain.
+func (mg *ManagedObjectStorageCustomDomain) GetProviderConfigReference() *xpv2.ProviderConfigReference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this ManagedObjectStorageCustomDomain.
+func (mg *ManagedObjectStorageCustomDomain) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this ManagedObjectStorageCustomDomain.
+func (mg *ManagedObjectStorageCustomDomain) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetManagementPolicies of this ManagedObjectStorageCustomDomain.
+func (mg *ManagedObjectStorageCustomDomain) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this ManagedObjectStorageCustomDomain.
+func (mg *ManagedObjectStorageCustomDomain) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this ManagedObjectStorageCustomDomain.
+func (mg *ManagedObjectStorageCustomDomain) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
 // GetCondition of this ManagedObjectStoragePolicy.
 func (mg *ManagedObjectStoragePolicy) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
@@ -85,6 +165,46 @@ func (mg *ManagedObjectStoragePolicy) SetProviderConfigReference(r *xpv2.Provide
 
 // SetWriteConnectionSecretToReference of this ManagedObjectStoragePolicy.
 func (mg *ManagedObjectStoragePolicy) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this ManagedObjectStorageStaticSite.
+func (mg *ManagedObjectStorageStaticSite) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetManagementPolicies of this ManagedObjectStorageStaticSite.
+func (mg *ManagedObjectStorageStaticSite) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this ManagedObjectStorageStaticSite.
+func (mg *ManagedObjectStorageStaticSite) GetProviderConfigReference() *xpv2.ProviderConfigReference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this ManagedObjectStorageStaticSite.
+func (mg *ManagedObjectStorageStaticSite) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this ManagedObjectStorageStaticSite.
+func (mg *ManagedObjectStorageStaticSite) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetManagementPolicies of this ManagedObjectStorageStaticSite.
+func (mg *ManagedObjectStorageStaticSite) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this ManagedObjectStorageStaticSite.
+func (mg *ManagedObjectStorageStaticSite) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this ManagedObjectStorageStaticSite.
+func (mg *ManagedObjectStorageStaticSite) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 

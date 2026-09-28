@@ -1,0 +1,61 @@
+apiVersion: storage.upcloud.crossplane.io/v1alpha1
+kind: FileStorageShare
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/filestorageshare
+  labels:
+    testing.upbound.io/example-name: fsshare-example-share
+  name: fsshare-example-share
+spec:
+  forProvider:
+    path: /project
+    fileStorageRef:
+      name: fsshare-example-filestorage
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: storage.upcloud.crossplane.io/v1alpha1
+kind: FileStorage
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/filestorageshare
+  labels:
+    testing.upbound.io/example-name: fsshare-example-filestorage
+  name: fsshare-example-filestorage
+spec:
+  forProvider:
+    name: fsshare-example-filestorage
+    zone: fi-hel2
+    size: 250
+    configuredStatus: started
+    labels:
+      environment: example
+    network:
+      name: private
+      family: IPv4
+      ipAddress: 172.16.82.11
+      uuidRef:
+        name: fsshare-example-network
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/filestorageshare
+  labels:
+    testing.upbound.io/example-name: fsshare-example-network
+  name: fsshare-example-network
+spec:
+  forProvider:
+    name: fsshare-example-network
+    zone: fi-hel2
+    ipNetwork:
+      address: 172.16.82.0/24
+      dhcp: true
+      family: IPv4
+  providerConfigRef:
+    name: default

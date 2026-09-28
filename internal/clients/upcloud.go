@@ -8,17 +8,23 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/UpCloudLtd/terraform-provider-upcloud/upcloud"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/errors"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
 	xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
-	fwprovider "github.com/hashicorp/terraform-plugin-framework/provider"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	terraformsdk "github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
+	tjresource "github.com/crossplane/upjet/v2/pkg/resource"
 	"github.com/crossplane/upjet/v2/pkg/terraform"
 
 	clusterv1beta1 "github.com/crossplane-contrib/provider-upcloud/apis/cluster/v1beta1"
 	namespacedv1beta1 "github.com/crossplane-contrib/provider-upcloud/apis/namespaced/v1beta1"
+	"github.com/crossplane-contrib/provider-upcloud/internal/version"
 )
 
 const (
@@ -35,14 +41,14 @@ const (
 )
 
 // TerraformSetupBuilder builds a terraform.SetupFn that configures the
-// in-process UpCloud Terraform provider (no-fork, no terraform CLI). Every
-// generated resource is implemented with terraform-plugin-framework upstream,
-// so the setup only carries the framework provider: upjet configures a fresh
-// provider server from the returned Configuration on every connect. Should a
-// terraform-plugin-sdk/v2 resource (upcloud_gateway_connection or
-// upcloud_gateway_connection_tunnel) ever be generated, the SDK provider meta
-// has to be configured here as well.
-func TerraformSetupBuilder(fwProvider fwprovider.Provider) terraform.SetupFn {
+// in-process UpCloud Terraform provider (no-fork, no terraform CLI). The setup
+// always carries the plugin-framework provider from the upjet configuration:
+// upjet configures a fresh provider server from the returned Configuration on
+// every connect. The terraform-plugin-sdk/v2 provider meta is configured only
+// for the kinds upstream still implements with the SDK (the gateway connection
+// resources), because configuring it validates the credentials against the
+// UpCloud API on every call.
+func TerraformSetupBuilder(p *ujconfig.Provider) terraform.SetupFn {
 	return func(ctx context.Context, client client.Client, mg resource.Managed) (terraform.Setup, error) {
 		pcSpec, err := resolveProviderConfig(ctx, client, mg)
 		if err != nil {
@@ -64,11 +70,51 @@ func TerraformSetupBuilder(fwProvider fwprovider.Provider) terraform.SetupFn {
 			return terraform.Setup{}, errors.Wrap(err, "cannot build provider configuration")
 		}
 
-		return terraform.Setup{
+		ps := terraform.Setup{
 			Configuration:     cfg,
-			FrameworkProvider: fwProvider,
-		}, nil
+			FrameworkProvider: p.TerraformPluginFrameworkProvider,
+		}
+		if !usesSDKClient(p, mg) {
+			return ps, nil
+		}
+		return ps, errors.Wrap(configureProviderMeta(ctx, &ps), "cannot configure the upcloud SDK provider client")
 	}
+}
+
+// usesSDKClient reports whether the managed resource is reconciled with the
+// terraform-plugin-sdk/v2 client, which needs the provider meta in the setup.
+func usesSDKClient(p *ujconfig.Provider, mg resource.Managed) bool {
+	tr, ok := mg.(tjresource.Terraformed)
+	if !ok {
+		return false
+	}
+	r, ok := p.Resources[tr.GetTerraformResourceType()]
+	return ok && r.ShouldUseTerraformPluginSDKClient()
+}
+
+// sdkProvider returns a fresh terraform-plugin-sdk/v2 flavor of the UpCloud
+// provider that reports this provider's User-Agent to the UpCloud API.
+func sdkProvider() *schema.Provider {
+	p := upcloud.Provider()
+	p.ConfigureContextFunc = func(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
+		return upcloud.ProviderConfigure(ctx, d, version.UserAgent())
+	}
+	return p
+}
+
+// configureProviderMeta configures a fresh in-process SDKv2 provider instance
+// with the resolved configuration and stores the resulting provider meta (the
+// UpCloud API client) in the Setup, as required by upjet's TerraformPluginSDK
+// connectors. A fresh instance is used per call because provider meta is
+// per-ProviderConfig state.
+func configureProviderMeta(ctx context.Context, ps *terraform.Setup) error {
+	p := sdkProvider()
+	diag := p.Configure(context.WithoutCancel(ctx), &terraformsdk.ResourceConfig{Config: ps.Configuration})
+	if diag != nil && diag.HasError() {
+		return errors.Errorf("failed to configure the upcloud provider: %v", diag)
+	}
+	ps.Meta = p.Meta()
+	return nil
 }
 
 // buildConfiguration maps the credentials secret onto the UpCloud provider

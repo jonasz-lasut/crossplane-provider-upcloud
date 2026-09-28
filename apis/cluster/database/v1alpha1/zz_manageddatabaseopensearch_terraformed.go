@@ -21,7 +21,7 @@ func (mg *ManagedDatabaseOpensearch) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this ManagedDatabaseOpensearch
 func (tr *ManagedDatabaseOpensearch) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"properties[*].email_sender_password": "properties[*].emailSenderPasswordSecretRef", "service_password": "status.atProvider.servicePassword", "service_uri": "status.atProvider.serviceUri"}
+	return map[string]string{"properties[*].email_sender_password": "properties.emailSenderPasswordSecretRef", "service_password": "status.atProvider.servicePassword", "service_uri": "status.atProvider.serviceUri"}
 }
 
 // GetObservation of this ManagedDatabaseOpensearch
@@ -118,6 +118,7 @@ func (tr *ManagedDatabaseOpensearch) LateInitialize(attrs []byte) (bool, error) 
 		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
 	}
 	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
+	opts = append(opts, resource.WithNameFilter("Properties"))
 
 	li := resource.NewGenericLateInitializer(opts...)
 	return li.LateInitialize(&tr.Spec.ForProvider, params)

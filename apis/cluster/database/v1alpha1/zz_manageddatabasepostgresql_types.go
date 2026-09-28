@@ -69,9 +69,6 @@ type ManagedDatabasePostgresqlInitParameters struct {
 	// Private networks attached to the managed database
 	Network []ManagedDatabasePostgresqlNetworkInitParameters `json:"network,omitempty" tf:"network,omitempty"`
 
-	// (Attributes List) Information about nodes providing the managed service (see below for nested schema)
-	NodeStates []ManagedDatabasePostgresqlNodeStatesInitParameters `json:"nodeStates,omitempty" tf:"node_states,omitempty"`
-
 	// (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans pg.
 	// Service plan to use. This determines how much resources the instance will have. You can list available plans with `upctl database plans pg`.
 	Plan *string `json:"plan,omitempty" tf:"plan,omitempty"`
@@ -82,7 +79,7 @@ type ManagedDatabasePostgresqlInitParameters struct {
 
 	// (Block List) Database engine properties. (see below for nested schema)
 	// Database engine properties.
-	Properties []ManagedDatabasePostgresqlPropertiesInitParameters `json:"properties,omitempty" tf:"properties,omitempty"`
+	Properties *ManagedDatabasePostgresqlPropertiesInitParameters `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (Boolean) If set to true, prevents the managed service from being powered off, or deleted.
 	// If set to true, prevents the managed service from being powered off, or deleted.
@@ -247,7 +244,7 @@ type ManagedDatabasePostgresqlObservation struct {
 
 	// (Block List) Database engine properties. (see below for nested schema)
 	// Database engine properties.
-	Properties []ManagedDatabasePostgresqlPropertiesObservation `json:"properties,omitempty" tf:"properties,omitempty"`
+	Properties *ManagedDatabasePostgresqlPropertiesObservation `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (String) Hostname to the service instance
 	// Hostname to the service instance
@@ -319,10 +316,6 @@ type ManagedDatabasePostgresqlParameters struct {
 	// +kubebuilder:validation:Optional
 	Network []ManagedDatabasePostgresqlNetworkParameters `json:"network,omitempty" tf:"network,omitempty"`
 
-	// (Attributes List) Information about nodes providing the managed service (see below for nested schema)
-	// +kubebuilder:validation:Optional
-	NodeStates []ManagedDatabasePostgresqlNodeStatesParameters `json:"nodeStates,omitempty" tf:"node_states,omitempty"`
-
 	// (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans pg.
 	// Service plan to use. This determines how much resources the instance will have. You can list available plans with `upctl database plans pg`.
 	// +kubebuilder:validation:Optional
@@ -336,7 +329,7 @@ type ManagedDatabasePostgresqlParameters struct {
 	// (Block List) Database engine properties. (see below for nested schema)
 	// Database engine properties.
 	// +kubebuilder:validation:Optional
-	Properties []ManagedDatabasePostgresqlPropertiesParameters `json:"properties,omitempty" tf:"properties,omitempty"`
+	Properties *ManagedDatabasePostgresqlPropertiesParameters `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (Boolean) If set to true, prevents the managed service from being powered off, or deleted.
 	// If set to true, prevents the managed service from being powered off, or deleted.
@@ -566,7 +559,7 @@ type ManagedDatabasePostgresqlPropertiesInitParameters struct {
 
 	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
-	Migration []PropertiesMigrationInitParameters `json:"migration,omitempty" tf:"migration,omitempty"`
+	Migration *PropertiesMigrationInitParameters `json:"migration,omitempty" tf:"migration,omitempty"`
 
 	// (Number) Number of nodes for the service.
 	// Number of nodes for the service.
@@ -610,15 +603,15 @@ type ManagedDatabasePostgresqlPropertiesInitParameters struct {
 
 	// wide settings for the pgaudit extension. (see below for nested schema)
 	// PGAudit settings. System-wide settings for the pgaudit extension.
-	Pgaudit []PgauditInitParameters `json:"pgaudit,omitempty" tf:"pgaudit,omitempty"`
+	Pgaudit *PgauditInitParameters `json:"pgaudit,omitempty" tf:"pgaudit,omitempty"`
 
 	// wide settings for pgbouncer. (see below for nested schema)
 	// PGBouncer connection pooling settings. System-wide settings for pgbouncer.
-	Pgbouncer []PgbouncerInitParameters `json:"pgbouncer,omitempty" tf:"pgbouncer,omitempty"`
+	Pgbouncer *PgbouncerInitParameters `json:"pgbouncer,omitempty" tf:"pgbouncer,omitempty"`
 
 	// wide settings for pglookout. (see below for nested schema)
 	// PGLookout settings. System-wide settings for pglookout.
-	Pglookout []PglookoutInitParameters `json:"pglookout,omitempty" tf:"pglookout,omitempty"`
+	Pglookout *PglookoutInitParameters `json:"pglookout,omitempty" tf:"pglookout,omitempty"`
 
 	// (Boolean) Public Access. Allow access to the service from the public Internet.
 	// Public Access. Allow access to the service from the public Internet.
@@ -650,7 +643,7 @@ type ManagedDatabasePostgresqlPropertiesInitParameters struct {
 
 	// wide settings for the timescaledb extension. (see below for nested schema)
 	// TimescaleDB extension configuration values. System-wide settings for the timescaledb extension.
-	Timescaledb []TimescaledbInitParameters `json:"timescaledb,omitempty" tf:"timescaledb,omitempty"`
+	Timescaledb *TimescaledbInitParameters `json:"timescaledb,omitempty" tf:"timescaledb,omitempty"`
 
 	// (String) PostgreSQL service timezone.
 	// PostgreSQL service timezone.
@@ -901,7 +894,7 @@ type ManagedDatabasePostgresqlPropertiesObservation struct {
 
 	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
-	Migration []PropertiesMigrationObservation `json:"migration,omitempty" tf:"migration,omitempty"`
+	Migration *PropertiesMigrationObservation `json:"migration,omitempty" tf:"migration,omitempty"`
 
 	// (Number) Number of nodes for the service.
 	// Number of nodes for the service.
@@ -941,15 +934,15 @@ type ManagedDatabasePostgresqlPropertiesObservation struct {
 
 	// wide settings for the pgaudit extension. (see below for nested schema)
 	// PGAudit settings. System-wide settings for the pgaudit extension.
-	Pgaudit []PgauditObservation `json:"pgaudit,omitempty" tf:"pgaudit,omitempty"`
+	Pgaudit *PgauditObservation `json:"pgaudit,omitempty" tf:"pgaudit,omitempty"`
 
 	// wide settings for pgbouncer. (see below for nested schema)
 	// PGBouncer connection pooling settings. System-wide settings for pgbouncer.
-	Pgbouncer []PgbouncerObservation `json:"pgbouncer,omitempty" tf:"pgbouncer,omitempty"`
+	Pgbouncer *PgbouncerObservation `json:"pgbouncer,omitempty" tf:"pgbouncer,omitempty"`
 
 	// wide settings for pglookout. (see below for nested schema)
 	// PGLookout settings. System-wide settings for pglookout.
-	Pglookout []PglookoutObservation `json:"pglookout,omitempty" tf:"pglookout,omitempty"`
+	Pglookout *PglookoutObservation `json:"pglookout,omitempty" tf:"pglookout,omitempty"`
 
 	// (Boolean) Public Access. Allow access to the service from the public Internet.
 	// Public Access. Allow access to the service from the public Internet.
@@ -981,7 +974,7 @@ type ManagedDatabasePostgresqlPropertiesObservation struct {
 
 	// wide settings for the timescaledb extension. (see below for nested schema)
 	// TimescaleDB extension configuration values. System-wide settings for the timescaledb extension.
-	Timescaledb []TimescaledbObservation `json:"timescaledb,omitempty" tf:"timescaledb,omitempty"`
+	Timescaledb *TimescaledbObservation `json:"timescaledb,omitempty" tf:"timescaledb,omitempty"`
 
 	// (String) PostgreSQL service timezone.
 	// PostgreSQL service timezone.
@@ -1289,7 +1282,7 @@ type ManagedDatabasePostgresqlPropertiesParameters struct {
 	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
 	// +kubebuilder:validation:Optional
-	Migration []PropertiesMigrationParameters `json:"migration,omitempty" tf:"migration,omitempty"`
+	Migration *PropertiesMigrationParameters `json:"migration,omitempty" tf:"migration,omitempty"`
 
 	// (Number) Number of nodes for the service.
 	// Number of nodes for the service.
@@ -1344,17 +1337,17 @@ type ManagedDatabasePostgresqlPropertiesParameters struct {
 	// wide settings for the pgaudit extension. (see below for nested schema)
 	// PGAudit settings. System-wide settings for the pgaudit extension.
 	// +kubebuilder:validation:Optional
-	Pgaudit []PgauditParameters `json:"pgaudit,omitempty" tf:"pgaudit,omitempty"`
+	Pgaudit *PgauditParameters `json:"pgaudit,omitempty" tf:"pgaudit,omitempty"`
 
 	// wide settings for pgbouncer. (see below for nested schema)
 	// PGBouncer connection pooling settings. System-wide settings for pgbouncer.
 	// +kubebuilder:validation:Optional
-	Pgbouncer []PgbouncerParameters `json:"pgbouncer,omitempty" tf:"pgbouncer,omitempty"`
+	Pgbouncer *PgbouncerParameters `json:"pgbouncer,omitempty" tf:"pgbouncer,omitempty"`
 
 	// wide settings for pglookout. (see below for nested schema)
 	// PGLookout settings. System-wide settings for pglookout.
 	// +kubebuilder:validation:Optional
-	Pglookout []PglookoutParameters `json:"pglookout,omitempty" tf:"pglookout,omitempty"`
+	Pglookout *PglookoutParameters `json:"pglookout,omitempty" tf:"pglookout,omitempty"`
 
 	// (Boolean) Public Access. Allow access to the service from the public Internet.
 	// Public Access. Allow access to the service from the public Internet.
@@ -1394,7 +1387,7 @@ type ManagedDatabasePostgresqlPropertiesParameters struct {
 	// wide settings for the timescaledb extension. (see below for nested schema)
 	// TimescaleDB extension configuration values. System-wide settings for the timescaledb extension.
 	// +kubebuilder:validation:Optional
-	Timescaledb []TimescaledbParameters `json:"timescaledb,omitempty" tf:"timescaledb,omitempty"`
+	Timescaledb *TimescaledbParameters `json:"timescaledb,omitempty" tf:"timescaledb,omitempty"`
 
 	// (String) PostgreSQL service timezone.
 	// PostgreSQL service timezone.

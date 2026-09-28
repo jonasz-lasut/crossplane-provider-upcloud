@@ -9,7 +9,5 @@ metadata:
 spec:
   forProvider:
     name: router-example
-    labels: {}
-    staticRoute: []
   providerConfigRef:
     name: default

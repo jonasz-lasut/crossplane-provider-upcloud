@@ -11,6 +11,6 @@ spec:
     name: postgresql-example
     title: postgresql-example
     plan: 1x1xCPU-2GB-25GB
-    zone: de-fra1
+    zone: fi-hel2
   providerConfigRef:
     name: default

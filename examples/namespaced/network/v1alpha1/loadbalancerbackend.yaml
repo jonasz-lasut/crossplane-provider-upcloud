@@ -1,0 +1,94 @@
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: LoadBalancerBackend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerbackend
+  labels:
+    testing.upbound.io/example-name: lbbackend-example-backend
+  name: lbbackend-example-backend
+  namespace: crossplane-system
+spec:
+  forProvider:
+    loadbalancerRef:
+      name: lbbackend-example-lb
+    resolverNameRef:
+      name: lbbackend-example-resolver
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: LoadBalancerResolver
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerbackend
+  labels:
+    testing.upbound.io/example-name: lbbackend-example-resolver
+  name: lbbackend-example-resolver
+  namespace: crossplane-system
+spec:
+  forProvider:
+    loadbalancerRef:
+      name: lbbackend-example-lb
+    nameservers:
+      - 10.0.0.10:53
+    cacheInvalid: 10
+    cacheValid: 100
+    retries: 5
+    timeout: 10
+    timeoutRetry: 10
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: LoadBalancer
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerbackend
+  labels:
+    testing.upbound.io/example-name: lbbackend-example-lb
+  name: lbbackend-example-lb
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: lbbackend-example-lb
+    zone: fi-hel2
+    plan: development
+    configuredStatus: started
+    networks:
+      - name: private
+        type: private
+        family: IPv4
+        networkRef:
+          name: lbbackend-example-network
+      - name: public
+        type: public
+        family: IPv4
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerbackend
+  labels:
+    testing.upbound.io/example-name: lbbackend-example-network
+  name: lbbackend-example-network
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: lbbackend-example-network
+    zone: fi-hel2
+    ipNetwork:
+      address: 10.33.0.0/24
+      dhcp: true
+      family: IPv4
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

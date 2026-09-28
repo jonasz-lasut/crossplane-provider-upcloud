@@ -13,11 +13,16 @@ import (
 
 // terraformPluginSDKExternalNameConfigs contains all external name
 // configurations for the resources the UpCloud Terraform provider still
-// implements with terraform-plugin-sdk/v2 (as of v5.44.1 only
-// upcloud_gateway_connection and upcloud_gateway_connection_tunnel, neither
-// generated yet). A resource listed here is generated with the in-process SDK
-// client and needs the SDK provider meta configured in internal/clients.
-var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{}
+// implements with terraform-plugin-sdk/v2 (as of v5.45.0 only
+// upcloud_gateway_connection and upcloud_gateway_connection_tunnel). A
+// resource listed here is generated with the in-process SDK client and needs
+// the SDK provider meta configured in internal/clients.
+var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
+	// network: the Terraform ID is <gateway>/<connection uuid> and
+	// <gateway>/<connection uuid>/<tunnel uuid>, both assigned by the API.
+	"upcloud_gateway_connection":        config.IdentifierFromProvider,
+	"upcloud_gateway_connection_tunnel": config.IdentifierFromProvider,
+}
 
 // terraformPluginFrameworkExternalNameConfigs contains all external name
 // configurations for the resources the UpCloud Terraform provider implements
@@ -32,24 +37,54 @@ var terraformPluginFrameworkExternalNameConfigs = map[string]config.ExternalName
 	"upcloud_managed_database_user":             config.TemplatedStringAsIdentifier("username", "{{ .parameters.service }}/{{ .external_name }}"),
 	"upcloud_managed_database_valkey":           config.IdentifierFromProvider,
 
+	// database
+	"upcloud_managed_database_connection_pool": config.TemplatedStringAsIdentifier("name", "{{ .parameters.service }}/{{ .external_name }}"),
+
 	// network
-	"upcloud_network": config.IdentifierFromProvider,
-	"upcloud_router":  config.IdentifierFromProvider,
+	"upcloud_firewall_ruleset":                        config.IdentifierFromProvider,
+	"upcloud_floating_ip_address":                     config.IdentifierFromProvider,
+	"upcloud_gateway":                                 config.IdentifierFromProvider,
+	"upcloud_loadbalancer":                            config.IdentifierFromProvider,
+	"upcloud_loadbalancer_backend":                    config.TemplatedStringAsIdentifier("name", "{{ .parameters.loadbalancer }}/{{ .external_name }}"),
+	"upcloud_loadbalancer_backend_tls_config":         config.TemplatedStringAsIdentifier("name", "{{ .parameters.backend }}/{{ .external_name }}"),
+	"upcloud_loadbalancer_dynamic_backend_member":     config.TemplatedStringAsIdentifier("name", "{{ .parameters.backend }}/{{ .external_name }}"),
+	"upcloud_loadbalancer_dynamic_certificate_bundle": config.IdentifierFromProvider,
+	"upcloud_loadbalancer_frontend":                   config.TemplatedStringAsIdentifier("name", "{{ .parameters.loadbalancer }}/{{ .external_name }}"),
+	"upcloud_loadbalancer_frontend_rule":              config.TemplatedStringAsIdentifier("name", "{{ .parameters.frontend }}/{{ .external_name }}"),
+	"upcloud_loadbalancer_frontend_tls_config":        config.TemplatedStringAsIdentifier("name", "{{ .parameters.frontend }}/{{ .external_name }}"),
+	"upcloud_loadbalancer_manual_certificate_bundle":  config.IdentifierFromProvider,
+	"upcloud_loadbalancer_resolver":                   config.TemplatedStringAsIdentifier("name", "{{ .parameters.loadbalancer }}/{{ .external_name }}"),
+	"upcloud_loadbalancer_static_backend_member":      config.TemplatedStringAsIdentifier("name", "{{ .parameters.backend }}/{{ .external_name }}"),
+	"upcloud_network":                                 config.IdentifierFromProvider,
+	"upcloud_network_peering":                         config.IdentifierFromProvider,
+	"upcloud_router":                                  config.IdentifierFromProvider,
 
 	// objectstorage
-	"upcloud_managed_object_storage":                 config.IdentifierFromProvider,
+	"upcloud_managed_object_storage":               config.IdentifierFromProvider,
+	"upcloud_managed_object_storage_bucket":        config.TemplatedStringAsIdentifier("name", "{{ .parameters.service_uuid }}/{{ .external_name }}"),
+	"upcloud_managed_object_storage_custom_domain": config.TemplatedStringAsIdentifier("domain_name", "{{ .parameters.service_uuid }}/{{ .external_name }}"),
+	// The static site ID is <service_uuid>/<domain_name>, and the API assigns
+	// the domain name when the spec leaves it out.
+	"upcloud_managed_object_storage_static_site":     config.IdentifierFromProvider,
 	"upcloud_managed_object_storage_policy":          config.TemplatedStringAsIdentifier("name", "{{ .parameters.service_uuid }}/{{ .external_name }}"),
 	"upcloud_managed_object_storage_user":            config.TemplatedStringAsIdentifier("username", "{{ .parameters.service_uuid }}/{{ .external_name }}"),
 	"upcloud_managed_object_storage_user_access_key": managedObjectStorageUserAccessKey(),
 	"upcloud_managed_object_storage_user_policy":     managedObjectStorageUserPolicy(),
 
 	// server
-	"upcloud_firewall_rules": config.IdentifierFromProvider,
-	"upcloud_server":         config.IdentifierFromProvider,
-	"upcloud_server_group":   config.IdentifierFromProvider,
+	"upcloud_firewall_rules":                  config.IdentifierFromProvider,
+	"upcloud_server":                          config.IdentifierFromProvider,
+	"upcloud_server_group":                    config.IdentifierFromProvider,
+	"upcloud_server_private_firewall_ruleset": config.IdentifierFromProvider,
+	"upcloud_tag":                             config.NameAsIdentifier,
 
 	// storage
-	"upcloud_storage": config.IdentifierFromProvider,
+	"upcloud_file_storage":           config.IdentifierFromProvider,
+	"upcloud_file_storage_share":     config.TemplatedStringAsIdentifier("name", "{{ .parameters.file_storage }}/{{ .external_name }}"),
+	"upcloud_file_storage_share_acl": config.TemplatedStringAsIdentifier("name", "{{ .parameters.file_storage }}/{{ .parameters.share_name }}/{{ .external_name }}"),
+	"upcloud_storage":                config.IdentifierFromProvider,
+	"upcloud_storage_backup":         config.IdentifierFromProvider,
+	"upcloud_storage_template":       config.IdentifierFromProvider,
 
 	// uks
 	"upcloud_kubernetes_cluster":    config.IdentifierFromProvider,

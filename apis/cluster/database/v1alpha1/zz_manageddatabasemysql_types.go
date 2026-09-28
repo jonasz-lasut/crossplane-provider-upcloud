@@ -69,9 +69,6 @@ type ManagedDatabaseMysqlInitParameters struct {
 	// Private networks attached to the managed database
 	Network []NetworkInitParameters `json:"network,omitempty" tf:"network,omitempty"`
 
-	// (Attributes List) Information about nodes providing the managed service (see below for nested schema)
-	NodeStates []NodeStatesInitParameters `json:"nodeStates,omitempty" tf:"node_states,omitempty"`
-
 	// (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans mysql.
 	// Service plan to use. This determines how much resources the instance will have. You can list available plans with `upctl database plans mysql`.
 	Plan *string `json:"plan,omitempty" tf:"plan,omitempty"`
@@ -82,7 +79,7 @@ type ManagedDatabaseMysqlInitParameters struct {
 
 	// (Block List) Database engine properties. (see below for nested schema)
 	// Database engine properties.
-	Properties []PropertiesInitParameters `json:"properties,omitempty" tf:"properties,omitempty"`
+	Properties *PropertiesInitParameters `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (Boolean) If set to true, prevents the managed service from being powered off, or deleted.
 	// If set to true, prevents the managed service from being powered off, or deleted.
@@ -147,7 +144,7 @@ type ManagedDatabaseMysqlObservation struct {
 
 	// (Block List) Database engine properties. (see below for nested schema)
 	// Database engine properties.
-	Properties []PropertiesObservation `json:"properties,omitempty" tf:"properties,omitempty"`
+	Properties *PropertiesObservation `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (String) Hostname to the service instance
 	// Hostname to the service instance
@@ -215,10 +212,6 @@ type ManagedDatabaseMysqlParameters struct {
 	// +kubebuilder:validation:Optional
 	Network []NetworkParameters `json:"network,omitempty" tf:"network,omitempty"`
 
-	// (Attributes List) Information about nodes providing the managed service (see below for nested schema)
-	// +kubebuilder:validation:Optional
-	NodeStates []NodeStatesParameters `json:"nodeStates,omitempty" tf:"node_states,omitempty"`
-
 	// (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans mysql.
 	// Service plan to use. This determines how much resources the instance will have. You can list available plans with `upctl database plans mysql`.
 	// +kubebuilder:validation:Optional
@@ -232,7 +225,7 @@ type ManagedDatabaseMysqlParameters struct {
 	// (Block List) Database engine properties. (see below for nested schema)
 	// Database engine properties.
 	// +kubebuilder:validation:Optional
-	Properties []PropertiesParameters `json:"properties,omitempty" tf:"properties,omitempty"`
+	Properties *PropertiesParameters `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (Boolean) If set to true, prevents the managed service from being powered off, or deleted.
 	// If set to true, prevents the managed service from being powered off, or deleted.
@@ -647,8 +640,8 @@ type PropertiesInitParameters struct {
 	// The length of time in seconds an InnoDB transaction waits for a row lock before giving up. Default is 120.
 	InnodbLockWaitTimeout *float64 `json:"innodbLockWaitTimeout,omitempty" tf:"innodb_lock_wait_timeout,omitempty"`
 
-	// (Number) The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
-	// The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
+	// (Number) The size in bytes of the buffer that InnoDB uses to write to the log files on disk. Requests above 15% of the RAM provided by your service plan are rejected, because a larger buffer leaves less memory for the buffer pool and client connections.
+	// The size in bytes of the buffer that InnoDB uses to write to the log files on disk. Requests above 15% of the RAM provided by your service plan are rejected, because a larger buffer leaves less memory for the buffer pool and client connections.
 	InnodbLogBufferSize *float64 `json:"innodbLogBufferSize,omitempty" tf:"innodb_log_buffer_size,omitempty"`
 
 	// (Number) The upper limit in bytes on the size of the temporary log files used during online DDL operations for InnoDB tables.
@@ -699,8 +692,8 @@ type PropertiesInitParameters struct {
 	// Sets how table and database names are stored and compared. 0 = case-sensitive (default), 1 = names stored lowercase, comparisons are case-insensitive. This option can only be set when creating the service and cannot be changed later. See https://dev.mysql.com/doc/refman/8.0/en/identifier-case-sensitivity.html for details.
 	LowerCaseTableNames *float64 `json:"lowerCaseTableNames,omitempty" tf:"lower_case_table_names,omitempty"`
 
-	// (Number) Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
-	// Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
+	// (Number) Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M). Statements and rows larger than this are rejected with a packet too large error.
+	// Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M). Statements and rows larger than this are rejected with a packet too large error.
 	MaxAllowedPacket *float64 `json:"maxAllowedPacket,omitempty" tf:"max_allowed_packet,omitempty"`
 
 	// (Number) The maximum permitted number of simultaneous client connections. Lower this to reserve memory for other work. The value cannot exceed the limit provided by your service plan. Upgrading the plan does not raise a value you have set explicitly, so increase it yourself after an upgrade.
@@ -725,11 +718,11 @@ type PropertiesInitParameters struct {
 
 	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
-	Migration []MigrationInitParameters `json:"migration,omitempty" tf:"migration,omitempty"`
+	Migration *MigrationInitParameters `json:"migration,omitempty" tf:"migration,omitempty"`
 
 	// (Block List) MySQL incremental backup configuration. (see below for nested schema)
 	// MySQL incremental backup configuration.
-	MySQLIncrementalBackup []MySQLIncrementalBackupInitParameters `json:"mysqlIncrementalBackup,omitempty" tf:"mysql_incremental_backup,omitempty"`
+	MySQLIncrementalBackup *MySQLIncrementalBackupInitParameters `json:"mysqlIncrementalBackup,omitempty" tf:"mysql_incremental_backup,omitempty"`
 
 	// (Number) Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
 	// Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
@@ -787,8 +780,8 @@ type PropertiesInitParameters struct {
 	// Slow query log enables capturing of slow queries. Setting slow_query_log to false also truncates the mysql.slow_log table.
 	SlowQueryLog *bool `json:"slowQueryLog,omitempty" tf:"slow_query_log,omitempty"`
 
-	// (Number) Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
-	// Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
+	// (Number) Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K). Requests above 2% of the RAM provided by your service plan are rejected, because the buffer is allocated per session and its cost multiplies with the connection count.
+	// Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K). Requests above 2% of the RAM provided by your service plan are rejected, because the buffer is allocated per session and its cost multiplies with the connection count.
 	SortBufferSize *float64 `json:"sortBufferSize,omitempty" tf:"sort_buffer_size,omitempty"`
 
 	// memory tables. Also set max_heap_table_size. Default is 16777216 (16M).
@@ -799,8 +792,8 @@ type PropertiesInitParameters struct {
 	// MySQL major version.
 	Version *string `json:"version,omitempty" tf:"version,omitempty"`
 
-	// (Number) The number of seconds the server waits for activity on a noninteractive connection before closing it.
-	// The number of seconds the server waits for activity on a noninteractive connection before closing it.
+	// (Number) The number of seconds the server waits for activity on a noninteractive connection before closing it. Requests to set this below 30 are rejected, because a shorter timeout closes your own idle connections between statements.
+	// The number of seconds the server waits for activity on a noninteractive connection before closing it. Requests to set this below 30 are rejected, because a shorter timeout closes your own idle connections between statements.
 	WaitTimeout *float64 `json:"waitTimeout,omitempty" tf:"wait_timeout,omitempty"`
 
 	// (Boolean) Whether window functions are computed to high precision. Disabling this trades exactness for speed in window function evaluation.
@@ -918,8 +911,8 @@ type PropertiesObservation struct {
 	// The length of time in seconds an InnoDB transaction waits for a row lock before giving up. Default is 120.
 	InnodbLockWaitTimeout *float64 `json:"innodbLockWaitTimeout,omitempty" tf:"innodb_lock_wait_timeout,omitempty"`
 
-	// (Number) The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
-	// The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
+	// (Number) The size in bytes of the buffer that InnoDB uses to write to the log files on disk. Requests above 15% of the RAM provided by your service plan are rejected, because a larger buffer leaves less memory for the buffer pool and client connections.
+	// The size in bytes of the buffer that InnoDB uses to write to the log files on disk. Requests above 15% of the RAM provided by your service plan are rejected, because a larger buffer leaves less memory for the buffer pool and client connections.
 	InnodbLogBufferSize *float64 `json:"innodbLogBufferSize,omitempty" tf:"innodb_log_buffer_size,omitempty"`
 
 	// (Number) The upper limit in bytes on the size of the temporary log files used during online DDL operations for InnoDB tables.
@@ -970,8 +963,8 @@ type PropertiesObservation struct {
 	// Sets how table and database names are stored and compared. 0 = case-sensitive (default), 1 = names stored lowercase, comparisons are case-insensitive. This option can only be set when creating the service and cannot be changed later. See https://dev.mysql.com/doc/refman/8.0/en/identifier-case-sensitivity.html for details.
 	LowerCaseTableNames *float64 `json:"lowerCaseTableNames,omitempty" tf:"lower_case_table_names,omitempty"`
 
-	// (Number) Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
-	// Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
+	// (Number) Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M). Statements and rows larger than this are rejected with a packet too large error.
+	// Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M). Statements and rows larger than this are rejected with a packet too large error.
 	MaxAllowedPacket *float64 `json:"maxAllowedPacket,omitempty" tf:"max_allowed_packet,omitempty"`
 
 	// (Number) The maximum permitted number of simultaneous client connections. Lower this to reserve memory for other work. The value cannot exceed the limit provided by your service plan. Upgrading the plan does not raise a value you have set explicitly, so increase it yourself after an upgrade.
@@ -996,11 +989,11 @@ type PropertiesObservation struct {
 
 	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
-	Migration []MigrationObservation `json:"migration,omitempty" tf:"migration,omitempty"`
+	Migration *MigrationObservation `json:"migration,omitempty" tf:"migration,omitempty"`
 
 	// (Block List) MySQL incremental backup configuration. (see below for nested schema)
 	// MySQL incremental backup configuration.
-	MySQLIncrementalBackup []MySQLIncrementalBackupObservation `json:"mysqlIncrementalBackup,omitempty" tf:"mysql_incremental_backup,omitempty"`
+	MySQLIncrementalBackup *MySQLIncrementalBackupObservation `json:"mysqlIncrementalBackup,omitempty" tf:"mysql_incremental_backup,omitempty"`
 
 	// (Number) Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
 	// Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
@@ -1058,8 +1051,8 @@ type PropertiesObservation struct {
 	// Slow query log enables capturing of slow queries. Setting slow_query_log to false also truncates the mysql.slow_log table.
 	SlowQueryLog *bool `json:"slowQueryLog,omitempty" tf:"slow_query_log,omitempty"`
 
-	// (Number) Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
-	// Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
+	// (Number) Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K). Requests above 2% of the RAM provided by your service plan are rejected, because the buffer is allocated per session and its cost multiplies with the connection count.
+	// Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K). Requests above 2% of the RAM provided by your service plan are rejected, because the buffer is allocated per session and its cost multiplies with the connection count.
 	SortBufferSize *float64 `json:"sortBufferSize,omitempty" tf:"sort_buffer_size,omitempty"`
 
 	// memory tables. Also set max_heap_table_size. Default is 16777216 (16M).
@@ -1070,8 +1063,8 @@ type PropertiesObservation struct {
 	// MySQL major version.
 	Version *string `json:"version,omitempty" tf:"version,omitempty"`
 
-	// (Number) The number of seconds the server waits for activity on a noninteractive connection before closing it.
-	// The number of seconds the server waits for activity on a noninteractive connection before closing it.
+	// (Number) The number of seconds the server waits for activity on a noninteractive connection before closing it. Requests to set this below 30 are rejected, because a shorter timeout closes your own idle connections between statements.
+	// The number of seconds the server waits for activity on a noninteractive connection before closing it. Requests to set this below 30 are rejected, because a shorter timeout closes your own idle connections between statements.
 	WaitTimeout *float64 `json:"waitTimeout,omitempty" tf:"wait_timeout,omitempty"`
 
 	// (Boolean) Whether window functions are computed to high precision. Disabling this trades exactness for speed in window function evaluation.
@@ -1221,8 +1214,8 @@ type PropertiesParameters struct {
 	// +kubebuilder:validation:Optional
 	InnodbLockWaitTimeout *float64 `json:"innodbLockWaitTimeout,omitempty" tf:"innodb_lock_wait_timeout,omitempty"`
 
-	// (Number) The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
-	// The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
+	// (Number) The size in bytes of the buffer that InnoDB uses to write to the log files on disk. Requests above 15% of the RAM provided by your service plan are rejected, because a larger buffer leaves less memory for the buffer pool and client connections.
+	// The size in bytes of the buffer that InnoDB uses to write to the log files on disk. Requests above 15% of the RAM provided by your service plan are rejected, because a larger buffer leaves less memory for the buffer pool and client connections.
 	// +kubebuilder:validation:Optional
 	InnodbLogBufferSize *float64 `json:"innodbLogBufferSize,omitempty" tf:"innodb_log_buffer_size,omitempty"`
 
@@ -1286,8 +1279,8 @@ type PropertiesParameters struct {
 	// +kubebuilder:validation:Optional
 	LowerCaseTableNames *float64 `json:"lowerCaseTableNames,omitempty" tf:"lower_case_table_names,omitempty"`
 
-	// (Number) Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
-	// Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M).
+	// (Number) Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M). Statements and rows larger than this are rejected with a packet too large error.
+	// Size of the largest message in bytes that can be received by the server. Default is 67108864 (64M). Statements and rows larger than this are rejected with a packet too large error.
 	// +kubebuilder:validation:Optional
 	MaxAllowedPacket *float64 `json:"maxAllowedPacket,omitempty" tf:"max_allowed_packet,omitempty"`
 
@@ -1319,12 +1312,12 @@ type PropertiesParameters struct {
 	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
 	// +kubebuilder:validation:Optional
-	Migration []MigrationParameters `json:"migration,omitempty" tf:"migration,omitempty"`
+	Migration *MigrationParameters `json:"migration,omitempty" tf:"migration,omitempty"`
 
 	// (Block List) MySQL incremental backup configuration. (see below for nested schema)
 	// MySQL incremental backup configuration.
 	// +kubebuilder:validation:Optional
-	MySQLIncrementalBackup []MySQLIncrementalBackupParameters `json:"mysqlIncrementalBackup,omitempty" tf:"mysql_incremental_backup,omitempty"`
+	MySQLIncrementalBackup *MySQLIncrementalBackupParameters `json:"mysqlIncrementalBackup,omitempty" tf:"mysql_incremental_backup,omitempty"`
 
 	// (Number) Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
 	// Start sizes of connection buffer and result buffer. Default is 16384 (16K). Changing this parameter will lead to a restart of the MySQL service.
@@ -1396,8 +1389,8 @@ type PropertiesParameters struct {
 	// +kubebuilder:validation:Optional
 	SlowQueryLog *bool `json:"slowQueryLog,omitempty" tf:"slow_query_log,omitempty"`
 
-	// (Number) Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
-	// Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K).
+	// (Number) Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K). Requests above 2% of the RAM provided by your service plan are rejected, because the buffer is allocated per session and its cost multiplies with the connection count.
+	// Sort buffer size in bytes for ORDER BY optimization. Default is 262144 (256K). Requests above 2% of the RAM provided by your service plan are rejected, because the buffer is allocated per session and its cost multiplies with the connection count.
 	// +kubebuilder:validation:Optional
 	SortBufferSize *float64 `json:"sortBufferSize,omitempty" tf:"sort_buffer_size,omitempty"`
 
@@ -1411,8 +1404,8 @@ type PropertiesParameters struct {
 	// +kubebuilder:validation:Optional
 	Version *string `json:"version,omitempty" tf:"version,omitempty"`
 
-	// (Number) The number of seconds the server waits for activity on a noninteractive connection before closing it.
-	// The number of seconds the server waits for activity on a noninteractive connection before closing it.
+	// (Number) The number of seconds the server waits for activity on a noninteractive connection before closing it. Requests to set this below 30 are rejected, because a shorter timeout closes your own idle connections between statements.
+	// The number of seconds the server waits for activity on a noninteractive connection before closing it. Requests to set this below 30 are rejected, because a shorter timeout closes your own idle connections between statements.
 	// +kubebuilder:validation:Optional
 	WaitTimeout *float64 `json:"waitTimeout,omitempty" tf:"wait_timeout,omitempty"`
 

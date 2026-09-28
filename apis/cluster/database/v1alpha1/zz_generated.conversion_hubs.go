@@ -7,6 +7,9 @@
 package v1alpha1
 
 // Hub marks this type as a conversion hub.
+func (tr *ManagedDatabaseConnectionPool) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *ManagedDatabaseLogicalDatabase) Hub() {}
 
 // Hub marks this type as a conversion hub.

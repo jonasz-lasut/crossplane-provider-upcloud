@@ -1,0 +1,90 @@
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: LoadBalancerStaticBackendMember
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerstaticbackendmember
+  labels:
+    testing.upbound.io/example-name: lbstaticmember-example
+  name: lbstaticmember-example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    backendRef:
+      name: lbstaticmember-example-backend
+    enabled: true
+    ip: 10.34.0.10
+    port: 8000
+    maxSessions: 0
+    weight: 10
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: LoadBalancerBackend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerstaticbackendmember
+  labels:
+    testing.upbound.io/example-name: lbstaticmember-example-backend
+  name: lbstaticmember-example-backend
+  namespace: crossplane-system
+spec:
+  forProvider:
+    loadbalancerRef:
+      name: lbstaticmember-example-lb
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: LoadBalancer
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerstaticbackendmember
+  labels:
+    testing.upbound.io/example-name: lbstaticmember-example-lb
+  name: lbstaticmember-example-lb
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: lbstaticmember-example-lb
+    zone: fi-hel2
+    plan: development
+    configuredStatus: started
+    networks:
+      - name: private
+        type: private
+        family: IPv4
+        networkRef:
+          name: lbstaticmember-example-network
+      - name: public
+        type: public
+        family: IPv4
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerstaticbackendmember
+  labels:
+    testing.upbound.io/example-name: lbstaticmember-example-network
+  name: lbstaticmember-example-network
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: lbstaticmember-example-network
+    zone: fi-hel2
+    ipNetwork:
+      address: 10.34.0.0/24
+      dhcp: true
+      family: IPv4
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

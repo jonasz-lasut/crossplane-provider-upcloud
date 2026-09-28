@@ -1,0 +1,14 @@
+apiVersion: storage.upcloud.crossplane.io/v1alpha1
+kind: StorageBackup
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/storagebackup
+  labels:
+    testing.upbound.io/example-name: backup_1
+  name: backup-1
+spec:
+  forProvider:
+    sourceStorageSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    title: backup

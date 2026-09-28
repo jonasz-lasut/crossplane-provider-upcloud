@@ -84,15 +84,19 @@ func main() {
 	kingpin.FatalIfError(resolverapis.BuildScheme(clusterapis.AddToSchemes), "Cannot register the cluster-scoped UpCloud APIs with the API resolver's runtime scheme")
 	kingpin.FatalIfError(resolverapis.BuildScheme(namespacedapis.AddToSchemes), "Cannot register the namespaced UpCloud APIs with the API resolver's runtime scheme")
 	log.Default().SetOutput(io.Discard)
-	ctrl.SetLogger(zap.New(zap.WriteTo(io.Discard)))
 
 	zl := zap.New(zap.UseDevMode(*debug))
 	log := logging.NewLogrLogger(zl.WithName("provider-upcloud"))
 	if *debug {
-		// The controller-runtime runs with a no-op logger by default. It is
-		// *very* verbose even at info level, so we only provide it a real
-		// logger when we're running in debug mode.
+		// The controller-runtime logger is *very* verbose even at info
+		// level, so we only provide it a real logger in debug mode.
 		ctrl.SetLogger(zl)
+	} else {
+		// controller-runtime requires a logger to be set explicitly, otherwise it
+		// prints a "log.SetLogger(...) was never called" warning with a stack
+		// trace and discards its logs anyway. Give it one that writes nowhere
+		// unless we are running in debug mode.
+		ctrl.SetLogger(zap.New(zap.WriteTo(io.Discard)))
 	}
 
 	// currently, we configure the jitter to be the 5% of the poll interval
@@ -182,7 +186,7 @@ func main() {
 			Features:                &feature.Flags{},
 		},
 		Provider:              clusterProvider,
-		SetupFn:               clients.TerraformSetupBuilder(clusterProvider.TerraformPluginFrameworkProvider),
+		SetupFn:               clients.TerraformSetupBuilder(clusterProvider),
 		PollJitter:            pollJitter,
 		OperationTrackerStore: tjcontroller.NewOperationStore(log),
 	}
@@ -196,7 +200,7 @@ func main() {
 			Features:                &feature.Flags{},
 		},
 		Provider:              namespacedProvider,
-		SetupFn:               clients.TerraformSetupBuilder(namespacedProvider.TerraformPluginFrameworkProvider),
+		SetupFn:               clients.TerraformSetupBuilder(namespacedProvider),
 		PollJitter:            pollJitter,
 		OperationTrackerStore: tjcontroller.NewOperationStore(log),
 	}

@@ -275,7 +275,7 @@ type NetworkInitParameters struct {
 
 	// (Block List) IP subnet within the network. Network must have exactly one IP subnet. (see below for nested schema)
 	// IP subnet within the network. Network must have exactly one IP subnet.
-	IPNetwork []IPNetworkInitParameters `json:"ipNetwork,omitempty" tf:"ip_network,omitempty"`
+	IPNetwork *IPNetworkInitParameters `json:"ipNetwork,omitempty" tf:"ip_network,omitempty"`
 
 	// value pairs to classify the network.
 	// User defined key-value pairs to classify the network.
@@ -314,7 +314,7 @@ type NetworkObservation struct {
 
 	// (Block List) IP subnet within the network. Network must have exactly one IP subnet. (see below for nested schema)
 	// IP subnet within the network. Network must have exactly one IP subnet.
-	IPNetwork []IPNetworkObservation `json:"ipNetwork,omitempty" tf:"ip_network,omitempty"`
+	IPNetwork *IPNetworkObservation `json:"ipNetwork,omitempty" tf:"ip_network,omitempty"`
 
 	// value pairs to classify the network.
 	// User defined key-value pairs to classify the network.
@@ -343,7 +343,7 @@ type NetworkParameters struct {
 	// (Block List) IP subnet within the network. Network must have exactly one IP subnet. (see below for nested schema)
 	// IP subnet within the network. Network must have exactly one IP subnet.
 	// +kubebuilder:validation:Optional
-	IPNetwork []IPNetworkParameters `json:"ipNetwork,omitempty" tf:"ip_network,omitempty"`
+	IPNetwork *IPNetworkParameters `json:"ipNetwork,omitempty" tf:"ip_network,omitempty"`
 
 	// value pairs to classify the network.
 	// User defined key-value pairs to classify the network.
@@ -412,6 +412,7 @@ type NetworkStatus struct {
 type Network struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.ipNetwork) || (has(self.initProvider) && has(self.initProvider.ipNetwork))",message="spec.forProvider.ipNetwork is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.zone) || (has(self.initProvider) && has(self.initProvider.zone))",message="spec.forProvider.zone is a required parameter"
 	Spec   NetworkSpec   `json:"spec"`

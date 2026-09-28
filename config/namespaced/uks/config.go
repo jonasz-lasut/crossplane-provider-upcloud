@@ -18,19 +18,14 @@ func Configure(p *config.Provider) {
 		r.References["network"] = config.Reference{
 			TerraformName: "upcloud_network",
 		}
-
-		// labels is optional+computed upstream; the framework provider
-		// needs it sent explicitly (an empty map) to converge, so it is a
-		// required, non-computed parameter.
-		if s, ok := r.TerraformResource.Schema["labels"]; ok {
-			s.Optional = false
-			s.Computed = false
-			s.Required = true
-		}
-		r.TerraformConversions = append(r.TerraformConversions, common.EmptyValueDefaults([]string{"labels"}, nil))
 	})
 
 	p.AddResourceConfigurator("upcloud_kubernetes_node_group", func(r *config.Resource) {
+		r.AddSingletonListConversion("custom_plan", "customPlan")
+		r.AddSingletonListConversion("gpu_plan", "gpuPlan")
+		r.AddSingletonListConversion("cloud_native_plan", "cloudNativePlan")
+		r.TerraformConversions = append(r.TerraformConversions, common.EmptyListDefaults("ssh_keys"))
+
 		r.References["cluster"] = config.Reference{
 			TerraformName: "upcloud_kubernetes_cluster",
 		}

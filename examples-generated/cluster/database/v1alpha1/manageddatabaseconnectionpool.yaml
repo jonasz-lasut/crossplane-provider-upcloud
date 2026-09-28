@@ -1,0 +1,38 @@
+apiVersion: database.upcloud.crossplane.io/v1alpha1
+kind: ManagedDatabaseConnectionPool
+metadata:
+  annotations:
+    meta.upbound.io/example-id: database/v1alpha1/manageddatabaseconnectionpool
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    databaseSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    mode: session
+    serviceSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    size: 95
+
+---
+
+apiVersion: database.upcloud.crossplane.io/v1alpha1
+kind: ManagedDatabasePostgresql
+metadata:
+  annotations:
+    meta.upbound.io/example-id: database/v1alpha1/manageddatabaseconnectionpool
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    maintenanceWindowDow: friday
+    maintenanceWindowTime: "10:00:00"
+    name: postgres
+    plan: 1x1xCPU-2GB-25GB
+    powered: true
+    title: postgres
+    zone: pl-waw1

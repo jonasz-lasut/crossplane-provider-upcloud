@@ -1,0 +1,91 @@
+apiVersion: database.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedDatabaseConnectionPool
+metadata:
+  annotations:
+    meta.upbound.io/example-id: database/v1alpha1/manageddatabaseconnectionpool
+  labels:
+    testing.upbound.io/example-name: pool-example
+  name: pool-example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    mode: session
+    size: 25
+    serviceRef:
+      name: pool-example-postgresql
+    databaseRef:
+      name: pool-example-db
+    usernameRef:
+      name: pool-example-user
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: database.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedDatabaseLogicalDatabase
+metadata:
+  annotations:
+    meta.upbound.io/example-id: database/v1alpha1/manageddatabaseconnectionpool
+  labels:
+    testing.upbound.io/example-name: pool-example-db
+  name: pool-example-db
+  namespace: crossplane-system
+spec:
+  forProvider:
+    serviceRef:
+      name: pool-example-postgresql
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: database.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedDatabaseUser
+metadata:
+  annotations:
+    meta.upbound.io/example-id: database/v1alpha1/manageddatabaseconnectionpool
+  labels:
+    testing.upbound.io/example-name: pool-example-user
+  name: pool-example-user
+  namespace: crossplane-system
+spec:
+  forProvider:
+    serviceRef:
+      name: pool-example-postgresql
+    passwordSecretRef:
+      name: pool-example-secret
+      key: password
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: database.upcloud.m.crossplane.io/v1alpha1
+kind: ManagedDatabasePostgresql
+metadata:
+  annotations:
+    meta.upbound.io/example-id: database/v1alpha1/manageddatabaseconnectionpool
+  labels:
+    testing.upbound.io/example-name: pool-example-postgresql
+  name: pool-example-postgresql
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: pool-example-postgresql
+    title: pool-example-postgresql
+    plan: 1x1xCPU-2GB-25GB
+    zone: fi-hel2
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pool-example-secret
+  namespace: crossplane-system
+type: Opaque
+stringData:
+  password: ExamplePassw0rd!

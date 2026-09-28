@@ -1,0 +1,87 @@
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: GatewayConnection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/gatewayconnection
+  labels:
+    testing.upbound.io/example-name: gwconn-example
+  name: gwconn-example
+spec:
+  forProvider:
+    name: gwconn-example
+    type: ipsec
+    gatewayRef:
+      name: gwconn-example-gateway
+    localRoute:
+      - name: local-route
+        type: static
+        staticNetwork: 10.123.123.0/24
+    remoteRoute:
+      - name: remote-route
+        type: static
+        staticNetwork: 100.123.123.0/24
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Gateway
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/gatewayconnection
+  labels:
+    testing.upbound.io/example-name: gwconn-example-gateway
+  name: gwconn-example-gateway
+spec:
+  forProvider:
+    name: gwconn-example-gateway
+    zone: fi-hel2
+    plan: advanced
+    features:
+      - vpn
+    labels:
+      environment: example
+    router:
+      idRef:
+        name: gwconn-example-router
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/gatewayconnection
+    uptest.upbound.io/pre-delete-hook: ../testhooks/delete-gateway.sh
+  labels:
+    testing.upbound.io/example-name: gwconn-example-network
+  name: gwconn-example-network
+spec:
+  forProvider:
+    name: gwconn-example-network
+    zone: fi-hel2
+    ipNetwork:
+      address: 172.16.22.0/24
+      dhcp: true
+      family: IPv4
+    routerRef:
+      name: gwconn-example-router
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Router
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/gatewayconnection
+    uptest.upbound.io/pre-delete-hook: ../testhooks/delete-gateway.sh
+  labels:
+    testing.upbound.io/example-name: gwconn-example-router
+  name: gwconn-example-router
+spec:
+  forProvider:
+    name: gwconn-example-router
+  providerConfigRef:
+    name: default

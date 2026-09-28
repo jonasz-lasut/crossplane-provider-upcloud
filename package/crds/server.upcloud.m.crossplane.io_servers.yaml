@@ -103,32 +103,30 @@ spec:
                     description: |-
                       (Block List) Configure access credentials to the server (see below for nested schema)
                       Configure access credentials to the server
-                    items:
-                      properties:
-                        createPassword:
-                          description: |-
-                            (Boolean) Indicates a password should be create to allow access
-                            Indicates a password should be create to allow access
-                          type: boolean
-                        keys:
-                          description: |-
-                            (List of String) A list of ssh keys to access the server
-                            A list of ssh keys to access the server
-                          items:
-                            type: string
-                          type: array
-                        passwordDelivery:
-                          description: |-
-                            (String) The delivery method for the server's root password (one of none, email or sms)
-                            The delivery method for the server's root password (one of `none`, `email` or `sms`)
+                    properties:
+                      createPassword:
+                        description: |-
+                          (Boolean) Indicates a password should be create to allow access
+                          Indicates a password should be create to allow access
+                        type: boolean
+                      keys:
+                        description: |-
+                          (List of String) A list of ssh keys to access the server
+                          A list of ssh keys to access the server
+                        items:
                           type: string
-                        user:
-                          description: |-
-                            (String) Username to be create to access the server
-                            Username to be create to access the server
-                          type: string
-                      type: object
-                    type: array
+                        type: array
+                      passwordDelivery:
+                        description: |-
+                          (String) The delivery method for the server's root password (one of none, email or sms)
+                          The delivery method for the server's root password (one of `none`, `email` or `sms`)
+                        type: string
+                      user:
+                        description: |-
+                          (String) Username to be create to access the server
+                          Username to be create to access the server
+                        type: string
+                    type: object
                   mem:
                     description: |-
                       (Number) The amount of memory for the server (in megabytes)
@@ -307,20 +305,18 @@ spec:
                       Simple backup schedule configuration
 
                       The simple backups provide a simplified way to back up *all* of the storages attached to a given server. This means you cannot have simple backup set for a server, and individual `backup_rules` on the storages attached to the server. Such configuration will throw an error during execution. This also applies to `backup_rules` defined for server templates.
-                    items:
-                      properties:
-                        plan:
-                          description: |-
-                            (String) The pricing plan used for the server. You can list available server plans with upctl server plans
-                            Simple backup plan. Accepted values: daily, dailies, weeklies, monthlies.
-                          type: string
-                        time:
-                          description: |-
-                            (String) Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
-                            Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      plan:
+                        description: |-
+                          (String) The pricing plan used for the server. You can list available server plans with upctl server plans
+                          Simple backup plan. Accepted values: daily, dailies, weeklies, monthlies.
+                        type: string
+                      time:
+                        description: |-
+                          (String) Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
+                          Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
+                        type: string
+                    type: object
                   storageDevices:
                     description: |-
                       (Block Set) A set of storage devices associated with the server (see below for nested schema)
@@ -443,86 +439,84 @@ spec:
                     description: |-
                       (Block List) Block describing the preconfigured operating system (see below for nested schema)
                       Block describing the preconfigured operating system
-                    items:
-                      properties:
-                        address:
-                          description: |-
-                            select next available address from that bus.
-                            The device address the storage will be attached to (`scsi`|`virtio`|`ide`). Leave `address_position` field empty to auto-select next available address from that bus.
-                          type: string
-                        addressPosition:
-                          description: |-
-                            15 (0, for example). Valid values for scsi or ide are 0-1:0-1 (0:0, for example). Leave empty to auto-select next available address in the given bus.
-                            The device position in the given bus (defined via field `address`). For example `0:0`, or `0`. Leave empty to auto-select next available address in the given bus.
-                          type: string
-                        backupRule:
-                          description: |-
-                            (Block List) The criteria to backup the storage.
-                            The criteria to backup the storage.
+                    properties:
+                      address:
+                        description: |-
+                          select next available address from that bus.
+                          The device address the storage will be attached to (`scsi`|`virtio`|`ide`). Leave `address_position` field empty to auto-select next available address from that bus.
+                        type: string
+                      addressPosition:
+                        description: |-
+                          15 (0, for example). Valid values for scsi or ide are 0-1:0-1 (0:0, for example). Leave empty to auto-select next available address in the given bus.
+                          The device position in the given bus (defined via field `address`). For example `0:0`, or `0`. Leave empty to auto-select next available address in the given bus.
+                        type: string
+                      backupRule:
+                        description: |-
+                          (Block List) The criteria to backup the storage.
+                          The criteria to backup the storage.
 
-                            Please keep in mind that it's not possible to have a storage with `backup_rule` attached to a server with `simple_backup` specified. Such configurations will throw errors during execution.
-                          items:
-                            properties:
-                              interval:
-                                description: |-
-                                  (String) The weekday when the backup is created
-                                  The weekday when the backup is created
-                                type: string
-                              retention:
-                                description: |-
-                                  (Number) The number of days before a backup is automatically deleted
-                                  The number of days before a backup is automatically deleted
-                                type: number
-                              time:
-                                description: |-
-                                  (String) Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
-                                  The time of day (UTC) when the backup is created
-                                type: string
-                            type: object
-                          type: array
-                        deleteAutoresizeBackup:
-                          description: |-
-                            (Boolean) If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
-                            If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
-                          type: boolean
-                        encrypt:
-                          description: |-
-                            (Boolean) Sets if the storage is encrypted at rest
-                            Sets if the storage is encrypted at rest
-                          type: boolean
-                        filesystemAutoresize:
-                          description: |-
-                            (Boolean) If set to true, provider will attempt to resize partition and filesystem when the size of template storage changes.
-                            Please note that before the resize attempt is made, backup of the storage will be taken. If the resize attempt fails, the backup will be used
-                            to restore the storage and then deleted. If the resize attempt succeeds, backup will be kept (unless delete_autoresize_backup option is set to true).
-                            Taking and keeping backups incure costs.
-                            If set to true, provider will attempt to resize partition and filesystem when the size of template storage changes.
-                            Please note that before the resize attempt is made, backup of the storage will be taken. If the resize attempt fails, the backup will be used
-                            to restore the storage and then deleted. If the resize attempt succeeds, backup will be kept (unless delete_autoresize_backup option is set to true).
-                            Taking and keeping backups incure costs.
-                          type: boolean
-                        size:
-                          description: |-
-                            (Number) The size of the storage in gigabytes
-                            The size of the storage in gigabytes
-                          type: number
-                        storage:
-                          description: |-
-                            (String) The UUID of the storage to attach to the server.
-                            A valid storage UUID or template name. You can list available public templates with `upctl storage list --public --template` and available private templates with `upctl storage list --template`.
-                          type: string
-                        tier:
-                          description: |-
-                            (String) The storage tier to use.
-                            The storage tier to use.
-                          type: string
-                        title:
-                          description: |-
-                            (String) A short, informational description of the server.
-                            A short, informative description
-                          type: string
-                      type: object
-                    type: array
+                          Please keep in mind that it's not possible to have a storage with `backup_rule` attached to a server with `simple_backup` specified. Such configurations will throw errors during execution.
+                        items:
+                          properties:
+                            interval:
+                              description: |-
+                                (String) The weekday when the backup is created
+                                The weekday when the backup is created
+                              type: string
+                            retention:
+                              description: |-
+                                (Number) The number of days before a backup is automatically deleted
+                                The number of days before a backup is automatically deleted
+                              type: number
+                            time:
+                              description: |-
+                                (String) Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
+                                The time of day (UTC) when the backup is created
+                              type: string
+                          type: object
+                        type: array
+                      deleteAutoresizeBackup:
+                        description: |-
+                          (Boolean) If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
+                          If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
+                        type: boolean
+                      encrypt:
+                        description: |-
+                          (Boolean) Sets if the storage is encrypted at rest
+                          Sets if the storage is encrypted at rest
+                        type: boolean
+                      filesystemAutoresize:
+                        description: |-
+                          (Boolean) If set to true, provider will attempt to resize partition and filesystem when the size of template storage changes.
+                          Please note that before the resize attempt is made, backup of the storage will be taken. If the resize attempt fails, the backup will be used
+                          to restore the storage and then deleted. If the resize attempt succeeds, backup will be kept (unless delete_autoresize_backup option is set to true).
+                          Taking and keeping backups incure costs.
+                          If set to true, provider will attempt to resize partition and filesystem when the size of template storage changes.
+                          Please note that before the resize attempt is made, backup of the storage will be taken. If the resize attempt fails, the backup will be used
+                          to restore the storage and then deleted. If the resize attempt succeeds, backup will be kept (unless delete_autoresize_backup option is set to true).
+                          Taking and keeping backups incure costs.
+                        type: boolean
+                      size:
+                        description: |-
+                          (Number) The size of the storage in gigabytes
+                          The size of the storage in gigabytes
+                        type: number
+                      storage:
+                        description: |-
+                          (String) The UUID of the storage to attach to the server.
+                          A valid storage UUID or template name. You can list available public templates with `upctl storage list --public --template` and available private templates with `upctl storage list --template`.
+                        type: string
+                      tier:
+                        description: |-
+                          (String) The storage tier to use.
+                          The storage tier to use.
+                        type: string
+                      title:
+                        description: |-
+                          (String) A short, informational description of the server.
+                          A short, informative description
+                        type: string
+                    type: object
                   timezone:
                     description: |-
                       (String) The timezone of the server. The timezone must be a valid timezone string, e.g. Europe/Helsinki.
@@ -604,32 +598,30 @@ spec:
                     description: |-
                       (Block List) Configure access credentials to the server (see below for nested schema)
                       Configure access credentials to the server
-                    items:
-                      properties:
-                        createPassword:
-                          description: |-
-                            (Boolean) Indicates a password should be create to allow access
-                            Indicates a password should be create to allow access
-                          type: boolean
-                        keys:
-                          description: |-
-                            (List of String) A list of ssh keys to access the server
-                            A list of ssh keys to access the server
-                          items:
-                            type: string
-                          type: array
-                        passwordDelivery:
-                          description: |-
-                            (String) The delivery method for the server's root password (one of none, email or sms)
-                            The delivery method for the server's root password (one of `none`, `email` or `sms`)
+                    properties:
+                      createPassword:
+                        description: |-
+                          (Boolean) Indicates a password should be create to allow access
+                          Indicates a password should be create to allow access
+                        type: boolean
+                      keys:
+                        description: |-
+                          (List of String) A list of ssh keys to access the server
+                          A list of ssh keys to access the server
+                        items:
                           type: string
-                        user:
-                          description: |-
-                            (String) Username to be create to access the server
-                            Username to be create to access the server
-                          type: string
-                      type: object
-                    type: array
+                        type: array
+                      passwordDelivery:
+                        description: |-
+                          (String) The delivery method for the server's root password (one of none, email or sms)
+                          The delivery method for the server's root password (one of `none`, `email` or `sms`)
+                        type: string
+                      user:
+                        description: |-
+                          (String) Username to be create to access the server
+                          Username to be create to access the server
+                        type: string
+                    type: object
                   mem:
                     description: |-
                       (Number) The amount of memory for the server (in megabytes)
@@ -808,20 +800,18 @@ spec:
                       Simple backup schedule configuration
 
                       The simple backups provide a simplified way to back up *all* of the storages attached to a given server. This means you cannot have simple backup set for a server, and individual `backup_rules` on the storages attached to the server. Such configuration will throw an error during execution. This also applies to `backup_rules` defined for server templates.
-                    items:
-                      properties:
-                        plan:
-                          description: |-
-                            (String) The pricing plan used for the server. You can list available server plans with upctl server plans
-                            Simple backup plan. Accepted values: daily, dailies, weeklies, monthlies.
-                          type: string
-                        time:
-                          description: |-
-                            (String) Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
-                            Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      plan:
+                        description: |-
+                          (String) The pricing plan used for the server. You can list available server plans with upctl server plans
+                          Simple backup plan. Accepted values: daily, dailies, weeklies, monthlies.
+                        type: string
+                      time:
+                        description: |-
+                          (String) Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
+                          Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
+                        type: string
+                    type: object
                   storageDevices:
                     description: |-
                       (Block Set) A set of storage devices associated with the server (see below for nested schema)
@@ -944,86 +934,84 @@ spec:
                     description: |-
                       (Block List) Block describing the preconfigured operating system (see below for nested schema)
                       Block describing the preconfigured operating system
-                    items:
-                      properties:
-                        address:
-                          description: |-
-                            select next available address from that bus.
-                            The device address the storage will be attached to (`scsi`|`virtio`|`ide`). Leave `address_position` field empty to auto-select next available address from that bus.
-                          type: string
-                        addressPosition:
-                          description: |-
-                            15 (0, for example). Valid values for scsi or ide are 0-1:0-1 (0:0, for example). Leave empty to auto-select next available address in the given bus.
-                            The device position in the given bus (defined via field `address`). For example `0:0`, or `0`. Leave empty to auto-select next available address in the given bus.
-                          type: string
-                        backupRule:
-                          description: |-
-                            (Block List) The criteria to backup the storage.
-                            The criteria to backup the storage.
+                    properties:
+                      address:
+                        description: |-
+                          select next available address from that bus.
+                          The device address the storage will be attached to (`scsi`|`virtio`|`ide`). Leave `address_position` field empty to auto-select next available address from that bus.
+                        type: string
+                      addressPosition:
+                        description: |-
+                          15 (0, for example). Valid values for scsi or ide are 0-1:0-1 (0:0, for example). Leave empty to auto-select next available address in the given bus.
+                          The device position in the given bus (defined via field `address`). For example `0:0`, or `0`. Leave empty to auto-select next available address in the given bus.
+                        type: string
+                      backupRule:
+                        description: |-
+                          (Block List) The criteria to backup the storage.
+                          The criteria to backup the storage.
 
-                            Please keep in mind that it's not possible to have a storage with `backup_rule` attached to a server with `simple_backup` specified. Such configurations will throw errors during execution.
-                          items:
-                            properties:
-                              interval:
-                                description: |-
-                                  (String) The weekday when the backup is created
-                                  The weekday when the backup is created
-                                type: string
-                              retention:
-                                description: |-
-                                  (Number) The number of days before a backup is automatically deleted
-                                  The number of days before a backup is automatically deleted
-                                type: number
-                              time:
-                                description: |-
-                                  (String) Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
-                                  The time of day (UTC) when the backup is created
-                                type: string
-                            type: object
-                          type: array
-                        deleteAutoresizeBackup:
-                          description: |-
-                            (Boolean) If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
-                            If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
-                          type: boolean
-                        encrypt:
-                          description: |-
-                            (Boolean) Sets if the storage is encrypted at rest
-                            Sets if the storage is encrypted at rest
-                          type: boolean
-                        filesystemAutoresize:
-                          description: |-
-                            (Boolean) If set to true, provider will attempt to resize partition and filesystem when the size of template storage changes.
-                            Please note that before the resize attempt is made, backup of the storage will be taken. If the resize attempt fails, the backup will be used
-                            to restore the storage and then deleted. If the resize attempt succeeds, backup will be kept (unless delete_autoresize_backup option is set to true).
-                            Taking and keeping backups incure costs.
-                            If set to true, provider will attempt to resize partition and filesystem when the size of template storage changes.
-                            Please note that before the resize attempt is made, backup of the storage will be taken. If the resize attempt fails, the backup will be used
-                            to restore the storage and then deleted. If the resize attempt succeeds, backup will be kept (unless delete_autoresize_backup option is set to true).
-                            Taking and keeping backups incure costs.
-                          type: boolean
-                        size:
-                          description: |-
-                            (Number) The size of the storage in gigabytes
-                            The size of the storage in gigabytes
-                          type: number
-                        storage:
-                          description: |-
-                            (String) The UUID of the storage to attach to the server.
-                            A valid storage UUID or template name. You can list available public templates with `upctl storage list --public --template` and available private templates with `upctl storage list --template`.
-                          type: string
-                        tier:
-                          description: |-
-                            (String) The storage tier to use.
-                            The storage tier to use.
-                          type: string
-                        title:
-                          description: |-
-                            (String) A short, informational description of the server.
-                            A short, informative description
-                          type: string
-                      type: object
-                    type: array
+                          Please keep in mind that it's not possible to have a storage with `backup_rule` attached to a server with `simple_backup` specified. Such configurations will throw errors during execution.
+                        items:
+                          properties:
+                            interval:
+                              description: |-
+                                (String) The weekday when the backup is created
+                                The weekday when the backup is created
+                              type: string
+                            retention:
+                              description: |-
+                                (Number) The number of days before a backup is automatically deleted
+                                The number of days before a backup is automatically deleted
+                              type: number
+                            time:
+                              description: |-
+                                (String) Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
+                                The time of day (UTC) when the backup is created
+                              type: string
+                          type: object
+                        type: array
+                      deleteAutoresizeBackup:
+                        description: |-
+                          (Boolean) If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
+                          If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
+                        type: boolean
+                      encrypt:
+                        description: |-
+                          (Boolean) Sets if the storage is encrypted at rest
+                          Sets if the storage is encrypted at rest
+                        type: boolean
+                      filesystemAutoresize:
+                        description: |-
+                          (Boolean) If set to true, provider will attempt to resize partition and filesystem when the size of template storage changes.
+                          Please note that before the resize attempt is made, backup of the storage will be taken. If the resize attempt fails, the backup will be used
+                          to restore the storage and then deleted. If the resize attempt succeeds, backup will be kept (unless delete_autoresize_backup option is set to true).
+                          Taking and keeping backups incure costs.
+                          If set to true, provider will attempt to resize partition and filesystem when the size of template storage changes.
+                          Please note that before the resize attempt is made, backup of the storage will be taken. If the resize attempt fails, the backup will be used
+                          to restore the storage and then deleted. If the resize attempt succeeds, backup will be kept (unless delete_autoresize_backup option is set to true).
+                          Taking and keeping backups incure costs.
+                        type: boolean
+                      size:
+                        description: |-
+                          (Number) The size of the storage in gigabytes
+                          The size of the storage in gigabytes
+                        type: number
+                      storage:
+                        description: |-
+                          (String) The UUID of the storage to attach to the server.
+                          A valid storage UUID or template name. You can list available public templates with `upctl storage list --public --template` and available private templates with `upctl storage list --template`.
+                        type: string
+                      tier:
+                        description: |-
+                          (String) The storage tier to use.
+                          The storage tier to use.
+                        type: string
+                      title:
+                        description: |-
+                          (String) A short, informational description of the server.
+                          A short, informative description
+                        type: string
+                    type: object
                   timezone:
                     description: |-
                       (String) The timezone of the server. The timezone must be a valid timezone string, e.g. Europe/Helsinki.
@@ -1113,6 +1101,10 @@ spec:
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.hostname)
                 || (has(self.initProvider) && has(self.initProvider.hostname))'
+            - message: spec.forProvider.networkInterface is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.networkInterface)
+                || (has(self.initProvider) && has(self.initProvider.networkInterface))'
             - message: spec.forProvider.zone is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.zone)
@@ -1167,32 +1159,30 @@ spec:
                     description: |-
                       (Block List) Configure access credentials to the server (see below for nested schema)
                       Configure access credentials to the server
-                    items:
-                      properties:
-                        createPassword:
-                          description: |-
-                            (Boolean) Indicates a password should be create to allow access
-                            Indicates a password should be create to allow access
-                          type: boolean
-                        keys:
-                          description: |-
-                            (List of String) A list of ssh keys to access the server
-                            A list of ssh keys to access the server
-                          items:
-                            type: string
-                          type: array
-                        passwordDelivery:
-                          description: |-
-                            (String) The delivery method for the server's root password (one of none, email or sms)
-                            The delivery method for the server's root password (one of `none`, `email` or `sms`)
+                    properties:
+                      createPassword:
+                        description: |-
+                          (Boolean) Indicates a password should be create to allow access
+                          Indicates a password should be create to allow access
+                        type: boolean
+                      keys:
+                        description: |-
+                          (List of String) A list of ssh keys to access the server
+                          A list of ssh keys to access the server
+                        items:
                           type: string
-                        user:
-                          description: |-
-                            (String) Username to be create to access the server
-                            Username to be create to access the server
-                          type: string
-                      type: object
-                    type: array
+                        type: array
+                      passwordDelivery:
+                        description: |-
+                          (String) The delivery method for the server's root password (one of none, email or sms)
+                          The delivery method for the server's root password (one of `none`, `email` or `sms`)
+                        type: string
+                      user:
+                        description: |-
+                          (String) Username to be create to access the server
+                          Username to be create to access the server
+                        type: string
+                    type: object
                   mem:
                     description: |-
                       (Number) The amount of memory for the server (in megabytes)
@@ -1304,20 +1294,18 @@ spec:
                       Simple backup schedule configuration
 
                       The simple backups provide a simplified way to back up *all* of the storages attached to a given server. This means you cannot have simple backup set for a server, and individual `backup_rules` on the storages attached to the server. Such configuration will throw an error during execution. This also applies to `backup_rules` defined for server templates.
-                    items:
-                      properties:
-                        plan:
-                          description: |-
-                            (String) The pricing plan used for the server. You can list available server plans with upctl server plans
-                            Simple backup plan. Accepted values: daily, dailies, weeklies, monthlies.
-                          type: string
-                        time:
-                          description: |-
-                            (String) Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
-                            Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      plan:
+                        description: |-
+                          (String) The pricing plan used for the server. You can list available server plans with upctl server plans
+                          Simple backup plan. Accepted values: daily, dailies, weeklies, monthlies.
+                        type: string
+                      time:
+                        description: |-
+                          (String) Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
+                          Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
+                        type: string
+                    type: object
                   storageDevices:
                     description: |-
                       (Block Set) A set of storage devices associated with the server (see below for nested schema)
@@ -1358,91 +1346,89 @@ spec:
                     description: |-
                       (Block List) Block describing the preconfigured operating system (see below for nested schema)
                       Block describing the preconfigured operating system
-                    items:
-                      properties:
-                        address:
-                          description: |-
-                            select next available address from that bus.
-                            The device address the storage will be attached to (`scsi`|`virtio`|`ide`). Leave `address_position` field empty to auto-select next available address from that bus.
-                          type: string
-                        addressPosition:
-                          description: |-
-                            15 (0, for example). Valid values for scsi or ide are 0-1:0-1 (0:0, for example). Leave empty to auto-select next available address in the given bus.
-                            The device position in the given bus (defined via field `address`). For example `0:0`, or `0`. Leave empty to auto-select next available address in the given bus.
-                          type: string
-                        backupRule:
-                          description: |-
-                            (Block List) The criteria to backup the storage.
-                            The criteria to backup the storage.
+                    properties:
+                      address:
+                        description: |-
+                          select next available address from that bus.
+                          The device address the storage will be attached to (`scsi`|`virtio`|`ide`). Leave `address_position` field empty to auto-select next available address from that bus.
+                        type: string
+                      addressPosition:
+                        description: |-
+                          15 (0, for example). Valid values for scsi or ide are 0-1:0-1 (0:0, for example). Leave empty to auto-select next available address in the given bus.
+                          The device position in the given bus (defined via field `address`). For example `0:0`, or `0`. Leave empty to auto-select next available address in the given bus.
+                        type: string
+                      backupRule:
+                        description: |-
+                          (Block List) The criteria to backup the storage.
+                          The criteria to backup the storage.
 
-                            Please keep in mind that it's not possible to have a storage with `backup_rule` attached to a server with `simple_backup` specified. Such configurations will throw errors during execution.
-                          items:
-                            properties:
-                              interval:
-                                description: |-
-                                  (String) The weekday when the backup is created
-                                  The weekday when the backup is created
-                                type: string
-                              retention:
-                                description: |-
-                                  (Number) The number of days before a backup is automatically deleted
-                                  The number of days before a backup is automatically deleted
-                                type: number
-                              time:
-                                description: |-
-                                  (String) Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
-                                  The time of day (UTC) when the backup is created
-                                type: string
-                            type: object
-                          type: array
-                        deleteAutoresizeBackup:
-                          description: |-
-                            (Boolean) If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
-                            If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
-                          type: boolean
-                        encrypt:
-                          description: |-
-                            (Boolean) Sets if the storage is encrypted at rest
-                            Sets if the storage is encrypted at rest
-                          type: boolean
-                        filesystemAutoresize:
-                          description: |-
-                            (Boolean) If set to true, provider will attempt to resize partition and filesystem when the size of template storage changes.
-                            Please note that before the resize attempt is made, backup of the storage will be taken. If the resize attempt fails, the backup will be used
-                            to restore the storage and then deleted. If the resize attempt succeeds, backup will be kept (unless delete_autoresize_backup option is set to true).
-                            Taking and keeping backups incure costs.
-                            If set to true, provider will attempt to resize partition and filesystem when the size of template storage changes.
-                            Please note that before the resize attempt is made, backup of the storage will be taken. If the resize attempt fails, the backup will be used
-                            to restore the storage and then deleted. If the resize attempt succeeds, backup will be kept (unless delete_autoresize_backup option is set to true).
-                            Taking and keeping backups incure costs.
-                          type: boolean
-                        id:
-                          description: |-
-                            (String) UUID of the server.
-                            The unique identifier for the storage
-                          type: string
-                        size:
-                          description: |-
-                            (Number) The size of the storage in gigabytes
-                            The size of the storage in gigabytes
-                          type: number
-                        storage:
-                          description: |-
-                            (String) The UUID of the storage to attach to the server.
-                            A valid storage UUID or template name. You can list available public templates with `upctl storage list --public --template` and available private templates with `upctl storage list --template`.
-                          type: string
-                        tier:
-                          description: |-
-                            (String) The storage tier to use.
-                            The storage tier to use.
-                          type: string
-                        title:
-                          description: |-
-                            (String) A short, informational description of the server.
-                            A short, informative description
-                          type: string
-                      type: object
-                    type: array
+                          Please keep in mind that it's not possible to have a storage with `backup_rule` attached to a server with `simple_backup` specified. Such configurations will throw errors during execution.
+                        items:
+                          properties:
+                            interval:
+                              description: |-
+                                (String) The weekday when the backup is created
+                                The weekday when the backup is created
+                              type: string
+                            retention:
+                              description: |-
+                                (Number) The number of days before a backup is automatically deleted
+                                The number of days before a backup is automatically deleted
+                              type: number
+                            time:
+                              description: |-
+                                (String) Time of the day at which backup will be taken. Should be provided in a hhmm format (e.g. 2230).
+                                The time of day (UTC) when the backup is created
+                              type: string
+                          type: object
+                        type: array
+                      deleteAutoresizeBackup:
+                        description: |-
+                          (Boolean) If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
+                          If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
+                        type: boolean
+                      encrypt:
+                        description: |-
+                          (Boolean) Sets if the storage is encrypted at rest
+                          Sets if the storage is encrypted at rest
+                        type: boolean
+                      filesystemAutoresize:
+                        description: |-
+                          (Boolean) If set to true, provider will attempt to resize partition and filesystem when the size of template storage changes.
+                          Please note that before the resize attempt is made, backup of the storage will be taken. If the resize attempt fails, the backup will be used
+                          to restore the storage and then deleted. If the resize attempt succeeds, backup will be kept (unless delete_autoresize_backup option is set to true).
+                          Taking and keeping backups incure costs.
+                          If set to true, provider will attempt to resize partition and filesystem when the size of template storage changes.
+                          Please note that before the resize attempt is made, backup of the storage will be taken. If the resize attempt fails, the backup will be used
+                          to restore the storage and then deleted. If the resize attempt succeeds, backup will be kept (unless delete_autoresize_backup option is set to true).
+                          Taking and keeping backups incure costs.
+                        type: boolean
+                      id:
+                        description: |-
+                          (String) UUID of the server.
+                          The unique identifier for the storage
+                        type: string
+                      size:
+                        description: |-
+                          (Number) The size of the storage in gigabytes
+                          The size of the storage in gigabytes
+                        type: number
+                      storage:
+                        description: |-
+                          (String) The UUID of the storage to attach to the server.
+                          A valid storage UUID or template name. You can list available public templates with `upctl storage list --public --template` and available private templates with `upctl storage list --template`.
+                        type: string
+                      tier:
+                        description: |-
+                          (String) The storage tier to use.
+                          The storage tier to use.
+                        type: string
+                      title:
+                        description: |-
+                          (String) A short, informational description of the server.
+                          A short, informative description
+                        type: string
+                    type: object
                   timezone:
                     description: |-
                       (String) The timezone of the server. The timezone must be a valid timezone string, e.g. Europe/Helsinki.

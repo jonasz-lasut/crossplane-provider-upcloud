@@ -1,0 +1,33 @@
+apiVersion: objectstorage.upcloud.crossplane.io/v1alpha1
+kind: ManagedObjectStorageCustomDomain
+metadata:
+  annotations:
+    meta.upbound.io/example-id: objectstorage/v1alpha1/managedobjectstoragecustomdomain
+  labels:
+    testing.upbound.io/example-name: this
+  name: this
+spec:
+  forProvider:
+    serviceUuidSelector:
+      matchLabels:
+        testing.upbound.io/example-name: this
+
+---
+
+apiVersion: objectstorage.upcloud.crossplane.io/v1alpha1
+kind: ManagedObjectStorage
+metadata:
+  annotations:
+    meta.upbound.io/example-id: objectstorage/v1alpha1/managedobjectstoragecustomdomain
+  labels:
+    testing.upbound.io/example-name: this
+  name: this
+spec:
+  forProvider:
+    configuredStatus: started
+    name: object-storage-custom-domain-example
+    network:
+    - family: IPv4
+      name: public
+      type: public
+    region: europe-1

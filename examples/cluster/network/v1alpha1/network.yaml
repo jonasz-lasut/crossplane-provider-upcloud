@@ -9,13 +9,13 @@ metadata:
 spec:
   forProvider:
     name: network-example
-    zone: de-fra1
+    zone: fi-hel2
     ipNetwork:
-      - address: 10.11.0.0/24
-        dhcp: true
-        dhcpDefaultRoute: false
-        family: IPv4
-        gateway: 10.11.0.1
+      address: 10.11.0.0/24
+      dhcp: true
+      dhcpDefaultRoute: false
+      family: IPv4
+      gateway: 10.11.0.1
     routerRef:
       name: network-example-router
   providerConfigRef:
@@ -33,7 +33,5 @@ metadata:
 spec:
   forProvider:
     name: network-example-router
-    labels: {}
-    staticRoute: []
   providerConfigRef:
     name: default

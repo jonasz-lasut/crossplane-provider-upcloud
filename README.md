@@ -7,11 +7,16 @@
 Terraform provider. It is maintained jointly by UpCloud and Upbound in the
 crossplane-contrib organization.
 
-It exposes XRM-conformant managed resources for UpCloud servers, storage,
-networks and routers, managed databases, managed object storage and the
-UpCloud Kubernetes Service. Every resource is available in two flavors:
-cluster-scoped (`*.upcloud.crossplane.io`) and namespaced
-(`*.upcloud.m.crossplane.io`).
+It exposes XRM-conformant managed resources for every resource of the
+Terraform provider: servers, server groups, firewall rules and rulesets,
+tags, storage with backups and templates, file storage with shares and ACLs,
+networks, routers, network peerings, floating IPs, gateways with VPN
+connections and tunnels, load balancers with backends, frontends, rules,
+resolvers and certificate bundles, managed databases with users, logical
+databases and connection pools, managed object storage with users, policies,
+buckets, custom domains and static sites, and the UpCloud Kubernetes Service.
+Every resource is available in two flavors: cluster-scoped
+(`*.upcloud.crossplane.io`) and namespaced (`*.upcloud.m.crossplane.io`).
 
 ## Authentication
 

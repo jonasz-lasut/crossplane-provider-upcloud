@@ -69,9 +69,6 @@ type ManagedDatabaseValkeyInitParameters struct {
 	// Private networks attached to the managed database
 	Network []ManagedDatabaseValkeyNetworkInitParameters `json:"network,omitempty" tf:"network,omitempty"`
 
-	// (Attributes List) Information about nodes providing the managed service (see below for nested schema)
-	NodeStates []ManagedDatabaseValkeyNodeStatesInitParameters `json:"nodeStates,omitempty" tf:"node_states,omitempty"`
-
 	// (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans valkey.
 	// Service plan to use. This determines how much resources the instance will have. You can list available plans with `upctl database plans valkey`.
 	Plan *string `json:"plan,omitempty" tf:"plan,omitempty"`
@@ -82,7 +79,7 @@ type ManagedDatabaseValkeyInitParameters struct {
 
 	// (Block List) Database engine properties. (see below for nested schema)
 	// Database engine properties.
-	Properties []ManagedDatabaseValkeyPropertiesInitParameters `json:"properties,omitempty" tf:"properties,omitempty"`
+	Properties *ManagedDatabaseValkeyPropertiesInitParameters `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (Boolean) If set to true, prevents the managed service from being powered off, or deleted.
 	// If set to true, prevents the managed service from being powered off, or deleted.
@@ -247,7 +244,7 @@ type ManagedDatabaseValkeyObservation struct {
 
 	// (Block List) Database engine properties. (see below for nested schema)
 	// Database engine properties.
-	Properties []ManagedDatabaseValkeyPropertiesObservation `json:"properties,omitempty" tf:"properties,omitempty"`
+	Properties *ManagedDatabaseValkeyPropertiesObservation `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (String) Hostname to the service instance
 	// Hostname to the service instance
@@ -315,10 +312,6 @@ type ManagedDatabaseValkeyParameters struct {
 	// +kubebuilder:validation:Optional
 	Network []ManagedDatabaseValkeyNetworkParameters `json:"network,omitempty" tf:"network,omitempty"`
 
-	// (Attributes List) Information about nodes providing the managed service (see below for nested schema)
-	// +kubebuilder:validation:Optional
-	NodeStates []ManagedDatabaseValkeyNodeStatesParameters `json:"nodeStates,omitempty" tf:"node_states,omitempty"`
-
 	// (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans valkey.
 	// Service plan to use. This determines how much resources the instance will have. You can list available plans with `upctl database plans valkey`.
 	// +kubebuilder:validation:Optional
@@ -332,7 +325,7 @@ type ManagedDatabaseValkeyParameters struct {
 	// (Block List) Database engine properties. (see below for nested schema)
 	// Database engine properties.
 	// +kubebuilder:validation:Optional
-	Properties []ManagedDatabaseValkeyPropertiesParameters `json:"properties,omitempty" tf:"properties,omitempty"`
+	Properties *ManagedDatabaseValkeyPropertiesParameters `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (Boolean) If set to true, prevents the managed service from being powered off, or deleted.
 	// If set to true, prevents the managed service from being powered off, or deleted.
@@ -374,7 +367,7 @@ type ManagedDatabaseValkeyPropertiesInitParameters struct {
 
 	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
-	Migration []ManagedDatabaseValkeyPropertiesMigrationInitParameters `json:"migration,omitempty" tf:"migration,omitempty"`
+	Migration *ManagedDatabaseValkeyPropertiesMigrationInitParameters `json:"migration,omitempty" tf:"migration,omitempty"`
 
 	// (Boolean) Public Access. Allow access to the service from the public Internet.
 	// Public Access. Allow access to the service from the public Internet.
@@ -384,13 +377,29 @@ type ManagedDatabaseValkeyPropertiesInitParameters struct {
 	// Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
 	PublicAccessPrometheus *bool `json:"publicAccessPrometheus,omitempty" tf:"public_access_prometheus,omitempty"`
 
+	// (Number) Number of replicas per shard. Number of replicas per shard in the Valkey cluster. Only applies to cluster plans.
+	// Number of replicas per shard. Number of replicas per shard in the Valkey cluster. Only applies to cluster plans.
+	Replicas *float64 `json:"replicas,omitempty" tf:"replicas,omitempty"`
+
 	// (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	// Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	ServiceLog *bool `json:"serviceLog,omitempty" tf:"service_log,omitempty"`
 
+	// (Number) Number of shards. Number of shards (primaries) in the Valkey cluster. Required for cluster plans.
+	// Number of shards. Number of shards (primaries) in the Valkey cluster. Required for cluster plans.
+	ShardCount *float64 `json:"shardCount,omitempty" tf:"shard_count,omitempty"`
+
 	// pubsub-default.
 	// Default ACL for pub/sub channels used when a Valkey user is created. Determines default pub/sub channels' ACL for new users if ACL is not supplied. When this option is not defined, all_channels is assumed to keep backward compatibility. This option doesn't affect Valkey configuration acl-pubsub-default.
 	ValkeyACLChannelsDefault *string `json:"valkeyAclChannelsDefault,omitempty" tf:"valkey_acl_channels_default,omitempty"`
+
+	// (Number) Active defrag minimum fragmentation waste. Minimum amount of fragmentation waste, in bytes, before active defragmentation starts. Only takes effect when valkey_activedefrag is enabled.
+	// Active defrag minimum fragmentation waste. Minimum amount of fragmentation waste, in bytes, before active defragmentation starts. Only takes effect when `valkey_activedefrag` is enabled.
+	ValkeyActiveDefragIgnoreBytes *float64 `json:"valkeyActiveDefragIgnoreBytes,omitempty" tf:"valkey_active_defrag_ignore_bytes,omitempty"`
+
+	// (Number) Active defrag minimum fragmentation percentage. Minimum percentage of fragmentation before active defragmentation starts. Only takes effect when valkey_activedefrag is enabled.
+	// Active defrag minimum fragmentation percentage. Minimum percentage of fragmentation before active defragmentation starts. Only takes effect when `valkey_activedefrag` is enabled.
+	ValkeyActiveDefragThresholdLower *float64 `json:"valkeyActiveDefragThresholdLower,omitempty" tf:"valkey_active_defrag_threshold_lower,omitempty"`
 
 	// expire-effort setting (default 1, max 10) uses more CPU to reclaim expired keys faster, reducing memory usage but potentially increasing latency.
 	// Active expire effort. Valkey reclaims expired keys both when accessed and in the background. The background process scans for expired keys to free memory. Increasing the active-expire-effort setting (default 1, max 10) uses more CPU to reclaim expired keys faster, reducing memory usage but potentially increasing latency.
@@ -424,8 +433,8 @@ type ManagedDatabaseValkeyPropertiesInitParameters struct {
 	// Number of Valkey databases. Set number of Valkey databases. Changing this will cause a restart of the Valkey service.
 	ValkeyNumberOfDatabases *float64 `json:"valkeyNumberOfDatabases,omitempty" tf:"valkey_number_of_databases,omitempty"`
 
-	// (String) Valkey persistence. When persistence is 'rdb', Valkey does RDB dumps each 10 minutes if any key is changed. Also RDB dumps are done according to backup schedule for backup purposes. When persistence is 'off', no RDB dumps and backups are done, so data can be lost at any moment if service is restarted for any reason, or if service is powered off. Also service can't be forked.
-	// Valkey persistence. When persistence is 'rdb', Valkey does RDB dumps each 10 minutes if any key is changed. Also RDB dumps are done according to backup schedule for backup purposes. When persistence is 'off', no RDB dumps and backups are done, so data can be lost at any moment if service is restarted for any reason, or if service is powered off. Also service can't be forked.
+	// (String) Valkey persistence. Controls whether Valkey writes RDB dumps to disk. With rdb, RDB dumps are written for backups on the backup schedule and, if frequent_snapshots is enabled, every 10 minutes so the service can recover recent data after a restart. With off, no RDB dumps are written at all: backups and forking are unavailable, frequent_snapshots and backup_hour/backup_minute have no effect, and all data is lost if the service restarts or is powered off.
+	// Valkey persistence. Controls whether Valkey writes RDB dumps to disk. With `rdb`, RDB dumps are written for backups on the backup schedule and, if `frequent_snapshots` is enabled, every 10 minutes so the service can recover recent data after a restart. With `off`, no RDB dumps are written at all: backups and forking are unavailable, `frequent_snapshots` and `backup_hour`/`backup_minute` have no effect, and all data is lost if the service restarts or is powered off.
 	ValkeyPersistence *string `json:"valkeyPersistence,omitempty" tf:"valkey_persistence,omitempty"`
 
 	// (Number) Pub/sub client output buffer hard limit in MB. Set output buffer limit for pub / sub clients in MB. The value is the hard limit, the soft limit is 1/4 of the hard limit. When setting the limit, be mindful of the available memory in the selected service plan.
@@ -591,7 +600,7 @@ type ManagedDatabaseValkeyPropertiesObservation struct {
 
 	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
-	Migration []ManagedDatabaseValkeyPropertiesMigrationObservation `json:"migration,omitempty" tf:"migration,omitempty"`
+	Migration *ManagedDatabaseValkeyPropertiesMigrationObservation `json:"migration,omitempty" tf:"migration,omitempty"`
 
 	// (Boolean) Public Access. Allow access to the service from the public Internet.
 	// Public Access. Allow access to the service from the public Internet.
@@ -601,13 +610,29 @@ type ManagedDatabaseValkeyPropertiesObservation struct {
 	// Prometheus Public Access. Allow access to Prometheus metrics from the public Internet.
 	PublicAccessPrometheus *bool `json:"publicAccessPrometheus,omitempty" tf:"public_access_prometheus,omitempty"`
 
+	// (Number) Number of replicas per shard. Number of replicas per shard in the Valkey cluster. Only applies to cluster plans.
+	// Number of replicas per shard. Number of replicas per shard in the Valkey cluster. Only applies to cluster plans.
+	Replicas *float64 `json:"replicas,omitempty" tf:"replicas,omitempty"`
+
 	// (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	// Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	ServiceLog *bool `json:"serviceLog,omitempty" tf:"service_log,omitempty"`
 
+	// (Number) Number of shards. Number of shards (primaries) in the Valkey cluster. Required for cluster plans.
+	// Number of shards. Number of shards (primaries) in the Valkey cluster. Required for cluster plans.
+	ShardCount *float64 `json:"shardCount,omitempty" tf:"shard_count,omitempty"`
+
 	// pubsub-default.
 	// Default ACL for pub/sub channels used when a Valkey user is created. Determines default pub/sub channels' ACL for new users if ACL is not supplied. When this option is not defined, all_channels is assumed to keep backward compatibility. This option doesn't affect Valkey configuration acl-pubsub-default.
 	ValkeyACLChannelsDefault *string `json:"valkeyAclChannelsDefault,omitempty" tf:"valkey_acl_channels_default,omitempty"`
+
+	// (Number) Active defrag minimum fragmentation waste. Minimum amount of fragmentation waste, in bytes, before active defragmentation starts. Only takes effect when valkey_activedefrag is enabled.
+	// Active defrag minimum fragmentation waste. Minimum amount of fragmentation waste, in bytes, before active defragmentation starts. Only takes effect when `valkey_activedefrag` is enabled.
+	ValkeyActiveDefragIgnoreBytes *float64 `json:"valkeyActiveDefragIgnoreBytes,omitempty" tf:"valkey_active_defrag_ignore_bytes,omitempty"`
+
+	// (Number) Active defrag minimum fragmentation percentage. Minimum percentage of fragmentation before active defragmentation starts. Only takes effect when valkey_activedefrag is enabled.
+	// Active defrag minimum fragmentation percentage. Minimum percentage of fragmentation before active defragmentation starts. Only takes effect when `valkey_activedefrag` is enabled.
+	ValkeyActiveDefragThresholdLower *float64 `json:"valkeyActiveDefragThresholdLower,omitempty" tf:"valkey_active_defrag_threshold_lower,omitempty"`
 
 	// expire-effort setting (default 1, max 10) uses more CPU to reclaim expired keys faster, reducing memory usage but potentially increasing latency.
 	// Active expire effort. Valkey reclaims expired keys both when accessed and in the background. The background process scans for expired keys to free memory. Increasing the active-expire-effort setting (default 1, max 10) uses more CPU to reclaim expired keys faster, reducing memory usage but potentially increasing latency.
@@ -641,8 +666,8 @@ type ManagedDatabaseValkeyPropertiesObservation struct {
 	// Number of Valkey databases. Set number of Valkey databases. Changing this will cause a restart of the Valkey service.
 	ValkeyNumberOfDatabases *float64 `json:"valkeyNumberOfDatabases,omitempty" tf:"valkey_number_of_databases,omitempty"`
 
-	// (String) Valkey persistence. When persistence is 'rdb', Valkey does RDB dumps each 10 minutes if any key is changed. Also RDB dumps are done according to backup schedule for backup purposes. When persistence is 'off', no RDB dumps and backups are done, so data can be lost at any moment if service is restarted for any reason, or if service is powered off. Also service can't be forked.
-	// Valkey persistence. When persistence is 'rdb', Valkey does RDB dumps each 10 minutes if any key is changed. Also RDB dumps are done according to backup schedule for backup purposes. When persistence is 'off', no RDB dumps and backups are done, so data can be lost at any moment if service is restarted for any reason, or if service is powered off. Also service can't be forked.
+	// (String) Valkey persistence. Controls whether Valkey writes RDB dumps to disk. With rdb, RDB dumps are written for backups on the backup schedule and, if frequent_snapshots is enabled, every 10 minutes so the service can recover recent data after a restart. With off, no RDB dumps are written at all: backups and forking are unavailable, frequent_snapshots and backup_hour/backup_minute have no effect, and all data is lost if the service restarts or is powered off.
+	// Valkey persistence. Controls whether Valkey writes RDB dumps to disk. With `rdb`, RDB dumps are written for backups on the backup schedule and, if `frequent_snapshots` is enabled, every 10 minutes so the service can recover recent data after a restart. With `off`, no RDB dumps are written at all: backups and forking are unavailable, `frequent_snapshots` and `backup_hour`/`backup_minute` have no effect, and all data is lost if the service restarts or is powered off.
 	ValkeyPersistence *string `json:"valkeyPersistence,omitempty" tf:"valkey_persistence,omitempty"`
 
 	// (Number) Pub/sub client output buffer hard limit in MB. Set output buffer limit for pub / sub clients in MB. The value is the hard limit, the soft limit is 1/4 of the hard limit. When setting the limit, be mindful of the available memory in the selected service plan.
@@ -692,7 +717,7 @@ type ManagedDatabaseValkeyPropertiesParameters struct {
 	// (Block List) Migrate data from existing server. (see below for nested schema)
 	// Migrate data from existing server.
 	// +kubebuilder:validation:Optional
-	Migration []ManagedDatabaseValkeyPropertiesMigrationParameters `json:"migration,omitempty" tf:"migration,omitempty"`
+	Migration *ManagedDatabaseValkeyPropertiesMigrationParameters `json:"migration,omitempty" tf:"migration,omitempty"`
 
 	// (Boolean) Public Access. Allow access to the service from the public Internet.
 	// Public Access. Allow access to the service from the public Internet.
@@ -704,15 +729,35 @@ type ManagedDatabaseValkeyPropertiesParameters struct {
 	// +kubebuilder:validation:Optional
 	PublicAccessPrometheus *bool `json:"publicAccessPrometheus,omitempty" tf:"public_access_prometheus,omitempty"`
 
+	// (Number) Number of replicas per shard. Number of replicas per shard in the Valkey cluster. Only applies to cluster plans.
+	// Number of replicas per shard. Number of replicas per shard in the Valkey cluster. Only applies to cluster plans.
+	// +kubebuilder:validation:Optional
+	Replicas *float64 `json:"replicas,omitempty" tf:"replicas,omitempty"`
+
 	// (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	// Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	// +kubebuilder:validation:Optional
 	ServiceLog *bool `json:"serviceLog,omitempty" tf:"service_log,omitempty"`
 
+	// (Number) Number of shards. Number of shards (primaries) in the Valkey cluster. Required for cluster plans.
+	// Number of shards. Number of shards (primaries) in the Valkey cluster. Required for cluster plans.
+	// +kubebuilder:validation:Optional
+	ShardCount *float64 `json:"shardCount,omitempty" tf:"shard_count,omitempty"`
+
 	// pubsub-default.
 	// Default ACL for pub/sub channels used when a Valkey user is created. Determines default pub/sub channels' ACL for new users if ACL is not supplied. When this option is not defined, all_channels is assumed to keep backward compatibility. This option doesn't affect Valkey configuration acl-pubsub-default.
 	// +kubebuilder:validation:Optional
 	ValkeyACLChannelsDefault *string `json:"valkeyAclChannelsDefault,omitempty" tf:"valkey_acl_channels_default,omitempty"`
+
+	// (Number) Active defrag minimum fragmentation waste. Minimum amount of fragmentation waste, in bytes, before active defragmentation starts. Only takes effect when valkey_activedefrag is enabled.
+	// Active defrag minimum fragmentation waste. Minimum amount of fragmentation waste, in bytes, before active defragmentation starts. Only takes effect when `valkey_activedefrag` is enabled.
+	// +kubebuilder:validation:Optional
+	ValkeyActiveDefragIgnoreBytes *float64 `json:"valkeyActiveDefragIgnoreBytes,omitempty" tf:"valkey_active_defrag_ignore_bytes,omitempty"`
+
+	// (Number) Active defrag minimum fragmentation percentage. Minimum percentage of fragmentation before active defragmentation starts. Only takes effect when valkey_activedefrag is enabled.
+	// Active defrag minimum fragmentation percentage. Minimum percentage of fragmentation before active defragmentation starts. Only takes effect when `valkey_activedefrag` is enabled.
+	// +kubebuilder:validation:Optional
+	ValkeyActiveDefragThresholdLower *float64 `json:"valkeyActiveDefragThresholdLower,omitempty" tf:"valkey_active_defrag_threshold_lower,omitempty"`
 
 	// expire-effort setting (default 1, max 10) uses more CPU to reclaim expired keys faster, reducing memory usage but potentially increasing latency.
 	// Active expire effort. Valkey reclaims expired keys both when accessed and in the background. The background process scans for expired keys to free memory. Increasing the active-expire-effort setting (default 1, max 10) uses more CPU to reclaim expired keys faster, reducing memory usage but potentially increasing latency.
@@ -754,8 +799,8 @@ type ManagedDatabaseValkeyPropertiesParameters struct {
 	// +kubebuilder:validation:Optional
 	ValkeyNumberOfDatabases *float64 `json:"valkeyNumberOfDatabases,omitempty" tf:"valkey_number_of_databases,omitempty"`
 
-	// (String) Valkey persistence. When persistence is 'rdb', Valkey does RDB dumps each 10 minutes if any key is changed. Also RDB dumps are done according to backup schedule for backup purposes. When persistence is 'off', no RDB dumps and backups are done, so data can be lost at any moment if service is restarted for any reason, or if service is powered off. Also service can't be forked.
-	// Valkey persistence. When persistence is 'rdb', Valkey does RDB dumps each 10 minutes if any key is changed. Also RDB dumps are done according to backup schedule for backup purposes. When persistence is 'off', no RDB dumps and backups are done, so data can be lost at any moment if service is restarted for any reason, or if service is powered off. Also service can't be forked.
+	// (String) Valkey persistence. Controls whether Valkey writes RDB dumps to disk. With rdb, RDB dumps are written for backups on the backup schedule and, if frequent_snapshots is enabled, every 10 minutes so the service can recover recent data after a restart. With off, no RDB dumps are written at all: backups and forking are unavailable, frequent_snapshots and backup_hour/backup_minute have no effect, and all data is lost if the service restarts or is powered off.
+	// Valkey persistence. Controls whether Valkey writes RDB dumps to disk. With `rdb`, RDB dumps are written for backups on the backup schedule and, if `frequent_snapshots` is enabled, every 10 minutes so the service can recover recent data after a restart. With `off`, no RDB dumps are written at all: backups and forking are unavailable, `frequent_snapshots` and `backup_hour`/`backup_minute` have no effect, and all data is lost if the service restarts or is powered off.
 	// +kubebuilder:validation:Optional
 	ValkeyPersistence *string `json:"valkeyPersistence,omitempty" tf:"valkey_persistence,omitempty"`
 

@@ -1,0 +1,16 @@
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: LoadBalancerDynamicCertificateBundle
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerdynamiccertificatebundle
+  labels:
+    testing.upbound.io/example-name: lbdyncert-example
+  name: lbdyncert-example
+spec:
+  forProvider:
+    name: lbdyncert-example
+    keyType: rsa
+    hostnames:
+      - lb-dynamic.example
+  providerConfigRef:
+    name: default

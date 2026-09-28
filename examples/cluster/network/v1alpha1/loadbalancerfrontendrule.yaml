@@ -1,0 +1,107 @@
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: LoadBalancerFrontendRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerfrontendrule
+  labels:
+    testing.upbound.io/example-name: lbrule-example
+  name: lbrule-example
+spec:
+  forProvider:
+    frontendRef:
+      name: lbrule-example-frontend
+    priority: 10
+    matchers:
+      srcIp:
+        - value: 192.168.0.0/24
+    actions:
+      useBackend:
+        - backendNameRef:
+            name: lbrule-example-backend
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: LoadBalancerFrontend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerfrontendrule
+  labels:
+    testing.upbound.io/example-name: lbrule-example-frontend
+  name: lbrule-example-frontend
+spec:
+  forProvider:
+    loadbalancerRef:
+      name: lbrule-example-lb
+    defaultBackendNameRef:
+      name: lbrule-example-backend
+    mode: http
+    port: 8080
+    networks:
+      - name: public
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: LoadBalancerBackend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerfrontendrule
+  labels:
+    testing.upbound.io/example-name: lbrule-example-backend
+  name: lbrule-example-backend
+spec:
+  forProvider:
+    loadbalancerRef:
+      name: lbrule-example-lb
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: LoadBalancer
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerfrontendrule
+  labels:
+    testing.upbound.io/example-name: lbrule-example-lb
+  name: lbrule-example-lb
+spec:
+  forProvider:
+    name: lbrule-example-lb
+    zone: fi-hel2
+    plan: development
+    configuredStatus: started
+    networks:
+      - name: private
+        type: private
+        family: IPv4
+        networkRef:
+          name: lbrule-example-network
+      - name: public
+        type: public
+        family: IPv4
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerfrontendrule
+  labels:
+    testing.upbound.io/example-name: lbrule-example-network
+  name: lbrule-example-network
+spec:
+  forProvider:
+    name: lbrule-example-network
+    zone: fi-hel2
+    ipNetwork:
+      address: 10.37.0.0/24
+      dhcp: true
+      family: IPv4
+  providerConfigRef:
+    name: default

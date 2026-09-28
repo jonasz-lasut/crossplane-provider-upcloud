@@ -220,3 +220,147 @@ func (mg *ServerGroup) ResolveReferences(ctx context.Context, c client.Reader) e
 
 	return nil
 }
+
+// ResolveReferences of this ServerPrivateFirewallRuleset.
+func (mg *ServerPrivateFirewallRuleset) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.m.crossplane.io", "v1alpha1", "FirewallRuleset", "FirewallRulesetList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.RulesetID),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.RulesetIDRef,
+			Selector:     mg.Spec.ForProvider.RulesetIDSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.RulesetID")
+	}
+	mg.Spec.ForProvider.RulesetID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.RulesetIDRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("server.upcloud.m.crossplane.io", "v1alpha1", "Server", "ServerList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ServerID),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.ServerIDRef,
+			Selector:     mg.Spec.ForProvider.ServerIDSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ServerID")
+	}
+	mg.Spec.ForProvider.ServerID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ServerIDRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("network.upcloud.m.crossplane.io", "v1alpha1", "FirewallRuleset", "FirewallRulesetList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.RulesetID),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.InitProvider.RulesetIDRef,
+			Selector:     mg.Spec.InitProvider.RulesetIDSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.RulesetID")
+	}
+	mg.Spec.InitProvider.RulesetID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.RulesetIDRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("server.upcloud.m.crossplane.io", "v1alpha1", "Server", "ServerList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.ServerID),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.InitProvider.ServerIDRef,
+			Selector:     mg.Spec.InitProvider.ServerIDSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.ServerID")
+	}
+	mg.Spec.InitProvider.ServerID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.ServerIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this Tag.
+func (mg *Tag) ResolveReferences(ctx context.Context, c client.Reader) error {
+	var m xpresource.Managed
+	var l xpresource.ManagedList
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var mrsp reference.MultiNamespacedResolutionResponse
+	var err error
+	{
+		m, l, err = apisresolver.GetManagedResource("server.upcloud.m.crossplane.io", "v1alpha1", "Server", "ServerList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		mrsp, err = r.ResolveMultiple(ctx, reference.MultiNamespacedResolutionRequest{
+			CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.Servers),
+			Extract:       reference.ExternalName(),
+			Namespace:     mg.GetNamespace(),
+			References:    mg.Spec.ForProvider.ServersRefs,
+			Selector:      mg.Spec.ForProvider.ServersSelector,
+			To:            reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Servers")
+	}
+	mg.Spec.ForProvider.Servers = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.ForProvider.ServersRefs = mrsp.ResolvedReferences
+	{
+		m, l, err = apisresolver.GetManagedResource("server.upcloud.m.crossplane.io", "v1alpha1", "Server", "ServerList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		mrsp, err = r.ResolveMultiple(ctx, reference.MultiNamespacedResolutionRequest{
+			CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.Servers),
+			Extract:       reference.ExternalName(),
+			Namespace:     mg.GetNamespace(),
+			References:    mg.Spec.InitProvider.ServersRefs,
+			Selector:      mg.Spec.InitProvider.ServersSelector,
+			To:            reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Servers")
+	}
+	mg.Spec.InitProvider.Servers = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.InitProvider.ServersRefs = mrsp.ResolvedReferences
+
+	return nil
+}

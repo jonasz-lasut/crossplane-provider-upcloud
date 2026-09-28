@@ -7,7 +7,58 @@
 package v1alpha1
 
 // Hub marks this type as a conversion hub.
+func (tr *FirewallRuleset) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *FloatingIPAddress) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *Gateway) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *GatewayConnection) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *GatewayConnectionTunnel) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *LoadBalancer) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *LoadBalancerBackend) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *LoadBalancerBackendTLSConfig) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *LoadBalancerDynamicBackendMember) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *LoadBalancerDynamicCertificateBundle) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *LoadBalancerFrontend) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *LoadBalancerFrontendRule) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *LoadBalancerFrontendTLSConfig) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *LoadBalancerManualCertificateBundle) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *LoadBalancerResolver) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *LoadBalancerStaticBackendMember) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *Network) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *NetworkPeering) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *Router) Hub() {}

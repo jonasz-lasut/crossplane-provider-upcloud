@@ -1,0 +1,18 @@
+apiVersion: storage.upcloud.m.crossplane.io/v1alpha1
+kind: StorageTemplate
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/storagetemplate
+  labels:
+    testing.upbound.io/example-name: template
+  name: template
+  namespace: upbound-system
+spec:
+  forProvider:
+    labels:
+      os: linux
+      usage: example
+    sourceStorageSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    title: custom-storage-template

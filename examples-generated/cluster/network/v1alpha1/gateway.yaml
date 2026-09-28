@@ -1,0 +1,57 @@
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Gateway
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/gateway
+  labels:
+    testing.upbound.io/example-name: this
+  name: this
+spec:
+  forProvider:
+    features:
+    - nat
+    labels:
+      managed-by: terraform
+    name: gateway-example-gw
+    plan: development
+    router:
+    - idSelector:
+        matchLabels:
+          testing.upbound.io/example-name: this
+    zone: pl-waw1
+
+---
+
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/gateway
+  labels:
+    testing.upbound.io/example-name: this
+  name: this
+spec:
+  forProvider:
+    ipNetwork:
+    - address: 172.16.2.0/24
+      dhcp: true
+      family: IPv4
+    name: gateway-example-net
+    routerSelector:
+      matchLabels:
+        testing.upbound.io/example-name: this
+    zone: pl-waw1
+
+---
+
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Router
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/gateway
+  labels:
+    testing.upbound.io/example-name: this
+  name: this
+spec:
+  forProvider:
+    name: gateway-example-router

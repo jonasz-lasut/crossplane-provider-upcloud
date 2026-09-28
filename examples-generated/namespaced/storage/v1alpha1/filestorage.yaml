@@ -1,0 +1,46 @@
+apiVersion: storage.upcloud.m.crossplane.io/v1alpha1
+kind: FileStorage
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/filestorage
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    configuredStatus: stopped
+    encrypt: true
+    labels:
+      customer: example-customer
+      environment: staging
+    name: example-file-storage-test
+    network:
+    - family: IPv4
+      ipAddress: 172.16.8.11
+      name: example-private-net
+      uuidSelector:
+        matchLabels:
+          testing.upbound.io/example-name: this
+    size: 250
+    zone: fi-hel2
+
+---
+
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/filestorage
+  labels:
+    testing.upbound.io/example-name: this
+  name: this
+  namespace: upbound-system
+spec:
+  forProvider:
+    ipNetwork:
+    - address: 172.16.8.0/24
+      dhcp: true
+      family: IPv4
+    name: file-storage-net-test
+    zone: fi-hel2

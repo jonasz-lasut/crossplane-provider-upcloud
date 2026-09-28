@@ -16,20 +16,20 @@ import (
 type AuthFailureListenersInitParameters struct {
 
 	// (Block List) (see below for nested schema)
-	InternalAuthenticationBackendLimiting []InternalAuthenticationBackendLimitingInitParameters `json:"internalAuthenticationBackendLimiting,omitempty" tf:"internal_authentication_backend_limiting,omitempty"`
+	InternalAuthenticationBackendLimiting *InternalAuthenticationBackendLimitingInitParameters `json:"internalAuthenticationBackendLimiting,omitempty" tf:"internal_authentication_backend_limiting,omitempty"`
 }
 
 type AuthFailureListenersObservation struct {
 
 	// (Block List) (see below for nested schema)
-	InternalAuthenticationBackendLimiting []InternalAuthenticationBackendLimitingObservation `json:"internalAuthenticationBackendLimiting,omitempty" tf:"internal_authentication_backend_limiting,omitempty"`
+	InternalAuthenticationBackendLimiting *InternalAuthenticationBackendLimitingObservation `json:"internalAuthenticationBackendLimiting,omitempty" tf:"internal_authentication_backend_limiting,omitempty"`
 }
 
 type AuthFailureListenersParameters struct {
 
 	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	InternalAuthenticationBackendLimiting []InternalAuthenticationBackendLimitingParameters `json:"internalAuthenticationBackendLimiting,omitempty" tf:"internal_authentication_backend_limiting,omitempty"`
+	InternalAuthenticationBackendLimiting *InternalAuthenticationBackendLimitingParameters `json:"internalAuthenticationBackendLimiting,omitempty" tf:"internal_authentication_backend_limiting,omitempty"`
 }
 
 type CPUInitParameters struct {
@@ -148,7 +148,7 @@ type ClusterSearchRequestSlowlogInitParameters struct {
 	Level *string `json:"level,omitempty" tf:"level,omitempty"`
 
 	// (Block List) (see below for nested schema)
-	Threshold []ThresholdInitParameters `json:"threshold,omitempty" tf:"threshold,omitempty"`
+	Threshold *ThresholdInitParameters `json:"threshold,omitempty" tf:"threshold,omitempty"`
 }
 
 type ClusterSearchRequestSlowlogObservation struct {
@@ -158,7 +158,7 @@ type ClusterSearchRequestSlowlogObservation struct {
 	Level *string `json:"level,omitempty" tf:"level,omitempty"`
 
 	// (Block List) (see below for nested schema)
-	Threshold []ThresholdObservation `json:"threshold,omitempty" tf:"threshold,omitempty"`
+	Threshold *ThresholdObservation `json:"threshold,omitempty" tf:"threshold,omitempty"`
 }
 
 type ClusterSearchRequestSlowlogParameters struct {
@@ -170,7 +170,7 @@ type ClusterSearchRequestSlowlogParameters struct {
 
 	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	Threshold []ThresholdParameters `json:"threshold,omitempty" tf:"threshold,omitempty"`
+	Threshold *ThresholdParameters `json:"threshold,omitempty" tf:"threshold,omitempty"`
 }
 
 type DiskWatermarksInitParameters struct {
@@ -681,9 +681,6 @@ type ManagedDatabaseOpensearchInitParameters struct {
 	// Private networks attached to the managed database
 	Network []ManagedDatabaseOpensearchNetworkInitParameters `json:"network,omitempty" tf:"network,omitempty"`
 
-	// (Attributes List) Information about nodes providing the managed service (see below for nested schema)
-	NodeStates []ManagedDatabaseOpensearchNodeStatesInitParameters `json:"nodeStates,omitempty" tf:"node_states,omitempty"`
-
 	// (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans opensearch.
 	// Service plan to use. This determines how much resources the instance will have. You can list available plans with `upctl database plans opensearch`.
 	Plan *string `json:"plan,omitempty" tf:"plan,omitempty"`
@@ -694,7 +691,7 @@ type ManagedDatabaseOpensearchInitParameters struct {
 
 	// (Block List) Database engine properties. (see below for nested schema)
 	// Database engine properties.
-	Properties []ManagedDatabaseOpensearchPropertiesInitParameters `json:"properties,omitempty" tf:"properties,omitempty"`
+	Properties *ManagedDatabaseOpensearchPropertiesInitParameters `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (Boolean) If set to true, prevents the managed service from being powered off, or deleted.
 	// If set to true, prevents the managed service from being powered off, or deleted.
@@ -867,7 +864,7 @@ type ManagedDatabaseOpensearchObservation struct {
 
 	// (Block List) Database engine properties. (see below for nested schema)
 	// Database engine properties.
-	Properties []ManagedDatabaseOpensearchPropertiesObservation `json:"properties,omitempty" tf:"properties,omitempty"`
+	Properties *ManagedDatabaseOpensearchPropertiesObservation `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (String) Hostname to the service instance
 	// Hostname to the service instance
@@ -945,10 +942,6 @@ type ManagedDatabaseOpensearchParameters struct {
 	// +kubebuilder:validation:Optional
 	Network []ManagedDatabaseOpensearchNetworkParameters `json:"network,omitempty" tf:"network,omitempty"`
 
-	// (Attributes List) Information about nodes providing the managed service (see below for nested schema)
-	// +kubebuilder:validation:Optional
-	NodeStates []ManagedDatabaseOpensearchNodeStatesParameters `json:"nodeStates,omitempty" tf:"node_states,omitempty"`
-
 	// (String) Service plan to use. This determines how much resources the instance will have. You can list available plans with upctl database plans opensearch.
 	// Service plan to use. This determines how much resources the instance will have. You can list available plans with `upctl database plans opensearch`.
 	// +kubebuilder:validation:Optional
@@ -962,7 +955,7 @@ type ManagedDatabaseOpensearchParameters struct {
 	// (Block List) Database engine properties. (see below for nested schema)
 	// Database engine properties.
 	// +kubebuilder:validation:Optional
-	Properties []ManagedDatabaseOpensearchPropertiesParameters `json:"properties,omitempty" tf:"properties,omitempty"`
+	Properties *ManagedDatabaseOpensearchPropertiesParameters `json:"properties,omitempty" tf:"properties,omitempty"`
 
 	// (Boolean) If set to true, prevents the managed service from being powered off, or deleted.
 	// If set to true, prevents the managed service from being powered off, or deleted.
@@ -992,7 +985,7 @@ type ManagedDatabaseOpensearchPropertiesInitParameters struct {
 
 	// (Block List) Opensearch Security Plugin Settings. (see below for nested schema)
 	// Opensearch Security Plugin Settings.
-	AuthFailureListeners []AuthFailureListenersInitParameters `json:"authFailureListeners,omitempty" tf:"auth_failure_listeners,omitempty"`
+	AuthFailureListeners *AuthFailureListenersInitParameters `json:"authFailureListeners,omitempty" tf:"auth_failure_listeners,omitempty"`
 
 	// (Boolean) Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
 	// Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
@@ -1007,7 +1000,7 @@ type ManagedDatabaseOpensearchPropertiesInitParameters struct {
 	ClusterMaxShardsPerNode *float64 `json:"clusterMaxShardsPerNode,omitempty" tf:"cluster_max_shards_per_node,omitempty"`
 
 	// (Block List) (see below for nested schema)
-	ClusterRemoteStore []ClusterRemoteStoreInitParameters `json:"clusterRemoteStore,omitempty" tf:"cluster_remote_store,omitempty"`
+	ClusterRemoteStore *ClusterRemoteStoreInitParameters `json:"clusterRemoteStore,omitempty" tf:"cluster_remote_store,omitempty"`
 
 	// (Boolean) When set to true, OpenSearch attempts to evenly distribute the primary shards between the cluster nodes. Enabling this setting does not always guarantee an equal number of primary shards on each node, especially in the event of a failover. Changing this setting to false after it was set to true does not invoke redistribution of primary shards. Default is false.
 	// When set to true, OpenSearch attempts to evenly distribute the primary shards between the cluster nodes. Enabling this setting does not always guarantee an equal number of primary shards on each node, especially in the event of a failover. Changing this setting to false after it was set to true does not invoke redistribution of primary shards. Default is false.
@@ -1018,7 +1011,7 @@ type ManagedDatabaseOpensearchPropertiesInitParameters struct {
 	ClusterRoutingAllocationNodeConcurrentRecoveries *float64 `json:"clusterRoutingAllocationNodeConcurrentRecoveries,omitempty" tf:"cluster_routing_allocation_node_concurrent_recoveries,omitempty"`
 
 	// (Block List) (see below for nested schema)
-	ClusterSearchRequestSlowlog []ClusterSearchRequestSlowlogInitParameters `json:"clusterSearchRequestSlowlog,omitempty" tf:"cluster_search_request_slowlog,omitempty"`
+	ClusterSearchRequestSlowlog *ClusterSearchRequestSlowlogInitParameters `json:"clusterSearchRequestSlowlog,omitempty" tf:"cluster_search_request_slowlog,omitempty"`
 
 	// * hostname and the custom domain.
 	// Custom domain. Serve the web frontend using a custom CNAME pointing to the Aiven DNS name. When you set a custom domain for a service deployed in a VPC, the service certificate is only created for the public-* hostname and the custom domain.
@@ -1034,7 +1027,7 @@ type ManagedDatabaseOpensearchPropertiesInitParameters struct {
 
 	// (Block List) Watermark settings. (see below for nested schema)
 	// Watermark settings.
-	DiskWatermarks []DiskWatermarksInitParameters `json:"diskWatermarks,omitempty" tf:"disk_watermarks,omitempty"`
+	DiskWatermarks *DiskWatermarksInitParameters `json:"diskWatermarks,omitempty" tf:"disk_watermarks,omitempty"`
 
 	// (String) OpenSearch version.
 	// OpenSearch version.
@@ -1090,11 +1083,11 @@ type ManagedDatabaseOpensearchPropertiesInitParameters struct {
 
 	// (Block List) Index rollup settings. (see below for nested schema)
 	// Index rollup settings.
-	IndexRollup []IndexRollupInitParameters `json:"indexRollup,omitempty" tf:"index_rollup,omitempty"`
+	IndexRollup *IndexRollupInitParameters `json:"indexRollup,omitempty" tf:"index_rollup,omitempty"`
 
 	// (Block List) Template settings for all new indexes. (see below for nested schema)
 	// Template settings for all new indexes.
-	IndexTemplate []IndexTemplateInitParameters `json:"indexTemplate,omitempty" tf:"index_template,omitempty"`
+	IndexTemplate *IndexTemplateInitParameters `json:"indexTemplate,omitempty" tf:"index_template,omitempty"`
 
 	// (Number) Relative amount. Maximum amount of heap memory used for field data cache. This is an expert setting; decreasing the value too much will increase overhead of loading field data; too much memory used for field data cache will decrease amount of heap available for other operations.
 	// Relative amount. Maximum amount of heap memory used for field data cache. This is an expert setting; decreasing the value too much will increase overhead of loading field data; too much memory used for field data cache will decrease amount of heap available for other operations.
@@ -1154,7 +1147,7 @@ type ManagedDatabaseOpensearchPropertiesInitParameters struct {
 
 	// (Block List) OpenSearch JWT Configuration. (see below for nested schema)
 	// OpenSearch JWT Configuration.
-	Jwt []JwtInitParameters `json:"jwt,omitempty" tf:"jwt,omitempty"`
+	Jwt *JwtInitParameters `json:"jwt,omitempty" tf:"jwt,omitempty"`
 
 	// (Boolean) Don't reset index.refresh_interval to the default value. Aiven automation resets index.refresh_interval to default value for every index to be sure that indices are always visible to search. If it doesn't fit your case, you can disable this by setting up this flag to true.
 	// Don't reset index.refresh_interval to the default value. Aiven automation resets index.refresh_interval to default value for every index to be sure that indices are always visible to search. If it doesn't fit your case, you can disable this by setting up this flag to true.
@@ -1172,9 +1165,21 @@ type ManagedDatabaseOpensearchPropertiesInitParameters struct {
 	// plugins.ml_commons.connector_access_control_enabled. When set to true, the setting allows admins to control access and permissions to the connector API using backend_roles. Defaults to false.
 	MLCommonsConnectorAccessControlEnabled *bool `json:"mlCommonsConnectorAccessControlEnabled,omitempty" tf:"ml_commons_connector_access_control_enabled,omitempty"`
 
+	// (Number) plugins.ml_commons.max_model_on_node. Maximum number of ML models that can be deployed on a single ML node. Defaults to 10.
+	// plugins.ml_commons.max_model_on_node. Maximum number of ML models that can be deployed on a single ML node. Defaults to 10.
+	MLCommonsMaxModelOnNode *float64 `json:"mlCommonsMaxModelOnNode,omitempty" tf:"ml_commons_max_model_on_node,omitempty"`
+
 	// (Boolean) plugins.ml_commons.model_access_control.enabled. Enable or disable model access control for ML Commons. When enabled, access to ML models is controlled by security permissions. Defaults to false.
 	// plugins.ml_commons.model_access_control.enabled. Enable or disable model access control for ML Commons. When enabled, access to ML models is controlled by security permissions. Defaults to false.
 	MLCommonsModelAccessControlEnabled *bool `json:"mlCommonsModelAccessControlEnabled,omitempty" tf:"ml_commons_model_access_control_enabled,omitempty"`
+
+	// (Boolean) plugins.ml_commons.model_auto_deploy.enable. For externally hosted models only: automatically deploy a model on its first predict request instead of requiring an explicit deploy call first. Defaults to true.
+	// plugins.ml_commons.model_auto_deploy.enable. For externally hosted models only: automatically deploy a model on its first predict request instead of requiring an explicit deploy call first. Defaults to true.
+	MLCommonsModelAutoDeployEnable *bool `json:"mlCommonsModelAutoDeployEnable,omitempty" tf:"ml_commons_model_auto_deploy_enable,omitempty"`
+
+	// (Boolean) plugins.ml_commons.model_auto_redeploy.enable. Automatically redeploy deployed or partially deployed models after ML nodes rejoin the cluster, e.g. after a node replacement. Defaults to true.
+	// plugins.ml_commons.model_auto_redeploy.enable. Automatically redeploy deployed or partially deployed models after ML nodes rejoin the cluster, e.g. after a node replacement. Defaults to true.
+	MLCommonsModelAutoRedeployEnable *bool `json:"mlCommonsModelAutoRedeployEnable,omitempty" tf:"ml_commons_model_auto_redeploy_enable,omitempty"`
 
 	// (Number) plugins.ml_commons.native_memory_threshold. Native memory threshold percentage for ML Commons. Controls the maximum percentage of native memory that can be used by ML Commons operations. Defaults to 90%.
 	// plugins.ml_commons.native_memory_threshold. Native memory threshold percentage for ML Commons. Controls the maximum percentage of native memory that can be used by ML Commons operations. Defaults to 90%.
@@ -1194,11 +1199,11 @@ type ManagedDatabaseOpensearchPropertiesInitParameters struct {
 
 	// (Block List) OpenSearch OpenID Connect Configuration. (see below for nested schema)
 	// OpenSearch OpenID Connect Configuration.
-	OpenID []OpenIDInitParameters `json:"openid,omitempty" tf:"openid,omitempty"`
+	OpenID *OpenIDInitParameters `json:"openid,omitempty" tf:"openid,omitempty"`
 
 	// (Block List) OpenSearch Dashboards settings. (see below for nested schema)
 	// OpenSearch Dashboards settings.
-	OpensearchDashboards []OpensearchDashboardsInitParameters `json:"opensearchDashboards,omitempty" tf:"opensearch_dashboards,omitempty"`
+	OpensearchDashboards *OpensearchDashboardsInitParameters `json:"opensearchDashboards,omitempty" tf:"opensearch_dashboards,omitempty"`
 
 	// (Boolean) Compatibility mode sets OpenSearch to report its version as 7.10 so clients continue to work. Default is false. Deprecated and ignored for service version 3.3 and higher.
 	// Compatibility mode sets OpenSearch to report its version as 7.10 so clients continue to work. Default is false. Deprecated and ignored for service version 3.3 and higher.
@@ -1221,11 +1226,11 @@ type ManagedDatabaseOpensearchPropertiesInitParameters struct {
 	ReindexRemoteWhitelist []*string `json:"reindexRemoteWhitelist,omitempty" tf:"reindex_remote_whitelist,omitempty"`
 
 	// (Block List) (see below for nested schema)
-	RemoteStore []RemoteStoreInitParameters `json:"remoteStore,omitempty" tf:"remote_store,omitempty"`
+	RemoteStore *RemoteStoreInitParameters `json:"remoteStore,omitempty" tf:"remote_store,omitempty"`
 
 	// (Block List) OpenSearch SAML configuration. (see below for nested schema)
 	// OpenSearch SAML configuration.
-	SAML []SAMLInitParameters `json:"saml,omitempty" tf:"saml,omitempty"`
+	SAML *SAMLInitParameters `json:"saml,omitempty" tf:"saml,omitempty"`
 
 	// circuit breaker to prevent/minimize OOMs. Script compilation circuit breaker limits the number of inline script compilations within a period of time. Default is use-context.
 	// Script max compilation rate - circuit breaker to prevent/minimize OOMs. Script compilation circuit breaker limits the number of inline script compilations within a period of time. Default is use-context.
@@ -1233,10 +1238,10 @@ type ManagedDatabaseOpensearchPropertiesInitParameters struct {
 
 	// (Block List) Search Backpressure Settings. (see below for nested schema)
 	// Search Backpressure Settings.
-	SearchBackpressure []SearchBackpressureInitParameters `json:"searchBackpressure,omitempty" tf:"search_backpressure,omitempty"`
+	SearchBackpressure *SearchBackpressureInitParameters `json:"searchBackpressure,omitempty" tf:"search_backpressure,omitempty"`
 
 	// (Block List) (see below for nested schema)
-	SearchInsightsTopQueries []SearchInsightsTopQueriesInitParameters `json:"searchInsightsTopQueries,omitempty" tf:"search_insights_top_queries,omitempty"`
+	SearchInsightsTopQueries *SearchInsightsTopQueriesInitParameters `json:"searchInsightsTopQueries,omitempty" tf:"search_insights_top_queries,omitempty"`
 
 	// (Number) Maximum number of aggregation buckets allowed in a single response. OpenSearch default value is used when this is not defined.
 	// Maximum number of aggregation buckets allowed in a single response. OpenSearch default value is used when this is not defined.
@@ -1244,7 +1249,7 @@ type ManagedDatabaseOpensearchPropertiesInitParameters struct {
 
 	// (Block List) Segment Replication Backpressure Settings. (see below for nested schema)
 	// Segment Replication Backpressure Settings.
-	Segrep []SegrepInitParameters `json:"segrep,omitempty" tf:"segrep,omitempty"`
+	Segrep *SegrepInitParameters `json:"segrep,omitempty" tf:"segrep,omitempty"`
 
 	// (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	// Service logging. Store logs for the service so that they are available in the HTTP API and console.
@@ -1252,7 +1257,7 @@ type ManagedDatabaseOpensearchPropertiesInitParameters struct {
 
 	// (Block List) Shard indexing back pressure settings. (see below for nested schema)
 	// Shard indexing back pressure settings.
-	ShardIndexingPressure []ShardIndexingPressureInitParameters `json:"shardIndexingPressure,omitempty" tf:"shard_indexing_pressure,omitempty"`
+	ShardIndexingPressure *ShardIndexingPressureInitParameters `json:"shardIndexingPressure,omitempty" tf:"shard_indexing_pressure,omitempty"`
 
 	// (Number) analyze thread pool queue size. Size for the thread pool queue. See documentation for exact details.
 	// analyze thread pool queue size. Size for the thread pool queue. See documentation for exact details.
@@ -1315,7 +1320,7 @@ type ManagedDatabaseOpensearchPropertiesObservation struct {
 
 	// (Block List) Opensearch Security Plugin Settings. (see below for nested schema)
 	// Opensearch Security Plugin Settings.
-	AuthFailureListeners []AuthFailureListenersObservation `json:"authFailureListeners,omitempty" tf:"auth_failure_listeners,omitempty"`
+	AuthFailureListeners *AuthFailureListenersObservation `json:"authFailureListeners,omitempty" tf:"auth_failure_listeners,omitempty"`
 
 	// (Boolean) Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
 	// Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
@@ -1330,7 +1335,7 @@ type ManagedDatabaseOpensearchPropertiesObservation struct {
 	ClusterMaxShardsPerNode *float64 `json:"clusterMaxShardsPerNode,omitempty" tf:"cluster_max_shards_per_node,omitempty"`
 
 	// (Block List) (see below for nested schema)
-	ClusterRemoteStore []ClusterRemoteStoreObservation `json:"clusterRemoteStore,omitempty" tf:"cluster_remote_store,omitempty"`
+	ClusterRemoteStore *ClusterRemoteStoreObservation `json:"clusterRemoteStore,omitempty" tf:"cluster_remote_store,omitempty"`
 
 	// (Boolean) When set to true, OpenSearch attempts to evenly distribute the primary shards between the cluster nodes. Enabling this setting does not always guarantee an equal number of primary shards on each node, especially in the event of a failover. Changing this setting to false after it was set to true does not invoke redistribution of primary shards. Default is false.
 	// When set to true, OpenSearch attempts to evenly distribute the primary shards between the cluster nodes. Enabling this setting does not always guarantee an equal number of primary shards on each node, especially in the event of a failover. Changing this setting to false after it was set to true does not invoke redistribution of primary shards. Default is false.
@@ -1341,7 +1346,7 @@ type ManagedDatabaseOpensearchPropertiesObservation struct {
 	ClusterRoutingAllocationNodeConcurrentRecoveries *float64 `json:"clusterRoutingAllocationNodeConcurrentRecoveries,omitempty" tf:"cluster_routing_allocation_node_concurrent_recoveries,omitempty"`
 
 	// (Block List) (see below for nested schema)
-	ClusterSearchRequestSlowlog []ClusterSearchRequestSlowlogObservation `json:"clusterSearchRequestSlowlog,omitempty" tf:"cluster_search_request_slowlog,omitempty"`
+	ClusterSearchRequestSlowlog *ClusterSearchRequestSlowlogObservation `json:"clusterSearchRequestSlowlog,omitempty" tf:"cluster_search_request_slowlog,omitempty"`
 
 	// * hostname and the custom domain.
 	// Custom domain. Serve the web frontend using a custom CNAME pointing to the Aiven DNS name. When you set a custom domain for a service deployed in a VPC, the service certificate is only created for the public-* hostname and the custom domain.
@@ -1357,7 +1362,7 @@ type ManagedDatabaseOpensearchPropertiesObservation struct {
 
 	// (Block List) Watermark settings. (see below for nested schema)
 	// Watermark settings.
-	DiskWatermarks []DiskWatermarksObservation `json:"diskWatermarks,omitempty" tf:"disk_watermarks,omitempty"`
+	DiskWatermarks *DiskWatermarksObservation `json:"diskWatermarks,omitempty" tf:"disk_watermarks,omitempty"`
 
 	// (String) OpenSearch version.
 	// OpenSearch version.
@@ -1409,11 +1414,11 @@ type ManagedDatabaseOpensearchPropertiesObservation struct {
 
 	// (Block List) Index rollup settings. (see below for nested schema)
 	// Index rollup settings.
-	IndexRollup []IndexRollupObservation `json:"indexRollup,omitempty" tf:"index_rollup,omitempty"`
+	IndexRollup *IndexRollupObservation `json:"indexRollup,omitempty" tf:"index_rollup,omitempty"`
 
 	// (Block List) Template settings for all new indexes. (see below for nested schema)
 	// Template settings for all new indexes.
-	IndexTemplate []IndexTemplateObservation `json:"indexTemplate,omitempty" tf:"index_template,omitempty"`
+	IndexTemplate *IndexTemplateObservation `json:"indexTemplate,omitempty" tf:"index_template,omitempty"`
 
 	// (Number) Relative amount. Maximum amount of heap memory used for field data cache. This is an expert setting; decreasing the value too much will increase overhead of loading field data; too much memory used for field data cache will decrease amount of heap available for other operations.
 	// Relative amount. Maximum amount of heap memory used for field data cache. This is an expert setting; decreasing the value too much will increase overhead of loading field data; too much memory used for field data cache will decrease amount of heap available for other operations.
@@ -1473,7 +1478,7 @@ type ManagedDatabaseOpensearchPropertiesObservation struct {
 
 	// (Block List) OpenSearch JWT Configuration. (see below for nested schema)
 	// OpenSearch JWT Configuration.
-	Jwt []JwtObservation `json:"jwt,omitempty" tf:"jwt,omitempty"`
+	Jwt *JwtObservation `json:"jwt,omitempty" tf:"jwt,omitempty"`
 
 	// (Boolean) Don't reset index.refresh_interval to the default value. Aiven automation resets index.refresh_interval to default value for every index to be sure that indices are always visible to search. If it doesn't fit your case, you can disable this by setting up this flag to true.
 	// Don't reset index.refresh_interval to the default value. Aiven automation resets index.refresh_interval to default value for every index to be sure that indices are always visible to search. If it doesn't fit your case, you can disable this by setting up this flag to true.
@@ -1491,9 +1496,21 @@ type ManagedDatabaseOpensearchPropertiesObservation struct {
 	// plugins.ml_commons.connector_access_control_enabled. When set to true, the setting allows admins to control access and permissions to the connector API using backend_roles. Defaults to false.
 	MLCommonsConnectorAccessControlEnabled *bool `json:"mlCommonsConnectorAccessControlEnabled,omitempty" tf:"ml_commons_connector_access_control_enabled,omitempty"`
 
+	// (Number) plugins.ml_commons.max_model_on_node. Maximum number of ML models that can be deployed on a single ML node. Defaults to 10.
+	// plugins.ml_commons.max_model_on_node. Maximum number of ML models that can be deployed on a single ML node. Defaults to 10.
+	MLCommonsMaxModelOnNode *float64 `json:"mlCommonsMaxModelOnNode,omitempty" tf:"ml_commons_max_model_on_node,omitempty"`
+
 	// (Boolean) plugins.ml_commons.model_access_control.enabled. Enable or disable model access control for ML Commons. When enabled, access to ML models is controlled by security permissions. Defaults to false.
 	// plugins.ml_commons.model_access_control.enabled. Enable or disable model access control for ML Commons. When enabled, access to ML models is controlled by security permissions. Defaults to false.
 	MLCommonsModelAccessControlEnabled *bool `json:"mlCommonsModelAccessControlEnabled,omitempty" tf:"ml_commons_model_access_control_enabled,omitempty"`
+
+	// (Boolean) plugins.ml_commons.model_auto_deploy.enable. For externally hosted models only: automatically deploy a model on its first predict request instead of requiring an explicit deploy call first. Defaults to true.
+	// plugins.ml_commons.model_auto_deploy.enable. For externally hosted models only: automatically deploy a model on its first predict request instead of requiring an explicit deploy call first. Defaults to true.
+	MLCommonsModelAutoDeployEnable *bool `json:"mlCommonsModelAutoDeployEnable,omitempty" tf:"ml_commons_model_auto_deploy_enable,omitempty"`
+
+	// (Boolean) plugins.ml_commons.model_auto_redeploy.enable. Automatically redeploy deployed or partially deployed models after ML nodes rejoin the cluster, e.g. after a node replacement. Defaults to true.
+	// plugins.ml_commons.model_auto_redeploy.enable. Automatically redeploy deployed or partially deployed models after ML nodes rejoin the cluster, e.g. after a node replacement. Defaults to true.
+	MLCommonsModelAutoRedeployEnable *bool `json:"mlCommonsModelAutoRedeployEnable,omitempty" tf:"ml_commons_model_auto_redeploy_enable,omitempty"`
 
 	// (Number) plugins.ml_commons.native_memory_threshold. Native memory threshold percentage for ML Commons. Controls the maximum percentage of native memory that can be used by ML Commons operations. Defaults to 90%.
 	// plugins.ml_commons.native_memory_threshold. Native memory threshold percentage for ML Commons. Controls the maximum percentage of native memory that can be used by ML Commons operations. Defaults to 90%.
@@ -1513,11 +1530,11 @@ type ManagedDatabaseOpensearchPropertiesObservation struct {
 
 	// (Block List) OpenSearch OpenID Connect Configuration. (see below for nested schema)
 	// OpenSearch OpenID Connect Configuration.
-	OpenID []OpenIDObservation `json:"openid,omitempty" tf:"openid,omitempty"`
+	OpenID *OpenIDObservation `json:"openid,omitempty" tf:"openid,omitempty"`
 
 	// (Block List) OpenSearch Dashboards settings. (see below for nested schema)
 	// OpenSearch Dashboards settings.
-	OpensearchDashboards []OpensearchDashboardsObservation `json:"opensearchDashboards,omitempty" tf:"opensearch_dashboards,omitempty"`
+	OpensearchDashboards *OpensearchDashboardsObservation `json:"opensearchDashboards,omitempty" tf:"opensearch_dashboards,omitempty"`
 
 	// (Boolean) Compatibility mode sets OpenSearch to report its version as 7.10 so clients continue to work. Default is false. Deprecated and ignored for service version 3.3 and higher.
 	// Compatibility mode sets OpenSearch to report its version as 7.10 so clients continue to work. Default is false. Deprecated and ignored for service version 3.3 and higher.
@@ -1540,11 +1557,11 @@ type ManagedDatabaseOpensearchPropertiesObservation struct {
 	ReindexRemoteWhitelist []*string `json:"reindexRemoteWhitelist,omitempty" tf:"reindex_remote_whitelist,omitempty"`
 
 	// (Block List) (see below for nested schema)
-	RemoteStore []RemoteStoreObservation `json:"remoteStore,omitempty" tf:"remote_store,omitempty"`
+	RemoteStore *RemoteStoreObservation `json:"remoteStore,omitempty" tf:"remote_store,omitempty"`
 
 	// (Block List) OpenSearch SAML configuration. (see below for nested schema)
 	// OpenSearch SAML configuration.
-	SAML []SAMLObservation `json:"saml,omitempty" tf:"saml,omitempty"`
+	SAML *SAMLObservation `json:"saml,omitempty" tf:"saml,omitempty"`
 
 	// circuit breaker to prevent/minimize OOMs. Script compilation circuit breaker limits the number of inline script compilations within a period of time. Default is use-context.
 	// Script max compilation rate - circuit breaker to prevent/minimize OOMs. Script compilation circuit breaker limits the number of inline script compilations within a period of time. Default is use-context.
@@ -1552,10 +1569,10 @@ type ManagedDatabaseOpensearchPropertiesObservation struct {
 
 	// (Block List) Search Backpressure Settings. (see below for nested schema)
 	// Search Backpressure Settings.
-	SearchBackpressure []SearchBackpressureObservation `json:"searchBackpressure,omitempty" tf:"search_backpressure,omitempty"`
+	SearchBackpressure *SearchBackpressureObservation `json:"searchBackpressure,omitempty" tf:"search_backpressure,omitempty"`
 
 	// (Block List) (see below for nested schema)
-	SearchInsightsTopQueries []SearchInsightsTopQueriesObservation `json:"searchInsightsTopQueries,omitempty" tf:"search_insights_top_queries,omitempty"`
+	SearchInsightsTopQueries *SearchInsightsTopQueriesObservation `json:"searchInsightsTopQueries,omitempty" tf:"search_insights_top_queries,omitempty"`
 
 	// (Number) Maximum number of aggregation buckets allowed in a single response. OpenSearch default value is used when this is not defined.
 	// Maximum number of aggregation buckets allowed in a single response. OpenSearch default value is used when this is not defined.
@@ -1563,7 +1580,7 @@ type ManagedDatabaseOpensearchPropertiesObservation struct {
 
 	// (Block List) Segment Replication Backpressure Settings. (see below for nested schema)
 	// Segment Replication Backpressure Settings.
-	Segrep []SegrepObservation `json:"segrep,omitempty" tf:"segrep,omitempty"`
+	Segrep *SegrepObservation `json:"segrep,omitempty" tf:"segrep,omitempty"`
 
 	// (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	// Service logging. Store logs for the service so that they are available in the HTTP API and console.
@@ -1571,7 +1588,7 @@ type ManagedDatabaseOpensearchPropertiesObservation struct {
 
 	// (Block List) Shard indexing back pressure settings. (see below for nested schema)
 	// Shard indexing back pressure settings.
-	ShardIndexingPressure []ShardIndexingPressureObservation `json:"shardIndexingPressure,omitempty" tf:"shard_indexing_pressure,omitempty"`
+	ShardIndexingPressure *ShardIndexingPressureObservation `json:"shardIndexingPressure,omitempty" tf:"shard_indexing_pressure,omitempty"`
 
 	// (Number) analyze thread pool queue size. Size for the thread pool queue. See documentation for exact details.
 	// analyze thread pool queue size. Size for the thread pool queue. See documentation for exact details.
@@ -1637,7 +1654,7 @@ type ManagedDatabaseOpensearchPropertiesParameters struct {
 	// (Block List) Opensearch Security Plugin Settings. (see below for nested schema)
 	// Opensearch Security Plugin Settings.
 	// +kubebuilder:validation:Optional
-	AuthFailureListeners []AuthFailureListenersParameters `json:"authFailureListeners,omitempty" tf:"auth_failure_listeners,omitempty"`
+	AuthFailureListeners *AuthFailureListenersParameters `json:"authFailureListeners,omitempty" tf:"auth_failure_listeners,omitempty"`
 
 	// (Boolean) Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
 	// Automatic utility network IP Filter. Automatically allow connections from servers in the utility network within the same zone.
@@ -1656,7 +1673,7 @@ type ManagedDatabaseOpensearchPropertiesParameters struct {
 
 	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	ClusterRemoteStore []ClusterRemoteStoreParameters `json:"clusterRemoteStore,omitempty" tf:"cluster_remote_store,omitempty"`
+	ClusterRemoteStore *ClusterRemoteStoreParameters `json:"clusterRemoteStore,omitempty" tf:"cluster_remote_store,omitempty"`
 
 	// (Boolean) When set to true, OpenSearch attempts to evenly distribute the primary shards between the cluster nodes. Enabling this setting does not always guarantee an equal number of primary shards on each node, especially in the event of a failover. Changing this setting to false after it was set to true does not invoke redistribution of primary shards. Default is false.
 	// When set to true, OpenSearch attempts to evenly distribute the primary shards between the cluster nodes. Enabling this setting does not always guarantee an equal number of primary shards on each node, especially in the event of a failover. Changing this setting to false after it was set to true does not invoke redistribution of primary shards. Default is false.
@@ -1670,7 +1687,7 @@ type ManagedDatabaseOpensearchPropertiesParameters struct {
 
 	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	ClusterSearchRequestSlowlog []ClusterSearchRequestSlowlogParameters `json:"clusterSearchRequestSlowlog,omitempty" tf:"cluster_search_request_slowlog,omitempty"`
+	ClusterSearchRequestSlowlog *ClusterSearchRequestSlowlogParameters `json:"clusterSearchRequestSlowlog,omitempty" tf:"cluster_search_request_slowlog,omitempty"`
 
 	// * hostname and the custom domain.
 	// Custom domain. Serve the web frontend using a custom CNAME pointing to the Aiven DNS name. When you set a custom domain for a service deployed in a VPC, the service certificate is only created for the public-* hostname and the custom domain.
@@ -1690,7 +1707,7 @@ type ManagedDatabaseOpensearchPropertiesParameters struct {
 	// (Block List) Watermark settings. (see below for nested schema)
 	// Watermark settings.
 	// +kubebuilder:validation:Optional
-	DiskWatermarks []DiskWatermarksParameters `json:"diskWatermarks,omitempty" tf:"disk_watermarks,omitempty"`
+	DiskWatermarks *DiskWatermarksParameters `json:"diskWatermarks,omitempty" tf:"disk_watermarks,omitempty"`
 
 	// (String) OpenSearch version.
 	// OpenSearch version.
@@ -1760,12 +1777,12 @@ type ManagedDatabaseOpensearchPropertiesParameters struct {
 	// (Block List) Index rollup settings. (see below for nested schema)
 	// Index rollup settings.
 	// +kubebuilder:validation:Optional
-	IndexRollup []IndexRollupParameters `json:"indexRollup,omitempty" tf:"index_rollup,omitempty"`
+	IndexRollup *IndexRollupParameters `json:"indexRollup,omitempty" tf:"index_rollup,omitempty"`
 
 	// (Block List) Template settings for all new indexes. (see below for nested schema)
 	// Template settings for all new indexes.
 	// +kubebuilder:validation:Optional
-	IndexTemplate []IndexTemplateParameters `json:"indexTemplate,omitempty" tf:"index_template,omitempty"`
+	IndexTemplate *IndexTemplateParameters `json:"indexTemplate,omitempty" tf:"index_template,omitempty"`
 
 	// (Number) Relative amount. Maximum amount of heap memory used for field data cache. This is an expert setting; decreasing the value too much will increase overhead of loading field data; too much memory used for field data cache will decrease amount of heap available for other operations.
 	// Relative amount. Maximum amount of heap memory used for field data cache. This is an expert setting; decreasing the value too much will increase overhead of loading field data; too much memory used for field data cache will decrease amount of heap available for other operations.
@@ -1840,7 +1857,7 @@ type ManagedDatabaseOpensearchPropertiesParameters struct {
 	// (Block List) OpenSearch JWT Configuration. (see below for nested schema)
 	// OpenSearch JWT Configuration.
 	// +kubebuilder:validation:Optional
-	Jwt []JwtParameters `json:"jwt,omitempty" tf:"jwt,omitempty"`
+	Jwt *JwtParameters `json:"jwt,omitempty" tf:"jwt,omitempty"`
 
 	// (Boolean) Don't reset index.refresh_interval to the default value. Aiven automation resets index.refresh_interval to default value for every index to be sure that indices are always visible to search. If it doesn't fit your case, you can disable this by setting up this flag to true.
 	// Don't reset index.refresh_interval to the default value. Aiven automation resets index.refresh_interval to default value for every index to be sure that indices are always visible to search. If it doesn't fit your case, you can disable this by setting up this flag to true.
@@ -1862,10 +1879,25 @@ type ManagedDatabaseOpensearchPropertiesParameters struct {
 	// +kubebuilder:validation:Optional
 	MLCommonsConnectorAccessControlEnabled *bool `json:"mlCommonsConnectorAccessControlEnabled,omitempty" tf:"ml_commons_connector_access_control_enabled,omitempty"`
 
+	// (Number) plugins.ml_commons.max_model_on_node. Maximum number of ML models that can be deployed on a single ML node. Defaults to 10.
+	// plugins.ml_commons.max_model_on_node. Maximum number of ML models that can be deployed on a single ML node. Defaults to 10.
+	// +kubebuilder:validation:Optional
+	MLCommonsMaxModelOnNode *float64 `json:"mlCommonsMaxModelOnNode,omitempty" tf:"ml_commons_max_model_on_node,omitempty"`
+
 	// (Boolean) plugins.ml_commons.model_access_control.enabled. Enable or disable model access control for ML Commons. When enabled, access to ML models is controlled by security permissions. Defaults to false.
 	// plugins.ml_commons.model_access_control.enabled. Enable or disable model access control for ML Commons. When enabled, access to ML models is controlled by security permissions. Defaults to false.
 	// +kubebuilder:validation:Optional
 	MLCommonsModelAccessControlEnabled *bool `json:"mlCommonsModelAccessControlEnabled,omitempty" tf:"ml_commons_model_access_control_enabled,omitempty"`
+
+	// (Boolean) plugins.ml_commons.model_auto_deploy.enable. For externally hosted models only: automatically deploy a model on its first predict request instead of requiring an explicit deploy call first. Defaults to true.
+	// plugins.ml_commons.model_auto_deploy.enable. For externally hosted models only: automatically deploy a model on its first predict request instead of requiring an explicit deploy call first. Defaults to true.
+	// +kubebuilder:validation:Optional
+	MLCommonsModelAutoDeployEnable *bool `json:"mlCommonsModelAutoDeployEnable,omitempty" tf:"ml_commons_model_auto_deploy_enable,omitempty"`
+
+	// (Boolean) plugins.ml_commons.model_auto_redeploy.enable. Automatically redeploy deployed or partially deployed models after ML nodes rejoin the cluster, e.g. after a node replacement. Defaults to true.
+	// plugins.ml_commons.model_auto_redeploy.enable. Automatically redeploy deployed or partially deployed models after ML nodes rejoin the cluster, e.g. after a node replacement. Defaults to true.
+	// +kubebuilder:validation:Optional
+	MLCommonsModelAutoRedeployEnable *bool `json:"mlCommonsModelAutoRedeployEnable,omitempty" tf:"ml_commons_model_auto_redeploy_enable,omitempty"`
 
 	// (Number) plugins.ml_commons.native_memory_threshold. Native memory threshold percentage for ML Commons. Controls the maximum percentage of native memory that can be used by ML Commons operations. Defaults to 90%.
 	// plugins.ml_commons.native_memory_threshold. Native memory threshold percentage for ML Commons. Controls the maximum percentage of native memory that can be used by ML Commons operations. Defaults to 90%.
@@ -1890,12 +1922,12 @@ type ManagedDatabaseOpensearchPropertiesParameters struct {
 	// (Block List) OpenSearch OpenID Connect Configuration. (see below for nested schema)
 	// OpenSearch OpenID Connect Configuration.
 	// +kubebuilder:validation:Optional
-	OpenID []OpenIDParameters `json:"openid,omitempty" tf:"openid,omitempty"`
+	OpenID *OpenIDParameters `json:"openid,omitempty" tf:"openid,omitempty"`
 
 	// (Block List) OpenSearch Dashboards settings. (see below for nested schema)
 	// OpenSearch Dashboards settings.
 	// +kubebuilder:validation:Optional
-	OpensearchDashboards []OpensearchDashboardsParameters `json:"opensearchDashboards,omitempty" tf:"opensearch_dashboards,omitempty"`
+	OpensearchDashboards *OpensearchDashboardsParameters `json:"opensearchDashboards,omitempty" tf:"opensearch_dashboards,omitempty"`
 
 	// (Boolean) Compatibility mode sets OpenSearch to report its version as 7.10 so clients continue to work. Default is false. Deprecated and ignored for service version 3.3 and higher.
 	// Compatibility mode sets OpenSearch to report its version as 7.10 so clients continue to work. Default is false. Deprecated and ignored for service version 3.3 and higher.
@@ -1924,12 +1956,12 @@ type ManagedDatabaseOpensearchPropertiesParameters struct {
 
 	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	RemoteStore []RemoteStoreParameters `json:"remoteStore,omitempty" tf:"remote_store,omitempty"`
+	RemoteStore *RemoteStoreParameters `json:"remoteStore,omitempty" tf:"remote_store,omitempty"`
 
 	// (Block List) OpenSearch SAML configuration. (see below for nested schema)
 	// OpenSearch SAML configuration.
 	// +kubebuilder:validation:Optional
-	SAML []SAMLParameters `json:"saml,omitempty" tf:"saml,omitempty"`
+	SAML *SAMLParameters `json:"saml,omitempty" tf:"saml,omitempty"`
 
 	// circuit breaker to prevent/minimize OOMs. Script compilation circuit breaker limits the number of inline script compilations within a period of time. Default is use-context.
 	// Script max compilation rate - circuit breaker to prevent/minimize OOMs. Script compilation circuit breaker limits the number of inline script compilations within a period of time. Default is use-context.
@@ -1939,11 +1971,11 @@ type ManagedDatabaseOpensearchPropertiesParameters struct {
 	// (Block List) Search Backpressure Settings. (see below for nested schema)
 	// Search Backpressure Settings.
 	// +kubebuilder:validation:Optional
-	SearchBackpressure []SearchBackpressureParameters `json:"searchBackpressure,omitempty" tf:"search_backpressure,omitempty"`
+	SearchBackpressure *SearchBackpressureParameters `json:"searchBackpressure,omitempty" tf:"search_backpressure,omitempty"`
 
 	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	SearchInsightsTopQueries []SearchInsightsTopQueriesParameters `json:"searchInsightsTopQueries,omitempty" tf:"search_insights_top_queries,omitempty"`
+	SearchInsightsTopQueries *SearchInsightsTopQueriesParameters `json:"searchInsightsTopQueries,omitempty" tf:"search_insights_top_queries,omitempty"`
 
 	// (Number) Maximum number of aggregation buckets allowed in a single response. OpenSearch default value is used when this is not defined.
 	// Maximum number of aggregation buckets allowed in a single response. OpenSearch default value is used when this is not defined.
@@ -1953,7 +1985,7 @@ type ManagedDatabaseOpensearchPropertiesParameters struct {
 	// (Block List) Segment Replication Backpressure Settings. (see below for nested schema)
 	// Segment Replication Backpressure Settings.
 	// +kubebuilder:validation:Optional
-	Segrep []SegrepParameters `json:"segrep,omitempty" tf:"segrep,omitempty"`
+	Segrep *SegrepParameters `json:"segrep,omitempty" tf:"segrep,omitempty"`
 
 	// (Boolean) Service logging. Store logs for the service so that they are available in the HTTP API and console.
 	// Service logging. Store logs for the service so that they are available in the HTTP API and console.
@@ -1963,7 +1995,7 @@ type ManagedDatabaseOpensearchPropertiesParameters struct {
 	// (Block List) Shard indexing back pressure settings. (see below for nested schema)
 	// Shard indexing back pressure settings.
 	// +kubebuilder:validation:Optional
-	ShardIndexingPressure []ShardIndexingPressureParameters `json:"shardIndexingPressure,omitempty" tf:"shard_indexing_pressure,omitempty"`
+	ShardIndexingPressure *ShardIndexingPressureParameters `json:"shardIndexingPressure,omitempty" tf:"shard_indexing_pressure,omitempty"`
 
 	// (Number) analyze thread pool queue size. Size for the thread pool queue. See documentation for exact details.
 	// analyze thread pool queue size. Size for the thread pool queue. See documentation for exact details.
@@ -2513,30 +2545,30 @@ type OperatingFactorParameters struct {
 type PrimaryParameterInitParameters struct {
 
 	// (Block List) (see below for nested schema)
-	Node []NodeInitParameters `json:"node,omitempty" tf:"node,omitempty"`
+	Node *NodeInitParameters `json:"node,omitempty" tf:"node,omitempty"`
 
 	// (Block List) (see below for nested schema)
-	Shard []ShardInitParameters `json:"shard,omitempty" tf:"shard,omitempty"`
+	Shard *ShardInitParameters `json:"shard,omitempty" tf:"shard,omitempty"`
 }
 
 type PrimaryParameterObservation struct {
 
 	// (Block List) (see below for nested schema)
-	Node []NodeObservation `json:"node,omitempty" tf:"node,omitempty"`
+	Node *NodeObservation `json:"node,omitempty" tf:"node,omitempty"`
 
 	// (Block List) (see below for nested schema)
-	Shard []ShardObservation `json:"shard,omitempty" tf:"shard,omitempty"`
+	Shard *ShardObservation `json:"shard,omitempty" tf:"shard,omitempty"`
 }
 
 type PrimaryParameterParameters struct {
 
 	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	Node []NodeParameters `json:"node,omitempty" tf:"node,omitempty"`
+	Node *NodeParameters `json:"node,omitempty" tf:"node,omitempty"`
 
 	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	Shard []ShardParameters `json:"shard,omitempty" tf:"shard,omitempty"`
+	Shard *ShardParameters `json:"shard,omitempty" tf:"shard,omitempty"`
 }
 
 type RemoteStoreInitParameters struct {
@@ -2708,15 +2740,15 @@ type SearchBackpressureInitParameters struct {
 
 	// (Block List) Node duress settings. (see below for nested schema)
 	// Node duress settings.
-	NodeDuress []NodeDuressInitParameters `json:"nodeDuress,omitempty" tf:"node_duress,omitempty"`
+	NodeDuress *NodeDuressInitParameters `json:"nodeDuress,omitempty" tf:"node_duress,omitempty"`
 
 	// (Block List) Search shard settings. (see below for nested schema)
 	// Search shard settings.
-	SearchShardTask []SearchShardTaskInitParameters `json:"searchShardTask,omitempty" tf:"search_shard_task,omitempty"`
+	SearchShardTask *SearchShardTaskInitParameters `json:"searchShardTask,omitempty" tf:"search_shard_task,omitempty"`
 
 	// (Block List) Search task settings. (see below for nested schema)
 	// Search task settings.
-	SearchTask []SearchTaskInitParameters `json:"searchTask,omitempty" tf:"search_task,omitempty"`
+	SearchTask *SearchTaskInitParameters `json:"searchTask,omitempty" tf:"search_task,omitempty"`
 }
 
 type SearchBackpressureObservation struct {
@@ -2727,15 +2759,15 @@ type SearchBackpressureObservation struct {
 
 	// (Block List) Node duress settings. (see below for nested schema)
 	// Node duress settings.
-	NodeDuress []NodeDuressObservation `json:"nodeDuress,omitempty" tf:"node_duress,omitempty"`
+	NodeDuress *NodeDuressObservation `json:"nodeDuress,omitempty" tf:"node_duress,omitempty"`
 
 	// (Block List) Search shard settings. (see below for nested schema)
 	// Search shard settings.
-	SearchShardTask []SearchShardTaskObservation `json:"searchShardTask,omitempty" tf:"search_shard_task,omitempty"`
+	SearchShardTask *SearchShardTaskObservation `json:"searchShardTask,omitempty" tf:"search_shard_task,omitempty"`
 
 	// (Block List) Search task settings. (see below for nested schema)
 	// Search task settings.
-	SearchTask []SearchTaskObservation `json:"searchTask,omitempty" tf:"search_task,omitempty"`
+	SearchTask *SearchTaskObservation `json:"searchTask,omitempty" tf:"search_task,omitempty"`
 }
 
 type SearchBackpressureParameters struct {
@@ -2748,47 +2780,47 @@ type SearchBackpressureParameters struct {
 	// (Block List) Node duress settings. (see below for nested schema)
 	// Node duress settings.
 	// +kubebuilder:validation:Optional
-	NodeDuress []NodeDuressParameters `json:"nodeDuress,omitempty" tf:"node_duress,omitempty"`
+	NodeDuress *NodeDuressParameters `json:"nodeDuress,omitempty" tf:"node_duress,omitempty"`
 
 	// (Block List) Search shard settings. (see below for nested schema)
 	// Search shard settings.
 	// +kubebuilder:validation:Optional
-	SearchShardTask []SearchShardTaskParameters `json:"searchShardTask,omitempty" tf:"search_shard_task,omitempty"`
+	SearchShardTask *SearchShardTaskParameters `json:"searchShardTask,omitempty" tf:"search_shard_task,omitempty"`
 
 	// (Block List) Search task settings. (see below for nested schema)
 	// Search task settings.
 	// +kubebuilder:validation:Optional
-	SearchTask []SearchTaskParameters `json:"searchTask,omitempty" tf:"search_task,omitempty"`
+	SearchTask *SearchTaskParameters `json:"searchTask,omitempty" tf:"search_task,omitempty"`
 }
 
 type SearchInsightsTopQueriesInitParameters struct {
 
 	// (Block List) Top N queries monitoring by CPU. (see below for nested schema)
 	// Top N queries monitoring by CPU.
-	CPU []CPUInitParameters `json:"cpu,omitempty" tf:"cpu,omitempty"`
+	CPU *CPUInitParameters `json:"cpu,omitempty" tf:"cpu,omitempty"`
 
 	// (Block List) Top N queries monitoring by latency. (see below for nested schema)
 	// Top N queries monitoring by latency.
-	Latency []LatencyInitParameters `json:"latency,omitempty" tf:"latency,omitempty"`
+	Latency *LatencyInitParameters `json:"latency,omitempty" tf:"latency,omitempty"`
 
 	// (Block List) Top N queries monitoring by memory. (see below for nested schema)
 	// Top N queries monitoring by memory.
-	Memory []MemoryInitParameters `json:"memory,omitempty" tf:"memory,omitempty"`
+	Memory *MemoryInitParameters `json:"memory,omitempty" tf:"memory,omitempty"`
 }
 
 type SearchInsightsTopQueriesObservation struct {
 
 	// (Block List) Top N queries monitoring by CPU. (see below for nested schema)
 	// Top N queries monitoring by CPU.
-	CPU []CPUObservation `json:"cpu,omitempty" tf:"cpu,omitempty"`
+	CPU *CPUObservation `json:"cpu,omitempty" tf:"cpu,omitempty"`
 
 	// (Block List) Top N queries monitoring by latency. (see below for nested schema)
 	// Top N queries monitoring by latency.
-	Latency []LatencyObservation `json:"latency,omitempty" tf:"latency,omitempty"`
+	Latency *LatencyObservation `json:"latency,omitempty" tf:"latency,omitempty"`
 
 	// (Block List) Top N queries monitoring by memory. (see below for nested schema)
 	// Top N queries monitoring by memory.
-	Memory []MemoryObservation `json:"memory,omitempty" tf:"memory,omitempty"`
+	Memory *MemoryObservation `json:"memory,omitempty" tf:"memory,omitempty"`
 }
 
 type SearchInsightsTopQueriesParameters struct {
@@ -2796,17 +2828,17 @@ type SearchInsightsTopQueriesParameters struct {
 	// (Block List) Top N queries monitoring by CPU. (see below for nested schema)
 	// Top N queries monitoring by CPU.
 	// +kubebuilder:validation:Optional
-	CPU []CPUParameters `json:"cpu,omitempty" tf:"cpu,omitempty"`
+	CPU *CPUParameters `json:"cpu,omitempty" tf:"cpu,omitempty"`
 
 	// (Block List) Top N queries monitoring by latency. (see below for nested schema)
 	// Top N queries monitoring by latency.
 	// +kubebuilder:validation:Optional
-	Latency []LatencyParameters `json:"latency,omitempty" tf:"latency,omitempty"`
+	Latency *LatencyParameters `json:"latency,omitempty" tf:"latency,omitempty"`
 
 	// (Block List) Top N queries monitoring by memory. (see below for nested schema)
 	// Top N queries monitoring by memory.
 	// +kubebuilder:validation:Optional
-	Memory []MemoryParameters `json:"memory,omitempty" tf:"memory,omitempty"`
+	Memory *MemoryParameters `json:"memory,omitempty" tf:"memory,omitempty"`
 }
 
 type SearchShardTaskInitParameters struct {
@@ -3143,11 +3175,11 @@ type ShardIndexingPressureInitParameters struct {
 
 	// (Block List) Operating factor. (see below for nested schema)
 	// Operating factor.
-	OperatingFactor []OperatingFactorInitParameters `json:"operatingFactor,omitempty" tf:"operating_factor,omitempty"`
+	OperatingFactor *OperatingFactorInitParameters `json:"operatingFactor,omitempty" tf:"operating_factor,omitempty"`
 
 	// (Block List) Primary parameter. (see below for nested schema)
 	// Primary parameter.
-	PrimaryParameter []PrimaryParameterInitParameters `json:"primaryParameter,omitempty" tf:"primary_parameter,omitempty"`
+	PrimaryParameter *PrimaryParameterInitParameters `json:"primaryParameter,omitempty" tf:"primary_parameter,omitempty"`
 }
 
 type ShardIndexingPressureObservation struct {
@@ -3171,11 +3203,11 @@ type ShardIndexingPressureObservation struct {
 
 	// (Block List) Operating factor. (see below for nested schema)
 	// Operating factor.
-	OperatingFactor []OperatingFactorObservation `json:"operatingFactor,omitempty" tf:"operating_factor,omitempty"`
+	OperatingFactor *OperatingFactorObservation `json:"operatingFactor,omitempty" tf:"operating_factor,omitempty"`
 
 	// (Block List) Primary parameter. (see below for nested schema)
 	// Primary parameter.
-	PrimaryParameter []PrimaryParameterObservation `json:"primaryParameter,omitempty" tf:"primary_parameter,omitempty"`
+	PrimaryParameter *PrimaryParameterObservation `json:"primaryParameter,omitempty" tf:"primary_parameter,omitempty"`
 }
 
 type ShardIndexingPressureParameters struct {
@@ -3202,12 +3234,12 @@ type ShardIndexingPressureParameters struct {
 	// (Block List) Operating factor. (see below for nested schema)
 	// Operating factor.
 	// +kubebuilder:validation:Optional
-	OperatingFactor []OperatingFactorParameters `json:"operatingFactor,omitempty" tf:"operating_factor,omitempty"`
+	OperatingFactor *OperatingFactorParameters `json:"operatingFactor,omitempty" tf:"operating_factor,omitempty"`
 
 	// (Block List) Primary parameter. (see below for nested schema)
 	// Primary parameter.
 	// +kubebuilder:validation:Optional
-	PrimaryParameter []PrimaryParameterParameters `json:"primaryParameter,omitempty" tf:"primary_parameter,omitempty"`
+	PrimaryParameter *PrimaryParameterParameters `json:"primaryParameter,omitempty" tf:"primary_parameter,omitempty"`
 }
 
 type ShardInitParameters struct {

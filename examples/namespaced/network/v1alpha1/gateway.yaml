@@ -1,0 +1,67 @@
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: Gateway
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/gateway
+  labels:
+    testing.upbound.io/example-name: gateway-example-gateway
+  name: gateway-example-gateway
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: gateway-example-gateway
+    zone: fi-hel2
+    plan: development
+    features:
+      - nat
+    labels:
+      environment: example
+    router:
+      idRef:
+        name: gateway-example-router
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/gateway
+    uptest.upbound.io/pre-delete-hook: ../testhooks/delete-gateway.sh
+  labels:
+    testing.upbound.io/example-name: gateway-example-network
+  name: gateway-example-network
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: gateway-example-network
+    zone: fi-hel2
+    ipNetwork:
+      address: 172.16.21.0/24
+      dhcp: true
+      family: IPv4
+    routerRef:
+      name: gateway-example-router
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: Router
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/gateway
+    uptest.upbound.io/pre-delete-hook: ../testhooks/delete-gateway.sh
+  labels:
+    testing.upbound.io/example-name: gateway-example-router
+  name: gateway-example-router
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: gateway-example-router
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

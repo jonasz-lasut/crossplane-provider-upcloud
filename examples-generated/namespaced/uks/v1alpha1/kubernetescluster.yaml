@@ -20,6 +20,28 @@ spec:
 ---
 
 apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: Gateway
+metadata:
+  annotations:
+    meta.upbound.io/example-id: uks/v1alpha1/kubernetescluster
+  labels:
+    testing.upbound.io/example-name: example2
+  name: example2
+  namespace: upbound-system
+spec:
+  forProvider:
+    features:
+    - nat
+    name: example2-nat-gateway
+    router:
+    - idSelector:
+        matchLabels:
+          testing.upbound.io/example-name: example2
+    zone: de-fra1
+
+---
+
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
 kind: Network
 metadata:
   annotations:

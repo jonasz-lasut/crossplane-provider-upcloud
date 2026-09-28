@@ -12,7 +12,7 @@ spec:
     name: mysql-example
     title: mysql-example
     plan: 1x1xCPU-2GB-25GB
-    zone: fi-hel1
+    zone: fi-hel2
   providerConfigRef:
     kind: ClusterProviderConfig
     name: default

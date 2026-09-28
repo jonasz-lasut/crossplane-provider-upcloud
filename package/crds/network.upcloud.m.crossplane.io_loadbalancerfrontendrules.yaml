@@ -1,0 +1,2413 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.20.1
+  name: loadbalancerfrontendrules.network.upcloud.m.crossplane.io
+spec:
+  group: network.upcloud.m.crossplane.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - upcloud
+    kind: LoadBalancerFrontendRule
+    listKind: LoadBalancerFrontendRuleList
+    plural: loadbalancerfrontendrules
+    singular: loadbalancerfrontendrule
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: LoadBalancerFrontendRule is the Schema for the LoadBalancerFrontendRules
+          API. This resource represents load balancer frontend rule.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: LoadBalancerFrontendRuleSpec defines the desired state of
+              LoadBalancerFrontendRule
+            properties:
+              forProvider:
+                properties:
+                  actions:
+                    description: |-
+                      (Block List) Rule actions. (see below for nested schema)
+                      Rule actions.
+                    properties:
+                      httpRedirect:
+                        description: |-
+                          (Block List) Redirects HTTP requests to specified location or URL scheme. Only either location or scheme can be defined at a time. (see below for nested schema)
+                          Redirects HTTP requests to specified location or URL scheme. Only either location or scheme can be defined at a time.
+                        items:
+                          properties:
+                            location:
+                              description: |-
+                                (String) Target location.
+                                Target location.
+                              type: string
+                            scheme:
+                              description: |-
+                                (String) Target scheme.
+                                Target scheme.
+                              type: string
+                            status:
+                              description: |-
+                                (Number) HTTP status code.
+                                HTTP status code.
+                              type: number
+                          type: object
+                        type: array
+                      httpReturn:
+                        description: |-
+                          (Block List) Returns HTTP response with specified HTTP status. (see below for nested schema)
+                          Returns HTTP response with specified HTTP status.
+                        items:
+                          properties:
+                            contentType:
+                              description: |-
+                                (String) Content type.
+                                Content type.
+                              type: string
+                            payload:
+                              description: |-
+                                (String) The payload.
+                                The payload.
+                              type: string
+                            status:
+                              description: |-
+                                (Number) HTTP status code.
+                                HTTP status code.
+                              type: number
+                          type: object
+                        type: array
+                      httpRewritePath:
+                        description: |-
+                          (Block List) Rewrites the HTTP request path using regex pattern matching. (see below for nested schema)
+                          Rewrites the HTTP request path using regex pattern matching.
+                        items:
+                          properties:
+                            matchPattern:
+                              description: |-
+                                (String) Regex pattern to match against the request path.
+                                Regex pattern to match against the request path.
+                              type: string
+                            rewriteTo:
+                              description: |-
+                                (String) Replacement pattern.
+                                Replacement pattern.
+                              type: string
+                          type: object
+                        type: array
+                      httpRewriteUri:
+                        description: |-
+                          (Block List) Rewrites the entire HTTP request URI using regex pattern matching. (see below for nested schema)
+                          Rewrites the entire HTTP request URI using regex pattern matching.
+                        items:
+                          properties:
+                            matchPattern:
+                              description: |-
+                                (String) Regex pattern to match against the request path.
+                                Regex pattern to match against the request URI.
+                              type: string
+                            rewriteTo:
+                              description: |-
+                                (String) Replacement pattern.
+                                Replacement pattern.
+                              type: string
+                          type: object
+                        type: array
+                      setForwardedHeaders:
+                        description: |-
+                          Forwarded-For / -Proto / -Port' headers in your forwarded requests (see below for nested schema)
+                          Adds 'X-Forwarded-For / -Proto / -Port' headers in your forwarded requests
+                        items:
+                          properties:
+                            active:
+                              description: (Boolean)
+                              type: boolean
+                          type: object
+                        type: array
+                      setRequestHeader:
+                        description: |-
+                          (Block List) Set request header (see below for nested schema)
+                          Set request header
+                        items:
+                          properties:
+                            header:
+                              description: |-
+                                (String) Header name.
+                                Header name.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Header value.
+                              type: string
+                          type: object
+                        type: array
+                      setResponseHeader:
+                        description: |-
+                          (Block List) Set response header (see below for nested schema)
+                          Set response header
+                        items:
+                          properties:
+                            header:
+                              description: |-
+                                (String) Header name.
+                                Header name.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Header value.
+                              type: string
+                          type: object
+                        type: array
+                      tcpReject:
+                        description: |-
+                          (Block List) Terminates a connection. (see below for nested schema)
+                          Terminates a connection.
+                        items:
+                          properties:
+                            active:
+                              description: |-
+                                (Boolean)
+                                Indicates if the rule is active.
+                              type: boolean
+                          type: object
+                        type: array
+                      useBackend:
+                        description: |-
+                          (Block List) Routes traffic to specified backend. (see below for nested schema)
+                          Routes traffic to specified `backend`.
+                        items:
+                          properties:
+                            backendName:
+                              description: |-
+                                (String) The name of the backend where traffic will be routed.
+                                The name of the backend where traffic will be routed.
+                              type: string
+                            backendNameRef:
+                              description: Reference to a LoadBalancerBackend in network
+                                to populate backendName.
+                              properties:
+                                name:
+                                  description: Name of the referenced object.
+                                  type: string
+                                namespace:
+                                  description: Namespace of the referenced object
+                                  type: string
+                                policy:
+                                  description: Policies for referencing.
+                                  properties:
+                                    resolution:
+                                      default: Required
+                                      description: |-
+                                        Resolution specifies whether resolution of this reference is required.
+                                        The default is 'Required', which means the reconcile will fail if the
+                                        reference cannot be resolved. 'Optional' means this reference will be
+                                        a no-op if it cannot be resolved.
+                                      enum:
+                                      - Required
+                                      - Optional
+                                      type: string
+                                    resolve:
+                                      description: |-
+                                        Resolve specifies when this reference should be resolved. The default
+                                        is 'IfNotPresent', which will attempt to resolve the reference only when
+                                        the corresponding field is not present. Use 'Always' to resolve the
+                                        reference on every reconcile.
+                                      enum:
+                                      - Always
+                                      - IfNotPresent
+                                      type: string
+                                  type: object
+                              required:
+                              - name
+                              type: object
+                            backendNameSelector:
+                              description: Selector for a LoadBalancerBackend in network
+                                to populate backendName.
+                              properties:
+                                matchControllerRef:
+                                  description: |-
+                                    MatchControllerRef ensures an object with the same controller reference
+                                    as the selecting object is selected.
+                                  type: boolean
+                                matchLabels:
+                                  additionalProperties:
+                                    type: string
+                                  description: MatchLabels ensures an object with
+                                    matching labels is selected.
+                                  type: object
+                                namespace:
+                                  description: Namespace for the selector
+                                  type: string
+                                policy:
+                                  description: Policies for selection.
+                                  properties:
+                                    resolution:
+                                      default: Required
+                                      description: |-
+                                        Resolution specifies whether resolution of this reference is required.
+                                        The default is 'Required', which means the reconcile will fail if the
+                                        reference cannot be resolved. 'Optional' means this reference will be
+                                        a no-op if it cannot be resolved.
+                                      enum:
+                                      - Required
+                                      - Optional
+                                      type: string
+                                    resolve:
+                                      description: |-
+                                        Resolve specifies when this reference should be resolved. The default
+                                        is 'IfNotPresent', which will attempt to resolve the reference only when
+                                        the corresponding field is not present. Use 'Always' to resolve the
+                                        reference on every reconcile.
+                                      enum:
+                                      - Always
+                                      - IfNotPresent
+                                      type: string
+                                  type: object
+                              type: object
+                          type: object
+                        type: array
+                    type: object
+                  frontend:
+                    description: |-
+                      (String) ID of the load balancer frontend to which the frontend rule is connected.
+                      ID of the load balancer frontend to which the frontend rule is connected.
+                    type: string
+                  frontendRef:
+                    description: Reference to a LoadBalancerFrontend in network to
+                      populate frontend.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      namespace:
+                        description: Namespace of the referenced object
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  frontendSelector:
+                    description: Selector for a LoadBalancerFrontend in network to
+                      populate frontend.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      namespace:
+                        description: Namespace for the selector
+                        type: string
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  matchers:
+                    description: |-
+                      (Block List) Set of rule matchers. If rule doesn't have matchers, then action applies to all incoming requests. (see below for nested schema)
+                      Set of rule matchers. If rule doesn't have matchers, then action applies to all incoming requests.
+                    properties:
+                      bodySize:
+                        description: |-
+                          (Block List) Matches by HTTP request body size. (see below for nested schema)
+                          Matches by HTTP request body size.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`equal`, `greater`, `greater_or_equal`, `less`, `less_or_equal`).
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      bodySizeRange:
+                        description: |-
+                          (Block List) Matches by range of HTTP request body sizes. (see below for nested schema)
+                          Matches by range of HTTP request body sizes.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            rangeEnd:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                            rangeStart:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      cookie:
+                        description: |-
+                          (Block List) Matches by HTTP cookie value. Cookie name must be provided. (see below for nested schema)
+                          Matches by HTTP cookie value. Cookie name must be provided.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            name:
+                              description: |-
+                                (String) The name of the frontend rule. Must be unique within the frontend.
+                                Name of the argument.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      header:
+                        description: |-
+                          (String) Header name.
+                          Matches by HTTP header value. Header name must be provided.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            name:
+                              description: |-
+                                (String) The name of the frontend rule. Must be unique within the frontend.
+                                Name of the argument.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      host:
+                        description: |-
+                          (Block List) Matches by hostname. Header extracted from HTTP Headers or from TLS certificate in case of secured connection. (see below for nested schema)
+                          Matches by hostname. Header extracted from HTTP Headers or from TLS certificate in case of secured connection.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      httpMethod:
+                        description: |-
+                          (Block List) Matches by HTTP method. (see below for nested schema)
+                          Matches by HTTP method.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value (`GET`, `HEAD`, `POST`, `PUT`, `PATCH`, `DELETE`, `CONNECT`, `OPTIONS`, `TRACE`).
+                              type: string
+                          type: object
+                        type: array
+                      httpStatus:
+                        description: |-
+                          (Block List) Matches by HTTP status. (see below for nested schema)
+                          Matches by HTTP status.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`equal`, `greater`, `greater_or_equal`, `less`, `less_or_equal`).
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      httpStatusRange:
+                        description: |-
+                          (Block List) Matches by range of HTTP statuses. (see below for nested schema)
+                          Matches by range of HTTP statuses.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            rangeEnd:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                            rangeStart:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      numMembersUp:
+                        description: |-
+                          (Block List) Matches by number of healthy backend members. (see below for nested schema)
+                          Matches by number of healthy backend members.
+                        items:
+                          properties:
+                            backendName:
+                              description: |-
+                                (String) The name of the backend where traffic will be routed.
+                                The name of the `backend`.
+                              type: string
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`equal`, `greater`, `greater_or_equal`, `less`, `less_or_equal`).
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      path:
+                        description: |-
+                          (Block List) Matches by URL path. (see below for nested schema)
+                          Matches by URL path.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      requestHeader:
+                        description: |-
+                          (Block List) Matches by HTTP request header value. Header name must be provided. (see below for nested schema)
+                          Matches by HTTP request header value. Header name must be provided.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            name:
+                              description: |-
+                                (String) The name of the frontend rule. Must be unique within the frontend.
+                                Name of the argument.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      responseHeader:
+                        description: |-
+                          (Block List) Matches by HTTP response header value. Header name must be provided. (see below for nested schema)
+                          Matches by HTTP response header value. Header name must be provided.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            name:
+                              description: |-
+                                (String) The name of the frontend rule. Must be unique within the frontend.
+                                Name of the argument.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      srcIp:
+                        description: |-
+                          (Block List) Matches by source IP address. (see below for nested schema)
+                          Matches by source IP address.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            value:
+                              description: |-
+                                (String) Header value.
+                                IP address. CIDR masks are supported, e.g. `192.168.0.0/24`.
+                              type: string
+                          type: object
+                        type: array
+                      srcPort:
+                        description: |-
+                          (Block List) Matches by source port number. (see below for nested schema)
+                          Matches by source port number.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`equal`, `greater`, `greater_or_equal`, `less`, `less_or_equal`).
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      srcPortRange:
+                        description: |-
+                          (Block List) Matches by range of source port numbers. (see below for nested schema)
+                          Matches by range of source port numbers.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            rangeEnd:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                            rangeStart:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      url:
+                        description: |-
+                          (Block List) Matches by URL without schema, e.g. example.com/dashboard. (see below for nested schema)
+                          Matches by URL without schema, e.g. `example.com/dashboard`.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      urlParam:
+                        description: |-
+                          (Block List) Matches by URL query parameter value. Query parameter name must be provided (see below for nested schema)
+                          Matches by URL query parameter value. Query parameter name must be provided
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            name:
+                              description: |-
+                                (String) The name of the frontend rule. Must be unique within the frontend.
+                                Name of the argument.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      urlQuery:
+                        description: |-
+                          (Block List) Matches by URL query string. (see below for nested schema)
+                          Matches by URL query string.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                  matchingCondition:
+                    description: |-
+                      (String) Defines boolean operator used to combine multiple matchers. Defaults to and.
+                      Defines boolean operator used to combine multiple matchers. Defaults to `and`.
+                    type: string
+                  priority:
+                    description: |-
+                      (Number) Rule with the higher priority goes first. Rules with the same priority processed in alphabetical order.
+                      Rule with the higher priority goes first. Rules with the same priority processed in alphabetical order.
+                    type: number
+                type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  actions:
+                    description: |-
+                      (Block List) Rule actions. (see below for nested schema)
+                      Rule actions.
+                    properties:
+                      httpRedirect:
+                        description: |-
+                          (Block List) Redirects HTTP requests to specified location or URL scheme. Only either location or scheme can be defined at a time. (see below for nested schema)
+                          Redirects HTTP requests to specified location or URL scheme. Only either location or scheme can be defined at a time.
+                        items:
+                          properties:
+                            location:
+                              description: |-
+                                (String) Target location.
+                                Target location.
+                              type: string
+                            scheme:
+                              description: |-
+                                (String) Target scheme.
+                                Target scheme.
+                              type: string
+                            status:
+                              description: |-
+                                (Number) HTTP status code.
+                                HTTP status code.
+                              type: number
+                          type: object
+                        type: array
+                      httpReturn:
+                        description: |-
+                          (Block List) Returns HTTP response with specified HTTP status. (see below for nested schema)
+                          Returns HTTP response with specified HTTP status.
+                        items:
+                          properties:
+                            contentType:
+                              description: |-
+                                (String) Content type.
+                                Content type.
+                              type: string
+                            payload:
+                              description: |-
+                                (String) The payload.
+                                The payload.
+                              type: string
+                            status:
+                              description: |-
+                                (Number) HTTP status code.
+                                HTTP status code.
+                              type: number
+                          type: object
+                        type: array
+                      httpRewritePath:
+                        description: |-
+                          (Block List) Rewrites the HTTP request path using regex pattern matching. (see below for nested schema)
+                          Rewrites the HTTP request path using regex pattern matching.
+                        items:
+                          properties:
+                            matchPattern:
+                              description: |-
+                                (String) Regex pattern to match against the request path.
+                                Regex pattern to match against the request path.
+                              type: string
+                            rewriteTo:
+                              description: |-
+                                (String) Replacement pattern.
+                                Replacement pattern.
+                              type: string
+                          type: object
+                        type: array
+                      httpRewriteUri:
+                        description: |-
+                          (Block List) Rewrites the entire HTTP request URI using regex pattern matching. (see below for nested schema)
+                          Rewrites the entire HTTP request URI using regex pattern matching.
+                        items:
+                          properties:
+                            matchPattern:
+                              description: |-
+                                (String) Regex pattern to match against the request path.
+                                Regex pattern to match against the request URI.
+                              type: string
+                            rewriteTo:
+                              description: |-
+                                (String) Replacement pattern.
+                                Replacement pattern.
+                              type: string
+                          type: object
+                        type: array
+                      setForwardedHeaders:
+                        description: |-
+                          Forwarded-For / -Proto / -Port' headers in your forwarded requests (see below for nested schema)
+                          Adds 'X-Forwarded-For / -Proto / -Port' headers in your forwarded requests
+                        items:
+                          properties:
+                            active:
+                              description: (Boolean)
+                              type: boolean
+                          type: object
+                        type: array
+                      setRequestHeader:
+                        description: |-
+                          (Block List) Set request header (see below for nested schema)
+                          Set request header
+                        items:
+                          properties:
+                            header:
+                              description: |-
+                                (String) Header name.
+                                Header name.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Header value.
+                              type: string
+                          type: object
+                        type: array
+                      setResponseHeader:
+                        description: |-
+                          (Block List) Set response header (see below for nested schema)
+                          Set response header
+                        items:
+                          properties:
+                            header:
+                              description: |-
+                                (String) Header name.
+                                Header name.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Header value.
+                              type: string
+                          type: object
+                        type: array
+                      tcpReject:
+                        description: |-
+                          (Block List) Terminates a connection. (see below for nested schema)
+                          Terminates a connection.
+                        items:
+                          properties:
+                            active:
+                              description: |-
+                                (Boolean)
+                                Indicates if the rule is active.
+                              type: boolean
+                          type: object
+                        type: array
+                      useBackend:
+                        description: |-
+                          (Block List) Routes traffic to specified backend. (see below for nested schema)
+                          Routes traffic to specified `backend`.
+                        items:
+                          properties:
+                            backendName:
+                              description: |-
+                                (String) The name of the backend where traffic will be routed.
+                                The name of the backend where traffic will be routed.
+                              type: string
+                            backendNameRef:
+                              description: Reference to a LoadBalancerBackend in network
+                                to populate backendName.
+                              properties:
+                                name:
+                                  description: Name of the referenced object.
+                                  type: string
+                                namespace:
+                                  description: Namespace of the referenced object
+                                  type: string
+                                policy:
+                                  description: Policies for referencing.
+                                  properties:
+                                    resolution:
+                                      default: Required
+                                      description: |-
+                                        Resolution specifies whether resolution of this reference is required.
+                                        The default is 'Required', which means the reconcile will fail if the
+                                        reference cannot be resolved. 'Optional' means this reference will be
+                                        a no-op if it cannot be resolved.
+                                      enum:
+                                      - Required
+                                      - Optional
+                                      type: string
+                                    resolve:
+                                      description: |-
+                                        Resolve specifies when this reference should be resolved. The default
+                                        is 'IfNotPresent', which will attempt to resolve the reference only when
+                                        the corresponding field is not present. Use 'Always' to resolve the
+                                        reference on every reconcile.
+                                      enum:
+                                      - Always
+                                      - IfNotPresent
+                                      type: string
+                                  type: object
+                              required:
+                              - name
+                              type: object
+                            backendNameSelector:
+                              description: Selector for a LoadBalancerBackend in network
+                                to populate backendName.
+                              properties:
+                                matchControllerRef:
+                                  description: |-
+                                    MatchControllerRef ensures an object with the same controller reference
+                                    as the selecting object is selected.
+                                  type: boolean
+                                matchLabels:
+                                  additionalProperties:
+                                    type: string
+                                  description: MatchLabels ensures an object with
+                                    matching labels is selected.
+                                  type: object
+                                namespace:
+                                  description: Namespace for the selector
+                                  type: string
+                                policy:
+                                  description: Policies for selection.
+                                  properties:
+                                    resolution:
+                                      default: Required
+                                      description: |-
+                                        Resolution specifies whether resolution of this reference is required.
+                                        The default is 'Required', which means the reconcile will fail if the
+                                        reference cannot be resolved. 'Optional' means this reference will be
+                                        a no-op if it cannot be resolved.
+                                      enum:
+                                      - Required
+                                      - Optional
+                                      type: string
+                                    resolve:
+                                      description: |-
+                                        Resolve specifies when this reference should be resolved. The default
+                                        is 'IfNotPresent', which will attempt to resolve the reference only when
+                                        the corresponding field is not present. Use 'Always' to resolve the
+                                        reference on every reconcile.
+                                      enum:
+                                      - Always
+                                      - IfNotPresent
+                                      type: string
+                                  type: object
+                              type: object
+                          type: object
+                        type: array
+                    type: object
+                  matchers:
+                    description: |-
+                      (Block List) Set of rule matchers. If rule doesn't have matchers, then action applies to all incoming requests. (see below for nested schema)
+                      Set of rule matchers. If rule doesn't have matchers, then action applies to all incoming requests.
+                    properties:
+                      bodySize:
+                        description: |-
+                          (Block List) Matches by HTTP request body size. (see below for nested schema)
+                          Matches by HTTP request body size.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`equal`, `greater`, `greater_or_equal`, `less`, `less_or_equal`).
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      bodySizeRange:
+                        description: |-
+                          (Block List) Matches by range of HTTP request body sizes. (see below for nested schema)
+                          Matches by range of HTTP request body sizes.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            rangeEnd:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                            rangeStart:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      cookie:
+                        description: |-
+                          (Block List) Matches by HTTP cookie value. Cookie name must be provided. (see below for nested schema)
+                          Matches by HTTP cookie value. Cookie name must be provided.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            name:
+                              description: |-
+                                (String) The name of the frontend rule. Must be unique within the frontend.
+                                Name of the argument.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      header:
+                        description: |-
+                          (String) Header name.
+                          Matches by HTTP header value. Header name must be provided.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            name:
+                              description: |-
+                                (String) The name of the frontend rule. Must be unique within the frontend.
+                                Name of the argument.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      host:
+                        description: |-
+                          (Block List) Matches by hostname. Header extracted from HTTP Headers or from TLS certificate in case of secured connection. (see below for nested schema)
+                          Matches by hostname. Header extracted from HTTP Headers or from TLS certificate in case of secured connection.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      httpMethod:
+                        description: |-
+                          (Block List) Matches by HTTP method. (see below for nested schema)
+                          Matches by HTTP method.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value (`GET`, `HEAD`, `POST`, `PUT`, `PATCH`, `DELETE`, `CONNECT`, `OPTIONS`, `TRACE`).
+                              type: string
+                          type: object
+                        type: array
+                      httpStatus:
+                        description: |-
+                          (Block List) Matches by HTTP status. (see below for nested schema)
+                          Matches by HTTP status.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`equal`, `greater`, `greater_or_equal`, `less`, `less_or_equal`).
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      httpStatusRange:
+                        description: |-
+                          (Block List) Matches by range of HTTP statuses. (see below for nested schema)
+                          Matches by range of HTTP statuses.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            rangeEnd:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                            rangeStart:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      numMembersUp:
+                        description: |-
+                          (Block List) Matches by number of healthy backend members. (see below for nested schema)
+                          Matches by number of healthy backend members.
+                        items:
+                          properties:
+                            backendName:
+                              description: |-
+                                (String) The name of the backend where traffic will be routed.
+                                The name of the `backend`.
+                              type: string
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`equal`, `greater`, `greater_or_equal`, `less`, `less_or_equal`).
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      path:
+                        description: |-
+                          (Block List) Matches by URL path. (see below for nested schema)
+                          Matches by URL path.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      requestHeader:
+                        description: |-
+                          (Block List) Matches by HTTP request header value. Header name must be provided. (see below for nested schema)
+                          Matches by HTTP request header value. Header name must be provided.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            name:
+                              description: |-
+                                (String) The name of the frontend rule. Must be unique within the frontend.
+                                Name of the argument.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      responseHeader:
+                        description: |-
+                          (Block List) Matches by HTTP response header value. Header name must be provided. (see below for nested schema)
+                          Matches by HTTP response header value. Header name must be provided.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            name:
+                              description: |-
+                                (String) The name of the frontend rule. Must be unique within the frontend.
+                                Name of the argument.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      srcIp:
+                        description: |-
+                          (Block List) Matches by source IP address. (see below for nested schema)
+                          Matches by source IP address.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            value:
+                              description: |-
+                                (String) Header value.
+                                IP address. CIDR masks are supported, e.g. `192.168.0.0/24`.
+                              type: string
+                          type: object
+                        type: array
+                      srcPort:
+                        description: |-
+                          (Block List) Matches by source port number. (see below for nested schema)
+                          Matches by source port number.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`equal`, `greater`, `greater_or_equal`, `less`, `less_or_equal`).
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      srcPortRange:
+                        description: |-
+                          (Block List) Matches by range of source port numbers. (see below for nested schema)
+                          Matches by range of source port numbers.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            rangeEnd:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                            rangeStart:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      url:
+                        description: |-
+                          (Block List) Matches by URL without schema, e.g. example.com/dashboard. (see below for nested schema)
+                          Matches by URL without schema, e.g. `example.com/dashboard`.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      urlParam:
+                        description: |-
+                          (Block List) Matches by URL query parameter value. Query parameter name must be provided (see below for nested schema)
+                          Matches by URL query parameter value. Query parameter name must be provided
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            name:
+                              description: |-
+                                (String) The name of the frontend rule. Must be unique within the frontend.
+                                Name of the argument.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      urlQuery:
+                        description: |-
+                          (Block List) Matches by URL query string. (see below for nested schema)
+                          Matches by URL query string.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                  matchingCondition:
+                    description: |-
+                      (String) Defines boolean operator used to combine multiple matchers. Defaults to and.
+                      Defines boolean operator used to combine multiple matchers. Defaults to `and`.
+                    type: string
+                  priority:
+                    description: |-
+                      (Number) Rule with the higher priority goes first. Rules with the same priority processed in alphabetical order.
+                      Rule with the higher priority goes first. Rules with the same priority processed in alphabetical order.
+                    type: number
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  kind: ClusterProviderConfig
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  kind:
+                    description: Kind of the referenced object.
+                    type: string
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - kind
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                required:
+                - name
+                type: object
+            required:
+            - forProvider
+            type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.priority is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.priority)
+                || (has(self.initProvider) && has(self.initProvider.priority))'
+          status:
+            description: LoadBalancerFrontendRuleStatus defines the observed state
+              of LoadBalancerFrontendRule.
+            properties:
+              atProvider:
+                properties:
+                  actions:
+                    description: |-
+                      (Block List) Rule actions. (see below for nested schema)
+                      Rule actions.
+                    properties:
+                      httpRedirect:
+                        description: |-
+                          (Block List) Redirects HTTP requests to specified location or URL scheme. Only either location or scheme can be defined at a time. (see below for nested schema)
+                          Redirects HTTP requests to specified location or URL scheme. Only either location or scheme can be defined at a time.
+                        items:
+                          properties:
+                            location:
+                              description: |-
+                                (String) Target location.
+                                Target location.
+                              type: string
+                            scheme:
+                              description: |-
+                                (String) Target scheme.
+                                Target scheme.
+                              type: string
+                            status:
+                              description: |-
+                                (Number) HTTP status code.
+                                HTTP status code.
+                              type: number
+                          type: object
+                        type: array
+                      httpReturn:
+                        description: |-
+                          (Block List) Returns HTTP response with specified HTTP status. (see below for nested schema)
+                          Returns HTTP response with specified HTTP status.
+                        items:
+                          properties:
+                            contentType:
+                              description: |-
+                                (String) Content type.
+                                Content type.
+                              type: string
+                            payload:
+                              description: |-
+                                (String) The payload.
+                                The payload.
+                              type: string
+                            status:
+                              description: |-
+                                (Number) HTTP status code.
+                                HTTP status code.
+                              type: number
+                          type: object
+                        type: array
+                      httpRewritePath:
+                        description: |-
+                          (Block List) Rewrites the HTTP request path using regex pattern matching. (see below for nested schema)
+                          Rewrites the HTTP request path using regex pattern matching.
+                        items:
+                          properties:
+                            matchPattern:
+                              description: |-
+                                (String) Regex pattern to match against the request path.
+                                Regex pattern to match against the request path.
+                              type: string
+                            rewriteTo:
+                              description: |-
+                                (String) Replacement pattern.
+                                Replacement pattern.
+                              type: string
+                          type: object
+                        type: array
+                      httpRewriteUri:
+                        description: |-
+                          (Block List) Rewrites the entire HTTP request URI using regex pattern matching. (see below for nested schema)
+                          Rewrites the entire HTTP request URI using regex pattern matching.
+                        items:
+                          properties:
+                            matchPattern:
+                              description: |-
+                                (String) Regex pattern to match against the request path.
+                                Regex pattern to match against the request URI.
+                              type: string
+                            rewriteTo:
+                              description: |-
+                                (String) Replacement pattern.
+                                Replacement pattern.
+                              type: string
+                          type: object
+                        type: array
+                      setForwardedHeaders:
+                        description: |-
+                          Forwarded-For / -Proto / -Port' headers in your forwarded requests (see below for nested schema)
+                          Adds 'X-Forwarded-For / -Proto / -Port' headers in your forwarded requests
+                        items:
+                          properties:
+                            active:
+                              description: (Boolean)
+                              type: boolean
+                          type: object
+                        type: array
+                      setRequestHeader:
+                        description: |-
+                          (Block List) Set request header (see below for nested schema)
+                          Set request header
+                        items:
+                          properties:
+                            header:
+                              description: |-
+                                (String) Header name.
+                                Header name.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Header value.
+                              type: string
+                          type: object
+                        type: array
+                      setResponseHeader:
+                        description: |-
+                          (Block List) Set response header (see below for nested schema)
+                          Set response header
+                        items:
+                          properties:
+                            header:
+                              description: |-
+                                (String) Header name.
+                                Header name.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Header value.
+                              type: string
+                          type: object
+                        type: array
+                      tcpReject:
+                        description: |-
+                          (Block List) Terminates a connection. (see below for nested schema)
+                          Terminates a connection.
+                        items:
+                          properties:
+                            active:
+                              description: |-
+                                (Boolean)
+                                Indicates if the rule is active.
+                              type: boolean
+                          type: object
+                        type: array
+                      useBackend:
+                        description: |-
+                          (Block List) Routes traffic to specified backend. (see below for nested schema)
+                          Routes traffic to specified `backend`.
+                        items:
+                          properties:
+                            backendName:
+                              description: |-
+                                (String) The name of the backend where traffic will be routed.
+                                The name of the backend where traffic will be routed.
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                  frontend:
+                    description: |-
+                      (String) ID of the load balancer frontend to which the frontend rule is connected.
+                      ID of the load balancer frontend to which the frontend rule is connected.
+                    type: string
+                  id:
+                    description: (String) ID of the frontend rule. ID is in {load
+                      balancer UUID}/{frontend name}/{frontend rule name} format.
+                    type: string
+                  matchers:
+                    description: |-
+                      (Block List) Set of rule matchers. If rule doesn't have matchers, then action applies to all incoming requests. (see below for nested schema)
+                      Set of rule matchers. If rule doesn't have matchers, then action applies to all incoming requests.
+                    properties:
+                      bodySize:
+                        description: |-
+                          (Block List) Matches by HTTP request body size. (see below for nested schema)
+                          Matches by HTTP request body size.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`equal`, `greater`, `greater_or_equal`, `less`, `less_or_equal`).
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      bodySizeRange:
+                        description: |-
+                          (Block List) Matches by range of HTTP request body sizes. (see below for nested schema)
+                          Matches by range of HTTP request body sizes.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            rangeEnd:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                            rangeStart:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      cookie:
+                        description: |-
+                          (Block List) Matches by HTTP cookie value. Cookie name must be provided. (see below for nested schema)
+                          Matches by HTTP cookie value. Cookie name must be provided.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            name:
+                              description: |-
+                                (String) The name of the frontend rule. Must be unique within the frontend.
+                                Name of the argument.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      header:
+                        description: |-
+                          (String) Header name.
+                          Matches by HTTP header value. Header name must be provided.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            name:
+                              description: |-
+                                (String) The name of the frontend rule. Must be unique within the frontend.
+                                Name of the argument.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      host:
+                        description: |-
+                          (Block List) Matches by hostname. Header extracted from HTTP Headers or from TLS certificate in case of secured connection. (see below for nested schema)
+                          Matches by hostname. Header extracted from HTTP Headers or from TLS certificate in case of secured connection.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      httpMethod:
+                        description: |-
+                          (Block List) Matches by HTTP method. (see below for nested schema)
+                          Matches by HTTP method.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value (`GET`, `HEAD`, `POST`, `PUT`, `PATCH`, `DELETE`, `CONNECT`, `OPTIONS`, `TRACE`).
+                              type: string
+                          type: object
+                        type: array
+                      httpStatus:
+                        description: |-
+                          (Block List) Matches by HTTP status. (see below for nested schema)
+                          Matches by HTTP status.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`equal`, `greater`, `greater_or_equal`, `less`, `less_or_equal`).
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      httpStatusRange:
+                        description: |-
+                          (Block List) Matches by range of HTTP statuses. (see below for nested schema)
+                          Matches by range of HTTP statuses.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            rangeEnd:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                            rangeStart:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      numMembersUp:
+                        description: |-
+                          (Block List) Matches by number of healthy backend members. (see below for nested schema)
+                          Matches by number of healthy backend members.
+                        items:
+                          properties:
+                            backendName:
+                              description: |-
+                                (String) The name of the backend where traffic will be routed.
+                                The name of the `backend`.
+                              type: string
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`equal`, `greater`, `greater_or_equal`, `less`, `less_or_equal`).
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      path:
+                        description: |-
+                          (Block List) Matches by URL path. (see below for nested schema)
+                          Matches by URL path.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      requestHeader:
+                        description: |-
+                          (Block List) Matches by HTTP request header value. Header name must be provided. (see below for nested schema)
+                          Matches by HTTP request header value. Header name must be provided.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            name:
+                              description: |-
+                                (String) The name of the frontend rule. Must be unique within the frontend.
+                                Name of the argument.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      responseHeader:
+                        description: |-
+                          (Block List) Matches by HTTP response header value. Header name must be provided. (see below for nested schema)
+                          Matches by HTTP response header value. Header name must be provided.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            name:
+                              description: |-
+                                (String) The name of the frontend rule. Must be unique within the frontend.
+                                Name of the argument.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      srcIp:
+                        description: |-
+                          (Block List) Matches by source IP address. (see below for nested schema)
+                          Matches by source IP address.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            value:
+                              description: |-
+                                (String) Header value.
+                                IP address. CIDR masks are supported, e.g. `192.168.0.0/24`.
+                              type: string
+                          type: object
+                        type: array
+                      srcPort:
+                        description: |-
+                          (Block List) Matches by source port number. (see below for nested schema)
+                          Matches by source port number.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`equal`, `greater`, `greater_or_equal`, `less`, `less_or_equal`).
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      srcPortRange:
+                        description: |-
+                          (Block List) Matches by range of source port numbers. (see below for nested schema)
+                          Matches by range of source port numbers.
+                        items:
+                          properties:
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            rangeEnd:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                            rangeStart:
+                              description: |-
+                                (Number) Integer value.
+                                Integer value.
+                              type: number
+                          type: object
+                        type: array
+                      url:
+                        description: |-
+                          (Block List) Matches by URL without schema, e.g. example.com/dashboard. (see below for nested schema)
+                          Matches by URL without schema, e.g. `example.com/dashboard`.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      urlParam:
+                        description: |-
+                          (Block List) Matches by URL query parameter value. Query parameter name must be provided (see below for nested schema)
+                          Matches by URL query parameter value. Query parameter name must be provided
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            name:
+                              description: |-
+                                (String) The name of the frontend rule. Must be unique within the frontend.
+                                Name of the argument.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                      urlQuery:
+                        description: |-
+                          (Block List) Matches by URL query string. (see below for nested schema)
+                          Matches by URL query string.
+                        items:
+                          properties:
+                            ignoreCase:
+                              description: |-
+                                (Boolean) Defines if case should be ignored. Defaults to false.
+                                Defines if case should be ignored. Defaults to `false`.
+                              type: boolean
+                            inverse:
+                              description: |-
+                                (Boolean) Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                                Defines if the condition should be inverted. Works similarly to logical NOT operator.
+                              type: boolean
+                            method:
+                              description: |-
+                                (String) Match method (equal, greater, greater_or_equal, less, less_or_equal).
+                                Match method (`exact`, `substring`, `regexp`, `starts`, `ends`, `domain`, `ip`, `exists`). Matcher with `exists` and `ip` methods must be used without `value` and `ignore_case` fields.
+                              type: string
+                            value:
+                              description: |-
+                                (String) Header value.
+                                String value.
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                  matchingCondition:
+                    description: |-
+                      (String) Defines boolean operator used to combine multiple matchers. Defaults to and.
+                      Defines boolean operator used to combine multiple matchers. Defaults to `and`.
+                    type: string
+                  priority:
+                    description: |-
+                      (Number) Rule with the higher priority goes first. Rules with the same priority processed in alphabetical order.
+                      Rule with the higher priority goes first. Rules with the same priority processed in alphabetical order.
+                    type: number
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

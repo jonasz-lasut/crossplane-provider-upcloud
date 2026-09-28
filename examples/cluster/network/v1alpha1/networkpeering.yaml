@@ -1,0 +1,93 @@
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: NetworkPeering
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/networkpeering
+  labels:
+    testing.upbound.io/example-name: peering-example
+  name: peering-example
+spec:
+  forProvider:
+    name: peering-example
+    network:
+      - uuidRef:
+          name: peering-example-network-a
+    peerNetwork:
+      - uuidRef:
+          name: peering-example-network-b
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/networkpeering
+  labels:
+    testing.upbound.io/example-name: peering-example-network-a
+  name: peering-example-network-a
+spec:
+  forProvider:
+    name: peering-example-network-a
+    zone: fi-hel2
+    ipNetwork:
+      address: 10.21.0.0/24
+      dhcp: true
+      family: IPv4
+    routerRef:
+      name: peering-example-router-a
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/networkpeering
+  labels:
+    testing.upbound.io/example-name: peering-example-network-b
+  name: peering-example-network-b
+spec:
+  forProvider:
+    name: peering-example-network-b
+    zone: fi-hel2
+    ipNetwork:
+      address: 10.22.0.0/24
+      dhcp: true
+      family: IPv4
+    routerRef:
+      name: peering-example-router-b
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Router
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/networkpeering
+  labels:
+    testing.upbound.io/example-name: peering-example-router-a
+  name: peering-example-router-a
+spec:
+  forProvider:
+    name: peering-example-router-a
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Router
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/networkpeering
+  labels:
+    testing.upbound.io/example-name: peering-example-router-b
+  name: peering-example-router-b
+spec:
+  forProvider:
+    name: peering-example-router-b
+  providerConfigRef:
+    name: default

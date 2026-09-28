@@ -1,0 +1,35 @@
+apiVersion: storage.upcloud.crossplane.io/v1alpha1
+kind: StorageTemplate
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/storagetemplate
+  labels:
+    testing.upbound.io/example-name: template-example
+  name: template-example
+spec:
+  forProvider:
+    title: template-example
+    labels:
+      usage: example
+    sourceStorageRef:
+      name: template-example-storage
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: storage.upcloud.crossplane.io/v1alpha1
+kind: Storage
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/storagetemplate
+  labels:
+    testing.upbound.io/example-name: template-example-storage
+  name: template-example-storage
+spec:
+  forProvider:
+    size: 10
+    tier: standard
+    title: template-example-storage
+    zone: fi-hel2
+  providerConfigRef:
+    name: default

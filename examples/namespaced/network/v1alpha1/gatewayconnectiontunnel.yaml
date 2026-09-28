@@ -1,0 +1,132 @@
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: GatewayConnectionTunnel
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/gatewayconnectiontunnel
+  labels:
+    testing.upbound.io/example-name: gwtunnel-example
+  name: gwtunnel-example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: gwtunnel-example
+    connectionIdRef:
+      name: gwtunnel-example-connection
+    localAddressName: gwtunnel-example-address
+    remoteAddress: 100.123.123.10
+    ipsecAuthPsk:
+      pskSecretRef:
+        name: gwtunnel-example-psk
+        key: psk
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: GatewayConnection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/gatewayconnectiontunnel
+  labels:
+    testing.upbound.io/example-name: gwtunnel-example-connection
+  name: gwtunnel-example-connection
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: gwtunnel-example-connection
+    type: ipsec
+    gatewayRef:
+      name: gwtunnel-example-gateway
+    localRoute:
+      - name: local-route
+        type: static
+        staticNetwork: 10.123.123.0/24
+    remoteRoute:
+      - name: remote-route
+        type: static
+        staticNetwork: 100.123.123.0/24
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: Gateway
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/gatewayconnectiontunnel
+  labels:
+    testing.upbound.io/example-name: gwtunnel-example-gateway
+  name: gwtunnel-example-gateway
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: gwtunnel-example-gateway
+    zone: fi-hel2
+    plan: advanced
+    features:
+      - vpn
+    labels:
+      environment: example
+    router:
+      idRef:
+        name: gwtunnel-example-router
+    address:
+      name: gwtunnel-example-address
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/gatewayconnectiontunnel
+    uptest.upbound.io/pre-delete-hook: ../testhooks/delete-gateway.sh
+  labels:
+    testing.upbound.io/example-name: gwtunnel-example-network
+  name: gwtunnel-example-network
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: gwtunnel-example-network
+    zone: fi-hel2
+    ipNetwork:
+      address: 172.16.23.0/24
+      dhcp: true
+      family: IPv4
+    routerRef:
+      name: gwtunnel-example-router
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: Router
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/gatewayconnectiontunnel
+    uptest.upbound.io/pre-delete-hook: ../testhooks/delete-gateway.sh
+  labels:
+    testing.upbound.io/example-name: gwtunnel-example-router
+  name: gwtunnel-example-router
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: gwtunnel-example-router
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gwtunnel-example-psk
+  namespace: crossplane-system
+type: Opaque
+stringData:
+  psk: example_pre_shared_key_change_me

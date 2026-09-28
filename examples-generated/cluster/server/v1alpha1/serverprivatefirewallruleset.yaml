@@ -1,0 +1,81 @@
+apiVersion: server.upcloud.crossplane.io/v1alpha1
+kind: ServerPrivateFirewallRuleset
+metadata:
+  annotations:
+    meta.upbound.io/example-id: server/v1alpha1/serverprivatefirewallruleset
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    rulesetIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    serverIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: FirewallRuleset
+metadata:
+  annotations:
+    meta.upbound.io/example-id: server/v1alpha1/serverprivatefirewallruleset
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    description: Private SDN ruleset
+    name: example-private-ruleset
+    rules:
+    - action: accept
+      comment: Allow SSH
+      destinationPortEnd: 22
+      destinationPortStart: 22
+      direction: in
+      family: IPv4
+      protocol: tcp
+
+---
+
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: server/v1alpha1/serverprivatefirewallruleset
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    ipNetwork:
+    - address: 172.24.1.0/24
+      dhcp: true
+      family: IPv4
+    name: terraform-example-private-network
+    zone: de-fra1
+
+---
+
+apiVersion: server.upcloud.crossplane.io/v1alpha1
+kind: Server
+metadata:
+  annotations:
+    meta.upbound.io/example-id: server/v1alpha1/serverprivatefirewallruleset
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    hostname: terraform.example.tld
+    networkInterface:
+    - networkSelector:
+        matchLabels:
+          testing.upbound.io/example-name: example
+      type: private
+    plan: 1xCPU-1GB
+    template:
+    - storage: Ubuntu Server 24.04 LTS (Noble Numbat)
+    zone: de-fra1

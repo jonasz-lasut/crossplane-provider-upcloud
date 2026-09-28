@@ -1,0 +1,83 @@
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: LoadBalancerFrontend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerfrontend
+  labels:
+    testing.upbound.io/example-name: lbfrontend-example-frontend
+  name: lbfrontend-example-frontend
+spec:
+  forProvider:
+    loadbalancerRef:
+      name: lbfrontend-example-lb
+    defaultBackendNameRef:
+      name: lbfrontend-example-backend
+    mode: http
+    port: 8080
+    networks:
+      - name: public
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: LoadBalancerBackend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerfrontend
+  labels:
+    testing.upbound.io/example-name: lbfrontend-example-backend
+  name: lbfrontend-example-backend
+spec:
+  forProvider:
+    loadbalancerRef:
+      name: lbfrontend-example-lb
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: LoadBalancer
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerfrontend
+  labels:
+    testing.upbound.io/example-name: lbfrontend-example-lb
+  name: lbfrontend-example-lb
+spec:
+  forProvider:
+    name: lbfrontend-example-lb
+    zone: fi-hel2
+    plan: development
+    configuredStatus: started
+    networks:
+      - name: private
+        type: private
+        family: IPv4
+        networkRef:
+          name: lbfrontend-example-network
+      - name: public
+        type: public
+        family: IPv4
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerfrontend
+  labels:
+    testing.upbound.io/example-name: lbfrontend-example-network
+  name: lbfrontend-example-network
+spec:
+  forProvider:
+    name: lbfrontend-example-network
+    zone: fi-hel2
+    ipNetwork:
+      address: 10.36.0.0/24
+      dhcp: true
+      family: IPv4
+  providerConfigRef:
+    name: default

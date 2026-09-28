@@ -9,12 +9,12 @@ metadata:
 spec:
   forProvider:
     name: uks-example
-    zone: de-fra1
+    zone: fi-hel2
     controlPlaneIpFilter:
       - 0.0.0.0/0
-    labels: {}
-    networkRef:
-      name: uks-example-network
+    networkSelector:
+      matchLabels:
+        testing.upbound.io/example-name: uks-example-network
   providerConfigRef:
     name: default
 
@@ -26,14 +26,14 @@ metadata:
     meta.upbound.io/example-id: uks/v1alpha1/kubernetescluster
   labels:
     testing.upbound.io/example-name: uks-example-network
-  name: uks-example-network
+  name: uks-${Rand.RFC1123Subdomain}
 spec:
   forProvider:
-    name: uks-example-network
-    zone: de-fra1
+    name: uks-${Rand.RFC1123Subdomain}
+    zone: fi-hel2
     ipNetwork:
-      - address: 172.16.1.0/24
-        dhcp: true
-        family: IPv4
+      address: 172.16.11.0/24
+      dhcp: true
+      family: IPv4
   providerConfigRef:
     name: default

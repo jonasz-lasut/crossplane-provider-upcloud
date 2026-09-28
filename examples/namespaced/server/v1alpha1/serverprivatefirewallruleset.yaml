@@ -1,0 +1,97 @@
+apiVersion: server.upcloud.m.crossplane.io/v1alpha1
+kind: ServerPrivateFirewallRuleset
+metadata:
+  annotations:
+    meta.upbound.io/example-id: server/v1alpha1/serverprivatefirewallruleset
+  labels:
+    testing.upbound.io/example-name: serverprivatefirewallruleset-example
+  name: serverprivatefirewallruleset-example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    serverIdRef:
+      name: serverprivatefirewallruleset-example-server
+    rulesetIdRef:
+      name: serverprivatefirewallruleset-example-ruleset
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: FirewallRuleset
+metadata:
+  annotations:
+    meta.upbound.io/example-id: server/v1alpha1/serverprivatefirewallruleset
+  labels:
+    testing.upbound.io/example-name: serverprivatefirewallruleset-example-ruleset
+  name: serverprivatefirewallruleset-example-ruleset
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: serverprivatefirewallruleset-example-ruleset
+    description: example private ruleset
+    rules:
+      - action: accept
+        direction: in
+        family: IPv4
+        protocol: tcp
+        destinationPortStart: 22
+        destinationPortEnd: 22
+        comment: Allow SSH
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: server.upcloud.m.crossplane.io/v1alpha1
+kind: Server
+metadata:
+  annotations:
+    meta.upbound.io/example-id: server/v1alpha1/serverprivatefirewallruleset
+  labels:
+    testing.upbound.io/example-name: serverprivatefirewallruleset-example-server
+  name: serverprivatefirewallruleset-example-server
+  namespace: crossplane-system
+spec:
+  forProvider:
+    hostname: serverprivatefirewallruleset-example-server
+    title: serverprivatefirewallruleset-example-server
+    plan: 1xCPU-1GB
+    zone: fi-hel2
+    metadata: true
+    login:
+      user: example
+    networkInterface:
+      - type: public
+      - type: private
+        networkRef:
+          name: serverprivatefirewallruleset-example-network
+    template:
+      size: 25
+      storage: Ubuntu Server 24.04 LTS (Noble Numbat)
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: server/v1alpha1/serverprivatefirewallruleset
+  labels:
+    testing.upbound.io/example-name: serverprivatefirewallruleset-example-network
+  name: serverprivatefirewallruleset-example-network
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: serverprivatefirewallruleset-example-network
+    zone: fi-hel2
+    ipNetwork:
+      address: 10.15.0.0/24
+      dhcp: true
+      family: IPv4
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

@@ -18,6 +18,7 @@ type ManagedObjectStorageUserPolicyInitParameters struct {
 	// (String) Policy name.
 	// Policy name.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/objectstorage/v1alpha1.ManagedObjectStoragePolicy
+	// +crossplane:generate:reference:extractor=github.com/crossplane-contrib/provider-upcloud/config/common.ObservedExternalName()
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Reference to a ManagedObjectStoragePolicy in objectstorage to populate name.
@@ -44,6 +45,7 @@ type ManagedObjectStorageUserPolicyInitParameters struct {
 	// (String) Username.
 	// Username.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/objectstorage/v1alpha1.ManagedObjectStorageUser
+	// +crossplane:generate:reference:extractor=github.com/crossplane-contrib/provider-upcloud/config/common.ObservedExternalName()
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
 	// Reference to a ManagedObjectStorageUser in objectstorage to populate username.
@@ -78,6 +80,7 @@ type ManagedObjectStorageUserPolicyParameters struct {
 	// (String) Policy name.
 	// Policy name.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/objectstorage/v1alpha1.ManagedObjectStoragePolicy
+	// +crossplane:generate:reference:extractor=github.com/crossplane-contrib/provider-upcloud/config/common.ObservedExternalName()
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
@@ -106,6 +109,7 @@ type ManagedObjectStorageUserPolicyParameters struct {
 	// (String) Username.
 	// Username.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upcloud/apis/namespaced/objectstorage/v1alpha1.ManagedObjectStorageUser
+	// +crossplane:generate:reference:extractor=github.com/crossplane-contrib/provider-upcloud/config/common.ObservedExternalName()
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 

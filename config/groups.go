@@ -38,10 +38,28 @@ var GroupMap = map[string]GroupKindCalculator{
 	"upcloud_managed_database_postgresql":       KnownGroupKind("database", "ManagedDatabasePostgresql"),
 	"upcloud_managed_database_user":             KnownGroupKind("database", "ManagedDatabaseUser"),
 	"upcloud_managed_database_valkey":           KnownGroupKind("database", "ManagedDatabaseValkey"),
+	"upcloud_managed_database_connection_pool":  KnownGroupKind("database", "ManagedDatabaseConnectionPool"),
 
 	// network
-	"upcloud_network": KnownGroupKind("network", "Network"),
-	"upcloud_router":  KnownGroupKind("network", "Router"),
+	"upcloud_firewall_ruleset":                        KnownGroupKind("network", "FirewallRuleset"),
+	"upcloud_floating_ip_address":                     KnownGroupKind("network", "FloatingIPAddress"),
+	"upcloud_gateway":                                 KnownGroupKind("network", "Gateway"),
+	"upcloud_gateway_connection":                      KnownGroupKind("network", "GatewayConnection"),
+	"upcloud_gateway_connection_tunnel":               KnownGroupKind("network", "GatewayConnectionTunnel"),
+	"upcloud_loadbalancer":                            KnownGroupKind("network", "LoadBalancer"),
+	"upcloud_loadbalancer_backend":                    KnownGroupKind("network", "LoadBalancerBackend"),
+	"upcloud_loadbalancer_backend_tls_config":         KnownGroupKind("network", "LoadBalancerBackendTLSConfig"),
+	"upcloud_loadbalancer_dynamic_backend_member":     KnownGroupKind("network", "LoadBalancerDynamicBackendMember"),
+	"upcloud_loadbalancer_dynamic_certificate_bundle": KnownGroupKind("network", "LoadBalancerDynamicCertificateBundle"),
+	"upcloud_loadbalancer_frontend":                   KnownGroupKind("network", "LoadBalancerFrontend"),
+	"upcloud_loadbalancer_frontend_rule":              KnownGroupKind("network", "LoadBalancerFrontendRule"),
+	"upcloud_loadbalancer_frontend_tls_config":        KnownGroupKind("network", "LoadBalancerFrontendTLSConfig"),
+	"upcloud_loadbalancer_manual_certificate_bundle":  KnownGroupKind("network", "LoadBalancerManualCertificateBundle"),
+	"upcloud_loadbalancer_resolver":                   KnownGroupKind("network", "LoadBalancerResolver"),
+	"upcloud_loadbalancer_static_backend_member":      KnownGroupKind("network", "LoadBalancerStaticBackendMember"),
+	"upcloud_network":                                 KnownGroupKind("network", "Network"),
+	"upcloud_network_peering":                         KnownGroupKind("network", "NetworkPeering"),
+	"upcloud_router":                                  KnownGroupKind("network", "Router"),
 
 	// objectstorage
 	"upcloud_managed_object_storage":                 KnownGroupKind("objectstorage", "ManagedObjectStorage"),
@@ -49,14 +67,24 @@ var GroupMap = map[string]GroupKindCalculator{
 	"upcloud_managed_object_storage_user":            KnownGroupKind("objectstorage", "ManagedObjectStorageUser"),
 	"upcloud_managed_object_storage_user_access_key": KnownGroupKind("objectstorage", "ManagedObjectStorageUserAccessKey"),
 	"upcloud_managed_object_storage_user_policy":     KnownGroupKind("objectstorage", "ManagedObjectStorageUserPolicy"),
+	"upcloud_managed_object_storage_bucket":          KnownGroupKind("objectstorage", "ManagedObjectStorageBucket"),
+	"upcloud_managed_object_storage_custom_domain":   KnownGroupKind("objectstorage", "ManagedObjectStorageCustomDomain"),
+	"upcloud_managed_object_storage_static_site":     KnownGroupKind("objectstorage", "ManagedObjectStorageStaticSite"),
 
 	// server
-	"upcloud_firewall_rules": KnownGroupKind("server", "FirewallRules"),
-	"upcloud_server":         KnownGroupKind("server", "Server"),
-	"upcloud_server_group":   KnownGroupKind("server", "ServerGroup"),
+	"upcloud_firewall_rules":                  KnownGroupKind("server", "FirewallRules"),
+	"upcloud_server":                          KnownGroupKind("server", "Server"),
+	"upcloud_server_group":                    KnownGroupKind("server", "ServerGroup"),
+	"upcloud_server_private_firewall_ruleset": KnownGroupKind("server", "ServerPrivateFirewallRuleset"),
+	"upcloud_tag":                             KnownGroupKind("server", "Tag"),
 
 	// storage
-	"upcloud_storage": KnownGroupKind("storage", "Storage"),
+	"upcloud_file_storage":           KnownGroupKind("storage", "FileStorage"),
+	"upcloud_file_storage_share":     KnownGroupKind("storage", "FileStorageShare"),
+	"upcloud_file_storage_share_acl": KnownGroupKind("storage", "FileStorageShareACL"),
+	"upcloud_storage":                KnownGroupKind("storage", "Storage"),
+	"upcloud_storage_backup":         KnownGroupKind("storage", "StorageBackup"),
+	"upcloud_storage_template":       KnownGroupKind("storage", "StorageTemplate"),
 
 	// uks
 	"upcloud_kubernetes_cluster":    KnownGroupKind("uks", "KubernetesCluster"),

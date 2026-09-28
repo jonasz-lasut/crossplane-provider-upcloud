@@ -1,0 +1,16 @@
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: LoadBalancerManualCertificateBundle
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancermanualcertificatebundle
+  labels:
+    testing.upbound.io/example-name: lb_cb_m1
+  name: lb-cb-m1
+spec:
+  forProvider:
+    certificate: ${base64encode(file(var.certificate_path))}
+    name: lb-cb-m1-test
+    privateKeySecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system

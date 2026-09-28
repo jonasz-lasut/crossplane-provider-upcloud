@@ -13,7 +13,7 @@ import (
 	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
-type RouterInitParameters struct {
+type RouterInitParameters_2 struct {
 
 	// value pairs to classify the router.
 	// User defined key-value pairs to classify the router.
@@ -29,7 +29,7 @@ type RouterInitParameters struct {
 	StaticRoute []StaticRouteInitParameters `json:"staticRoute,omitempty" tf:"static_route,omitempty"`
 }
 
-type RouterObservation struct {
+type RouterObservation_2 struct {
 
 	// (List of String) List of UUIDs representing networks attached to this router.
 	// List of UUIDs representing networks attached to this router.
@@ -60,7 +60,7 @@ type RouterObservation struct {
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
-type RouterParameters struct {
+type RouterParameters_2 struct {
 
 	// value pairs to classify the router.
 	// User defined key-value pairs to classify the router.
@@ -155,7 +155,7 @@ type StaticRoutesParameters struct {
 // RouterSpec defines the desired state of Router
 type RouterSpec struct {
 	v2.ManagedResourceSpec `json:",inline"`
-	ForProvider            RouterParameters `json:"forProvider"`
+	ForProvider            RouterParameters_2 `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -166,13 +166,13 @@ type RouterSpec struct {
 	// required on creation, but we do not desire to update them after creation,
 	// for example because of an external controller is managing them, like an
 	// autoscaler.
-	InitProvider RouterInitParameters `json:"initProvider,omitempty"`
+	InitProvider RouterInitParameters_2 `json:"initProvider,omitempty"`
 }
 
 // RouterStatus defines the observed state of Router.
 type RouterStatus struct {
 	v2.ManagedResourceStatus `json:",inline"`
-	AtProvider               RouterObservation `json:"atProvider,omitempty"`
+	AtProvider               RouterObservation_2 `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
@@ -188,9 +188,7 @@ type RouterStatus struct {
 type Router struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.labels) || (has(self.initProvider) && has(self.initProvider.labels))",message="spec.forProvider.labels is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.staticRoute) || (has(self.initProvider) && has(self.initProvider.staticRoute))",message="spec.forProvider.staticRoute is a required parameter"
 	Spec   RouterSpec   `json:"spec"`
 	Status RouterStatus `json:"status,omitempty"`
 }

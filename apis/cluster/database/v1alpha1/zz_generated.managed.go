@@ -8,6 +8,56 @@ package v1alpha1
 
 import xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 
+// GetCondition of this ManagedDatabaseConnectionPool.
+func (mg *ManagedDatabaseConnectionPool) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this ManagedDatabaseConnectionPool.
+func (mg *ManagedDatabaseConnectionPool) GetDeletionPolicy() xpv2.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicies of this ManagedDatabaseConnectionPool.
+func (mg *ManagedDatabaseConnectionPool) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this ManagedDatabaseConnectionPool.
+func (mg *ManagedDatabaseConnectionPool) GetProviderConfigReference() *xpv2.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this ManagedDatabaseConnectionPool.
+func (mg *ManagedDatabaseConnectionPool) GetWriteConnectionSecretToReference() *xpv2.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this ManagedDatabaseConnectionPool.
+func (mg *ManagedDatabaseConnectionPool) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this ManagedDatabaseConnectionPool.
+func (mg *ManagedDatabaseConnectionPool) SetDeletionPolicy(r xpv2.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this ManagedDatabaseConnectionPool.
+func (mg *ManagedDatabaseConnectionPool) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this ManagedDatabaseConnectionPool.
+func (mg *ManagedDatabaseConnectionPool) SetProviderConfigReference(r *xpv2.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this ManagedDatabaseConnectionPool.
+func (mg *ManagedDatabaseConnectionPool) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
 // GetCondition of this ManagedDatabaseLogicalDatabase.
 func (mg *ManagedDatabaseLogicalDatabase) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)

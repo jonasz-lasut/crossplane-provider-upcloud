@@ -11,6 +11,6 @@ spec:
     size: 10
     tier: standard
     title: storage-example
-    zone: de-fra1
+    zone: fi-hel2
   providerConfigRef:
     name: default

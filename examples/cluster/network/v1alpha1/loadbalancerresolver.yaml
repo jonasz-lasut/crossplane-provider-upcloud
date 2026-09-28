@@ -1,0 +1,68 @@
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: LoadBalancerResolver
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerresolver
+  labels:
+    testing.upbound.io/example-name: lbresolver-example
+  name: lbresolver-example
+spec:
+  forProvider:
+    loadbalancerRef:
+      name: lbresolver-example-lb
+    nameservers:
+      - 10.0.0.10:53
+    cacheInvalid: 10
+    cacheValid: 100
+    retries: 5
+    timeout: 10
+    timeoutRetry: 10
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: LoadBalancer
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerresolver
+  labels:
+    testing.upbound.io/example-name: lbresolver-example-lb
+  name: lbresolver-example-lb
+spec:
+  forProvider:
+    name: lbresolver-example-lb
+    zone: fi-hel2
+    plan: development
+    configuredStatus: started
+    networks:
+      - name: private
+        type: private
+        family: IPv4
+        networkRef:
+          name: lbresolver-example-network
+      - name: public
+        type: public
+        family: IPv4
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerresolver
+  labels:
+    testing.upbound.io/example-name: lbresolver-example-network
+  name: lbresolver-example-network
+spec:
+  forProvider:
+    name: lbresolver-example-network
+    zone: fi-hel2
+    ipNetwork:
+      address: 10.32.0.0/24
+      dhcp: true
+      family: IPv4
+  providerConfigRef:
+    name: default

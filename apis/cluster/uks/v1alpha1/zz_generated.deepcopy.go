@@ -766,24 +766,18 @@ func (in *KubernetesNodeGroupInitParameters) DeepCopyInto(out *KubernetesNodeGro
 	}
 	if in.CloudNativePlan != nil {
 		in, out := &in.CloudNativePlan, &out.CloudNativePlan
-		*out = make([]CloudNativePlanInitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(CloudNativePlanInitParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.CustomPlan != nil {
 		in, out := &in.CustomPlan, &out.CustomPlan
-		*out = make([]CustomPlanInitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(CustomPlanInitParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.GpuPlan != nil {
 		in, out := &in.GpuPlan, &out.GpuPlan
-		*out = make([]GpuPlanInitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(GpuPlanInitParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.KubeletArgs != nil {
 		in, out := &in.KubeletArgs, &out.KubeletArgs
@@ -900,10 +894,8 @@ func (in *KubernetesNodeGroupObservation) DeepCopyInto(out *KubernetesNodeGroupO
 	}
 	if in.CloudNativePlan != nil {
 		in, out := &in.CloudNativePlan, &out.CloudNativePlan
-		*out = make([]CloudNativePlanObservation, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(CloudNativePlanObservation)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Cluster != nil {
 		in, out := &in.Cluster, &out.Cluster
@@ -912,17 +904,13 @@ func (in *KubernetesNodeGroupObservation) DeepCopyInto(out *KubernetesNodeGroupO
 	}
 	if in.CustomPlan != nil {
 		in, out := &in.CustomPlan, &out.CustomPlan
-		*out = make([]CustomPlanObservation, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(CustomPlanObservation)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.GpuPlan != nil {
 		in, out := &in.GpuPlan, &out.GpuPlan
-		*out = make([]GpuPlanObservation, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(GpuPlanObservation)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
@@ -1012,10 +1000,8 @@ func (in *KubernetesNodeGroupParameters) DeepCopyInto(out *KubernetesNodeGroupPa
 	}
 	if in.CloudNativePlan != nil {
 		in, out := &in.CloudNativePlan, &out.CloudNativePlan
-		*out = make([]CloudNativePlanParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(CloudNativePlanParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Cluster != nil {
 		in, out := &in.Cluster, &out.Cluster
@@ -1034,17 +1020,13 @@ func (in *KubernetesNodeGroupParameters) DeepCopyInto(out *KubernetesNodeGroupPa
 	}
 	if in.CustomPlan != nil {
 		in, out := &in.CustomPlan, &out.CustomPlan
-		*out = make([]CustomPlanParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(CustomPlanParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.GpuPlan != nil {
 		in, out := &in.GpuPlan, &out.GpuPlan
-		*out = make([]GpuPlanParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(GpuPlanParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.KubeletArgs != nil {
 		in, out := &in.KubeletArgs, &out.KubeletArgs

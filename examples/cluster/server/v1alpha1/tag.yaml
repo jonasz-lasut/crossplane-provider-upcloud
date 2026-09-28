@@ -1,0 +1,41 @@
+apiVersion: server.upcloud.crossplane.io/v1alpha1
+kind: Tag
+metadata:
+  annotations:
+    meta.upbound.io/example-id: server/v1alpha1/tag
+  labels:
+    testing.upbound.io/example-name: tag-example
+  name: tag-example
+spec:
+  forProvider:
+    description: example tag
+    serversRefs:
+      - name: tag-example-server
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: server.upcloud.crossplane.io/v1alpha1
+kind: Server
+metadata:
+  annotations:
+    meta.upbound.io/example-id: server/v1alpha1/tag
+  labels:
+    testing.upbound.io/example-name: tag-example-server
+  name: tag-example-server
+spec:
+  forProvider:
+    hostname: tag-example-server
+    title: tag-example-server
+    plan: 1xCPU-1GB
+    zone: fi-hel2
+    metadata: true
+    login:
+      user: example
+    networkInterface:
+      - type: public
+    template:
+      size: 25
+      storage: Ubuntu Server 24.04 LTS (Noble Numbat)
+  providerConfigRef:
+    name: default

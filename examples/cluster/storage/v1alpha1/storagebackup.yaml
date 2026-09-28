@@ -1,0 +1,33 @@
+apiVersion: storage.upcloud.crossplane.io/v1alpha1
+kind: StorageBackup
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/storagebackup
+  labels:
+    testing.upbound.io/example-name: backup-example
+  name: backup-example
+spec:
+  forProvider:
+    title: backup-example
+    sourceStorageRef:
+      name: backup-example-storage
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: storage.upcloud.crossplane.io/v1alpha1
+kind: Storage
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/storagebackup
+  labels:
+    testing.upbound.io/example-name: backup-example-storage
+  name: backup-example-storage
+spec:
+  forProvider:
+    size: 10
+    tier: standard
+    title: backup-example-storage
+    zone: fi-hel2
+  providerConfigRef:
+    name: default

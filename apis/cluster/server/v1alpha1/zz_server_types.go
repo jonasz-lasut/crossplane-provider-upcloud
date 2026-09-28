@@ -333,7 +333,7 @@ type ServerInitParameters struct {
 
 	// (Block List) Configure access credentials to the server (see below for nested schema)
 	// Configure access credentials to the server
-	Login []LoginInitParameters `json:"login,omitempty" tf:"login,omitempty"`
+	Login *LoginInitParameters `json:"login,omitempty" tf:"login,omitempty"`
 
 	// (Number) The amount of memory for the server (in megabytes)
 	// The amount of memory for the server (in megabytes)
@@ -367,7 +367,7 @@ type ServerInitParameters struct {
 	// Simple backup schedule configuration
 	//
 	// The simple backups provide a simplified way to back up *all* of the storages attached to a given server. This means you cannot have simple backup set for a server, and individual `backup_rules` on the storages attached to the server. Such configuration will throw an error during execution. This also applies to `backup_rules` defined for server templates.
-	SimpleBackup []SimpleBackupInitParameters `json:"simpleBackup,omitempty" tf:"simple_backup,omitempty"`
+	SimpleBackup *SimpleBackupInitParameters `json:"simpleBackup,omitempty" tf:"simple_backup,omitempty"`
 
 	// (Block Set) A set of storage devices associated with the server (see below for nested schema)
 	// A set of storage devices associated with the server
@@ -380,7 +380,7 @@ type ServerInitParameters struct {
 
 	// (Block List) Block describing the preconfigured operating system (see below for nested schema)
 	// Block describing the preconfigured operating system
-	Template []TemplateInitParameters `json:"template,omitempty" tf:"template,omitempty"`
+	Template *TemplateInitParameters `json:"template,omitempty" tf:"template,omitempty"`
 
 	// (String) The timezone of the server. The timezone must be a valid timezone string, e.g. Europe/Helsinki.
 	// The timezone of the server. The timezone must be a valid timezone string, e.g. `Europe/Helsinki`.
@@ -439,7 +439,7 @@ type ServerObservation struct {
 
 	// (Block List) Configure access credentials to the server (see below for nested schema)
 	// Configure access credentials to the server
-	Login []LoginObservation `json:"login,omitempty" tf:"login,omitempty"`
+	Login *LoginObservation `json:"login,omitempty" tf:"login,omitempty"`
 
 	// (Number) The amount of memory for the server (in megabytes)
 	// The amount of memory for the server (in megabytes)
@@ -473,7 +473,7 @@ type ServerObservation struct {
 	// Simple backup schedule configuration
 	//
 	// The simple backups provide a simplified way to back up *all* of the storages attached to a given server. This means you cannot have simple backup set for a server, and individual `backup_rules` on the storages attached to the server. Such configuration will throw an error during execution. This also applies to `backup_rules` defined for server templates.
-	SimpleBackup []SimpleBackupObservation `json:"simpleBackup,omitempty" tf:"simple_backup,omitempty"`
+	SimpleBackup *SimpleBackupObservation `json:"simpleBackup,omitempty" tf:"simple_backup,omitempty"`
 
 	// (Block Set) A set of storage devices associated with the server (see below for nested schema)
 	// A set of storage devices associated with the server
@@ -486,7 +486,7 @@ type ServerObservation struct {
 
 	// (Block List) Block describing the preconfigured operating system (see below for nested schema)
 	// Block describing the preconfigured operating system
-	Template []TemplateObservation `json:"template,omitempty" tf:"template,omitempty"`
+	Template *TemplateObservation `json:"template,omitempty" tf:"template,omitempty"`
 
 	// (String) The timezone of the server. The timezone must be a valid timezone string, e.g. Europe/Helsinki.
 	// The timezone of the server. The timezone must be a valid timezone string, e.g. `Europe/Helsinki`.
@@ -550,7 +550,7 @@ type ServerParameters struct {
 	// (Block List) Configure access credentials to the server (see below for nested schema)
 	// Configure access credentials to the server
 	// +kubebuilder:validation:Optional
-	Login []LoginParameters `json:"login,omitempty" tf:"login,omitempty"`
+	Login *LoginParameters `json:"login,omitempty" tf:"login,omitempty"`
 
 	// (Number) The amount of memory for the server (in megabytes)
 	// The amount of memory for the server (in megabytes)
@@ -591,7 +591,7 @@ type ServerParameters struct {
 	//
 	// The simple backups provide a simplified way to back up *all* of the storages attached to a given server. This means you cannot have simple backup set for a server, and individual `backup_rules` on the storages attached to the server. Such configuration will throw an error during execution. This also applies to `backup_rules` defined for server templates.
 	// +kubebuilder:validation:Optional
-	SimpleBackup []SimpleBackupParameters `json:"simpleBackup,omitempty" tf:"simple_backup,omitempty"`
+	SimpleBackup *SimpleBackupParameters `json:"simpleBackup,omitempty" tf:"simple_backup,omitempty"`
 
 	// (Block Set) A set of storage devices associated with the server (see below for nested schema)
 	// A set of storage devices associated with the server
@@ -607,7 +607,7 @@ type ServerParameters struct {
 	// (Block List) Block describing the preconfigured operating system (see below for nested schema)
 	// Block describing the preconfigured operating system
 	// +kubebuilder:validation:Optional
-	Template []TemplateParameters `json:"template,omitempty" tf:"template,omitempty"`
+	Template *TemplateParameters `json:"template,omitempty" tf:"template,omitempty"`
 
 	// (String) The timezone of the server. The timezone must be a valid timezone string, e.g. Europe/Helsinki.
 	// The timezone of the server. The timezone must be a valid timezone string, e.g. `Europe/Helsinki`.
@@ -953,6 +953,7 @@ type Server struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.hostname) || (has(self.initProvider) && has(self.initProvider.hostname))",message="spec.forProvider.hostname is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.networkInterface) || (has(self.initProvider) && has(self.initProvider.networkInterface))",message="spec.forProvider.networkInterface is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.zone) || (has(self.initProvider) && has(self.initProvider.zone))",message="spec.forProvider.zone is a required parameter"
 	Spec   ServerSpec   `json:"spec"`
 	Status ServerStatus `json:"status,omitempty"`

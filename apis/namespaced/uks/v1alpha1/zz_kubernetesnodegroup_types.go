@@ -187,15 +187,15 @@ type KubernetesNodeGroupInitParameters struct {
 
 	// (Block List) Resource properties for Cloud Native plan storage configuration. This block is optional for Cloud Native plans. (see below for nested schema)
 	// Resource properties for Cloud Native plan storage configuration. This block is optional for Cloud Native plans.
-	CloudNativePlan []CloudNativePlanInitParameters `json:"cloudNativePlan,omitempty" tf:"cloud_native_plan,omitempty"`
+	CloudNativePlan *CloudNativePlanInitParameters `json:"cloudNativePlan,omitempty" tf:"cloud_native_plan,omitempty"`
 
 	// (Block List) Resource properties for custom plan. This block is required for custom plans only. (see below for nested schema)
 	// Resource properties for custom plan. This block is required for `custom` plans only.
-	CustomPlan []CustomPlanInitParameters `json:"customPlan,omitempty" tf:"custom_plan,omitempty"`
+	CustomPlan *CustomPlanInitParameters `json:"customPlan,omitempty" tf:"custom_plan,omitempty"`
 
 	// (Block List) Resource properties for GPU plan storage configuration. This block is optional for GPU plans. (see below for nested schema)
 	// Resource properties for GPU plan storage configuration. This block is optional for GPU plans.
-	GpuPlan []GpuPlanInitParameters `json:"gpuPlan,omitempty" tf:"gpu_plan,omitempty"`
+	GpuPlan *GpuPlanInitParameters `json:"gpuPlan,omitempty" tf:"gpu_plan,omitempty"`
 
 	// -. The API will prefix the arguments with -- when preparing kubelet call.
 	// Additional arguments for kubelet for the nodes in this group. Configure the arguments without leading `--`. The API will prefix the arguments with `--` when preparing kubelet call.
@@ -242,7 +242,7 @@ type KubernetesNodeGroupObservation struct {
 
 	// (Block List) Resource properties for Cloud Native plan storage configuration. This block is optional for Cloud Native plans. (see below for nested schema)
 	// Resource properties for Cloud Native plan storage configuration. This block is optional for Cloud Native plans.
-	CloudNativePlan []CloudNativePlanObservation `json:"cloudNativePlan,omitempty" tf:"cloud_native_plan,omitempty"`
+	CloudNativePlan *CloudNativePlanObservation `json:"cloudNativePlan,omitempty" tf:"cloud_native_plan,omitempty"`
 
 	// (String) UUID of the cluster.
 	// UUID of the cluster.
@@ -250,11 +250,11 @@ type KubernetesNodeGroupObservation struct {
 
 	// (Block List) Resource properties for custom plan. This block is required for custom plans only. (see below for nested schema)
 	// Resource properties for custom plan. This block is required for `custom` plans only.
-	CustomPlan []CustomPlanObservation `json:"customPlan,omitempty" tf:"custom_plan,omitempty"`
+	CustomPlan *CustomPlanObservation `json:"customPlan,omitempty" tf:"custom_plan,omitempty"`
 
 	// (Block List) Resource properties for GPU plan storage configuration. This block is optional for GPU plans. (see below for nested schema)
 	// Resource properties for GPU plan storage configuration. This block is optional for GPU plans.
-	GpuPlan []GpuPlanObservation `json:"gpuPlan,omitempty" tf:"gpu_plan,omitempty"`
+	GpuPlan *GpuPlanObservation `json:"gpuPlan,omitempty" tf:"gpu_plan,omitempty"`
 
 	// (String) Computed ID of the node group. This is a combination of the cluster UUID and the node group name, separated with a /.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -306,7 +306,7 @@ type KubernetesNodeGroupParameters struct {
 	// (Block List) Resource properties for Cloud Native plan storage configuration. This block is optional for Cloud Native plans. (see below for nested schema)
 	// Resource properties for Cloud Native plan storage configuration. This block is optional for Cloud Native plans.
 	// +kubebuilder:validation:Optional
-	CloudNativePlan []CloudNativePlanParameters `json:"cloudNativePlan,omitempty" tf:"cloud_native_plan,omitempty"`
+	CloudNativePlan *CloudNativePlanParameters `json:"cloudNativePlan,omitempty" tf:"cloud_native_plan,omitempty"`
 
 	// (String) UUID of the cluster.
 	// UUID of the cluster.
@@ -325,12 +325,12 @@ type KubernetesNodeGroupParameters struct {
 	// (Block List) Resource properties for custom plan. This block is required for custom plans only. (see below for nested schema)
 	// Resource properties for custom plan. This block is required for `custom` plans only.
 	// +kubebuilder:validation:Optional
-	CustomPlan []CustomPlanParameters `json:"customPlan,omitempty" tf:"custom_plan,omitempty"`
+	CustomPlan *CustomPlanParameters `json:"customPlan,omitempty" tf:"custom_plan,omitempty"`
 
 	// (Block List) Resource properties for GPU plan storage configuration. This block is optional for GPU plans. (see below for nested schema)
 	// Resource properties for GPU plan storage configuration. This block is optional for GPU plans.
 	// +kubebuilder:validation:Optional
-	GpuPlan []GpuPlanParameters `json:"gpuPlan,omitempty" tf:"gpu_plan,omitempty"`
+	GpuPlan *GpuPlanParameters `json:"gpuPlan,omitempty" tf:"gpu_plan,omitempty"`
 
 	// -. The API will prefix the arguments with -- when preparing kubelet call.
 	// Additional arguments for kubelet for the nodes in this group. Configure the arguments without leading `--`. The API will prefix the arguments with `--` when preparing kubelet call.

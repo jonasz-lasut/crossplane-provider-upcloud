@@ -14,3 +14,9 @@ func (tr *Server) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *ServerGroup) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *ServerPrivateFirewallRuleset) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *Tag) Hub() {}

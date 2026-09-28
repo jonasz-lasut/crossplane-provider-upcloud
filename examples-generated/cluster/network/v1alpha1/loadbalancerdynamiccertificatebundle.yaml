@@ -1,0 +1,15 @@
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: LoadBalancerDynamicCertificateBundle
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerdynamiccertificatebundle
+  labels:
+    testing.upbound.io/example-name: lb_cb_d1
+  name: lb-cb-d1
+spec:
+  forProvider:
+    hostnames:
+    - example.com
+    - app.example.net
+    keyType: rsa
+    name: lb-cb-d1-test

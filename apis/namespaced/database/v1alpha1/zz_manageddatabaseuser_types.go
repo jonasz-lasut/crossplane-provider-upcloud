@@ -21,7 +21,7 @@ type ManagedDatabaseUserInitParameters struct {
 
 	// (Block List) OpenSearch access control object. (see below for nested schema)
 	// OpenSearch access control object.
-	OpensearchAccessControl []OpensearchAccessControlInitParameters `json:"opensearchAccessControl,omitempty" tf:"opensearch_access_control,omitempty"`
+	OpensearchAccessControl *OpensearchAccessControlInitParameters `json:"opensearchAccessControl,omitempty" tf:"opensearch_access_control,omitempty"`
 
 	// (String, Sensitive) Password for the database user. Defaults to a random value
 	// Password for the database user. Defaults to a random value
@@ -29,11 +29,11 @@ type ManagedDatabaseUserInitParameters struct {
 
 	// (Block List) PostgreSQL access control object. (see below for nested schema)
 	// PostgreSQL access control object.
-	PgAccessControl []PgAccessControlInitParameters `json:"pgAccessControl,omitempty" tf:"pg_access_control,omitempty"`
+	PgAccessControl *PgAccessControlInitParameters `json:"pgAccessControl,omitempty" tf:"pg_access_control,omitempty"`
 
 	// (Block List) Valkey access control object. (see below for nested schema)
 	// Valkey access control object.
-	ValkeyAccessControl []ValkeyAccessControlInitParameters `json:"valkeyAccessControl,omitempty" tf:"valkey_access_control,omitempty"`
+	ValkeyAccessControl *ValkeyAccessControlInitParameters `json:"valkeyAccessControl,omitempty" tf:"valkey_access_control,omitempty"`
 }
 
 type ManagedDatabaseUserObservation struct {
@@ -47,11 +47,11 @@ type ManagedDatabaseUserObservation struct {
 
 	// (Block List) OpenSearch access control object. (see below for nested schema)
 	// OpenSearch access control object.
-	OpensearchAccessControl []OpensearchAccessControlObservation `json:"opensearchAccessControl,omitempty" tf:"opensearch_access_control,omitempty"`
+	OpensearchAccessControl *OpensearchAccessControlObservation `json:"opensearchAccessControl,omitempty" tf:"opensearch_access_control,omitempty"`
 
 	// (Block List) PostgreSQL access control object. (see below for nested schema)
 	// PostgreSQL access control object.
-	PgAccessControl []PgAccessControlObservation `json:"pgAccessControl,omitempty" tf:"pg_access_control,omitempty"`
+	PgAccessControl *PgAccessControlObservation `json:"pgAccessControl,omitempty" tf:"pg_access_control,omitempty"`
 
 	// (String) Service's UUID for which this user belongs to
 	// The service to which the resource belongs. Please note that reference fields (`serviceRef` and `serviceSelector`) only work for PostgreSQL databases. For other databases you need to leverage compositions and patches to pass the database service ID to the `service` field. See https://docs.crossplane.io/latest/concepts/patch-and-transform/#patching-between-resources for more info.
@@ -63,7 +63,7 @@ type ManagedDatabaseUserObservation struct {
 
 	// (Block List) Valkey access control object. (see below for nested schema)
 	// Valkey access control object.
-	ValkeyAccessControl []ValkeyAccessControlObservation `json:"valkeyAccessControl,omitempty" tf:"valkey_access_control,omitempty"`
+	ValkeyAccessControl *ValkeyAccessControlObservation `json:"valkeyAccessControl,omitempty" tf:"valkey_access_control,omitempty"`
 }
 
 type ManagedDatabaseUserParameters struct {
@@ -76,7 +76,7 @@ type ManagedDatabaseUserParameters struct {
 	// (Block List) OpenSearch access control object. (see below for nested schema)
 	// OpenSearch access control object.
 	// +kubebuilder:validation:Optional
-	OpensearchAccessControl []OpensearchAccessControlParameters `json:"opensearchAccessControl,omitempty" tf:"opensearch_access_control,omitempty"`
+	OpensearchAccessControl *OpensearchAccessControlParameters `json:"opensearchAccessControl,omitempty" tf:"opensearch_access_control,omitempty"`
 
 	// (String, Sensitive) Password for the database user. Defaults to a random value
 	// Password for the database user. Defaults to a random value
@@ -86,7 +86,7 @@ type ManagedDatabaseUserParameters struct {
 	// (Block List) PostgreSQL access control object. (see below for nested schema)
 	// PostgreSQL access control object.
 	// +kubebuilder:validation:Optional
-	PgAccessControl []PgAccessControlParameters `json:"pgAccessControl,omitempty" tf:"pg_access_control,omitempty"`
+	PgAccessControl *PgAccessControlParameters `json:"pgAccessControl,omitempty" tf:"pg_access_control,omitempty"`
 
 	// (String) Service's UUID for which this user belongs to
 	// The service to which the resource belongs. Please note that reference fields (`serviceRef` and `serviceSelector`) only work for PostgreSQL databases. For other databases you need to leverage compositions and patches to pass the database service ID to the `service` field. See https://docs.crossplane.io/latest/concepts/patch-and-transform/#patching-between-resources for more info.
@@ -105,7 +105,7 @@ type ManagedDatabaseUserParameters struct {
 	// (Block List) Valkey access control object. (see below for nested schema)
 	// Valkey access control object.
 	// +kubebuilder:validation:Optional
-	ValkeyAccessControl []ValkeyAccessControlParameters `json:"valkeyAccessControl,omitempty" tf:"valkey_access_control,omitempty"`
+	ValkeyAccessControl *ValkeyAccessControlParameters `json:"valkeyAccessControl,omitempty" tf:"valkey_access_control,omitempty"`
 }
 
 type OpensearchAccessControlInitParameters struct {

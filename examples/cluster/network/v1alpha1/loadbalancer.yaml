@@ -1,0 +1,45 @@
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: LoadBalancer
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancer
+  labels:
+    testing.upbound.io/example-name: lb-example-lb
+  name: lb-example-lb
+spec:
+  forProvider:
+    name: lb-example-lb
+    zone: fi-hel2
+    plan: development
+    configuredStatus: started
+    networks:
+      - name: private
+        type: private
+        family: IPv4
+        networkRef:
+          name: lb-example-network
+      - name: public
+        type: public
+        family: IPv4
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancer
+  labels:
+    testing.upbound.io/example-name: lb-example-network
+  name: lb-example-network
+spec:
+  forProvider:
+    name: lb-example-network
+    zone: fi-hel2
+    ipNetwork:
+      address: 10.31.0.0/24
+      dhcp: true
+      family: IPv4
+  providerConfigRef:
+    name: default

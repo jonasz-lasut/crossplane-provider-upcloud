@@ -21,7 +21,7 @@ func (mg *ManagedDatabaseValkey) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this ManagedDatabaseValkey
 func (tr *ManagedDatabaseValkey) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"properties[*].migration[*].password": "properties[*].migration[*].passwordSecretRef", "service_password": "status.atProvider.servicePassword", "service_uri": "status.atProvider.serviceUri"}
+	return map[string]string{"properties[*].migration[*].password": "properties.migration.passwordSecretRef", "service_password": "status.atProvider.servicePassword", "service_uri": "status.atProvider.serviceUri"}
 }
 
 // GetObservation of this ManagedDatabaseValkey
@@ -118,6 +118,7 @@ func (tr *ManagedDatabaseValkey) LateInitialize(attrs []byte) (bool, error) {
 		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
 	}
 	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
+	opts = append(opts, resource.WithNameFilter("Properties"))
 
 	li := resource.NewGenericLateInitializer(opts...)
 	return li.LateInitialize(&tr.Spec.ForProvider, params)

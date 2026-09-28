@@ -1,0 +1,89 @@
+apiVersion: storage.upcloud.m.crossplane.io/v1alpha1
+kind: FileStorageShareACL
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/filestorageshareacl
+  labels:
+    testing.upbound.io/example-name: fsacl-example
+  name: fsacl-example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    permission: rw
+    target: 172.16.83.12
+    fileStorageRef:
+      name: fsacl-example-filestorage
+    shareNameRef:
+      name: fsacl-example-share
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: storage.upcloud.m.crossplane.io/v1alpha1
+kind: FileStorageShare
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/filestorageshareacl
+  labels:
+    testing.upbound.io/example-name: fsacl-example-share
+  name: fsacl-example-share
+  namespace: crossplane-system
+spec:
+  forProvider:
+    path: /project
+    fileStorageRef:
+      name: fsacl-example-filestorage
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: storage.upcloud.m.crossplane.io/v1alpha1
+kind: FileStorage
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/filestorageshareacl
+  labels:
+    testing.upbound.io/example-name: fsacl-example-filestorage
+  name: fsacl-example-filestorage
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: fsacl-example-filestorage
+    zone: fi-hel2
+    size: 250
+    configuredStatus: started
+    labels:
+      environment: example
+    network:
+      name: private
+      family: IPv4
+      ipAddress: 172.16.83.11
+      uuidRef:
+        name: fsacl-example-network
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+
+---
+apiVersion: network.upcloud.m.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: storage/v1alpha1/filestorageshareacl
+  labels:
+    testing.upbound.io/example-name: fsacl-example-network
+  name: fsacl-example-network
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: fsacl-example-network
+    zone: fi-hel2
+    ipNetwork:
+      address: 172.16.83.0/24
+      dhcp: true
+      family: IPv4
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

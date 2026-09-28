@@ -1,0 +1,98 @@
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: LoadBalancerDynamicBackendMember
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerdynamicbackendmember
+  labels:
+    testing.upbound.io/example-name: lb_be_1_dm_1
+  name: lb-be-1-dm-1
+spec:
+  forProvider:
+    backendSelector:
+      matchLabels:
+        testing.upbound.io/example-name: upcloud_loadbalancer_backend
+    enabled: false
+    maxSessions: 10
+    weight: 10
+
+---
+
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: LoadBalancer
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerdynamicbackendmember
+  labels:
+    testing.upbound.io/example-name: lb
+  name: lb
+spec:
+  forProvider:
+    configuredStatus: started
+    name: lb-test
+    networkSelector:
+      matchLabels:
+        testing.upbound.io/example-name: upcloud_network
+    plan: development
+    zone: ${var.lb_zone}
+
+---
+
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: LoadBalancerBackend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerdynamicbackendmember
+  labels:
+    testing.upbound.io/example-name: lb_be_1
+  name: lb-be-1
+spec:
+  forProvider:
+    loadbalancerSelector:
+      matchLabels:
+        testing.upbound.io/example-name: upcloud_loadbalancer
+    resolverNameSelector:
+      matchLabels:
+        testing.upbound.io/example-name: upcloud_loadbalancer_resolver
+
+---
+
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: LoadBalancerResolver
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerdynamicbackendmember
+  labels:
+    testing.upbound.io/example-name: lb_dns_1
+  name: lb-dns-1
+spec:
+  forProvider:
+    cacheInvalid: 10
+    cacheValid: 100
+    loadbalancerSelector:
+      matchLabels:
+        testing.upbound.io/example-name: upcloud_loadbalancer
+    nameservers:
+    - 94.237.127.9:53
+    - 94.237.40.9:53
+    retries: 5
+    timeout: 10
+    timeoutRetry: 10
+
+---
+
+apiVersion: network.upcloud.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/loadbalancerdynamicbackendmember
+  labels:
+    testing.upbound.io/example-name: lb_network
+  name: lb-network
+spec:
+  forProvider:
+    ipNetwork:
+    - address: 10.0.0.0/24
+      dhcp: true
+      family: IPv4
+    name: lb-test-net
+    zone: ${var.lb_zone}

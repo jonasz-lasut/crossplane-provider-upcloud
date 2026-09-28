@@ -27,12 +27,12 @@ metadata:
 spec:
   forProvider:
     name: nodegroup-example-cluster
-    zone: de-fra1
+    zone: fi-hel2
     controlPlaneIpFilter:
       - 0.0.0.0/0
-    labels: {}
-    networkRef:
-      name: nodegroup-example-network
+    networkSelector:
+      matchLabels:
+        testing.upbound.io/example-name: nodegroup-example-network
   providerConfigRef:
     name: default
 
@@ -44,14 +44,14 @@ metadata:
     meta.upbound.io/example-id: uks/v1alpha1/kubernetesnodegroup
   labels:
     testing.upbound.io/example-name: nodegroup-example-network
-  name: nodegroup-example-network
+  name: uks-nodegroup-${Rand.RFC1123Subdomain}
 spec:
   forProvider:
-    name: nodegroup-example-network
-    zone: de-fra1
+    name: uks-nodegroup-${Rand.RFC1123Subdomain}
+    zone: fi-hel2
     ipNetwork:
-      - address: 172.16.1.0/24
-        dhcp: true
-        family: IPv4
+      address: 172.16.12.0/24
+      dhcp: true
+      family: IPv4
   providerConfigRef:
     name: default

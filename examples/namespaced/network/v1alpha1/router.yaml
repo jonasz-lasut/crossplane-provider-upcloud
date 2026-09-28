@@ -10,8 +10,6 @@ metadata:
 spec:
   forProvider:
     name: router-example
-    labels: {}
-    staticRoute: []
   providerConfigRef:
     kind: ClusterProviderConfig
     name: default

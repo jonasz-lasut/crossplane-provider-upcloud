@@ -82,28 +82,26 @@ spec:
                     description: |-
                       (Block List) OpenSearch access control object. (see below for nested schema)
                       OpenSearch access control object.
-                    items:
-                      properties:
-                        rules:
-                          description: |-
-                            (Block List) Set user access control rules. (see below for nested schema)
-                            Set user access control rules.
-                          items:
-                            properties:
-                              index:
-                                description: |-
-                                  (String) Set index name, pattern or top level API.
-                                  Set index name, pattern or top level API.
-                                type: string
-                              permission:
-                                description: |-
-                                  (String) Set permission access.
-                                  Set permission access.
-                                type: string
-                            type: object
-                          type: array
-                      type: object
-                    type: array
+                    properties:
+                      rules:
+                        description: |-
+                          (Block List) Set user access control rules. (see below for nested schema)
+                          Set user access control rules.
+                        items:
+                          properties:
+                            index:
+                              description: |-
+                                (String) Set index name, pattern or top level API.
+                                Set index name, pattern or top level API.
+                              type: string
+                            permission:
+                              description: |-
+                                (String) Set permission access.
+                                Set permission access.
+                              type: string
+                          type: object
+                        type: array
+                    type: object
                   passwordSecretRef:
                     description: |-
                       (String, Sensitive) Password for the database user. Defaults to a random value
@@ -127,15 +125,13 @@ spec:
                     description: |-
                       (Block List) PostgreSQL access control object. (see below for nested schema)
                       PostgreSQL access control object.
-                    items:
-                      properties:
-                        allowReplication:
-                          description: |-
-                            (Boolean) Grant replication privilege
-                            Grant replication privilege
-                          type: boolean
-                      type: object
-                    type: array
+                    properties:
+                      allowReplication:
+                        description: |-
+                          (Boolean) Grant replication privilege
+                          Grant replication privilege
+                        type: boolean
+                    type: object
                   service:
                     description: |-
                       (String) Service's UUID for which this user belongs to
@@ -221,38 +217,36 @@ spec:
                     description: |-
                       (Block List) Valkey access control object. (see below for nested schema)
                       Valkey access control object.
-                    items:
-                      properties:
-                        categories:
-                          description: |-
-                            (List of String) Set access control to all commands in specified categories.
-                            Set access control to all commands in specified categories.
-                          items:
-                            type: string
-                          type: array
-                        channels:
-                          description: |-
-                            (List of String) Set access control to Pub/Sub channels.
-                            Set access control to Pub/Sub channels.
-                          items:
-                            type: string
-                          type: array
-                        commands:
-                          description: |-
-                            (List of String) Set access control to commands.
-                            Set access control to commands.
-                          items:
-                            type: string
-                          type: array
-                        keys:
-                          description: |-
-                            (List of String) Set access control to keys.
-                            Set access control to keys.
-                          items:
-                            type: string
-                          type: array
-                      type: object
-                    type: array
+                    properties:
+                      categories:
+                        description: |-
+                          (List of String) Set access control to all commands in specified categories.
+                          Set access control to all commands in specified categories.
+                        items:
+                          type: string
+                        type: array
+                      channels:
+                        description: |-
+                          (List of String) Set access control to Pub/Sub channels.
+                          Set access control to Pub/Sub channels.
+                        items:
+                          type: string
+                        type: array
+                      commands:
+                        description: |-
+                          (List of String) Set access control to commands.
+                          Set access control to commands.
+                        items:
+                          type: string
+                        type: array
+                      keys:
+                        description: |-
+                          (List of String) Set access control to keys.
+                          Set access control to keys.
+                        items:
+                          type: string
+                        type: array
+                    type: object
                 type: object
               initProvider:
                 description: |-
@@ -276,28 +270,26 @@ spec:
                     description: |-
                       (Block List) OpenSearch access control object. (see below for nested schema)
                       OpenSearch access control object.
-                    items:
-                      properties:
-                        rules:
-                          description: |-
-                            (Block List) Set user access control rules. (see below for nested schema)
-                            Set user access control rules.
-                          items:
-                            properties:
-                              index:
-                                description: |-
-                                  (String) Set index name, pattern or top level API.
-                                  Set index name, pattern or top level API.
-                                type: string
-                              permission:
-                                description: |-
-                                  (String) Set permission access.
-                                  Set permission access.
-                                type: string
-                            type: object
-                          type: array
-                      type: object
-                    type: array
+                    properties:
+                      rules:
+                        description: |-
+                          (Block List) Set user access control rules. (see below for nested schema)
+                          Set user access control rules.
+                        items:
+                          properties:
+                            index:
+                              description: |-
+                                (String) Set index name, pattern or top level API.
+                                Set index name, pattern or top level API.
+                              type: string
+                            permission:
+                              description: |-
+                                (String) Set permission access.
+                                Set permission access.
+                              type: string
+                          type: object
+                        type: array
+                    type: object
                   passwordSecretRef:
                     description: |-
                       (String, Sensitive) Password for the database user. Defaults to a random value
@@ -321,51 +313,47 @@ spec:
                     description: |-
                       (Block List) PostgreSQL access control object. (see below for nested schema)
                       PostgreSQL access control object.
-                    items:
-                      properties:
-                        allowReplication:
-                          description: |-
-                            (Boolean) Grant replication privilege
-                            Grant replication privilege
-                          type: boolean
-                      type: object
-                    type: array
+                    properties:
+                      allowReplication:
+                        description: |-
+                          (Boolean) Grant replication privilege
+                          Grant replication privilege
+                        type: boolean
+                    type: object
                   valkeyAccessControl:
                     description: |-
                       (Block List) Valkey access control object. (see below for nested schema)
                       Valkey access control object.
-                    items:
-                      properties:
-                        categories:
-                          description: |-
-                            (List of String) Set access control to all commands in specified categories.
-                            Set access control to all commands in specified categories.
-                          items:
-                            type: string
-                          type: array
-                        channels:
-                          description: |-
-                            (List of String) Set access control to Pub/Sub channels.
-                            Set access control to Pub/Sub channels.
-                          items:
-                            type: string
-                          type: array
-                        commands:
-                          description: |-
-                            (List of String) Set access control to commands.
-                            Set access control to commands.
-                          items:
-                            type: string
-                          type: array
-                        keys:
-                          description: |-
-                            (List of String) Set access control to keys.
-                            Set access control to keys.
-                          items:
-                            type: string
-                          type: array
-                      type: object
-                    type: array
+                    properties:
+                      categories:
+                        description: |-
+                          (List of String) Set access control to all commands in specified categories.
+                          Set access control to all commands in specified categories.
+                        items:
+                          type: string
+                        type: array
+                      channels:
+                        description: |-
+                          (List of String) Set access control to Pub/Sub channels.
+                          Set access control to Pub/Sub channels.
+                        items:
+                          type: string
+                        type: array
+                      commands:
+                        description: |-
+                          (List of String) Set access control to commands.
+                          Set access control to commands.
+                        items:
+                          type: string
+                        type: array
+                      keys:
+                        description: |-
+                          (List of String) Set access control to keys.
+                          Set access control to keys.
+                        items:
+                          type: string
+                        type: array
+                    type: object
                 type: object
               managementPolicies:
                 default:
@@ -471,41 +459,37 @@ spec:
                     description: |-
                       (Block List) OpenSearch access control object. (see below for nested schema)
                       OpenSearch access control object.
-                    items:
-                      properties:
-                        rules:
-                          description: |-
-                            (Block List) Set user access control rules. (see below for nested schema)
-                            Set user access control rules.
-                          items:
-                            properties:
-                              index:
-                                description: |-
-                                  (String) Set index name, pattern or top level API.
-                                  Set index name, pattern or top level API.
-                                type: string
-                              permission:
-                                description: |-
-                                  (String) Set permission access.
-                                  Set permission access.
-                                type: string
-                            type: object
-                          type: array
-                      type: object
-                    type: array
+                    properties:
+                      rules:
+                        description: |-
+                          (Block List) Set user access control rules. (see below for nested schema)
+                          Set user access control rules.
+                        items:
+                          properties:
+                            index:
+                              description: |-
+                                (String) Set index name, pattern or top level API.
+                                Set index name, pattern or top level API.
+                              type: string
+                            permission:
+                              description: |-
+                                (String) Set permission access.
+                                Set permission access.
+                              type: string
+                          type: object
+                        type: array
+                    type: object
                   pgAccessControl:
                     description: |-
                       (Block List) PostgreSQL access control object. (see below for nested schema)
                       PostgreSQL access control object.
-                    items:
-                      properties:
-                        allowReplication:
-                          description: |-
-                            (Boolean) Grant replication privilege
-                            Grant replication privilege
-                          type: boolean
-                      type: object
-                    type: array
+                    properties:
+                      allowReplication:
+                        description: |-
+                          (Boolean) Grant replication privilege
+                          Grant replication privilege
+                        type: boolean
+                    type: object
                   service:
                     description: |-
                       (String) Service's UUID for which this user belongs to
@@ -520,38 +504,36 @@ spec:
                     description: |-
                       (Block List) Valkey access control object. (see below for nested schema)
                       Valkey access control object.
-                    items:
-                      properties:
-                        categories:
-                          description: |-
-                            (List of String) Set access control to all commands in specified categories.
-                            Set access control to all commands in specified categories.
-                          items:
-                            type: string
-                          type: array
-                        channels:
-                          description: |-
-                            (List of String) Set access control to Pub/Sub channels.
-                            Set access control to Pub/Sub channels.
-                          items:
-                            type: string
-                          type: array
-                        commands:
-                          description: |-
-                            (List of String) Set access control to commands.
-                            Set access control to commands.
-                          items:
-                            type: string
-                          type: array
-                        keys:
-                          description: |-
-                            (List of String) Set access control to keys.
-                            Set access control to keys.
-                          items:
-                            type: string
-                          type: array
-                      type: object
-                    type: array
+                    properties:
+                      categories:
+                        description: |-
+                          (List of String) Set access control to all commands in specified categories.
+                          Set access control to all commands in specified categories.
+                        items:
+                          type: string
+                        type: array
+                      channels:
+                        description: |-
+                          (List of String) Set access control to Pub/Sub channels.
+                          Set access control to Pub/Sub channels.
+                        items:
+                          type: string
+                        type: array
+                      commands:
+                        description: |-
+                          (List of String) Set access control to commands.
+                          Set access control to commands.
+                        items:
+                          type: string
+                        type: array
+                      keys:
+                        description: |-
+                          (List of String) Set access control to keys.
+                          Set access control to keys.
+                        items:
+                          type: string
+                        type: array
+                    type: object
                 type: object
               conditions:
                 description: Conditions of the resource.

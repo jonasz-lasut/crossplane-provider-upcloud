@@ -88,15 +88,13 @@ spec:
                     description: |-
                       (Block Set) Block defining another storage/template to clone to storage. (see below for nested schema)
                       Block defining another storage/template to clone to storage.
-                    items:
-                      properties:
-                        id:
-                          description: |-
-                            (String) UUID of the storage.
-                            The unique identifier of the storage/template to clone.
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      id:
+                        description: |-
+                          (String) UUID of the storage.
+                          The unique identifier of the storage/template to clone.
+                        type: string
+                    type: object
                   deleteAutoresizeBackup:
                     description: |-
                       (Boolean) If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
@@ -118,25 +116,23 @@ spec:
                     description: |-
                       (Block Set) Block defining external data to import to storage (see below for nested schema)
                       Block defining external data to import to storage
-                    items:
-                      properties:
-                        source:
-                          description: |-
-                            (String) The mode of the import task. One of http_import or direct_upload.
-                            The mode of the import task. One of `http_import` or `direct_upload`.
-                          type: string
-                        sourceHash:
-                          description: |-
-                            (String) SHA256 hash of the source content. This hash is used to verify the integrity of the imported data by comparing it to sha256sum after the import has completed. Possible filename is automatically removed from the hash before comparison.
-                            SHA256 hash of the source content. This hash is used to verify the integrity of the imported data by comparing it to `sha256sum` after the import has completed. Possible filename is automatically removed from the hash before comparison.
-                          type: string
-                        sourceLocation:
-                          description: |-
-                            Type header of the PUT request is set automatically based on the file extension (.gz or .xz, case-insensitive).
-                            The location of the file to import. For `http_import` an accessible URL. For `direct_upload` a local file. When direct uploading a compressed image, `Content-Type` header of the PUT request is set automatically based on the file extension (`.gz` or `.xz`, case-insensitive).
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      source:
+                        description: |-
+                          (String) The mode of the import task. One of http_import or direct_upload.
+                          The mode of the import task. One of `http_import` or `direct_upload`.
+                        type: string
+                      sourceHash:
+                        description: |-
+                          (String) SHA256 hash of the source content. This hash is used to verify the integrity of the imported data by comparing it to sha256sum after the import has completed. Possible filename is automatically removed from the hash before comparison.
+                          SHA256 hash of the source content. This hash is used to verify the integrity of the imported data by comparing it to `sha256sum` after the import has completed. Possible filename is automatically removed from the hash before comparison.
+                        type: string
+                      sourceLocation:
+                        description: |-
+                          Type header of the PUT request is set automatically based on the file extension (.gz or .xz, case-insensitive).
+                          The location of the file to import. For `http_import` an accessible URL. For `direct_upload` a local file. When direct uploading a compressed image, `Content-Type` header of the PUT request is set automatically based on the file extension (`.gz` or `.xz`, case-insensitive).
+                        type: string
+                    type: object
                   labels:
                     additionalProperties:
                       type: string
@@ -208,15 +204,13 @@ spec:
                     description: |-
                       (Block Set) Block defining another storage/template to clone to storage. (see below for nested schema)
                       Block defining another storage/template to clone to storage.
-                    items:
-                      properties:
-                        id:
-                          description: |-
-                            (String) UUID of the storage.
-                            The unique identifier of the storage/template to clone.
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      id:
+                        description: |-
+                          (String) UUID of the storage.
+                          The unique identifier of the storage/template to clone.
+                        type: string
+                    type: object
                   deleteAutoresizeBackup:
                     description: |-
                       (Boolean) If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
@@ -238,25 +232,23 @@ spec:
                     description: |-
                       (Block Set) Block defining external data to import to storage (see below for nested schema)
                       Block defining external data to import to storage
-                    items:
-                      properties:
-                        source:
-                          description: |-
-                            (String) The mode of the import task. One of http_import or direct_upload.
-                            The mode of the import task. One of `http_import` or `direct_upload`.
-                          type: string
-                        sourceHash:
-                          description: |-
-                            (String) SHA256 hash of the source content. This hash is used to verify the integrity of the imported data by comparing it to sha256sum after the import has completed. Possible filename is automatically removed from the hash before comparison.
-                            SHA256 hash of the source content. This hash is used to verify the integrity of the imported data by comparing it to `sha256sum` after the import has completed. Possible filename is automatically removed from the hash before comparison.
-                          type: string
-                        sourceLocation:
-                          description: |-
-                            Type header of the PUT request is set automatically based on the file extension (.gz or .xz, case-insensitive).
-                            The location of the file to import. For `http_import` an accessible URL. For `direct_upload` a local file. When direct uploading a compressed image, `Content-Type` header of the PUT request is set automatically based on the file extension (`.gz` or `.xz`, case-insensitive).
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      source:
+                        description: |-
+                          (String) The mode of the import task. One of http_import or direct_upload.
+                          The mode of the import task. One of `http_import` or `direct_upload`.
+                        type: string
+                      sourceHash:
+                        description: |-
+                          (String) SHA256 hash of the source content. This hash is used to verify the integrity of the imported data by comparing it to sha256sum after the import has completed. Possible filename is automatically removed from the hash before comparison.
+                          SHA256 hash of the source content. This hash is used to verify the integrity of the imported data by comparing it to `sha256sum` after the import has completed. Possible filename is automatically removed from the hash before comparison.
+                        type: string
+                      sourceLocation:
+                        description: |-
+                          Type header of the PUT request is set automatically based on the file extension (.gz or .xz, case-insensitive).
+                          The location of the file to import. For `http_import` an accessible URL. For `direct_upload` a local file. When direct uploading a compressed image, `Content-Type` header of the PUT request is set automatically based on the file extension (`.gz` or `.xz`, case-insensitive).
+                        type: string
+                    type: object
                   labels:
                     additionalProperties:
                       type: string
@@ -391,15 +383,13 @@ spec:
                     description: |-
                       (Block Set) Block defining another storage/template to clone to storage. (see below for nested schema)
                       Block defining another storage/template to clone to storage.
-                    items:
-                      properties:
-                        id:
-                          description: |-
-                            (String) UUID of the storage.
-                            The unique identifier of the storage/template to clone.
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      id:
+                        description: |-
+                          (String) UUID of the storage.
+                          The unique identifier of the storage/template to clone.
+                        type: string
+                    type: object
                   deleteAutoresizeBackup:
                     description: |-
                       (Boolean) If set to true, the backup taken before the partition and filesystem resize attempt will be deleted immediately after success.
@@ -424,35 +414,33 @@ spec:
                     description: |-
                       (Block Set) Block defining external data to import to storage (see below for nested schema)
                       Block defining external data to import to storage
-                    items:
-                      properties:
-                        sha256sum:
-                          description: |-
-                            (String) sha256 sum of the imported data
-                            sha256 sum of the imported data
-                          type: string
-                        source:
-                          description: |-
-                            (String) The mode of the import task. One of http_import or direct_upload.
-                            The mode of the import task. One of `http_import` or `direct_upload`.
-                          type: string
-                        sourceHash:
-                          description: |-
-                            (String) SHA256 hash of the source content. This hash is used to verify the integrity of the imported data by comparing it to sha256sum after the import has completed. Possible filename is automatically removed from the hash before comparison.
-                            SHA256 hash of the source content. This hash is used to verify the integrity of the imported data by comparing it to `sha256sum` after the import has completed. Possible filename is automatically removed from the hash before comparison.
-                          type: string
-                        sourceLocation:
-                          description: |-
-                            Type header of the PUT request is set automatically based on the file extension (.gz or .xz, case-insensitive).
-                            The location of the file to import. For `http_import` an accessible URL. For `direct_upload` a local file. When direct uploading a compressed image, `Content-Type` header of the PUT request is set automatically based on the file extension (`.gz` or `.xz`, case-insensitive).
-                          type: string
-                        writtenBytes:
-                          description: |-
-                            (Number) Number of bytes imported
-                            Number of bytes imported
-                          type: number
-                      type: object
-                    type: array
+                    properties:
+                      sha256sum:
+                        description: |-
+                          (String) sha256 sum of the imported data
+                          sha256 sum of the imported data
+                        type: string
+                      source:
+                        description: |-
+                          (String) The mode of the import task. One of http_import or direct_upload.
+                          The mode of the import task. One of `http_import` or `direct_upload`.
+                        type: string
+                      sourceHash:
+                        description: |-
+                          (String) SHA256 hash of the source content. This hash is used to verify the integrity of the imported data by comparing it to sha256sum after the import has completed. Possible filename is automatically removed from the hash before comparison.
+                          SHA256 hash of the source content. This hash is used to verify the integrity of the imported data by comparing it to `sha256sum` after the import has completed. Possible filename is automatically removed from the hash before comparison.
+                        type: string
+                      sourceLocation:
+                        description: |-
+                          Type header of the PUT request is set automatically based on the file extension (.gz or .xz, case-insensitive).
+                          The location of the file to import. For `http_import` an accessible URL. For `direct_upload` a local file. When direct uploading a compressed image, `Content-Type` header of the PUT request is set automatically based on the file extension (`.gz` or `.xz`, case-insensitive).
+                        type: string
+                      writtenBytes:
+                        description: |-
+                          (Number) Number of bytes imported
+                          Number of bytes imported
+                        type: number
+                    type: object
                   labels:
                     additionalProperties:
                       type: string
