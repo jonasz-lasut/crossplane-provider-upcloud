@@ -6,8 +6,6 @@ package uks
 
 import (
 	"github.com/crossplane/upjet/v2/pkg/config"
-
-	"github.com/crossplane-contrib/provider-upcloud/config/common"
 )
 
 // Configure configures the uks (UpCloud Kubernetes Service) group
@@ -24,7 +22,6 @@ func Configure(p *config.Provider) {
 		r.AddSingletonListConversion("custom_plan", "customPlan")
 		r.AddSingletonListConversion("gpu_plan", "gpuPlan")
 		r.AddSingletonListConversion("cloud_native_plan", "cloudNativePlan")
-		r.TerraformConversions = append(r.TerraformConversions, common.EmptyListDefaults("ssh_keys"))
 
 		r.References["cluster"] = config.Reference{
 			TerraformName: "upcloud_kubernetes_cluster",

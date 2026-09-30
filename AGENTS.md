@@ -171,10 +171,6 @@ Pick the extractor by what the Terraform argument takes and how the target gets 
 
 Terraform blocks limited to one item (for example `template` on a server, `ip_network` on a network, or the managed database `properties` block and everything nested in it) are embedded as objects in the CRD through explicit `r.AddSingletonListConversion("<tf_path>", "<crdPath>")` calls in the group configurators. The plugin-framework schema dump does not carry the `MaxItems=1` constraint (upstream uses `SizeAtMost(1)` validators), so `SingletonListEmbedder` cannot detect them: when adding a resource, look up its single-item blocks in the upstream source and list them. Write them as objects, not single-item lists, in examples.
 
-### Empty collection defaults
-
-A plugin-framework set attribute that defaults to an empty set and carries `RequiresReplace` (the node group's `ssh_keys`) becomes un-updatable after a provider restart or the uptest import step: the rebuilt prior state has it as null (omitempty drops the empty set from `status.atProvider`), the plan carries the empty default, and upjet's replacement filter compares the raw values. `r.TerraformConversions = append(r.TerraformConversions, common.EmptyListDefaults("<tf_name>"))` sends the empty list on both sides. Only for attributes whose upstream Read tolerates an empty non-null value; never for singleton-list blocks (Storage `import` is such a block and upstream's Read treats a non-null set as a configured import).
-
 ### Sensitive fields
 
 Any Terraform attribute marked `Sensitive: true` becomes `<field>SecretRef` in the CRD (references a `v1/Secret`). The plain field name is absent from `forProvider`. Check the CRD when a field seems missing.
